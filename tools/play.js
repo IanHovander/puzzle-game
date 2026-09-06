@@ -16,15 +16,19 @@ const path = require('path'), fs = require('fs');
   const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome', args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required'] });
   const errors = []; const log = [];
   const hook = (p, tag) => { p.on('console', m => { if (m.type() === 'error' && !/ERR_CONNECTION|fonts.googleapis|net::/.test(m.text())) errors.push(`[${tag} console] ` + m.text()); }); p.on('pageerror', e => errors.push(`[${tag} pageerror] ` + e.message)); p.on('dialog', d => { log.push('dialog: ' + d.message()); d.accept(script.dialogText || 'VEIL'); }); };
-  let page = await (await browser.newContext({ viewport: { width: 1440, height: 860 } })).newPage(); hook(page, 'hearth');
-  let url = `http://localhost:${port}/index.html?scene=${encodeURIComponent(script.start)}`;
+  const HEARTH = process.env.PLAY_HEARTH || 'index.html', COMPANION = process.env.PLAY_COMPANION || 'companion.html';
+  const autoDialog = { prompt: script.dialogText || 'VEIL', confirm: true };
+  const mkContext = async (opts) => { const c = await browser.newContext(opts); await c.addInitScript((d) => { window.__autoDialog = d; }, autoDialog); return c; };
+  let page = await (await mkContext({ viewport: { width: 1440, height: 860 } })).newPage(); hook(page, 'hearth');
+  let url = `http://localhost:${port}/${HEARTH}?scene=${encodeURIComponent(script.start)}`;
   if (script.flags) url += '&flags=' + script.flags; if (script.set) url += '&set=' + script.set;
   await page.goto(url); await page.waitForTimeout(1200);
   let n = 0;
   for (const st of script.steps) {
     n++;
     try {
-      if (st.companion) { const c = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }); page = await c.newPage(); hook(page, 'companion'); await page.goto(`http://localhost:${port}/companion.html`); await page.waitForTimeout(600); }
+      if (st.companion) { const c = await mkContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }); page = await c.newPage(); hook(page, 'companion'); await page.goto(`http://localhost:${port}/${COMPANION}`); await page.waitForTimeout(600); }
+      else if (st.dialog !== undefined) { autoDialog.prompt = st.dialog; await page.evaluate((d) => { window.__autoDialog = d; }, autoDialog); }
       else if (st.role) { await page.click(`.role-card:has-text("${st.role}")`); await page.waitForTimeout(300); const nm = await page.$('input.field.plain'); if (nm) { await nm.fill(st.name || 'Test'); await page.click('button:has-text("Keep it")'); await page.waitForTimeout(300); } }
       else if (st.unlock) { await page.fill('.unlock input:not(.mark)', st.unlock[0]); if (st.unlock[1]) await page.fill('.unlock input.mark', st.unlock[1]); await page.click('.unlock button'); await page.waitForTimeout(500); }
       else if (st.tab) { await page.click(`.ctab:has-text("${st.tab}")`); await page.waitForTimeout(300); }

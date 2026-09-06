@@ -66,10 +66,10 @@
           const pads = UI.el('div', {});
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
           wrap.appendChild(pads); wrap.appendChild(st);
-          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key will not answer — change keys', onclick: () => {
-            const v = prompt('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '));
+          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key will not answer — change keys', onclick: async () => {
+            const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
             if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1);
-            if (ks.length !== 4 || new Set(ks).size !== 4) { alert('Need four different single keys.'); return; }
+            if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
             Store.state.keys = ks; Store.save(); Input.setKeys(ks); Input.deactivate(); Input.activate(pads, onPress); step = 0; arm();
           } });
           wrap.appendChild(remap);

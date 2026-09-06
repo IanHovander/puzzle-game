@@ -30,6 +30,8 @@ Find the laptop's local IP (e.g. `192.168.1.23`), open `http://192.168.1.23:8080
 
 Opening `index.html` directly from the file system works for the Hearth alone, but phones cannot reach a `file://` page — use A or B.
 
+**Option C — single-file pages.** `node tools/bundle.js` writes `dist/hearth.html` and `dist/companion.html` with everything inlined, so each is one file you can host anywhere that serves a static page (pass `--companion-url <url>` so the Hearth's *Phones* button points at wherever the Companion ended up). `--artifact` emits the same pages as fragments for hosts that supply their own page skeleton.
+
 ## Seating and roles
 
 Sit in a row facing the screen, left to right: **the Reader, the Listener, the Seer, the Binder**. Each seat has a different gift and a different phone. Each seat also has a key on the laptop keyboard (defaults `A`, `C`, `M`, `/`, changeable on the title screen). On each phone: pick your seat, type your first name (it stays on the phone), and wait for the Hearth to show a word.

@@ -335,11 +335,11 @@
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Companion QR', onclick: () => { m.close(); Game.showQR(); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Replay scene', onclick: () => { m.close(); Game.go(currentScene.id); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Chapter select', onclick: () => { m.close(); Game.showChapterSelect(); } }));
-    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Abandon game', onclick: () => { if (confirm('Erase this playthrough and start over?')) { Store.reset(); location.reload(); } } }));
+    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Abandon game', onclick: async () => { if (await UI.confirm('Erase this playthrough and start over?', { danger: true, ok: 'Erase it' })) { Store.reset(); location.reload(); } } }));
     box.appendChild(row);
     const row2 = UI.el('div', { class: 'row' });
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
-    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: () => { const v = prompt('Paste the save code:'); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { alert('That code is not a Hearthfall save.'); } } }));
+    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a Hearthfall save.'); } } }));
     box.appendChild(row2);
     const m = UI.modal(box, { title: 'The Hearth' });
   };
@@ -365,6 +365,7 @@
     UI.modal(box, { title: 'Companion — open on each phone' });
   };
   Game.companionUrl = function () {
+    if (window.COMPANION_URL) return window.COMPANION_URL;
     if (location.protocol === 'file:') return null;
     return new URL('companion.html', location.href).href;
   };

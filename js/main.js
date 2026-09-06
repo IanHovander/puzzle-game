@@ -31,17 +31,17 @@
     });
     body.appendChild(seats);
     body.appendChild(UI.el('p', { class: 'keys', html: `Sit in this order, left to right, facing the screen. <button class="btn small ghost" id="chg-keys">change keys</button>` }));
-    body.querySelector('#chg-keys').addEventListener('click', () => {
-      const v = prompt('Four keys, left to right, separated by spaces (letters, digits, or . , / ;). Spread them across the keyboard.', Store.state.keys.join(' '));
+    body.querySelector('#chg-keys').addEventListener('click', async () => {
+      const v = await UI.ask('Four keys, left to right, separated by spaces (letters, digits, or . , / ;). Spread them across the keyboard.', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
       if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1 && /[A-Z0-9.,\/;]/.test(x));
-      if (ks.length !== 4 || new Set(ks).size !== 4) { alert('Need four different single keys.'); return; }
+      if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
       Store.state.keys = ks; Store.save(); Input.setKeys(ks); render();
     });
 
     const buttons = UI.el('div', { class: 'buttons' });
     if (hasSave && Store.state.scene) {
       buttons.appendChild(UI.el('button', { class: 'btn primary', text: 'Resume — ' + Store.elapsedText(), onclick: () => { Audio.init(); start(true); } }));
-      buttons.appendChild(UI.el('button', { class: 'btn', text: 'New game', onclick: () => { if (confirm('Erase the saved night and begin anew?')) { const k = Store.state.keys; Store.reset(); Store.state.keys = k; Store.state.names = Lore.roles.map(r => r.nick); Store.save(); Audio.init(); start(false); } } }));
+      buttons.appendChild(UI.el('button', { class: 'btn', text: 'New game', onclick: async () => { if (await UI.confirm('Erase the saved night and begin anew?', { danger: true, ok: 'Erase it' })) { const k = Store.state.keys; Store.reset(); Store.state.keys = k; Store.state.names = Lore.roles.map(r => r.nick); Store.save(); Audio.init(); start(false); } } }));
     } else {
       buttons.appendChild(UI.el('button', { class: 'btn primary', text: 'Light the Hearth', onclick: () => { Audio.init(); Store.save(); start(false); } }));
     }

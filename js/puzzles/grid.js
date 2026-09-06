@@ -81,7 +81,7 @@
           if (cfg.restEvery && movesSinceRest >= cfg.restEvery) { status.className = 'pz-status bad'; status.textContent = 'Wren needs to rest this turn.'; Audio.sfx('wrong'); return; }
           const d = doorKey(wren, target);
           if (d) {
-            const pw = prompt(d.prompt || 'A hidden door. The lintel carries a word. Speak it:');
+            const pw = await UI.ask(d.prompt || 'A hidden door. The lintel carries a word. Speak it:', '', { ok: 'Speak it', cancel: 'Step back', maxlength: 12 });
             if (pw == null) return;
             if (String(pw).toUpperCase().replace(/[^A-Z]/g, '') !== d.password) { status.className = 'pz-status bad'; status.textContent = d.wrongText || 'The wall stays a wall.'; Audio.sfx('wrong'); return; }
             Audio.sfx('unlock'); d.revealed = true;

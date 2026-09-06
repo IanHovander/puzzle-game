@@ -1,11 +1,11 @@
 { "start": "ch3_corridors", "flags": "WREN_HURT,VANE_PRETEND", "steps": [
   {"key": "Space"}, {"expect": "any hidden door will cost a turn"}, {"clickText": "Into the dark"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400},
-  {"eval": "window.prompt = () => 'VEIL'"},
+  {"dialog": "VEIL"},
   {"clickText": "South"}, {"clickText": "South"}, {"expect": "Turn 2 of 12"}, {"clickText": "East"}, {"wait": 500}, {"expect": "LINEN"}, {"clickText": "Back to the corridors"}, {"wait": 500},
   {"expect": "Turn 4 of 12"}, {"shot": "ch3_hurt_t4"},
   {"clickText": "Wait"}, {"expect": "Turn 5 of 12"},
-  {"eval": "window.prompt = () => 'THORN'"}, {"clickText": "East"}, {"wait": 300}, {"expect": "Turn 7 of 12"}, {"expect": "Light steps: C5"}, {"shot": "ch3_hurt_t7"},
+  {"dialog": "THORN"}, {"clickText": "East"}, {"wait": 300}, {"expect": "Turn 7 of 12"}, {"expect": "Light steps: C5"}, {"shot": "ch3_hurt_t7"},
   {"clickText": "East"}, {"clickText": "East"}, {"expect": "Turn 9 of 12"},
   {"clickText": "South"}, {"clickText": "South"}, {"wait": 300}, {"expect": "Turn 11 of 12"},
   {"wait": 1500}, {"key": "Space"}, {"wait": 400}, {"expect": "Turn 11."}, {"clickText": "Continue"},

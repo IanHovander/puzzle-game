@@ -196,9 +196,9 @@
             if (b.after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(typeof b.after === 'function' ? b.after(optId, cx) : b.after) }));
           };
           b.options.forEach(o => {
-            const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: () => {
+            const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: async () => {
               if (st.answers[key] !== undefined && !b.changeable) return;
-              if (!b.changeable && !confirm('Seal this answer? It cannot be unsaid.')) return;
+              if (!b.changeable && !(await UI.confirm('Seal this answer? It cannot be unsaid.', { ok: 'Seal it', cancel: 'Not yet' }))) return;
               st.answers[key] = o.id; save(); Audio.sfx('seal');
               Array.from(opts.children).forEach(x => { x.classList.toggle('chosen', x === btn); x.disabled = !b.changeable; });
               w.querySelectorAll('.blk-code, .fine.after').forEach(x => x.remove()); showToken(o.id);
@@ -237,7 +237,7 @@
     const row = UI.el('div', { class: 'row' });
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Change seat / name', onclick: () => { m.close(); showRoles(); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: Audio.isMuted() ? 'Unmute' : 'Mute', onclick: () => { Audio.init(); Audio.toggleMute(); m.close(); } }));
-    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Forget everything', onclick: () => { if (confirm('Erase this phone\'s pages and choices?')) { st = fresh(); save(); m.close(); showRoles(); } } }));
+    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Forget everything', onclick: async () => { if (await UI.confirm('Erase this phone\'s pages and choices?', { danger: true, ok: 'Erase' })) { st = fresh(); save(); m.close(); showRoles(); } } }));
     box.appendChild(row);
     const m = UI.modal(box, { title: 'Companion' });
   }

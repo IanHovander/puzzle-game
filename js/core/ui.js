@@ -106,6 +106,42 @@
     return { close, el: box };
   };
 
+  /* In-page dialogs (never native prompt/confirm: sandboxed hosts block them). Test hook: window.__autoDialog = { prompt: 'X', confirm: true } */
+  UI.ask = function (text, def, opts) {
+    opts = opts || {};
+    if (window.__autoDialog && window.__autoDialog.prompt !== undefined) return Promise.resolve(window.__autoDialog.prompt);
+    return new Promise((resolve) => {
+      const box = UI.el('div', { class: 'ask' });
+      box.appendChild(UI.el('p', { html: UI.rich(text) }));
+      const inp = UI.el('input', { class: 'field' + (opts.plain ? ' plain' : ''), value: def || '', maxlength: opts.maxlength || 40, autocomplete: 'off', spellcheck: 'false', placeholder: opts.placeholder || '' });
+      box.appendChild(inp);
+      const row = UI.el('div', { class: 'row' });
+      let m;
+      const done = (v) => { m.close(); resolve(v); };
+      row.appendChild(UI.el('button', { class: 'btn primary', text: opts.ok || 'Speak', onclick: () => done(inp.value) }));
+      row.appendChild(UI.el('button', { class: 'btn ghost', text: opts.cancel || 'Never mind', onclick: () => done(null) }));
+      box.appendChild(row);
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') done(inp.value); if (e.key === 'Escape') done(null); });
+      m = UI.modal(box, { title: opts.title || '', noClose: true, cls: 'ask-modal' });
+      setTimeout(() => inp.focus(), 60);
+    });
+  };
+  UI.confirm = function (text, opts) {
+    opts = opts || {};
+    if (window.__autoDialog && window.__autoDialog.confirm !== undefined) return Promise.resolve(!!window.__autoDialog.confirm);
+    return new Promise((resolve) => {
+      const box = UI.el('div', { class: 'ask' });
+      box.appendChild(UI.el('p', { html: UI.rich(text) }));
+      const row = UI.el('div', { class: 'row' });
+      let m;
+      row.appendChild(UI.el('button', { class: 'btn primary' + (opts.danger ? ' danger' : ''), text: opts.ok || 'Yes', onclick: () => { m.close(); resolve(true); } }));
+      row.appendChild(UI.el('button', { class: 'btn ghost', text: opts.cancel || 'No', onclick: () => { m.close(); resolve(false); } }));
+      box.appendChild(row);
+      m = UI.modal(box, { title: opts.title || '', noClose: true, cls: 'ask-modal' });
+    });
+  };
+  UI.notice = function (text, opts) { opts = opts || {}; if (window.__autoDialog) return Promise.resolve(); return new Promise((resolve) => { const box = UI.el('div', { class: 'ask' }); box.appendChild(UI.el('p', { html: UI.rich(text) })); let m; box.appendChild(UI.el('div', { class: 'row' }, [UI.el('button', { class: 'btn primary', text: opts.ok || 'All right', onclick: () => { m.close(); resolve(); } })])); m = UI.modal(box, { title: opts.title || '', noClose: true, cls: 'ask-modal' }); }); };
+
   /* Flowchart renderer.  spec = { nodes:[{id,label,col,row,kind}], edges:[[a,b]] , width?} ; done = Set of visited node ids */
   UI.flowchart = function (spec, doneSet, opts) {
     opts = opts || {};

@@ -1,6 +1,6 @@
 { "start": "ch3_grid", "flags": "WREN_HURT", "steps": [
   {"wait": 800}, {"key": "Space"}, {"wait": 400},
-  {"eval": "window.prompt = () => 'VEIL'"},
+  {"dialog": "VEIL"},
   {"clickText": "South"}, {"clickText": "South"}, {"expect": "Turn 2 of 12"},
   {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"expect": "Turn 9 of 12"},
   {"clickText": "East"}, {"wait": 400}, {"expect": "Turn 10 of 12"}, {"expect": "sees Wren at A3"}, {"shot": "ch3_edge_spotted"},
@@ -9,7 +9,7 @@
   {"clickText": "Start over from the Gallery"}, {"wait": 300}, {"expect": "Turn 0 of 12"},
   {"clickText": "South"}, {"clickText": "South"}, {"clickText": "East"}, {"wait": 500}, {"expect": "LINEN"}, {"clickText": "Back to the corridors"}, {"wait": 500}, {"expect": "Turn 4 of 12"},
   {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"clickText": "Wait"}, {"expect": "Turn 11 of 12"},
-  {"eval": "window.prompt = () => 'THORN'"},
+  {"dialog": "THORN"},
   {"clickText": "East"}, {"wait": 400}, {"expect": "Turn 12 of 12"}, {"expect": "third bell"}, {"shot": "ch3_edge_bell"},
   {"wait": 2200}, {"expect": "Turn 0 of 12"},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.WREN_SCARED,f.WREN_TRUST,f.CH3_BELLS,f.CH3_SPOTTED]})()"},

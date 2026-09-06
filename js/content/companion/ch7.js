@@ -106,7 +106,7 @@
         const mk = (prompt, ids, set) => { w.appendChild(UI.el('p', { html: UI.rich(prompt) })); const o = UI.el('div', { class: 'opts' }); ids.forEach(id => o.appendChild(UI.el('button', { class: 'btn opt', text: id, onclick: () => { set(id); Array.from(o.children).forEach(b => b.classList.toggle('chosen', b.textContent === id)); seal.disabled = !(walk && barg); cx.audio.sfx('click'); } }))); w.appendChild(o); };
         mk(WALKQ, ['WALK', 'STAY'], (id) => { walk = id; });
         mk(VANEQ, ['ACCEPT', 'REFUSE'], (id) => { barg = id; });
-        const seal = UI.el('button', { class: 'btn primary big-btn', text: 'Seal both', disabled: 'true', onclick: () => { if (!walk || !barg) return; if (!confirm('Seal these answers? They cannot be unsaid.')) return; cx.state.answers[key] = walk + '_' + barg; cx.save(); cx.audio.sfx('seal'); draw(); } });
+        const seal = UI.el('button', { class: 'btn primary big-btn', text: 'Seal both', disabled: 'true', onclick: async () => { if (!walk || !barg) return; if (!(await UI.confirm('Seal these answers? They cannot be unsaid.', { ok: 'Seal them', cancel: 'Not yet' }))) return; cx.state.answers[key] = walk + '_' + barg; cx.save(); cx.audio.sfx('seal'); draw(); } });
         w.appendChild(seal);
         w.appendChild(UI.el('p', { class: 'fine', text: 'Two questions, one sealed word. Choose both, then seal.' }));
         el.appendChild(w);

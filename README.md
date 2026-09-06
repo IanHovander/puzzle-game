@@ -44,6 +44,7 @@ tools/                local server, headless test runners, scripted playthroughs
 - `node tools/check-content.js` — static checks (every scene link resolves, every chapter registered on both screens, codes round-trip).
 - `node tools/run.js <sceneId> --shots /tmp/shots` — load one scene headlessly, report console errors, screenshot.
 - `node tools/play.js tools/scripts/ch0.json --shots /tmp/shots` — scripted playthroughs of a chapter (see the file header for the step vocabulary). The runners use `playwright-core` with a system Chromium; install with `npm i playwright-core` if you don't have it.
+- `node tools/bundle.js [--companion-url URL] [--artifact]` — single-file builds of both pages in `dist/` for hosting anywhere.
 
 ## License
 
