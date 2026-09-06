@@ -172,6 +172,15 @@
     }
     s += `</svg>`;
     const wrapEl = UI.el('div', { class: 'flowchart-wrap', html: s });
+    if (!opts.plain) {
+      wrapEl.classList.add('zoomable');
+      wrapEl.title = 'Tap to enlarge';
+      wrapEl.addEventListener('click', () => {
+        const big = UI.el('div', { class: 'flowchart-wrap big', html: s });
+        UI.modal(big, { title: opts.zoomTitle || 'The paths you walked', cls: 'wide', closeText: 'Close' });
+      });
+      wrapEl.appendChild(UI.el('div', { class: 'flow-zoom-hint', text: 'Tap the chart to enlarge' }));
+    }
     return wrapEl;
   };
   function wrap(text, n) { const words = text.split(' '); const lines = []; let cur = ''; for (const w of words) { if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); } if (cur) lines.push(cur); return lines.slice(0, 3); }

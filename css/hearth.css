@@ -69,6 +69,7 @@
 
 /* flowchart panel */
 .flow-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; backdrop-filter: blur(8px); max-height: calc(100vh - 220px); overflow: auto; }
+#panel:has(.flow-panel) { grid-template-columns: minmax(280px, 380px) 1fr; }
 .flow-title { margin: 0 0 6px; font-size: 16px; color: var(--gold); }
 .flow-stats { font-size: 16px; color: var(--ink-dim); margin-top: 6px; }
 .pname { font-family: var(--display); }

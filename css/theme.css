@@ -113,9 +113,14 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 .fc-node rect, .fc-node path { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.18); stroke-width: 1.2; }
 .fc-node.on rect, .fc-node.on path { fill: rgba(212,169,78,0.16); stroke: var(--gold); }
 .fc-node.end.on rect { fill: rgba(159,123,216,0.25); stroke: var(--violet); }
-.fc-node text { fill: rgba(233,226,210,0.58); font-family: var(--serif); font-size: 12.5px; }
+.fc-node text { fill: rgba(233,226,210,0.72); font-family: var(--serif); font-size: 15px; }
 .fc-node.on text { fill: var(--ink); }
-.fc-node.choice text { font-size: 11.5px; }
+.fc-node.choice text { font-size: 13.5px; }
+.flowchart-wrap.zoomable { cursor: zoom-in; }
+.flowchart-wrap.zoomable:hover .flowchart { filter: drop-shadow(0 0 14px rgba(212,169,78,0.25)); }
+.flow-zoom-hint { font-family: var(--display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); text-align: right; padding-top: 4px; }
+.flowchart-wrap.big { overflow: auto; max-height: 76vh; max-width: min(1500px, 92vw); cursor: default; }
+.flowchart-wrap.big .flowchart { max-width: none; }
 
 /* pads for 4-key input */
 .pads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }

@@ -79,7 +79,13 @@
           wrap.appendChild(remap);
           box.appendChild(wrap);
           let step = 0; const times = [];
-          const arm = () => { for (let i = 0; i < 4; i++) Input.setPadState(i, 'armed', i === step); st.className = 'pz-status'; st.textContent = step < 4 ? `${nick(step)} — your key.` : 'Now all four together, within one heartbeat.'; };
+          const arm = () => {
+            for (let i = 0; i < 4; i++) Input.setPadState(i, 'armed', i === step);
+            st.className = 'pz-status';
+            st.textContent = step < 4 ? `${nick(step)} — your key.` : 'Now all four together.';
+            // Hands may already be on the keys from the round just finished: those count, without a fresh press.
+            if (step === 4) setTimeout(() => { const h = Input.held ? Input.held() : []; h.forEach((isDown, i) => { if (isDown) onPress(i); }); }, 60);
+          };
           const onPress = (idx) => {
             if (step < 4) {
               if (idx !== step) { st.className = 'pz-status bad'; st.textContent = `That is the ${nick(idx)}'s key. ${nick(step)}, yours.`; Audio.sfx('wrong'); return; }

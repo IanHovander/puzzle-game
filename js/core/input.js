@@ -51,6 +51,9 @@
     if (container) { padsEl = container; padsEl.classList.add('pads'); renderPads(); }
   };
   Input.deactivate = function () { active = false; handler = null; if (padsEl) { padsEl.innerHTML = ''; padsEl.classList.remove('pads'); padsEl = null; } };
+  /* Which keys are held right now. A phase that begins while hands are already on the keys reads this
+     instead of waiting for a fresh keydown that will never come. */
+  Input.held = () => down.slice();
   Input.pulse = function (idx, cls) { if (!padsEl) return; const b = padsEl.children[idx]; if (!b) return; b.classList.add(cls || 'glow'); setTimeout(() => b.classList.remove(cls || 'glow'), 260); };
   Input.setPadState = function (idx, cls, on) { if (!padsEl) return; const b = padsEl.children[idx]; if (b) b.classList.toggle(cls, !!on); };
 
