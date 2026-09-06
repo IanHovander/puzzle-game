@@ -15,7 +15,7 @@
   {"click": ".dialseq .dial-face >> nth=1"}, {"click": ".palette-grid .glyph:has-text(\"EMBER\")"},
   {"shot": "ch2_door_solved_input"}, {"clickText": "Try the door"}, {"wait": 300}, {"expect": "remembers the count"}, {"wait": 1200}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_opened"}, {"click": ".btn.choice >> nth=1"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_niche"}, {"clickText": "Take a rubbing"}, {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"expect": "keeping it anyway"}, {"shot": "ch2_niche_rubbing"}, {"clickText": "Take the Ember"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_niche_where"}, {"clickText": "Behind Rook"}, {"expect": "Nothing."}, {"clickText": "Behind Mere"}, {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "three shapes"}, {"shot": "ch2_niche"}, {"clickText": "Take a rubbing"}, {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"expect": "keeping it anyway"}, {"shot": "ch2_niche_rubbing"}, {"clickText": "Take the Ember"},
   {"wait": 800}, {"key": "Space"}, {"expect": "rubbing in it"}, {"clickText": "The archway"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_road"}, {"clickText": "Up"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_stairfall"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"expect": "the dark takes it"}, {"clickText": "Continue"},

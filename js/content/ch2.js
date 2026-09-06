@@ -10,6 +10,7 @@
     .ch2-sheet { font-family: var(--hand); font-size: 26px; line-height: 1.5; color: #d9cba8; background: rgba(255,240,200,0.05); border: 1px solid rgba(255,240,200,0.12); border-radius: 4px; padding: 14px 18px; letter-spacing: .08em; filter: blur(.6px); user-select: none; word-break: break-all; }
     .ch2-sheet span { display: inline-block; transform: rotate(180deg) scaleX(-1); opacity: .85; }
     .ch2-sheet .sig { display: block; text-align: right; margin-top: 8px; filter: blur(.9px); }
+    .ch2-plinths { display: flex; flex-wrap: wrap; gap: 10px; }
   ` })); } catch (e) { /* headless shim */ }
 
   /* The four epitaphs as the Hearth shows them: worn, no mark. Reader's page has them clean; Seer's has the marks. */
@@ -38,16 +39,16 @@
       nodes: [
         { id: 'ch2_start', label: "Marrow's errand", col: 0, row: 1 },
         { id: 'ch2_door', label: "The Founders' Door", col: 1, row: 1 },
-        { id: 'ch2_niche', label: "Found Mere's niche?", col: 2, row: 0, kind: 'choice', secret: true },
+        { id: 'ch2_niche_found', label: "Found Mere's niche?", col: 2, row: 0, kind: 'choice', when: (s) => Store.chose('CH2_NICHE', 'mere') },
         { id: 'ch2_rubbing', label: 'Bookmoth took a rubbing', col: 3, row: 0, secret: true, when: (s) => !!s.flags.LETTER },
         { id: 'ch2_ember', label: 'The Cold Ember, the bricked road', col: 2, row: 1 },
         { id: 'ch2_stairfall', label: 'The stair falls', col: 3, row: 1, kind: 'choice' },
         { id: 'ch2_grab_wren', label: 'Grabbed Wren — the Ember fell', col: 4, row: 0, secret: true, when: (s) => Store.chose('CH2_STAIR', 'wren') },
         { id: 'ch2_grab_ember', label: 'Grabbed the Ember — Wren hurt', col: 4, row: 2, secret: true, when: (s) => Store.chose('CH2_STAIR', 'ember') },
-        { id: 'ch2_sorrel', label: "Sorrel's price — the Ember goes up", col: 5, row: 2, kind: 'end', secret: true, when: (s) => !!s.flags.SORREL && !!s.flags.EMBER_LOST },
+        { id: 'ch2_sorrel', label: "Sorrel's price — the Ember goes up", col: 5, row: 2, kind: 'end', secret: true, when: (s) => !!s.flags.SORREL && Store.chose('CH2_STAIR', 'ember') },
         { id: 'ch3_start', label: 'The Whispering Gallery', col: 5, row: 1, secret: true },
       ],
-      edges: [['ch2_start', 'ch2_door'], ['ch2_door', 'ch2_niche'], ['ch2_niche', 'ch2_rubbing'], ['ch2_door', 'ch2_ember'], ['ch2_niche', 'ch2_ember'], ['ch2_ember', 'ch2_stairfall'], ['ch2_stairfall', 'ch2_grab_wren'], ['ch2_stairfall', 'ch2_grab_ember'], ['ch2_grab_wren', 'ch3_start'], ['ch2_grab_ember', 'ch3_start'], ['ch2_grab_ember', 'ch2_sorrel']],
+      edges: [['ch2_start', 'ch2_door'], ['ch2_door', 'ch2_niche_found'], ['ch2_niche_found', 'ch2_rubbing'], ['ch2_door', 'ch2_ember'], ['ch2_niche_found', 'ch2_ember'], ['ch2_ember', 'ch2_stairfall'], ['ch2_stairfall', 'ch2_grab_wren'], ['ch2_stairfall', 'ch2_grab_ember'], ['ch2_grab_wren', 'ch3_start'], ['ch2_grab_ember', 'ch3_start'], ['ch2_grab_ember', 'ch2_sorrel']],
     },
     scenes: {
       /* ---------- Marrow's errand ---------- */
@@ -131,45 +132,68 @@
         text: [
           'The vault is round and low and older than the school on top of it. In its centre, on a plinth of the same stone as the statues, a case of glass — and in the case a flame that is not burning. The Cold Ember. Blue, and breathing, and giving off no heat at all.',
           'Behind the plinth, an archway, bricked shut with newer stone. Above the bricks, one number: **212**.',
-          'Owl is not looking at the Ember. Owl is looking back at the statues.',
+          'The four of you have the vault to yourselves. Nothing down here is going anywhere; nothing up there will wait.',
         ],
         options: [
           { id: 'ember', text: 'Take the Ember.', next: 'ch2_ember' },
-          { id: 'niche', text: "Look behind Mere's plinth.", sub: 'It is not on the way to anything.', next: 'ch2_niche' },
+          { id: 'niche', text: 'Look around before you take it.', sub: 'The antechamber, the plinths, the rebuilders\' work.', next: 'ch2_niche' },
         ],
-        hints: ['Owl — behind Mere.', 'Owl\'s under-layer shows a hollow behind Mere\'s plinth. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look behind Mere\'s plinth.* Then let Bookmoth read what is inside — twice.'],
+        hints: ['Owl — behind Mere.', 'Owl\'s under-layer shows a hollow behind one of the plinths. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look around before you take it*, then *Behind Mere*. Let Bookmoth read what is inside — twice.'],
       },
       /* ---------- Mere's niche (optional) ---------- */
       ch2_niche: {
         type: 'custom', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust', sfx: 'step',
-        text: [
+        text: (s) => (Store.chose('CH2_NICHE', 'mere') ? [
           'Mere\'s plinth stands a hand\'s breadth from the wall. Behind it, at knee height, a hollow in the old stone that the rebuilders either missed or left alone.',
           'Inside: a strip of stone the length of a forearm, three shapes cut into it; and a sheet of something that was once vellum, folded small, written close in an alphabet none of you can read.',
-        ],
+        ] : [
+          'Back through the door. Four plinths in a row, each a hand\'s breadth from the wall; four dials; a floor of the Order\'s grey laid over something older.',
+          'The Hearth shows you stone. It does not show you what is under it, or behind it. If one of you knows where to look, say so.',
+        ]),
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz ch2-niche' });
-          wrap.appendChild(UI.el('div', { class: 'pz-title', text: "MERE'S NICHE" }));
-          wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the strip — three shapes, left to right' }));
-          wrap.appendChild(UI.el('div', { html: G.inscription(STRIP, { showMark: false }) }));
-          wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('Bookmoth can read the shapes; only Owl can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
-          wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the sheet — the older alphabet' }));
-          wrap.appendChild(UI.el('div', { html: oldSheet() }));
-          const status = UI.el('div', { class: 'pz-status' }); wrap.appendChild(status);
           box.appendChild(wrap);
           const done = () => { UI.clear(api.actions); resolve('ch2_ember'); };
-          if (Store.get('LETTER')) {
-            status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into Bookmoth\'s sleeve.';
-            api.button('Take the Ember', done, 'primary'); return;
-          }
-          const rub = api.button('Take a rubbing (Bookmoth)', async () => {
-            Store.set('LETTER', true); Store.note('Bookmoth took a rubbing of Mere\'s sheet.');
-            api.audio.sfx('reveal'); rub.disabled = true;
-            status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into Bookmoth\'s sleeve, unread.';
-            await api.say([{ speaker: 'Bookmoth', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
-          }, '');
-          api.button('Leave the sheet. Take the Ember', done, 'primary');
+          const showNiche = async (fresh) => {
+            UI.clear(wrap); UI.clear(api.actions);
+            wrap.appendChild(UI.el('div', { class: 'pz-title', text: "MERE'S NICHE" }));
+            wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the strip — three shapes, left to right' }));
+            wrap.appendChild(UI.el('div', { html: G.inscription(STRIP, { showMark: false }) }));
+            wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('Bookmoth can read the shapes; only Owl can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
+            wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the sheet — the older alphabet' }));
+            wrap.appendChild(UI.el('div', { html: oldSheet() }));
+            const status = UI.el('div', { class: 'pz-status' }); wrap.appendChild(status);
+            if (fresh) await api.say([
+              'Mere\'s plinth stands a hand\'s breadth from the wall. Behind it, at knee height, a hollow in the old stone that the rebuilders either missed or left alone.',
+              'Inside: a strip of stone the length of a forearm, three shapes cut into it; and a sheet of something that was once vellum, folded small, written close in an alphabet none of you can read.',
+            ]);
+            if (!api.alive()) return;
+            if (Store.get('LETTER')) {
+              status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into Bookmoth\'s sleeve.';
+              api.button('Take the Ember', done, 'primary'); return;
+            }
+            const rub = api.button('Take a rubbing (Bookmoth)', async () => {
+              Store.set('LETTER', true); Store.note('Bookmoth took a rubbing of Mere\'s sheet.');
+              api.audio.sfx('reveal'); rub.disabled = true;
+              status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into Bookmoth\'s sleeve, unread.';
+              await api.say([{ speaker: 'Bookmoth', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
+            }, '');
+            api.button('Leave the sheet. Take the Ember', done, 'primary');
+          };
+          if (Store.chose('CH2_NICHE', 'mere')) { showNiche(false); return; }
+          /* Stage one: where? The Hearth does not know. The Seer's under-layer does. */
+          wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE ANTECHAMBER' }));
+          wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('Four plinths, one wall. Behind which? The Hearth cannot see it; one of you can.') }));
+          const row = UI.el('div', { class: 'ch2-plinths' });
+          const status = UI.el('div', { class: 'pz-status' });
+          ['Mere', 'Halvard', 'Rook', 'Idony'].forEach(n => row.appendChild(UI.el('button', { class: 'btn', text: 'Behind ' + n, onclick: () => {
+            if (n === 'Mere') { Store.choose('CH2_NICHE', 'mere'); Store.note('You found the niche behind Mere\'s plinth.'); api.audio.sfx('reveal'); showNiche(true); return; }
+            api.audio.sfx('wrong'); status.className = 'pz-status bad'; status.textContent = 'Dust, mortar, and the back of ' + n + '\'s plinth. Nothing.';
+          } })));
+          wrap.appendChild(row); wrap.appendChild(status);
+          api.button('Enough. Take the Ember', done, 'primary');
         }),
-        hints: ['Bookmoth has both readings of the strip; Owl has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
+        hints: ['Owl — behind Mere. Then: Bookmoth has both readings of the strip; Owl has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
         next: 'ch2_ember',
       },
       /* ---------- the Cold Ember ---------- */
@@ -178,7 +202,7 @@
         text: (s) => [
           'The case lifts from the plinth with no ward, no click, no protest. It is lighter than it looks and colder than anything has a right to be; the hands that carry it go numb to the wrist.',
           'Inside the glass the blue flame leans, very slightly, toward whoever holds it.',
-          s.flags.LETTER ? 'Bookmoth keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'Owl looks back at Mere\'s plinth one more time, and says nothing, and the moment passes.',
+          s.flags.LETTER ? 'Bookmoth keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'Owl looks back through the door at the antechamber one more time, and says nothing, and the moment passes.',
           { speaker: 'Knot', text: 'Four statues. Four dials. Four of us. Does anyone else feel like a set?' },
         ],
         next: 'ch2_road', button: 'The archway',
@@ -251,7 +275,7 @@
         flowTitle: 'Chapter II — the paths you walked',
         stats: (s) => {
           const bits = [];
-          bits.push(s.visited.includes('ch2_niche') ? 'You found Mere\'s niche' + (s.flags.LETTER ? ' and took the rubbing.' : ' and left the sheet.') : 'Something behind Mere\'s plinth went unlooked-at.');
+          bits.push(Store.chose('CH2_NICHE', 'mere') ? 'You found Mere\'s niche' + (s.flags.LETTER ? ' and took the rubbing.' : ' and left the sheet.') : 'Something in the antechamber went unlooked-at.');
           bits.push(s.flags.WREN_HURT ? 'Wren\'s arm is broken.' : 'Wren is unhurt.');
           bits.push(s.flags.EMBER_LOST ? (s.flags.SORREL && !Store.chose('CH2_STAIR', 'wren') ? 'The Ember went to the Convocation.' : 'The Ember is at the bottom of the stair.') : 'The Ember came up.');
           bits.push('Hints so far: ' + (s.flags.hintsTotal || 0) + '.');

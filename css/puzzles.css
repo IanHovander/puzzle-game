@@ -155,3 +155,9 @@
 .lane.dead { opacity: .35; }
 .beat-counter { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-family: var(--display); font-size: 54px; color: var(--gold-2); text-shadow: 0 0 24px rgba(0,0,0,.9); z-index: 4; pointer-events: none; transition: transform .1s; }
 .beat-counter.tick { transform: translateX(-50%) scale(1.15); }
+
+/* name-only palette tiles: the lexicon (shape -> word) lives on the Reader's phone */
+.glyph.name-only { width: 92px; height: 56px; }
+.glyph.name-only .gname { font-family: var(--display); font-size: 13px; letter-spacing: .12em; color: var(--gold-2); }
+.glyph.name-only.used .gname { color: var(--ink-dim); }
+.palette-grid { display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px; }

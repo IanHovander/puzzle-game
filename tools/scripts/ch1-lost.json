@@ -1,14 +1,12 @@
 { "start": "ch1_attune", "steps": [
-  {"key": "Space"}, {"eval": "(function(){ const o = VigilUI.countdown; VigilUI.countdown = (c, s, t) => o(c, s === 360 ? 20 : s, t); return 'patched'; })()"},
-  {"clickText": "All phones are ready"}, {"wait": 800}, {"key": "Space"}, {"wait": 400},
-  {"click": ".seat:has-text(\"Goldmarch\")"}, {"click": ".seat:has-text(\"Ossery\")"}, {"clickText": "Call the vote"}, {"wait": 500}, {"shot": "ch1_vote_wrong"}, {"expect": "Seat 5 takes both your hands"}, {"expect": "The bell has not rung"},
-  {"click": ".seat:has-text(\"Redmoor\")"}, {"click": ".seat:has-text(\"the Chair\")"}, {"clickText": "Call the vote"}, {"wait": 500}, {"expect": "steps between you and Seat 6"}, {"expect": "The Chair cannot be approached"},
-  {"click": ".seat:has-text(\"Dunmere\")"}, {"click": ".seat:has-text(\"Harrowden\")"}, {"clickText": "Call the vote"}, {"wait": 500}, {"expect": "4 keep, 5 send"},
-  {"click": ".seat:has-text(\"Harrowden\")"}, {"waitFor": ".pz-status:has-text(\"The bell has rung\")", "timeout": 30000}, {"shot": "ch1_vote_bell"},
-  {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "not enough"}, {"clickText": "Continue"},
+  {"key": "Space"}, {"clickText": "All phones are ready"}, {"wait": 800}, {"key": "Space"}, {"wait": 400},
+  {"clickText": "Call the vote"}, {"wait": 400}, {"expect": "spoken to no one"},
+  {"click": ".seat:has-text(\"Goldmarch\")"}, {"clickText": "Call the vote"}, {"wait": 400}, {"expect": "One Master spoken to"},
+  {"click": ".seat:has-text(\"Goldmarch\")"}, {"click": ".seat:has-text(\"Ossery\")"}, {"clickText": "Call the vote"}, {"expect": "The Convocation has voted"}, {"shot": "ch1_vote_wrong"},
+  {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "Seat 5 takes both your hands"}, {"expect": "Seat 2 agrees at once"}, {"expect": "3 keep, 6 send"}, {"expect": "not enough"}, {"shot": "ch1_vote_lost_text"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_lost"}, {"expect": "I will get the child back myself"}, {"clickText": "Later"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_offer_lost"}, {"expect": "back from my men by morning"}, {"click": ".btn.choice >> nth=2"}, {"wait": 800}, {"key": "Space"}, {"expect": "My captain will know your faces"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_after_lost"}, {"expect": "don't make that face"}, {"clickText": "The night moves on"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow_lost"}, {"expect": "voted to send"}, {"expect": "accepted"},
-  {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, NEITHER: VigilStore.state.flags.NEITHER, VANE_ACCEPT: VigilStore.state.flags.VANE_ACCEPT, WREN_TRUST: VigilStore.state.flags.WREN_TRUST})"}
+  {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, NEITHER: VigilStore.state.flags.NEITHER, SORREL: VigilStore.state.flags.SORREL, ORIEL: VigilStore.state.flags.ORIEL, VANE_ACCEPT: VigilStore.state.flags.VANE_ACCEPT, VANE_PRETEND: VigilStore.state.flags.VANE_PRETEND, WREN_TRUST: VigilStore.state.flags.WREN_TRUST, APPROACHED: VigilStore.state.flags.CH1_APPROACHED})"}
 ] }

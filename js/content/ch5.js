@@ -93,7 +93,7 @@
           slots: 4, glyphs: glyphPalette(), answer: { 2: 'ASH', 3: 'THORN', 4: 'WELL' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
           wrongText: 'The wall stays a wall. The ring forgets.',
         }),
-        hints: ['Owl knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4. Then four hands.'],
+        hints: ['Owl knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4; slot 1 empty. Then four hands.'],
         onSolve: () => { Store.note('You came down by Mere\'s door, unasked.'); },
         solvedText: ['The wall opens on the stair one flight below. Marrow\'s lantern, ahead, does not slow down.', { speaker: 'Wren', text: '*Told* you they\'d find it.', cls: 'whisper' }, 'Marrow says nothing. She knew.'],
         next: 'ch5_gates',
@@ -160,9 +160,9 @@
       },
       ch5_gate2: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [4, 7],
-        text: [
+        text: (s) => [
           'Five shapes, five slots, and a scratch where the ring begins. The bells are silent on the Hearth. Somebody in the room can still count them.',
-          { text: 'One slot may have to stay empty. Or not. Knot has two Laws about that, and they were written four hundred years apart.', cls: 'whisper' },
+          law0(s) ? { text: 'One slot may have to stay empty. Or not. Knot has two Laws about that, written two hundred years apart, and they do not agree.', cls: 'whisper' } : { text: 'One slot may have to stay empty. Knot has a Law about that. Ask what it says — and what it was written over.', cls: 'whisper' },
         ],
         config: (s) => ({
           title: 'THE SILENT GATE', note: 'Five shapes carved above the ring, left to right; five muted bells above them:', html: G.inscription(GATE2, { showMark: false }),
@@ -171,7 +171,7 @@
           check: (m) => {
             const base = m[1] === 'WELL' && m[2] === 'ASH' && m[4] === 'CROWN' && m[5] === 'KNOT';
             if (base && !m[3]) return true;
-            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Law 6, Order\'s, 212: COLD is never written. The gate frosts over the third slot and forgets the rest.'; }
+            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Frost, thick and sudden, over the third slot alone — the gate will not take that glyph from one Book. Knot: what does the Order say is done with it?'; }
             if (base) return 'Four of five sit right. The slot on the mark is the one the Order says is never written — what does the Book say to do with it?';
             if (m[1] === 'CROWN' && m[2] === 'ASH' && m[4] === 'KNOT' && m[5] === 'WELL') return 'Read right, placed from the wrong slot. The gate begins where the mark is — Owl has it — and the bells say how far from it each glyph sits.';
             if (m[3] && m[3] !== 'COLD') return 'The slot on the mark takes one glyph only, and the Order says it takes none. Frost.';
@@ -274,7 +274,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch5_stair', artParams: { broken: false }, mood: 'tense', fx: 'ash', puzzleId: 'ch5_collapse', par: [1, 2],
         text: [
           'The quick sigil. Two slots cut into the newel, one hand — there is no time for four. Fire, and the absence of fire.',
-          { text: 'Knot\'s page, read aloud because there is no time to read it: *"Law 6 says never. The struck Law says four hands. You are about to write it with one."*', cls: 'whisper' },
+          { text: 'Knot has one thing to say before it is written. Let Knot say it. Then write.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE COLLAPSE — ONE HAND', note: 'Two slots. The Warden places both. No ritual; there is no time.',

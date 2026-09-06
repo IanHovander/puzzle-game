@@ -6,7 +6,7 @@
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_attune"}, {"expect": "THORN"}, {"expect": "Knot"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch1_vote"}, {"expect": "Five of nine keeps Wren"},
   {"click": ".seat:has-text(\"Harrowden\")"}, {"click": ".seat:has-text(\"Sable\")"}, {"shot": "ch1_vote_selected"}, {"clickText": "Call the vote"}, {"expect": "Five of nine. Wren stays."}, {"shot": "ch1_vote_result"},
-  {"wait": 1800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"},
+  {"wait": 1800}, {"key": "Space"}, {"wait": 300}, {"expect": "Since you asked me to my face"}, {"expect": "Tonight — keep"}, {"expect": "five of nine. Wren stays"}, {"shot": "ch1_vote_won_text"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_won"}, {"expect": "Five to four"}, {"clickText": "Their prices"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_prices"}, {"expect": "Sorrel"}, {"expect": "Oriel"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"expect": "Even the parts you don't like"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_offer"}, {"expect": "Ask your Owl"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"expect": "when it costs more"}, {"clickText": "Continue"},

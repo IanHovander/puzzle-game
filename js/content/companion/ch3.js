@@ -160,7 +160,7 @@
         P.sight.push({ t: 'fine', text: 'Hob\'s is quick and greedy. The Provost\'s is slower than it was in the Hall. Wren: too quiet to catch. Still.' });
         P.wren.push({ t: 'h', text: 'What the frames say' });
         P.wren.push({ t: 'whisper', text: '…four went down… four went down… four went down…' });
-        P.wren.push({ t: 'p', text: hurt ? 'Wren, limping past the frames, whispered *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Wren, one arm strapped up in a sling of Knot\'s cloak, walked past the frames whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
         P.wren.push({ t: 'p', text: 'In the dark, with the lamps out, you will be able to hear every heart in these corridors. Every guard\'s. Bess\'s. Hob\'s. Not the one walking next to you.' });
       }
 
@@ -186,7 +186,7 @@
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
         P.wren.push({ t: 'h', text: 'The portraits' });
         P.wren.push({ t: 'p', text: 'Two hundred painted Masters, and not one of them casts a shadow in the lamplight — paint does not. Five living people, and five shadows. Four fall away from the lamp.' });
-        P.wren.push({ t: 'p', text: hurt ? 'Wren\'s falls toward it, and drags a little, the way Wren does now.' : 'Wren\'s falls toward it. It always has. You have run out of lamps to blame.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Wren\'s falls toward it, and one arm of it hangs wrong, the way Wren\'s does now. It always has fallen that way. You have run out of lamps to blame.' : 'Wren\'s falls toward it. It always has. You have run out of lamps to blame.' });
         P.wren.push({ t: 'fine', text: lost ? 'On the dais, under guard, with every candle in the Hall lit — the same. You looked. You did not say.' : 'You have not said so. Not yet. Wren has started noticing you looking.' });
       }
 
@@ -209,7 +209,7 @@
         P.sight.push({ t: 'fine', text: 'The full Book of Laws is in your **Book**, in the order learned and by year.' });
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
         P.wren.push({ t: 'p', text: 'Every thread in the Gallery tonight, you read at a glance: Bess, Hob, the captain, the two hundred dead in oil (none — paint has no threads). There is one you have not let yourself look at: the one from the Provost to Wren. You know what colour a mother\'s thread is. You have decided not to find out what colour this one is. Not tonight.' });
-        P.wren.push({ t: 'p', text: hurt ? 'Wren, limping, took your arm on the stair without asking. There was no thread in it. There was a hand.' : (lost ? 'The Provost brought Wren back from the dais herself, and when she let go of Wren\'s shoulder, you looked at her hand instead of at the thread.' : 'When Wren laughed at the frames tonight, you looked for the thread that laughter makes. Nothing. Not unbound. The knot itself.') });
+        P.wren.push({ t: 'p', text: hurt ? 'Wren, the bad arm strapped in what is left of your cloak, took your arm on the stair with the good hand, without asking. There was no thread in it. There was a hand.' : (lost ? 'The Provost brought Wren back from the dais herself, and when she let go of Wren\'s shoulder, you looked at her hand instead of at the thread.' : 'When Wren laughed at the frames tonight, you looked for the thread that laughter makes. Nothing. Not unbound. The knot itself.') });
       }
 
       /* ================= SPEAK (gated by LINEN) ================= */
@@ -219,10 +219,10 @@
         P.speak.push({ t: 'fine', text: L.houseRule });
       } else {
         const Q = {
-          reader: { prompt: hurt ? 'Wren, ankle wrapped in a laundry sheet, does not look at you while asking it. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
+          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean laundry sheet, does not look at you while asking it. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
             opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know yet."** ~~(the truth)~~']],
             after: { TELL: 'Wren grins, delighted, and says it twice under the breath. *A small brave bird.* You made that up. It sounded true, which is not the same thing.', DONTKNOW: 'Wren nods, not disappointed. *"Yet. Good. Tell me when."* You will, you think. You are not sure when.' } },
-          listener: { prompt: hurt ? 'Wren, sitting on a tub with one boot off, asks it to the ankle rather than to you. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*',
+          listener: { prompt: hurt ? 'Wren, sitting on a tub with the bad arm held close, asks it to the arm rather than to you. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*',
             opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No."** ~~(the truth)~~']],
             after: { LOUD: 'Wren looks pleased, and then looks at you a moment too long, and then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The kettle covers whatever comes next.' } },
           seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Owl. You look at me strangely sometimes. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"Owl. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',

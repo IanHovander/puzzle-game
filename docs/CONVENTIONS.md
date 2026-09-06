@@ -171,3 +171,9 @@ Every chapter must load every one of its scenes with zero console errors before 
 ## 10. Chapter-local styling and helpers
 
 A chapter may inject its own CSS from its Hearth file (`document.head.appendChild(Object.assign(document.createElement('style'), { textContent: '.chN-foo {…}' }))`), namespaced with `.chN-`. Never edit the shared CSS or JS files. Chapter-specific helper functions live inside the chapter file's IIFE.
+
+## 11. Asymmetry rules for widgets (integrator notes)
+
+- Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs Bookmoth to name what is carved. Do not add shapes to palette tiles.
+- A solved widget stays on screen while `solvedText` plays (set `clearWidget: true` on the scene to hide it instead).
+- `seats` accepts `keepSelection: true` to keep the current approaches after a non-final wrong check.

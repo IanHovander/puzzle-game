@@ -107,6 +107,7 @@
         tries++; Audio.sfx('wrong'); st.className = 'pz-status bad'; st.textContent = wrongText; if (tries >= 2) document.getElementById('hint').classList.add('attention');
       } })));
       wrap.appendChild(opts); wrap.appendChild(st); into.appendChild(wrap);
+      try { wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { /* headless */ }
     });
   }
   const para = (into, paragraphs) => paragraphs.forEach(p => { const isObj = typeof p === 'object'; const el = UI.el('p', { class: 'para' + (isObj && p.cls ? ' ' + p.cls : '') + (isObj && p.speaker ? ' speech' : '') }); if (isObj && p.speaker) el.appendChild(UI.el('span', { class: 'speaker', text: p.speaker })); el.appendChild(UI.el('span', { html: UI.rich(isObj ? p.text : p) })); into.appendChild(el); });
@@ -267,8 +268,9 @@
           row.appendChild(leave);
           wrap.appendChild(count); wrap.appendChild(room); wrap.appendChild(panel); wrap.appendChild(row); box.appendChild(wrap);
           let finished = false;
-          const parTimers = [setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire stirs. It has something to whisper, if you ask.', 3200); Audio.sfx('chime'); }, 4 * 60000),
-            setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire dims a little. Ask it.', 3200); }, 6 * 60000)];
+          /* Design pacing table: the study's hint bell pulses at 6 minutes (tier 1) and again at 8 (tier 3). */
+          const parTimers = [setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire stirs. It has something to whisper, if you ask.', 3200); Audio.sfx('chime'); }, 6 * 60000),
+            setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire dims a little. Ask it.', 3200); }, 8 * 60000)];
           const renderRoom = () => {
             const n = secretsFound(f);
             count.textContent = `The study keeps four secrets: ${n} found`;
@@ -280,7 +282,7 @@
             api.flashArt('ch4_study', { scraped: !!f.TAPESTRY });
           };
           leave.addEventListener('click', () => { finished = true; parTimers.forEach(clearTimeout); computeLaw0(); Store.note(`The study kept four secrets; you found ${secretsFound(f)}.`); Audio.sfx('step'); resolve('ch4_return'); });
-          const back = () => { const b = UI.el('div', { class: 'pz-row right' }); b.appendChild(UI.el('button', { class: 'btn small', text: 'Back to the room', onclick: () => { Audio.sfx('click'); renderRoom(); } })); panel.appendChild(b); };
+          const back = () => { const b = UI.el('div', { class: 'pz-row right' }); b.appendChild(UI.el('button', { class: 'btn small', text: 'Back to the room', onclick: () => { Audio.sfx('click'); renderRoom(); } })); panel.appendChild(b); try { b.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (e) { /* headless */ } };
           const head = (t) => panel.appendChild(UI.el('div', { class: 'pz-title', text: t }));
           async function open(id) {
             room.classList.add('hidden'); panel.classList.remove('hidden'); UI.clear(panel); Audio.sfx('click');
@@ -290,7 +292,7 @@
               para(panel, ['The primer of the older alphabet lies open. Under it, the Provost\'s journal, its ribbon marking a page written fourteen years ago. One line shows:']);
               panel.appendChild(UI.el('div', { html: runeBlock(['FOURTEEN YEARS.', 'IT LAUGHS AT MY JOKES.'], { height: 48 }) }));
               para(panel, [{ text: 'The Hearth cannot read it. Bookmoth can. Say it aloud, letter by letter if you must; the Warden types what it says.', cls: 'whisper' }]);
-              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES|FOURTEENYEARS/.test(v[0]), wrongText: 'That is not what it says. Bookmoth — letter by letter.', submitText: 'Read it', successText: 'Read.' }, api);
+              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES/.test(v[0]), wrongText: 'That is not what it says. Bookmoth — letter by letter, and all of it: the second line too.', submitText: 'Read it', successText: 'Read.' }, api);
               if (!api.alive()) return; void r;
               Store.set('JOURNAL', true); Store.note('Bookmoth read the Provost\'s journal.');
               const out = [{ text: 'Fourteen years. It laughs at my jokes.', cls: 'letter' }];
@@ -371,18 +373,18 @@
         ],
       },
       ch4_oath: {
-        type: 'puzzle', puzzle: 'ring', art: 'ch4_scroll', mood: 'court', fx: 'embers', puzzleId: 'ch4_oath', par: 2,
+        type: 'puzzle', puzzle: 'ring', art: 'ch4_scroll', mood: 'court', fx: 'embers', puzzleId: 'ch4_oath', /* untimed and no auto-hint: the design's pacing table gives the oath no hint bell; the table argues as long as it needs */
         text: [
           'The scroll\'s ring: four slots. Above them, three glyphs worn nearly smooth, and a fourth space the scroll calls the lock.',
           { text: 'Bookmoth places the first glyph. Hush the second. Owl the third. Knot places the lock — and Law 4 says what a lock is.', cls: 'whisper' },
         ],
         config: () => {
-          let placed = 0;
+          const mine = {};   // slots filled so far (re-placing a slot does not move the keyboard on)
           return {
             title: 'THE WARDEN\'S OATH — sworn to the Chair', note: 'Pass the keyboard by name. Four glyphs; the last placed is the lock.',
             html: G.inscription([{ shape: 'Spike', inv: false, worn: true }, { shape: 'Flame', inv: false, worn: true }, { shape: 'Spike', inv: true, worn: true }, { shape: 'Crown', inv: false, worn: true, hidden: true }], { showMark: false }).replace('SHIELD', 'LOCK'),
             slots: 4, glyphs: glyphPalette(), fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to swear it',
-            onPlace: () => { placed++; const who = ['Hush', 'Owl', 'Knot'][placed - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
+            onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Hush', 'Owl', 'Knot'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
             check: (m) => {
               const three = m[4] === 'THORN' && m[1] === 'ASH' && m[2] === 'WELL';
               if (three && (m[3] === 'KNOT' || m[3] === 'EMBER')) return true;

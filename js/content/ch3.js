@@ -12,14 +12,19 @@
     .ch3-linen .ch3-sub { color: var(--ink-dim); font-style: italic; }
     .ch3-rules { font-size: 15px; color: var(--ink-dim); margin: 6px 0 10px; line-height: 1.45; }
     .ch3-rules b { color: var(--gold-2); }
+    /* Hob's spyhole cells are the Seer's to know: the grid widget's small red alarm dots stay off the Hearth. */
+    .grid-pz .grid-board svg circle[r="4"] { display: none; }
   ` }));
+  /* A hurt-door step that was spotted or rang the bell is cut short on purpose (see doorOpened); keep the console clean. */
+  window.addEventListener('unhandledrejection', (e) => { if (e.reason && e.reason.ch3DoorAbort) e.preventDefault(); });
 
   /* ---------- the published grid data (docs/DESIGN.md §5 Ch3) ---------- */
   const CELLS = ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'C1', 'B3', 'C2', 'C3', 'C4', 'D3', 'B5', 'C5', 'D5', 'E1', 'E2', 'E3', 'E4', 'E5'];
   const EDGES = [['A1', 'B1'], ['B1', 'C1'], ['A1', 'A2'], ['A2', 'A3'], ['A3', 'A4'], ['A4', 'A5'], ['A5', 'B5'], ['B5', 'C5'], ['C5', 'D5'], ['D5', 'E5'], ['E1', 'E2'], ['E2', 'E3'], ['E3', 'E4'], ['E4', 'E5'], ['C5', 'C4'], ['C4', 'C3'], ['C3', 'C2'], ['C3', 'D3'], ['D3', 'E3']];
   const PATROL_A = ['A5', 'B5', 'C5', 'C4', 'C3', 'C4', 'C5', 'B5', 'A5', 'A4', 'A3', 'A4'];
   const PATROL_B = ['E4', 'E4', 'E4', 'E4', 'E4', 'E4', 'E3', 'E2', 'E1', 'E1', 'E2', 'E3'];
-  const LABELS = { A1: 'Gallery', B3: 'Laundry', C5: 'Porter\'s lodge', D1: 'Cook\'s door', E5: 'Tower' };
+  /* Only what the design publishes on the Hearth: the porter's lodge is a landmark, and landmarks are the Seer's to place. */
+  const LABELS = { A1: 'Gallery', B3: 'Laundry', D1: 'Cook\'s door', E5: 'Tower' };
 
   /* A secret door. `revealed` is written by the grid widget the moment a password is accepted, before Wren steps
      through — so when Wren is hurt, opening the door spends a turn on the near side (the widget's own Wait). */
@@ -30,10 +35,19 @@
   }
   function doorOpened() {
     if (!Store.state.flags.WREN_HURT) return;
-    const wait = Array.from(document.querySelectorAll('#widget .grid-controls .btn')).find(b => b.textContent.trim() === 'Wait');
-    if (!wait) return;
-    wait.click();
-    UI.toast('Wren\'s ankle. Opening the door costs a breath — a turn passes on the near side.', 3200, 'bad');
+    const widget = document.getElementById('widget'); if (!widget) return;
+    const wait = Array.from(widget.querySelectorAll('.grid-controls .btn')).find(b => b.textContent.trim() === 'Wait');
+    if (!wait || wait.disabled) return;
+    wait.click();   // the widget's own Wait: one turn on the near side, patrols checked, board redrawn (synchronous)
+    const status = widget.querySelector('.grid-pz .pz-status'), turnEl = widget.querySelector('.grid-pz .g-turn');
+    const seen = !!(status && /sees Wren/.test(status.textContent));
+    const turn = turnEl ? parseInt((turnEl.textContent.match(/\d+/) || ['0'])[0], 10) : 0;
+    if (seen || turn >= 12) {
+      // The breath was spent and Wren never got through: a patrol saw the door being shouldered, or the bell rang.
+      // Abort the widget's step itself (it is mid-move, just after accepting the word) so Wren is not carried through anyway.
+      const err = new Error('ch3: the door turn ended the move'); err.ch3DoorAbort = true; throw err;
+    }
+    UI.toast('Wren\'s arm. Shouldering a hidden door open one-handed costs a breath — a turn passes on the near side.', 3200, 'bad');
   }
 
   let linenShown = false;
@@ -107,10 +121,10 @@
         title: 'The school, searched',
         text: (s) => [
           s.flags.VOTE_LOST
-            ? 'The Convocation sent Wren to the capital and the Provost said *I will get the child back myself*, and she did — nobody knows how, and nobody is asking. Vane has noticed. His soldiers are turning the school over, room by room, with a writ in one hand and a lantern in the other.'
+            ? 'The Convocation voted to send Wren to the capital, and Vane\'s guard closed around the dais, and the Provost said *I will get the child back myself* — and she did. Nobody knows how, and nobody is asking. Vane has noticed. His soldiers are turning the school over, room by room, with a writ in one hand and a lantern in the other.'
             : 'The Convocation voted to keep Wren, and Lord Vane bowed to the vote and said nothing, and now his soldiers are turning the school over room by room, with a writ in one hand and a lantern in the other.',
           s.flags.WREN_HURT
-            ? 'Wren is limping. The stair took an ankle, and Wren has stopped pretending it did not.'
+            ? 'Wren\'s arm is strapped across the chest in what is left of Knot\'s cloak. The stair took it, and Wren has stopped pretending it did not.'
             : 'Boots on the stair. Boots in the Great Hall. The portraits in the long gallery have begun to mutter, the way they do when the school is afraid.',
           s.flags.VANE_ACCEPT
             ? { text: 'You told the Envoy you would bring him the boy. Nobody has mentioned it since. It sits in the pocket of the night like a coin.', cls: 'whisper' }
@@ -125,9 +139,16 @@
           'Two hundred years of Provosts and Masters in oil, floor to ceiling, and every one of them talking under their breath. You cannot make out the words. Hush can, a little, and wishes not to.',
           'Marrow is waiting between the frames with Wren, and with a face that has decided several things in a hurry.',
           { speaker: 'Marrow', text: 'The Bell Tower is warded; a Founders\' door and a threshold sigil. Vane\'s men cannot pass it and do not know that yet. Get Wren there before the third bell. I ring the bells tonight; I can give you twelve turns of the corridor clock, no more, or the timetable is noticed.' },
+        ],
+        next: 'ch3_marrow', button: 'The dark',
+      },
+      ch3_marrow: {
+        art: 'ch3_gallery', mood: 'tense', fx: 'dust',
+        title: 'The only map',
+        text: (s) => [
           { speaker: 'Marrow', text: 'The corridors are dark. I have put out every lamp between here and the Tower myself. The only map of the patrols tonight is *sound*.' },
           'She looks at Hush when she says it.',
-          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can walk. I can *mostly* walk. Hush, you\'re going to have to tell me where the boots are, because I can\'t run from them.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
+          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can sneak. I can *mostly* sneak. Hush, you\'re going to have to tell me where the boots are, because I can\'t run from them one-armed.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
           { speaker: 'Marrow', text: 'Hearth. Attune them.' },
           'She touches the nearest frame — a woman with a thin gold chain — and the word beneath the paint shows through, for a moment, cold and green.',
         ],
@@ -146,7 +167,7 @@
           'Marrow goes to ring the bells. The lamps are out. Two patrols walk the corridors between here and the Tower, and they walk the same rounds every twelve beats, because soldiers are soldiers.',
           { text: 'Each turn, Wren moves one room or waits. At the end of a turn, if a patrol stands in Wren\'s room — or in a room joined to it by an open passage — Wren is seen, and scrambles back to the last safe room. The count keeps running.', cls: 'small' },
           { text: 'The third bell rings at the end of turn twelve. Guards are never drawn ahead of time; after every turn the Hearth shows where both patrols stood, so arguments end with facts.', cls: 'small' },
-          s.flags.WREN_HURT ? { text: 'Wren\'s ankle: any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'Hush drives; Knot reads. Owl, Bookmoth — say what you see.', cls: 'small' },
+          s.flags.WREN_HURT ? { text: 'Wren\'s arm: the hidden doors are heavy, and one-handed, any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'Hush drives; Knot reads. Owl, Bookmoth — say what you see.', cls: 'small' },
         ],
         next: 'ch3_grid', button: 'Into the dark',
       },
@@ -163,12 +184,13 @@
           'There is a room nobody searches. Owl sees its door; Knot knows who is inside — and Bookmoth can read what is carved over it.',
           'Into the Laundry by turn 6, out on turn 7; the east stair is clear on turns 9–11.',
           (s) => s.flags.WREN_HURT
-            ? 'Turn 1 A2 · 2 A3 · 3 speak VEIL (the ankle costs the turn) · 4 into the Laundry, B3 · 5 wait · 6 speak THORN (the turn) · 7 C3 · 8 D3 · 9 E3 · 10 E4 · 11 E5, the Tower. No slack.'
+            ? 'Turn 1 A2 · 2 A3 · 3 speak VEIL (the arm costs the turn) · 4 into the Laundry, B3 · 5 wait · 6 speak THORN (the turn) · 7 C3 · 8 D3 · 9 E3 · 10 E4 · 11 E5, the Tower. No slack.'
             : 'Turn 1 A2 · 2 A3 · 3 B3, the Laundry (VEIL) · wait turns 4, 5 and 6 · 7 C3 (THORN) · 8 D3 · 9 E3 · 10 E4 · 11 E5, the Tower. Leaving the Laundry on turn 8 instead arrives on turn 12.',
         ],
         onSolve: (s, r) => {
           Store.set('CH3_TURNS', r && r.turns);
-          Store.note(`Wren reached the Tower door on turn ${r && r.turns}${r && r.spotted ? ', seen ' + r.spotted + ' time' + (r.spotted === 1 ? '' : 's') : ', never seen'}.`);
+          const seen = s.flags.CH3_SPOTTED || 0;   // counts every sighting, including before a "start over"
+          Store.note(`Wren reached the Tower door on turn ${r && r.turns}${seen ? ', seen ' + seen + ' time' + (seen === 1 ? '' : 's') : ', never seen'}.`);
         },
         solvedText: (s, r) => [
           `Turn ${r.turns}. The Tower door, iron-bound, older than the wall around it, and Wren against it with both hands flat, laughing without any sound.`,

@@ -10,6 +10,8 @@
     #widget.ch6-bells .react-score { visibility: hidden; }
     #widget.ch6-bells .beat-counter { display: none; }
     #widget.ch6-dark .orb-chain { display: none; }
+    #widget.ch6-dark .lanes { margin-top: 72px; }
+    #widget.ch6-dark .ch6-beat { top: -2px; font-size: 64px; }
     .ch6-beat { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-family: var(--display); font-size: 54px; color: var(--gold-2); text-shadow: 0 0 24px rgba(0,0,0,.9); z-index: 4; pointer-events: none; transition: transform .1s; line-height: 1; }
     .ch6-beat.small { font-size: 30px; top: 12px; color: rgba(242,210,122,0.75); }
     .ch6-beat.tick { transform: translateX(-50%) scale(1.15); }
@@ -85,7 +87,7 @@
     const dead = n === 3 ? [1] : (volunteerLane(s) != null ? [volunteerLane(s)] : []);
     beatOverlay({ lead: LEAD, beatMs, total: 48, numbers: n === 3 });
     return {
-      title: R.title + (s.flags.SLOW_BELLS ? ' · SLOW' : ''), laneNames: L.nicks.map((k, i) => n === 3 && i === 1 ? 'Hush · voice' : k),
+      title: R.title + (s.flags.SLOW_BELLS ? ' · SLOW' : ''), laneNames: L.nicks.map((k, i) => n === 3 && i === 1 ? 'Voice' : k),
       events: roundEvents(R.script, bpm), fallMs: 1800, windowMs: win(s, 350), braceWindowMs: win(s, 300),
       target: 0.7, noFail: true, damage: 0.03, deadLanes: dead, dark: n === 3, bpm: n === 3 ? bpm : undefined, pulse: false,
     };
@@ -145,7 +147,7 @@
   /* ---------- flowchart, built at the end from what happened ---------- */
   function buildFlow(s) {
     const f = s.flags;
-    const reply = (role) => { const v = W(s, role); const n = L.roleById(role).nick; if (!v) return n + ': no answer kept'; const short = { listener: { LOUD: '"You said loud. I let you."', NO: '"You didn\'t flinch."' }, seer: { TELL: '"I thought you were being poetic."', NOTHING: '"You\'re looking at the wall now."' }, reader: { TELL: '"It isn\'t even in your alphabet."', DONTKNOW: '"Do you know now?"' }, binder: { YES: '"Show me mine."', DONTKNOW: '"The kindest thing tonight."' } }; return n + ': ' + (short[role][v] || ''); };
+    const reply = (role) => { const v = W(s, role); const n = L.roleById(role).nick; if (!v) return n + ': no answer'; const short = { listener: { LOUD: '"I let you."', NO: '"You didn\'t flinch."' }, seer: { TELL: '"Poetic, I thought."', NOTHING: '"Still at the wall."' }, reader: { TELL: '"Not in your alphabet."', DONTKNOW: '"Do you know now?"' }, binder: { YES: '"Show me mine."', DONTKNOW: '"The kindest thing."' } }; return n + ': ' + (short[role][v] || ''); };
     const c = f.BELLS_CRACKED | 0; const rounds = [1, 2, 3].filter(n => f['BELLS_R' + n + '_CRACK']);
     const crackLabel = rounds.length ? 'a bell cracked: round ' + rounds.join(', ') : (c ? 'a bell was cracked already' : 'a bell cracked');
     const nodes = [
@@ -249,7 +251,7 @@
           const slowBtn = UI.el('button', { class: 'btn small', text: '' });
           const slowTxt = UI.el('span', { class: 'small', style: { fontSize: '15px', flex: '1 1 260px' }, html: '<strong>Slow bells</strong> — windows half again as wide, tempo eased to four-fifths. Costs nothing but a note on the chart. Choose it now, not later.' });
           const paint = () => { slow.classList.toggle('on', !!s.flags.SLOW_BELLS); slowBtn.textContent = s.flags.SLOW_BELLS ? 'Slow bells: ON' : 'Slow bells: off'; };
-          slowBtn.addEventListener('click', () => { Store.set('SLOW_BELLS', !s.flags.SLOW_BELLS); if (s.flags.SLOW_BELLS) Store.note('You rang slowly.'); paint(); Audio.sfx('click'); });
+          slowBtn.addEventListener('click', () => { Store.set('SLOW_BELLS', !s.flags.SLOW_BELLS); if (s.flags.SLOW_BELLS && !s.flags.SLOW_NOTED) { Store.set('SLOW_NOTED', true); Store.note('You rang slowly.'); } paint(); Audio.sfx('click'); });
           slow.appendChild(slowTxt); slow.appendChild(slowBtn); paint();
           grid.appendChild(slow);
           wrap.appendChild(grid);
@@ -441,7 +443,7 @@
           check: (m) => {
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (got.every((g, i) => g === TURNED[i])) return true;
-            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years — and the stone\'s tune would need two rests in the middle. Hush? Owl — which end is the mark on?';
+            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. Hush — does the tune agree with that? Owl — which end is the mark on?';
             if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also *inverts* every glyph. Bookmoth: every shape reads as its other word.';
             if (got.every((g, i) => g === TURNED.slice().reverse()[i])) return 'Every glyph inverted — but a turned line is read from its mark, right to left. Slot 1 is the shape farthest from the mark.';
             if (got.some(g => !g)) return 'Eight shapes, eight slots. COLD is a glyph too, whatever the Order says; the stone shows the shape.';

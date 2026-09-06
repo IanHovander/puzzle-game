@@ -46,7 +46,7 @@
         Audio.sfx('fail'); status.className = 'pz-status bad'; status.textContent = r.text || 'It fails.';
         if (tries >= 2) document.getElementById('hint').classList.add('attention');
         if ((cfg.maxTries && tries >= cfg.maxTries) || r.final) { finished = true; if (ctl) ctl.cancel(); submit.disabled = true; setTimeout(() => resolve({ selected: selected.slice(), ok: false, tries, tally: r.tally }), 1200); }
-        else { selected.length = 0; render(); }
+        else if (!cfg.keepSelection) { selected.length = 0; render(); }
       }
       render();
     });

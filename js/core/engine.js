@@ -206,7 +206,7 @@
     if (result && result.set) for (const k in result.set) Store.set(k, result.set[k]);
     Store.save();
     if (scene.solvedText) {
-      UI.clear(dom.widget); dom.widget.classList.add('hidden'); dom.text.classList.remove('narrow');
+      if (scene.clearWidget) { UI.clear(dom.widget); dom.widget.classList.add('hidden'); dom.text.classList.remove('narrow'); }
       await UI.typewrite(dom.text, typeof scene.solvedText === 'function' ? scene.solvedText(Store.state, result) : scene.solvedText);
       if (!api.alive()) return;
     }

@@ -89,8 +89,8 @@
         P.sight.push({ t: 'table', head: ['Statue', 'Shape', 'Upright reads', 'Turned reads'], rows: EPITAPHS.map(e => { const up = G.read(e.shape, false), tr = G.invert(up); return [`<b>${e.name}</b>`, `${G.shapeSvg(e.shape, false, { size: 34, color: '#fff' })} ${e.shape}`, `${gl(up)}<br><em>${G.GLYPHS[up].gloss}</em>`, `${gl(tr)}<br><em>${G.GLYPHS[tr].gloss}</em>`]; }) });
         P.sight.push({ t: 'fine', text: 'Read them all upright and you get CROWN, THORN, KNOT, KNOT — two Founders with the same glyph, which the Founders would not have done. Say both readings aloud; let Owl say which is carved turned.' });
         P.sight.push({ t: 'divider' });
-        P.sight.push({ t: 'h', text: "The strip in Mere's niche" });
-        P.sight.push({ t: 'p', text: 'If the table looks behind Mere\'s plinth, there is a stone strip of three shapes. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only Owl can see which end it is.' });
+        P.sight.push({ t: 'h', text: 'The strip in the niche' });
+        P.sight.push({ t: 'p', text: 'Somewhere in the antechamber, where the rebuilders did not look, there is a hollow with a stone strip of three shapes in it — if the table finds it. Owl knows where; you know what it says. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only Owl can see which end it is.' });
         P.sight.push({ t: 'html', html: G.inscription(STRIP, { showMark: false, color: '#fff' }) });
         P.sight.push({ t: 'table', head: ['If the strip is…', 'it reads'], rows: [
           ['upright (mark on the left) — left to right, as carved', `${gl('WELL')}, ${gl('EMBER')}, ${gl('VEIL')}<br><em>went down · kept · alone</em> — the Order\'s version: <em>one went down alone and kept it.</em>`],
@@ -100,7 +100,7 @@
         P.sight.push({ t: 'reveal', label: 'The sheet in the niche', blocks: [
           { t: 'p', text: 'Close writing in the **older alphabet** — the one on the dormitory door, the one you have not learned. If you take a rubbing on the Hearth, it sits here, in your sleeve, unread.' },
           { t: 'letter', text: 'ᛃᚲᛟᚦ ᚱᛜᚹ ᛇᛒᛚᚲᛁ ᚦᚨᛞᚷ ᛈᚾ ᛚᛟᚹᛏᚲ ᚠᛊᚱᛞᚹ ᛗᛁᛇᛏ ᚢᛜᚱ ᛞᛖᚷᚦᛏᚲ ᛈᚨᚹ ᚲᛁᛜᛚ ᚹᚦᛊᚨᛚᚢ ᛒᛖᚷ ᛊᛟᚱᛏᚲ ᛁᛚᚹᛞ ᚹᚨᚲᛜᛖ ᛚᚲ ᛃᚨᛗᚾ ᚦᛟᚱᛞᚹᛁ ᛉᛖᚹ … — ᛗᛖᚱᛖ' },
-          { t: 'fine', text: 'You can make out one thing: it is signed. The last four letters are the same four that are carved on the first plinth. *Mere.*' },
+          { t: 'fine', text: 'You can make out one thing: it is signed — four letters set apart at the foot, the way a name is set. Whose, you cannot read. Not yet.' },
         ] });
         P.sight.push({ t: 'fine', text: 'The lexicon, with glosses, is in your **Book**.' });
         P.wren.push({ t: 'h', text: 'Four names' });

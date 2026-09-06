@@ -64,14 +64,14 @@
         { id: 'ch1_vane', label: 'The Envoy and the writ', col: 1, row: 2 },
         { id: 'ch1_vote', label: 'The Convocation votes', col: 2, row: 2, kind: 'choice' },
         { id: 'ch1_prices', label: 'Five keep. Two prices', col: 3, row: 1, kind: 'choice' },
-        { id: 'ch1_lost', label: 'The bell. Wren under guard', col: 3, row: 3, secret: true },
+        { id: 'ch1_lost', label: 'The vote fails. Wren under guard', col: 3, row: 3, secret: true },
         { id: 'ch1_p_sorrel', label: 'Sorrel: the Ember to the Convocation', col: 4, row: 0, secret: true, when: (s) => !!s.flags.SORREL },
         { id: 'ch1_p_oriel', label: 'Oriel: tell her everything', col: 4, row: 1, secret: true, when: (s) => !!s.flags.ORIEL },
         { id: 'ch1_p_neither', label: 'Neither. You owe only Marrow', col: 4, row: 2, secret: true, when: (s) => !!s.flags.NEITHER && !s.flags.VOTE_LOST },
         { id: 'ch1_offer', label: 'The Envoy\'s offer', col: 5, row: 2, kind: 'choice' },
         { id: 'ch1_v_refuse', label: 'Refused him', col: 6, row: 1, secret: true, when: (s) => Store.chose('VANE_OFFER', 'refuse') },
         { id: 'ch1_v_pretend', label: 'Pretended to accept', col: 6, row: 2, secret: true, when: (s) => !!s.flags.VANE_PRETEND },
-        { id: 'ch1_v_accept', label: 'Accepted', col: 6, row: 3, kind: 'end', secret: true, when: (s) => !!s.flags.VANE_ACCEPT },
+        { id: 'ch1_v_accept', label: 'Accepted', col: 6, row: 3, secret: true, when: (s) => !!s.flags.VANE_ACCEPT },
         { id: 'ch2_start', label: 'The Ember Vault', col: 7, row: 2, secret: true },
       ],
       edges: [
@@ -136,28 +136,37 @@
       },
       /* ---------- the Convocation vote ---------- */
       ch1_vote: {
-        type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5],
+        type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
         text: [
           'Nine seats, sunwise from the Chair. The Hearth shows you banners and numbers. Who sits under each banner, what they whisper, what glints at their cuffs and who is tied to whom — that is on your phones.',
-          { text: 'The bell rings in six minutes. When it rings, the vote is called as it stands.', cls: 'whisper' },
-          'Say what you see. Then choose two Masters to approach, and call the vote.',
+          { text: 'The bell rings in six minutes. Marrow will hold the Convocation past it if she can — but a vote, once called, is called.', cls: 'whisper' },
+          'Say what you see. Then choose two Masters to approach, and call the vote. The Convocation votes once.',
         ],
         config: () => {
-          let bell = false;
+          /* The six-minute bell is narrative (design §5 Ch1): at 6:00 Marrow stalls the Convocation and the ladder's last tier fires.
+             The vote itself is the commit — a wrong call is the vote (VOTE_LOST). Fewer than two approaches only earns a nudge. */
+          let stall = false;
+          const STALL = 'The bell. Marrow rises — and does not call the vote. "The Chair has not finished hearing the Masters." She is stalling the Convocation, for you, and cannot for long. The fire has one last thing to whisper; ask it, then approach whoever you must.';
           return {
             title: 'THE CONVOCATION', center: 'the Hearth', startAngle: 20, max: 2, timer: 360, submitText: 'Call the vote',
             note: 'The Convocation\'s rule card, read aloud by the Chair: *You may approach **two** Masters before the bell. An approached Master votes **KEEP** — unless they hold Crown coin (they vote **SEND** whoever asks) or cannot be approached. A Master with a thread follows it unless approached. An undecided Master votes SEND unless approached. **Five of nine** keeps Wren.*',
-            timeoutText: 'The bell. Marrow can stall the Convocation no longer. The vote is called as it stands.',
-            onTimeout: () => { bell = true; },
+            timeoutText: STALL,
+            onTimeout: () => {
+              stall = true;
+              if ((Store.state.hintsUsed.ch1_vote || 0) < 3) { Store.state.hintsUsed.ch1_vote = 3; Store.save(); }
+              const bell = document.getElementById('hint'); if (bell) bell.classList.add('attention');
+              window.VigilAudio.sfx('boom');
+            },
             seats: seatCfg(),
             check: (selected) => {
               const t = tally(selected);
-              Store.set('CH1_APPROACHED', selected.slice());
               const reasons = selected.map(id => REASONS[id]).join(' ');
               const count = `${t.keep.length} keep, ${t.send.length} send — ${listSeats(t.keep)} for keeping.`;
-              if (t.ok) return { ok: true, text: `${reasons} ${count} Five of nine. Wren stays.` };
-              if (bell) return { ok: false, final: true, text: `${reasons || 'You spoke to no one.'} ${count} Four keep is not five. The bell has rung.` };
-              return { ok: false, text: `${reasons || 'You spoke to no one.'} As it would stand: ${count} Five of nine keeps Wren. The bell has not rung. Talk again.` };
+              if (t.ok) { Store.set('CH1_APPROACHED', selected.slice()); return { ok: true, text: `${reasons} ${count} Five of nine. Wren stays.` }; }
+              if (stall) { stall = false; return { ok: false, text: STALL }; }
+              if (selected.length < 2) return { ok: false, text: selected.length ? 'One Master spoken to. You may approach one more — and a vote, once called, is called.' : 'You have spoken to no one. Approach two Masters, then call the vote.' };
+              Store.set('CH1_APPROACHED', selected.slice());
+              return { ok: false, final: true, text: `${reasons} ${count} Four keep is not five. The Convocation has voted.` };
             },
           };
         },
@@ -170,7 +179,14 @@
           if (r && r.ok) { Store.set('VOTE_LOST', false); Store.note('The Convocation voted 5–4 to keep Wren.'); }
           else { Store.set('VOTE_LOST', true); Store.inc('WREN_TRUST', -1); Store.note('The bell rang and the Convocation voted to send Wren to the capital.'); }
         },
-        solvedText: (s, r) => (r && r.ok) ? ['The bell. Nine hands. Five of them keep.'] : ['The bell. The vote is called as it stands, and it is not enough.'],
+        solvedText: (s, r) => {
+          const sel = (r && r.selected) || [];
+          const t = tally(sel);
+          const out = sel.map(id => REASONS[id]);
+          if (r && r.ok) out.push(`Then the Chair calls it. ${listSeats(t.keep)} for keeping — five of nine. Wren stays.`);
+          else out.push(`Then the Chair calls it, as it stands. ${t.keep.length} keep, ${t.send.length} send — ${listSeats(t.keep)} for keeping. It is not enough.`);
+          return out;
+        },
         next: (s, r) => (r && r.ok) ? 'ch1_won' : 'ch1_lost',
       },
       ch1_won: {
@@ -187,7 +203,7 @@
       ch1_lost: {
         art: 'ch1_dais', mood: 'sorrow', fx: 'dust', flame: 0.7, sfx: 'fail',
         text: [
-          'Not five. The bell has a way of counting for you.',
+          'Not five. A vote, once called, is called; the Convocation does not count twice.',
           { speaker: 'Vane', text: 'The Vigil has voted. His Majesty is grateful, and will not forget it.' },
           'Two soldiers walk up onto the dais. Wren looks at the four of you — not frightened, exactly. Surprised. Wren had assumed you would manage it. Then Wren goes with them, to the edge of the dais under guard, and does not fidget once.',
           'Marrow crosses the hall to the back, where nobody is looking any more, and says one thing, very low, only to you.',

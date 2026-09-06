@@ -24,12 +24,20 @@
     s += `<text x="${cx}" y="192" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>${caption}</text>`;
     return s;
   }
-  const underGate = (items, mark, n, markSlot, title, cap) => `<svg viewBox="0 0 360 200"><rect width="360" height="200" fill="#000"/>
+  // An inscription drawn as a plain group (a nested <svg> would be resized by the page's CSS).
+  const inscG = (items, mark, x, y) => {
+    const cell = 40, w = items.length * cell + 28, h = 52;
+    let s = `<g transform="translate(${x - w / 2},${y})"><rect x="0" y="0" width="${w}" height="${h}" rx="5" fill="none" stroke="#fff" stroke-opacity=".35"/>`;
+    items.forEach((it, i) => { s += `<g transform="translate(${14 + i * cell + cell / 2},${h / 2}) scale(0.9)" style="color:#fff">${G.shapeInner(it.shape, it.inv)}</g>`; });
+    const mx = mark === 'left' ? 7 : w - 7; s += `<path d="M${mx},${h / 2 - 7} L${mx + (mark === 'left' ? 6 : -6)},${h / 2} L${mx},${h / 2 + 7} Z" fill="${VIOLET}"/>`;
+    return s + `</g>`;
+  };
+  const underGate = (items, mark, n, markSlot, title, cap) => `<svg viewBox="0 0 360 300"><rect width="360" height="300" fill="#000"/>
     <text x="180" y="16" text-anchor="middle" fill="#fff" font-size="11" ${F}>${title}</text>
-    <g transform="translate(0,20)">${insc(items, mark).replace('<svg', '<svg x="40" y="0" width="280" height="64"')}</g>
+    ${inscG(items, mark, 180, 28)}
     <text x="180" y="98" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>the carving's mark: on the ${mark.toUpperCase()}${mark === 'right' ? ' — turned' : ' — upright'}</text>
-    <g transform="translate(60,0)">${ringUnder(n, markSlot, cap)}</g>
-    <text x="300" y="150" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">sunwise =</text><text x="300" y="162" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">clockwise</text>
+    <g transform="translate(60,100)">${ringUnder(n, markSlot, cap)}</g>
+    <text x="310" y="196" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">sunwise =</text><text x="310" y="208" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">clockwise</text>
   </svg>`;
   const underGate1 = underGate(GATE1, 'right', 5, 1, 'THE TURNED GATE — under the stone', 'the scratch — slot 1');
   const underGate2 = underGate(GATE2, 'left', 5, 3, 'THE SILENT GATE — under the stone', 'the scratch — slot 3');
@@ -79,7 +87,7 @@
     { name: 'Oath of the Well', line: ['WELL', 'ASH'], lock: 'KNOT' },
     { name: 'Oath of the Chair', line: ['CROWN', 'THORN'], lock: 'EMBER' },
   ];
-  const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock (last glyph)</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)} <span class="small">shape only — name it yourself</span></td></tr>`).join('')}</table>`;
+  const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock (last glyph)</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)}</td></tr>`).join('')}</table><p class="fine">Locks are shown as carved, unnamed. The Hook upright is ${gl('KNOT', RED)} KNOT; turned, ${gl('VEIL', RED)} VEIL. The Crown upright is ${gl('CROWN', RED)} CROWN; turned, ${gl('EMBER', RED)} EMBER.</p>`;
 
   /* ---------- the Founders' Count task ---------- */
   const MATERIAL = {
@@ -198,7 +206,7 @@
           });
           el.appendChild(wrap);
         } });
-        if (f.EMBER_LOST) P.sight.push({ t: 'p', text: 'The second bell is **cracked** — a hairline from the night the Ember case fell — and gives nothing. But the five counts are one each of **1 to 5**, so the missing count is whichever the other four do not say.' });
+        if (f.EMBER_LOST) P.sight.push({ t: 'p', text: 'The second bell is **cracked** — a hairline from the night the Ember left the school — and gives nothing. But the five counts are one each of **1 to 5**, so the missing count is whichever the other four do not say.' });
         P.sight.push({ t: 'reveal', label: 'If your ear fails — the counts, written', blocks: [{ t: 'table', head: ['bell', 'taps'], rows: counts.map((n, i) => [`${i + 1} (${['first', 'second', 'third', 'fourth', 'fifth'][i]} shape)`, f.EMBER_LOST && n === 5 ? 'cracked — silent. The one count the others leave out.' : String(n)]) }] });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Founders\' Count' });
         P.sight.push({ t: 'p', text: 'The third gate asks you for a **digit**: a peal of two bells, and a question. It is on your **SPEAK** page. Do not start it until the Hearth says START.' });

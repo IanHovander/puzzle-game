@@ -1,6 +1,7 @@
 { "start": "ch3_start", "steps": [
   {"key": "Space"}, {"shot": "ch3_start"}, {"clickText": "The Gallery"},
-  {"wait": 600}, {"key": "Space"}, {"shot": "ch3_gallery"}, {"clickText": "The word"},
+  {"wait": 600}, {"key": "Space"}, {"shot": "ch3_gallery"}, {"clickText": "The dark"},
+  {"wait": 600}, {"key": "Space"}, {"shot": "ch3_marrow"}, {"clickText": "The word"},
   {"wait": 600}, {"key": "Space"}, {"shot": "ch3_attune"}, {"expect": "VEIL"}, {"expect": "A8E"}, {"clickText": "All phones are ready"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "Into the dark"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch3_grid_0"},

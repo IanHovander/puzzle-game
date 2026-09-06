@@ -7,7 +7,7 @@
   {"slots": [[1, "WELL"], [5, "VEIL"], [4, "EMBER"]]}, {"shot": "ch5_gate1_solved"}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "forget it was ever shut"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch5_marches"}, {"clickText": "The second gate"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "The Silent Gate"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"slots": [[1, "WELL"], [2, "ASH"], [3, "COLD"], [4, "CROWN"], [5, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 500}, {"expect": "Law 6"}, {"wait": 1200},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"slots": [[1, "WELL"], [2, "ASH"], [3, "COLD"], [4, "CROWN"], [5, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 500}, {"expect": "one Book"}, {"wait": 1200},
   {"slots": [[1, "WELL"], [2, "ASH"], [4, "CROWN"], [5, "KNOT"]]}, {"shot": "ch5_gate2_solved"}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "The empty slot"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"clickText": "Everyone has the page"},
   {"wait": 800}, {"key": "Space"}, {"clickText": "Count us in"}, {"wait": 4600}, {"shot": "ch5_count_start"}, {"expect": "START"}, {"clickText": "The digits are in"},

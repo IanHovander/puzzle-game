@@ -45,7 +45,7 @@
     s += `<circle cx="${cx}" cy="${cy}" r="${r * 0.6}" fill="#ff9a3c" opacity=".08"><animate attributeName="opacity" values=".08;.14;.07;.12;.08" dur="2.4s" repeatCount="indefinite"/></circle>`;
     return s + '</g>';
   }
-  const cracked = (i) => { try { return i === 0 && (window.VigilStore.state.flags.BELLS_CRACKED | 0) >= 1; } catch (e) { return false; } };
+  const cracked = (i) => { try { return i < (window.VigilStore.state.flags.BELLS_CRACKED | 0); } catch (e) { return false; } };
 
   /* 1. the bell-chamber: four bells on a beam over the lid; the shaft above */
   A.define('ch6_chamber', () => P.wrap(
