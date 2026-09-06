@@ -331,3 +331,10 @@ Hint economy: tier 1 costs nothing but a flowchart note; tier 2 costs "wax" (cos
 - WREN: b0–2 ENDING (0 Fourfold, 1 Half, 2 Sealing, 3 Keeper's, 4 Bargain). Each phone combines this with its own stored WALK/STAY token and first name to render its last page.
 
 **Tokens (12):** Ch3 whispers ×4 (2 choices each); Ch5 hold ×4 (YES/NO; first YES typed wins); Finale ×4 (WALK/STAY × ACCEPT/REFUSE, or the subset that exists). Alphabet `ABCDEFGHJKLMNPQRTUVWXYZ`; letter 3 = (index₁ + 2·index₂) mod 23.
+
+## Appendix C — Implementation notes (post-build)
+
+- The cast is shown at each chapter's attunement, so the finale phones' question set is fixed before Stage 1; the Hearth voids a bargain answer if Vane stands down afterwards (see docs/CONVENTIONS.md §12).
+- Casts are three symbols (6 data bits + 9 check bits), not two: a mistyped mark is rejected 99.8% of the time instead of 94%.
+- Tokens are four symbols from a 32-symbol alphabet, derived per (beat, role, value) with collision-free salting; the Hearth decodes by comparison, so a wrong-beat token is simply "not attuned".
+- Ring and dial palettes show glyph names only; the shape→word lexicon exists only on the Reader's phone.

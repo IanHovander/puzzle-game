@@ -43,15 +43,16 @@
     <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="88" y="192">Bookmoth</text><text x="120" y="222">Hush</text><text x="222" y="222">Owl</text><text x="256" y="192">Knot</text><text x="190" y="160">Marrow</text><text x="190" y="228" fill="#a482e6">Wren</text><text x="180" y="245" text-anchor="middle" opacity=".7">the lid · shadows, as they fall</text></g>
   </svg>`;
   const stoneCarving = (mark) => G.inscription(STONE, { showMark: !!mark, mark: 'right', color: '#fff', markColor: '#a482e6' });
+  const stoneInner = stoneCarving(true).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
   const underStone = `<svg viewBox="0 0 360 230">
     <rect width="360" height="230" fill="#000"/>
     <text x="180" y="18" text-anchor="middle" fill="#fff" font-size="10" ${F} opacity=".8">the prophecy stone, from below</text>
-    <g transform="translate(0,26)">${stoneCarving(true).replace('<svg', '<svg x="10" y="0" width="340" height="86"')}</g>
-    <g stroke="#a482e6" fill="none" stroke-width="1.5"><path d="M330,124 L60,124"/><path d="M68,119 L58,124 L68,129"/></g>
-    <text x="195" y="139" text-anchor="middle" fill="#a482e6" font-size="10" ${F}>the mark is on the RIGHT — carved turned — read this way</text>
-    <text x="330" y="156" text-anchor="end" fill="#a482e6" font-size="9" ${F}>slot 1 begins here</text>
-    <g stroke="#fff" fill="none" stroke-width="1.5" transform="translate(180,205) scale(0.9)"><path d="M0,-16 C6,-8 10,-2 10,4 C10,11 5,15 0,15 C-5,15 -10,11 -10,4 C-10,-2 -6,-8 0,-16 Z" opacity=".8"/><path d="M-60,16 L60,16" opacity=".5"/></g>
-    <text x="180" y="226" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">the fire — lower than it has ever been; the foot is bare</text>
+    <g transform="translate(10,26) scale(0.6967)">${stoneInner}</g>
+    <g stroke="#a482e6" fill="none" stroke-width="1.5"><path d="M330,96 L60,96"/><path d="M68,91 L58,96 L68,101"/></g>
+    <text x="195" y="112" text-anchor="middle" fill="#a482e6" font-size="10" ${F}>the mark is on the RIGHT — carved turned — read this way</text>
+    <text x="340" y="128" text-anchor="end" fill="#a482e6" font-size="9" ${F}>slot 1 begins here</text>
+    <g stroke="#fff" fill="none" stroke-width="1.5" transform="translate(180,190) scale(0.9)"><path d="M0,-16 C6,-8 10,-2 10,4 C10,11 5,15 0,15 C-5,15 -10,11 -10,4 C-10,-2 -6,-8 0,-16 Z" opacity=".8"/><path d="M-60,16 L60,16" opacity=".5"/></g>
+    <text x="180" y="222" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">the fire — lower than it has ever been; the foot is bare</text>
   </svg>`;
 
   /* ---------- The Thread (the Chapter V volunteer's spent Sight, rounds 1–2) ---------- */

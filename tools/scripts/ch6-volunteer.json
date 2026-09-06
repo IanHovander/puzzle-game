@@ -25,6 +25,7 @@
   {"slots": [[1, "COLD"], [2, "ASH"], [3, "EMBER"], [4, "VEIL"], [5, "WELL"], [6, "ASH"], [7, "CROWN"], [8, "KNOT"]]}, {"clickText": "Read the stone"}, {"wait": 600}, {"expect": "read from its mark, right to left"}, {"wait": 1200},
   {"click": "#hint"}, {"wait": 400}, {"click": ".hint-btn"}, {"wait": 300}, {"click": ".hint-btn"}, {"wait": 300}, {"click": ".hint-btn"}, {"wait": 300}, {"expect": "Slot 1 KNOT"}, {"shot": "v_hint3"}, {"clickText": "Back to the ward"}, {"wait": 400},
   {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]}, {"clickText": "Read the stone"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "The fire is the hollow they left."}, {"clickText": "Marrow"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "Both roads needed him loved"}, {"clickText": "The Book"},
   {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"}, {"clickText": "The night moves on"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "v_flow"}, {"expect": "Clues caught: 0 of 4 (with help)"}, {"expect": "Truths told in the laundry: 0 of 4"}, {"expect": "rung slowly"}, {"expect": "cracked: 2 of 3"},
   {"eval": "({ WALK: window.VigilStore.state.flags.WALK_UNLOCKED, LAW0: window.VigilStore.state.flags.LAW0, CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, CLUES: window.VigilStore.state.flags.CLUES, HELP: window.VigilStore.state.flags.CLUES_HELP, SLOW: window.VigilStore.state.flags.SLOW_BELLS })"},

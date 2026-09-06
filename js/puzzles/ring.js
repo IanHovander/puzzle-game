@@ -21,8 +21,8 @@
       let svg = strip ? `<svg viewBox="0 0 ${n * 84 + 40} 160"><g>` : `<svg viewBox="0 0 480 480"><g transform="rotate(${cfg.orient || 0} ${cx} ${cy})">`;
       if (!strip) {
         svg += `<circle class="ring" cx="${cx}" cy="${cy}" r="${R + sr + 12}"/><circle class="ring" cx="${cx}" cy="${cy}" r="${R - sr - 12}"/>`;
-        // sunwise arrow
-        svg += `<path d="M${cx + 40},${cy - R - sr - 26} a${R + sr + 26},${R + sr + 26} 0 0 1 60,12" fill="none" stroke="rgba(212,169,78,.5)" stroke-width="2"/><path d="M${cx + 100},${cy - R - sr - 14} l-10,-8 l2,12 z" fill="rgba(212,169,78,.7)"/>`;
+        // sunwise arrow, drawn at the hub so it never suggests where the sigil begins
+        if (cfg.showArrow !== false) svg += `<g opacity=".55"><path d="M${cx - 26},${cy - 6} a28,28 0 1 1 52,0" fill="none" stroke="rgba(212,169,78,.7)" stroke-width="2"/><path d="M${cx + 26},${cy - 6} l-9,-7 l1,11 z" fill="rgba(212,169,78,.9)"/><text x="${cx}" y="${cy + 22}" text-anchor="middle" fill="rgba(212,169,78,.7)" font-size="10" font-family="Cinzel,serif" letter-spacing="1">SUNWISE</text></g>`;
         (cfg.marks || []).forEach(m => { const a = ((m.slot - 1) / n * 360 - 90) * Math.PI / 180; const mx = cx + Math.cos(a) * (R + sr + 30), my = cy + Math.sin(a) * (R + sr + 30); svg += `<g transform="translate(${mx.toFixed(1)},${my.toFixed(1)})"><path d="M0,10 L-8,-6 L8,-6 Z" fill="${m.color || 'var(--ember)'}" transform="rotate(${((m.slot - 1) / n * 360 + 180).toFixed(0)})"/>${m.label ? `<text y="-14" text-anchor="middle" fill="${m.color || 'var(--ember)'}" font-size="11" font-family="Cinzel,serif" transform="rotate(${-(cfg.orient || 0)})">${UI.esc(m.label)}</text>` : ''}</g>`; });
       } else {
         svg += `<rect x="6" y="30" width="${n * 84 + 28}" height="100" rx="8" fill="rgba(0,0,0,0.3)" stroke="rgba(212,169,78,0.3)"/>`;
@@ -98,6 +98,7 @@
   function fourHands(root, text, windowMs) {
     return new Promise((resolve) => {
       const box = UI.el('div', { class: 'fourhands' });
+      setTimeout(() => { try { box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {} }, 50);
       box.appendChild(UI.el('div', { class: 'pz-title', text: text || 'FOUR HANDS — all four keys together to close it' }));
       const pads = UI.el('div', {}); box.appendChild(pads);
       const st = UI.el('div', { class: 'pz-status' }); box.appendChild(st);

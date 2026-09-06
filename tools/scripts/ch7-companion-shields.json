@@ -1,0 +1,7 @@
+{ "start": "ch7_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["KNOT", "AC4"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["EMBER", "AUK"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["WELL", "AQE"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["CROWN", "XYM"]},
+  {"shot": "cs_reader_shields"}, {"expect": "each wall"}, {"expect": "(shield)"}, {"expect": "a soldier's shield"}, {"eval": "document.querySelectorAll('.inscription-svg text').length"},
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["KNOT", "AC4"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["EMBER", "C8K"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["WELL", "AQE"]}, {"click": "button:has-text('Pages')"}, {"unlock": ["CROWN", "XYM"]},
+  {"shot": "cs_seer_oriel"}, {"eval": "document.querySelectorAll('.inscription-svg text').length"}, {"expect": "sees through paint"}, {"expect": "west — mark left"},
+  {"companion": true}, {"role": "Reader"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "cs_reader_unknown"}, {"expect": "Spike, Hook, Hook-inverted, Crown-inverted"}, {"eval": "document.querySelectorAll('.inscription-svg text').length"}
+] }

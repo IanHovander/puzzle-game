@@ -147,7 +147,7 @@
   /* ---------- flowchart, built at the end from what happened ---------- */
   function buildFlow(s) {
     const f = s.flags;
-    const reply = (role) => { const v = W(s, role); const n = L.roleById(role).nick; if (!v) return n + ': no answer'; const short = { listener: { LOUD: '"I let you."', NO: '"You didn\'t flinch."' }, seer: { TELL: '"Poetic, I thought."', NOTHING: '"Still at the wall."' }, reader: { TELL: '"Not in your alphabet."', DONTKNOW: '"Do you know now?"' }, binder: { YES: '"Show me mine."', DONTKNOW: '"The kindest thing."' } }; return n + ': ' + (short[role][v] || ''); };
+    const reply = (role) => { const v = W(s, role); const n = L.roleById(role).nick; if (!v) return n + ': no answer'; const short = { listener: { LOUD: '"I let you."', NO: '"You didn\'t flinch."' }, seer: { TELL: '"Poetic, I thought."', NOTHING: '"Still at the wall."' }, reader: { TELL: '"A brave bird."', DONTKNOW: '"Do you know now?"' }, binder: { YES: '"Show me mine."', DONTKNOW: '"The kindest thing."' } }; return n + ': ' + (short[role][v] || ''); };
     const c = f.BELLS_CRACKED | 0; const rounds = [1, 2, 3].filter(n => f['BELLS_R' + n + '_CRACK']);
     const crackLabel = rounds.length ? 'a bell cracked: round ' + rounds.join(', ') : (c ? 'a bell was cracked already' : 'a bell cracked');
     const nodes = [
@@ -444,7 +444,7 @@
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (got.every((g, i) => g === TURNED[i])) return true;
             if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. Hush — does the tune agree with that? Owl — which end is the mark on?';
-            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also *inverts* every glyph. Bookmoth: every shape reads as its other word.';
+            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also inverts every glyph. Bookmoth: every shape reads as its other word.';
             if (got.every((g, i) => g === TURNED.slice().reverse()[i])) return 'Every glyph inverted — but a turned line is read from its mark, right to left. Slot 1 is the shape farthest from the mark.';
             if (got.some(g => !g)) return 'Eight shapes, eight slots. COLD is a glyph too, whatever the Order says; the stone shows the shape.';
             return 'The stone does not answer. Frost feathers across the strip and it clears.';
@@ -474,6 +474,12 @@
           'Marrow looks at it for a long time. When she speaks it is to the stone, not to any of you.',
           { speaker: 'Marrow', text: 'Both roads needed him loved. One road needed him alone. I chose the one that cost one, and told myself the one was not a person.' },
           { speaker: 'Marrow', text: 'The Order chose it before me. Two hundred and twelve years after the Founders, the seal failed, and four hands meant four Masters giving up their Sightings. The Convocation would not pay it. They struck the Law and called the rest grammar, and sent one Warden down, and the stone let them, because the fire had already covered its foot.' },
+        ],
+        next: 'ch6_open', button: 'The Book',
+      },
+      ch6_open: {
+        art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.14,
+        text: (s) => [
           { text: 'Knot, your Book turns a page by itself: *Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.* Law 0 is written again, and it is older than Law 6.', cls: 'whisper' },
           { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
           'Wren has been very quiet. Wren looks at the four of you, and at the lid, and at the shaft full of white light going orange again, and grins — the sideways one, the one from the dormitory door.',

@@ -60,7 +60,7 @@
         else { misses++; Audio.sfx('miss'); if (!cfg.practice) { health = Math.max(0, health - (cfg.damage || 0.12)); window.VigilFX.shake(lanesEl, 300); } }
         if (cfg.practice) { flashBig(ok ? '✓' : '✗', ok ? 'var(--moss)' : '#ff8b8b'); }
         meterFill.style.width = (health * 100) + '%';
-        scoreEl.textContent = `${hits} / ${total}`;
+        if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total}`;
       }
       function flashBig(txt, color) { big.textContent = txt; big.style.color = color || ''; big.style.opacity = '1'; setTimeout(() => { big.style.transition = 'opacity .4s'; big.style.opacity = '0'; setTimeout(() => { big.style.transition = ''; }, 400); }, 250); }
 

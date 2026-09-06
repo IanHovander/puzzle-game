@@ -95,7 +95,7 @@ A node is lit if its id is a visited scene id, or if `when(state)` is true. `sec
 Final scene of an ending: `{ type: 'end', text: [...], render: (actions, api) => {...} }`.
 
 ### 2.9 State
-`VigilStore.state.flags` holds every flag in `docs/DESIGN.md` Appendix B, by exactly those names: `VOTE_LOST, SORREL, ORIEL, NEITHER, VANE_PRETEND, VANE_ACCEPT, LETTER, LETTER_READ, EMBER_LOST, WREN_HURT, WREN_SCARED, WHISPER_reader/listener/seer/binder, DOOR (FIGHT|BLUFF|WORD|WRIT|SURRENDERED), SURRENDERED, JOURNAL, MEMORY, TAPESTRY, GREY, OATH (0 none,1 KNOT,2 EMBER), OATH_KNOT, LAW0, STAIR (COLLAPSE|HOLD|RUN), VOLUNTEER (0 none, 1..4 by seat), PRECRACKED, BELLS_CRACKED, CLUES, TRUTHS, WALK_UNLOCKED, VANE_ALLY, DECISION, BARGAIN_reader.. (accepted|broken|kept), WALK_reader.. (WALK|STAY), WREN_TRUST, ENDING (0..4), SOLDIERS`.
+`VigilStore.state.flags` holds every flag in `docs/DESIGN.md` Appendix B, by exactly those names: `VOTE_LOST, SORREL, ORIEL, NEITHER, VANE_PRETEND, VANE_ACCEPT, LETTER, LETTER_READ, EMBER_LOST, WREN_HURT, WREN_SCARED, WHISPER_reader/listener/seer/binder, DOOR (FIGHT|BLUFF|WORD|WRIT|SURRENDERED), SURRENDERED, JOURNAL, MEMORY, TAPESTRY, GREY, OATH (0 none,1 KNOT,2 EMBER), OATH_KNOT, LAW0, STAIR (COLLAPSE|HOLD|RUN), VOLUNTEER (0 none, 1..4 by seat), PRECRACKED, BELLS_CRACKED, CLUES, TRUTHS, WALK_UNLOCKED, VANE_ALLY, DECISION, BARGAIN_reader.. (accepted|broken|kept|refused), WALK_reader.. (WALK|STAY), WREN_TRUST, ENDING (0..4), SOLDIERS`.
 Helpers: `Store.get(k, default)`, `Store.set(k, v)`, `Store.inc(k)`, `Store.chose(choiceId, optionId)`, `Store.note(text)` (epilogue log). Names by seat: `VigilLore.nick(i)`; seat order is Reader 0, Listener 1, Seer 2, Binder 3.
 
 ## 3. Widgets (`puzzle:` types)
@@ -177,3 +177,8 @@ A chapter may inject its own CSS from its Hearth file (`document.head.appendChil
 - Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs Bookmoth to name what is carved. Do not add shapes to palette tiles.
 - A solved widget stays on screen while `solvedText` plays (set `clearWidget: true` on the scene to hide it instead).
 - `seats` accepts `keepSelection: true` to keep the current approaches after a non-final wrong check.
+
+## 12. Known seams (documented, by design)
+
+- The CROWN attunement (and so the finale question set on the phones, via `VigilLore.finaleValues`) is fixed **before** Stage 1's decision. If the table then makes Vane stand down, the phones still ask the bargain question; the Hearth voids an ACCEPT in that case and says so. If the table does not choose the Walk, the walk/stay answer is simply not used.
+- `BARGAIN_<role>` takes `refused` when a phone answers REFUSE or when a voided ACCEPT is treated as refused.

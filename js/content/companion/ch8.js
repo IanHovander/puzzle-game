@@ -44,6 +44,7 @@
     .ch8-seal-crown svg { width: 150px; height: 150px; }
     .ch8-seal-crown .ch8-decree { font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-top: 8px; line-height: 1.9; }
     .ch8-darkline { font-family: var(--hand); font-size: 22px; color: var(--ink); text-align: center; padding: 28px 8px; animation: fadeUp 1.5s ease both; }
+    .ch8-kept-row { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 12px; }
     .ch8-fade { transition: opacity 5s ease 4s; }
     .ch8-fade.gone { opacity: 0.08; }
   ` }));
@@ -81,13 +82,13 @@
     seer: (ctx) => {
       const name = firstName(ctx);
       const fig = (x, y, lab, shadowTo, col) => `<circle cx="${x}" cy="${y}" r="6" fill="#fff"/><path d="M${x},${y} L${shadowTo[0]},${shadowTo[1]}" stroke="${col || '#fff'}" stroke-width="3" opacity=".6" stroke-linecap="round"/><text x="${x}" y="${y + 18}" text-anchor="middle" fill="${col || '#fff'}" font-size="9" font-family="Cinzel,serif">${esc(lab)}</text>`;
-      const under = `<svg viewBox="0 0 360 220"><rect width="360" height="220" fill="#000"/>` +
+      const under = `<svg viewBox="0 0 360 250"><rect width="360" height="250" fill="#000"/>` +
         `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="200"/><path d="M150,150 L150,110 A30,30 0 0 1 210,110 L210,150 Z"/></g>` +
         `<g stroke="#fff" fill="none" stroke-width="1.5"><path d="M180,146 C168,132 172,120 180,110 C188,120 192,132 180,146 Z"/><path d="M180,146 L180,128"/></g>` +
-        `<text x="180" y="166" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
-        fig(80, 70, 'Bookmoth', [46, 46]) + fig(120, 165, 'Hush', [90, 184]) + fig(270, 60, 'Owl', [304, 34]) + fig(290, 160, 'Knot', [326, 180]) +
-        fig(180, 40, 'Wren', [180, 8], '#a482e6') +
-        `<text x="180" y="212" text-anchor="middle" fill="#a482e6" font-size="8.5" font-family="Cinzel,serif">five shadows, all falling away from the fire — the right way, at last</text></svg>`;
+        `<text x="180" y="168" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
+        fig(70, 70, 'Bookmoth', [38, 44]) + fig(70, 170, 'Hush', [38, 196]) + fig(290, 70, 'Owl', [322, 44]) + fig(290, 170, 'Knot', [322, 196]) +
+        fig(180, 44, 'Wren', [180, 14], '#a482e6') +
+        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">five shadows, all falling away from the fire. The right way, at last.</text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">You look at walls like they owe you money. Look at this one. I drew it. It's not very good.</p>` +
         `<div class="blk-svg underlayer">${under}</div>` +
@@ -160,6 +161,7 @@
     seer: 'Owl. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
     binder: 'Knot. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
   };
+  const oathSworn = (ctx) => { try { const u = ctx.state.unlocked && ctx.state.unlocked.ch5; if (!u || !u.flags || u.flags.OATH == null) return null; return +u.flags.OATH > 0; } catch (e) { return null; } };
   const KEEPER_LINE = {
     reader: 'Read him the name properly, one day. I never once heard it said right, and I am the one who chose it.',
     listener: 'You will not hear it. You never will. Do not let that stop you listening — I did, and it cost fourteen years.',
@@ -184,6 +186,16 @@
       const name = firstName(ctx);
       const walked = walkedHere(ctx);
       P.speak.push({ t: 'fine', text: 'Nothing to speak. The night has been spoken.' });
+      /* The one who held the stair: what the thread recorded, shown to that player alone (design: 'you let go twice; nobody knew'). */
+      try {
+        const u6 = ctx.state.unlocked && ctx.state.unlocked.ch6; const vol = u6 && u6.flags ? +u6.flags.VOLUNTEER : 0;
+        const seat = ['reader', 'listener', 'seer', 'binder'].indexOf(roleId) + 1;
+        if (vol && vol === seat) {
+          const th = ctx.state.thread || { letGo: 0 }; const n = th.letGo | 0;
+          P.wren.push({ t: 'h', text: 'The thread' });
+          P.wren.push({ t: 'p', text: n === 0 ? 'You held the stair, and you never let go. Nobody will ever know that but you.' : `You held the stair. You let go ${n === 1 ? 'once' : n === 2 ? 'twice' : n + ' times'}; the thread frayed and held anyway. Nobody knew. Nobody needs to.` });
+        }
+      } catch (e) {}
 
       if (E === 0) {
         /* THE FOURFOLD WALK: every phone gets the goodbye */
@@ -192,15 +204,33 @@
         P.wren.push({ t: 'p', text: { reader: 'Three shapes on a page, in a drawer. You will argue every winter about what the ring looked like, and lose, and not mind.', listener: 'A house that is too quiet, you will say, and mean the opposite. A pulse in a throat you can see and cannot hear and do not need to.', seer: 'A floor that is a floor. A wall that is a wall. Four friends whose shadows you will never check again, and one visitor who comes through doors sideways.', binder: 'Nothing between any of you but air, and it holds. It has never not held.' }[roleId] });
         P.wren.push({ t: 'fine', text: `You would do it again, ${name}. You will say so every winter, at the point in the evening when it becomes true.` });
       } else if (E === 1) {
-        /* THE HALF-WALK: walkers get the goodbye; stayers kept their Sight */
-        if (walked === true) {
+        /* THE HALF-WALK: walkers get the goodbye; stayers kept their Sight. A phone whose token ACCEPTED the Envoy's word
+           cannot know by itself whether that bargain was kept in the room (a kept key is dead: its owner stayed), so it asks once. */
+        const tok = ctx.answer('ch7', 'finale');
+        const acceptedTok = typeof tok === 'string' && /_ACCEPT$/.test(tok);
+        const keptKey = 'ch8:kept';
+        const keptKnown = ctx.state.done[keptKey];
+        const askKept = acceptedTok && walked === true && keptKnown === undefined;
+        const stayer = walked !== true || (acceptedTok && keptKnown === true);
+        if (askKept) {
+          P.sight.push({ t: 'h', text: 'One thing first' });
+          P.sight.push({ t: 'p', text: 'In the room, when the Hearth named you *bound by the Envoy\'s word* — did you break the bargain, or keep it? The fire knows; this page does not.' });
+          P.sight.push({ t: 'custom', render: (el, cx) => {
+            const row = UI.el('div', { class: 'ch8-kept-row' });
+            const pick = (v) => () => { cx.state.done[keptKey] = v; cx.save(); try { window.Companion.showChapter('ch8', 'sight'); } catch (e) {} };
+            row.appendChild(UI.el('button', { class: 'btn', text: 'I broke it. My key was free.', onclick: pick(false) }));
+            row.appendChild(UI.el('button', { class: 'btn ghost', text: 'I kept it. My key was dead.', onclick: pick(true) }));
+            el.appendChild(row);
+          } });
+        } else if (!stayer) {
           P.sight.push(goodbyeBlock(roleId));
           P.wren.push({ t: 'h', text: 'Walker' });
           P.wren.push({ t: 'p', text: 'You went in. You came out grey-eyed and free, and the ones who stayed are Masters now of a school that knows what it is built on. Wren lives. No pulse. Wren does not mind.' });
         } else {
-          P.sight.push({ t: 'h', text: 'You kept your Sight.' });
+          P.sight.push({ t: 'h', text: 'On the stones' });
           P.sight.push({ t: 'p', text: '**You kept your Sight. You watched them go.**' });
           P.sight.push({ t: 'p', text: STAY_LINE[roleId] });
+          if (acceptedTok && keptKnown === true) P.sight.push({ t: 'fine', text: 'Your key was the Envoy\'s. It stayed dark on the Hearth while the other three wrote. You are a Master, as promised; he keeps his word, which is the worst of him.' });
           if (walked === null) P.sight.push({ t: 'fine', text: 'This phone holds no word from the fire. If you walked, the goodbye was on the phone that spoke for you.' });
           P.wren.push({ t: 'h', text: 'Master' });
           P.wren.push({ t: 'p', text: `Master ${name} of Thornhallow. The fire is yours for life, and so is the wall, and so is the knowing. Wren visits, and laughs, and has no pulse, and you are the only kind of person who will ever notice.` });
@@ -212,7 +242,8 @@
       } else if (E === 3) {
         /* THE KEEPER'S WALK: Marrow's one line to each */
         P.sight.push({ t: 'h', text: 'Ilsabet Marrow, before she goes' });
-        P.sight.push({ t: 'letter', text: `${name} —\n\n${KEEPER_LINE[roleId]}\n\n— I. M.` });
+        const keeperLine = roleId === 'binder' && oathSworn(ctx) === false ? 'You would not swear to a Chair tonight. Good. Swear, one day, to a person. Wren will need at least one of you to have done that.' : KEEPER_LINE[roleId];
+    P.sight.push({ t: 'letter', text: `${name} —\n\n${keeperLine}\n\n— I. M.` });
         P.sight.push({ t: 'fine', text: 'She wrote it on the stair, on the back of the writ, and did not wait to see it read.' });
         P.wren.push({ t: 'h', text: 'The Provost' });
         P.wren.push({ t: 'p', text: 'Years later, Provost Wren keeps a fire that flickers. Every winter it dips. Every winter it comes back. The fourth-years are told it is nothing.' });

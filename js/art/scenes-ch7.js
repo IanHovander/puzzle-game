@@ -29,9 +29,12 @@
     return s;
   }
   /* a wall inscription, carved, faint */
-  function wallCarving(x, y, shapes, scale, color) {
-    return `<g transform="translate(${x},${y}) scale(${scale || 1.4})" style="color:${color || '#5a4e5a'}" opacity=".8">${shapes.map((sh, i) => `<g transform="translate(${i * 54},0)">${G().shapeInner(sh[0], sh[1])}</g>`).join('')}</g>`;
+  /* hiddenIdx: a soldier's shield stands against that carving (the Hearth never shows what is behind it) */
+  function wallCarving(x, y, shapes, scale, color, hiddenIdx) {
+    const shield = `<path d="M-16,-22 L16,-22 L16,6 Q16,20 0,26 Q-16,20 -16,6 Z" fill="#2a2632" stroke="#4a4454" stroke-width="2"/><path d="M0,-18 L0,20" stroke="#4a4454" stroke-width="1.5"/>`;
+    return `<g transform="translate(${x},${y}) scale(${scale || 1.4})" style="color:${color || '#5a4e5a'}" opacity=".8">${shapes.map((sh, i) => `<g transform="translate(${i * 54},0)">${i === hiddenIdx ? shield : G().shapeInner(sh[0], sh[1])}</g>`).join('')}</g>`;
   }
+  const hid = (p, side) => (p && p.shields && p.shields[side]) ? 1 : -1;
   const WEST = [['Spike', false], ['Hook', false], ['Hook', true], ['Crown', true]];
   const EAST = [['Flame', false], ['Crown', true], ['Spike', false], ['Flame', true]];
   /* the four carved figures walking into a flame */
@@ -56,7 +59,7 @@
     bells(330) +
     // chamber walls with the two inscriptions and the carved figures
     `<rect x="0" y="380" width="260" height="380" fill="#0d0b12"/><rect x="1340" y="380" width="260" height="380" fill="#0d0b12"/>` +
-    wallCarving(60, 470, WEST, 1.5) + wallCarving(1380, 470, EAST, 1.5) +
+    wallCarving(60, 470, WEST, 1.5, undefined, hid(p, 'west')) + wallCarving(1380, 470, EAST, 1.5, undefined, hid(p, 'east')) +
     carvedFigures(1340, 560, '#8a6a3a') +
     P.floorTiles(720, '#0a0810', 'rgba(255,255,255,0.035)') +
     coldFloor(720, 0.32) +
@@ -77,7 +80,7 @@
     P.lightBeam(800, 0, 80, 480, '#ff9a3c') +
     bells(300) +
     `<rect x="0" y="360" width="300" height="400" fill="#0d0b12"/><rect x="1300" y="360" width="300" height="400" fill="#0d0b12"/>` +
-    wallCarving(60, 440, WEST, 1.7, '#6a5c6a') + wallCarving(1340, 440, EAST, 1.7, '#6a5c6a') +
+    wallCarving(60, 440, WEST, 1.7, '#6a5c6a', hid(p, 'west')) + wallCarving(1340, 440, EAST, 1.7, '#6a5c6a', hid(p, 'east')) +
     P.floorTiles(700, '#0a0810', 'rgba(255,255,255,0.035)') +
     coldFloor(700, 0.4) +
     floorRing(800, 790, 420, 96, !!(p && p.lit)) +

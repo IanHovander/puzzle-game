@@ -156,7 +156,7 @@
           'You come out of it the way the Founders came out: grey-eyed and ordinary. Bookmoth looks at the stone and sees shapes. Hush hears a room. Owl sees a floor. Knot sees four friends and nothing between them but air.',
           'Wren is waiting on the stones.',
           { speaker: 'Wren', text: 'You took your *time*.' },
-          'There is a pulse in Wren\'s throat. You can see it from here. Hush cannot hear it — Hush will never hear anything like that again — and does not need to.',
+          'There is a pulse in Wren\'s throat. You can see it from here. Hush, who will never hear anything like it again, does not need to.',
         ],
         next: 'ch8_report', button: 'Dawn',
       },
@@ -365,7 +365,7 @@
           box.appendChild(row);
           box.appendChild(UI.el('p', { class: 'small', text: 'KINDLE, in the dormitory, was only a lamp. Everything after it was the wall.' }));
           words.forEach((w, i) => setTimeout(() => { if (api.alive()) Audio.note(G.MIDI[w], 1.2, 0.14); }, 400 + i * 350));
-          api.button('The last word', () => resolve(api.state.flags.ENDING === 0 && api.state.flags.WREN_SHOWN ? 'ch8_flow' : 'ch8_code'), 'primary');
+          api.button('The last word', () => resolve(ending(api.state) === 0 && api.state.flags.WREN_SHOWN ? 'ch8_flow' : 'ch8_code'), 'primary');
         }),
       },
       ch8_code: {

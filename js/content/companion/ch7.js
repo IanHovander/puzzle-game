@@ -7,9 +7,22 @@
 
   const WEST = [{ shape: 'Spike', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: true }];
   const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }];
-  const wall = (items, mark, showMark) => G.inscription(items, { showMark, mark, color: '#fff', markColor: V });
+  const wall = (items, mark, showMark, hiddenIdx) => G.inscription(items.map((it, i) => i === hiddenIdx ? Object.assign({ hidden: true }, it) : it), { showMark, mark, color: '#fff', markColor: V });
+  /* Which walls carry a soldier's shield. The Hearth decides from SOLDIERS / Sorrel refused / Oriel honoured / VANE_ALLY; the phone
+     derives the same from the casts it has turned (WELL: VOLUNTEER, PRECRACKED; EMBER: SORREL, ORIEL; KNOT/VEIL: VOTE_LOST). Unknown casts: no shields drawn. */
+  const shields = (ctx) => {
+    const f = ctx.flags || {}; if (f.VANE_ALLY) return { west: -1, east: -1 };
+    const u = (ctx.state && ctx.state.unlocked) || {};
+    const well = u.ch6 && u.ch6.flags, ember = u.ch4 && u.ch4.flags, vl = (u.ch3 && u.ch3.flags) || (u.ch2 && u.ch2.flags);
+    if (!well || !ember || !vl) return { west: -1, east: -1 };
+    let w = !(well.VOLUNTEER | 0) && !well.PRECRACKED, e = !ember.SORREL && !vl.VOTE_LOST;
+    if (ember.ORIEL) { if (e) e = false; else w = false; }
+    return { west: w ? 1 : -1, east: e ? 1 : -1 };
+  };
   const gl = (n, c) => G.svg(n, { size: 28, color: c || '#f2d27a' });
-  const row = (names, c) => names.map(n => gl(n, c) + ' ' + n).join(', ');
+  const row = (names, c) => names.map(n => n === null ? '<span style="opacity:.7">▣ (shield)</span>' : gl(n, c) + ' ' + n).join(', ');
+  /* a wall's reading with the shielded carving blanked; a turned reading reverses, so the blank moves with it */
+  const reading = (items, mark, hiddenIdx) => { const names = G.readLine(items, mark); if (hiddenIdx >= 0) names[mark === 'right' ? items.length - 1 - hiddenIdx : hiddenIdx] = null; return names; };
   const law = (n, era, year, text, extra) => `<div class="law ${era === 'O' ? 'order' : 'founders'}${extra && extra.struck ? ' struck' : ''}"><div class="era">Law ${n} · ${era === 'F' ? 'Founders\' · Year 0' : 'Order\'s · Year ' + year}${extra && extra.tag ? ' · ' + extra.tag : ''}</div><div class="txt">${UI.esc(text)}</div>${extra && extra.note ? `<div class="fine">${extra.note}</div>` : ''}</div>`;
 
   /* Seer: the ring page with two marks — slot 1 (west) and slot 8 (east); the east half turned. */
@@ -20,19 +33,19 @@
     s += `<path d="M${cx},${cy - R - 18} A${R + 18},${R + 18} 0 0 0 ${cx},${cy + R + 18} Z" fill="rgba(164,130,230,0.12)" stroke="none"/>`;
     s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fff" stroke-width="1.5"/>`;
     s += `<path d="M${cx + 30},${cy - R - 24} a${R + 24},${R + 24} 0 0 1 40,12" fill="none" stroke="#fff" stroke-width="2"/><path d="M${cx + 70},${cy - R - 12} l-9,-3 l2,9 z" fill="#fff"/>`;
-    s += `<text x="${cx}" y="12" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">sunwise = clockwise</text>`;
+    s += `<text x="${cx}" y="${cy + R + 34}" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".8">sunwise = clockwise</text>`;
     for (let i = 0; i < 8; i++) { const a = (i / 8 * 360 - 90) * Math.PI / 180, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R; s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" fill="#000" stroke="${i >= 4 ? V : '#fff'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`; }
     // mark at slot 1 (top) and slot 8 (top-left)
-    s += `<path d="M${cx - 6},${cy - R - 30} L${cx},${cy - R - 18} L${cx + 6},${cy - R - 30} Z" fill="${V}"/><text x="${cx + 14}" y="${cy - R - 24}" fill="${V}" font-size="10" font-family="Cinzel,serif">west · slot 1</text>`;
+    s += `<path d="M${cx - 6},${cy - R - 30} L${cx},${cy - R - 18} L${cx + 6},${cy - R - 30} Z" fill="${V}"/><text x="${cx - 14}" y="${cy - R - 34}" text-anchor="end" fill="${V}" font-size="10" font-family="Cinzel,serif">west · slot 1</text>`;
     const a8 = (7 / 8 * 360 - 90) * Math.PI / 180, x8 = cx + Math.cos(a8) * (R + 26), y8 = cy + Math.sin(a8) * (R + 26);
-    s += `<g transform="translate(${x8.toFixed(1)},${y8.toFixed(1)}) rotate(-45)"><path d="M-6,-12 L0,0 L6,-12 Z" fill="${V}"/></g><text x="${(x8 - 8).toFixed(1)}" y="${(y8 - 16).toFixed(1)}" text-anchor="end" fill="${V}" font-size="10" font-family="Cinzel,serif">east · slot 8</text>`;
+    s += `<g transform="translate(${x8.toFixed(1)},${y8.toFixed(1)}) rotate(-45)"><path d="M-6,-12 L0,0 L6,-12 Z" fill="${V}"/></g><text x="${(x8 - 4).toFixed(1)}" y="${(y8 - 20).toFixed(1)}" text-anchor="end" fill="${V}" font-size="10" font-family="Cinzel,serif">east · slot 8</text>`;
     s += `<text x="${cx - R + 6}" y="${cy + 4}" text-anchor="start" fill="${V}" font-size="9" font-family="Cinzel,serif" opacity=".9">turned</text>`;
     // legend
     s += `<g transform="translate(250,40)"><text x="0" y="0" fill="#fff" font-size="10" font-family="Cinzel,serif">two marks,</text><text x="0" y="14" fill="#fff" font-size="10" font-family="Cinzel,serif">carved by two hands</text><text x="0" y="28" fill="#fff" font-size="10" font-family="Cinzel,serif">facing each other</text>`;
     s += `<circle cx="8" cy="52" r="6" fill="none" stroke="#fff"/><text x="20" y="56" fill="#fff" font-size="9" font-family="Cinzel,serif">west half · upright</text>`;
     s += `<circle cx="8" cy="72" r="6" fill="none" stroke="${V}"/><text x="20" y="76" fill="#fff" font-size="9" font-family="Cinzel,serif">east half · turned</text>`;
     s += `<text x="0" y="104" fill="${V}" font-size="9" font-family="Cinzel,serif">the west mark is at 1;</text><text x="0" y="116" fill="${V}" font-size="9" font-family="Cinzel,serif">the east mark is at 8.</text></g>`;
-    s += `<text x="180" y="232" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the floor-ring, as it was cut</text></svg>`;
+    s += `<text x="290" y="232" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the floor-ring, as it was cut</text></svg>`;
     return s;
   };
 
@@ -130,14 +143,19 @@
 
       /* ---------- SIGHT ---------- */
       if (roleId === 'reader') {
+        const sh = shields(ctx);
+        const gloss = (names) => names.map(n => n === null ? '?' : G.GLYPHS[n].gloss.split(';')[0]).join(' · ');
+        const tbl = (items, hiddenIdx, label) => { const up = reading(items, 'left', hiddenIdx), tn = reading(items, 'right', hiddenIdx); return { t: 'table', head: [`If the ${label} wall is…`, 'it reads'], rows: [['upright (mark on the left)', row(up) + ` — <em>${gloss(up)}</em>`], ['turned (mark on the right)', row(tn) + ` — <em>${gloss(tn)}</em>`]] }; };
+        const shapesText = (items, hiddenIdx) => items.map((it, i) => i === hiddenIdx ? 'a soldier\'s shield' : it.shape + (it.inv ? '-inverted' : '')).join(', ');
         P.sight.push({ t: 'h', text: 'Two walls' });
-        P.sight.push({ t: 'p', text: 'Clean on your page. Where the Hearth shows a shield, you see the carving. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — Owl\'s — not yours.' });
-        P.sight.push({ t: 'p', text: '**West wall**, shapes left to right: Spike, Hook, Hook-inverted, Crown-inverted.' });
-        P.sight.push({ t: 'html', html: wall(WEST, 'left', false) });
-        P.sight.push({ t: 'table', head: ['If the west wall is…', 'it reads'], rows: [['upright (mark on the left)', row(['THORN', 'KNOT', 'VEIL', 'EMBER']) + ' — <em>go through · together · behind · keep</em>'], ['turned (mark on the right)', row(['CROWN', 'KNOT', 'VEIL', 'WELL']) + ' — <em>one · together · behind · down</em>']] });
-        P.sight.push({ t: 'p', text: '**East wall**, shapes left to right: Flame, Crown-inverted, Spike, Flame-inverted.' });
-        P.sight.push({ t: 'html', html: wall(EAST, 'right', false) });
-        P.sight.push({ t: 'table', head: ['If the east wall is…', 'it reads'], rows: [['upright (mark on the left)', row(['ASH', 'EMBER', 'THORN', 'COLD']) + ' — <em>fire · keep · go through · cold</em>'], ['turned (mark on the right)', row(['ASH', 'WELL', 'CROWN', 'COLD']) + ' — <em>fire · down · one · cold</em>']] });
+        P.sight.push({ t: 'p', text: 'Clean on your page: what the fire shows worn, you see cut. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — Owl\'s — not yours.' });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'p', text: 'A soldier stands against ' + (sh.west >= 0 && sh.east >= 0 ? 'each wall' : sh.west >= 0 ? 'the west wall' : 'the east wall') + ', shield up. Glyph-Sight reads stone, not steel: the carving behind it is blank on your page too. The Law on the rim, and Hush\'s Hymn, say what it must be.' });
+        P.sight.push({ t: 'p', text: `**West wall**, shapes left to right: ${shapesText(WEST, sh.west)}.` });
+        P.sight.push({ t: 'html', html: wall(WEST, 'left', false, sh.west) });
+        P.sight.push(tbl(WEST, sh.west, 'west'));
+        P.sight.push({ t: 'p', text: `**East wall**, shapes left to right: ${shapesText(EAST, sh.east)}.` });
+        P.sight.push({ t: 'html', html: wall(EAST, 'right', false, sh.east) });
+        P.sight.push(tbl(EAST, sh.east, 'east'));
         P.sight.push({ t: 'h', text: 'Law 8, carved on the rim' });
         P.sight.push({ t: 'html', html: `<div class="laws">${law(8, 'F', 0, 'A Great Sigil names every glyph once.')}</div>` });
         P.sight.push({ t: 'p', text: 'Eight slots; eight glyphs in the Tongue. If one reading of a wall names a glyph the other wall already has, that reading is wrong. There is only one pair of readings in which every glyph appears once.' });
@@ -162,7 +180,9 @@
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: twoMarks() });
         P.sight.push({ t: 'h', text: 'The walls' });
         P.sight.push({ t: 'p', text: 'West wall: mark on the **left** — upright, read left to right. East wall: mark on the **right** — carved turned. Bookmoth has both readings of each; the Binder\'s Laws say where a turned line goes.' });
-        P.sight.push({ t: 'html', html: `<div class="underlayer" style="padding:8px;border-radius:8px"><div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center">west — mark left</div>${wall(WEST, 'left', true)}<div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center;margin-top:8px">east — mark right</div>${wall(EAST, 'right', true)}</div>` });
+        const sh = shields(ctx);
+        P.sight.push({ t: 'html', html: `<div class="underlayer" style="padding:8px;border-radius:8px"><div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center">west — mark left</div>${wall(WEST, 'left', true, sh.west)}<div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center;margin-top:8px">east — mark right</div>${wall(EAST, 'right', true, sh.east)}</div>` });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'fine', text: 'A soldier\'s shield covers a carving. Under-Sight sees through paint, not steel: the mark is yours to call; the glyph behind the shield is Bookmoth\'s to reason out.' });
         P.sight.push({ t: 'h', text: 'Under the bell-chamber' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underChamber() });
         P.sight.push({ t: 'fine', text: 'The empty socket is not empty. Something is cut in its floor, in the older alphabet, that Bookmoth can read. You do not need to say so yet.' });

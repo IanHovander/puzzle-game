@@ -25,14 +25,15 @@
   const finaleValues = (s) => L.finaleValues(castFlags(s));
   const sorrelRefused = (s) => !s.flags.SORREL && !s.flags.VOTE_LOST;
   const oathKnot = (s) => !!(s.flags.OATH_KNOT || s.flags.OATH === 1);
-  const walkers = (s) => ROLES.filter(r => s.flags['WALK_' + r] === 'WALK');
-  const stayers = (s) => ROLES.filter(r => s.flags['WALK_' + r] !== 'WALK');
+  const walkers = (s) => ROLES.filter(r => s.flags['WALK_' + r] === 'WALK' && s.flags['BARGAIN_' + r] !== 'kept'); // a kept bargain is a dead key: a stayer
+  const stayers = (s) => ROLES.filter(r => !(s.flags['WALK_' + r] === 'WALK' && s.flags['BARGAIN_' + r] !== 'kept'));
   const nickOf = (roleId) => L.roleById(roleId).nick;
   const kept = (s) => ROLES.filter(r => s.flags['BARGAIN_' + r] === 'kept');
   const accepted = (s) => ROLES.filter(r => s.flags['BARGAIN_' + r] === 'accepted');
   const broken = (s) => ROLES.filter(r => s.flags['BARGAIN_' + r] === 'broken');
   const group = (s) => s.flags.GROUP_NAME || 'the Four';
   const shieldCount = (s) => { if (s.flags.VANE_ALLY) return { west: false, east: false }; let w = !!(s.flags.SOLDIERS || s.flags.STAIR === 'RUN'), e = sorrelRefused(s); if (s.flags.ORIEL) { if (e) e = false; else w = false; } return { west: w, east: e }; };
+  const artP = (s) => ({ shields: shieldCount(s), ally: !!s.flags.VANE_ALLY });
   const WEST = [{ shape: 'Spike', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: true }];
   const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }];
   const BASE = { 1: 'THORN', 2: 'KNOT', 3: 'VEIL', 4: 'EMBER', 5: 'COLD', 6: 'CROWN', 7: 'WELL', 8: 'ASH' };
@@ -55,7 +56,7 @@
 
   Game.addChapter({
     id: 'ch7', label: 'Finale', title: 'One Born of Four', start: 'ch7_start', code: 'CROWN',
-    mood: 'dread', fx: 'ash', art: 'ch7_edge', flame: 0.06,
+    mood: 'dread', fx: 'ash', art: 'ch7_edge', artParams: artP, flame: 0.06,
     flow: {
       nodes: [
         { id: 'ch7_start', label: 'The chamber\'s edge', col: 0, row: 2 },
@@ -90,7 +91,7 @@
     scenes: {
       /* ---------- the chamber's edge ---------- */
       ch7_start: {
-        art: 'ch7_edge', mood: 'dread', fx: 'ash', flame: 0.06, sfx: 'step',
+        art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, sfx: 'step',
         title: 'The bell-chamber, a spark',
         text: (s) => {
           const withTarn = [];
@@ -109,7 +110,7 @@
         next: 'ch7_vane', button: 'Vane speaks',
       },
       ch7_vane: {
-        art: 'ch7_edge', mood: 'dread', fx: 'ash', flame: 0.06,
+        art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06,
         text: (s) => [
           { speaker: 'Vane', text: s.flags.VANE_ACCEPT ? 'You gave me your word in the Hall. I have not forgotten it, and I have not told the Provost. Bring the boy to the road. He lives. Whatever she has told you tonight, he *lives* — that is the one thing I can promise and she cannot.' : 'Four Wardens. One child. A fire that will be out before the hour turns. I have made you an offer already and you did not take it. I make it once more, because I would rather not take him past you.' },
           { speaker: 'Vane', text: 'Bring him to the road. The Crown keeps him warm, and keeps him. You come up Masters. Nobody walks into anything.' },
@@ -121,7 +122,7 @@
         next: 'ch7_attune', button: 'Attune',
       },
       ch7_attune: {
-        type: 'code', art: 'ch7_ring', mood: 'dread', fx: 'ash', flame: 0.06,
+        type: 'code', art: 'ch7_ring', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06,
         enter: (s) => {
           s.flags.WALK_UNLOCKED = !!s.flags.WALK_UNLOCKED; s.flags.VANE_ALLY = !!s.flags.VANE_ALLY;
           s.flags.BELLS_CRACKED = Math.max(0, Math.min(3, s.flags.BELLS_CRACKED | 0)); s.flags.OATH_KNOT = oathKnot(s);
@@ -135,7 +136,7 @@
 
       /* ---------- Stage 1: the Decision ---------- */
       ch7_decision: {
-        type: 'choice', art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
         text: (s) => {
           const out = [{ speaker: 'Marrow', text: 'The Sealing is ready. It has been ready for fourteen years. Decide, and then we will see what the fire thinks of it.' }];
           if (s.flags.WALK_UNLOCKED) out.push({ text: 'On the wall, four figures. On the stone, four hands. On the 212 page, a Law struck by people who did not want to pay for it. You know a road the Order forgot.', cls: 'whisper' });
@@ -153,7 +154,7 @@
         ],
       },
       ch7_wall: {
-        art: 'ch7_edge', mood: 'sorrow', fx: 'ash', flame: 0.06, sfx: 'reveal',
+        art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06, sfx: 'reveal',
         enter: (s) => { s.flags.VANE_ALLY = true; s.flags.VANE_STOOD_DOWN = true; Store.save(); },
         text: [
           'Owl says what is under the paint, in the same words as in the study, and the Hearth turns the tapestry to the chamber\'s edge: four figures, no child, the fourth hand writing a flame the wrong way up.',
@@ -168,7 +169,7 @@
       },
       /* Marrow bars the Walk (OATH_KNOT): a short argument tree */
       ch7_argue1: {
-        type: 'choice', art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE1',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE1',
         text: [
           'Marrow steps between you and the ring. She is not angry. She is doing what she was asked.',
           { speaker: 'Marrow', text: 'You swore under KNOT. KNOT cannot be unbound — you chose it knowing. You swore to see Wren into the Cold, whatever the cost. I hold you to it, because you asked me to.' },
@@ -182,27 +183,28 @@
         ],
       },
       ch7_argue2: {
-        type: 'choice', art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE2',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE2',
         text: [{ speaker: 'Marrow', text: 'You have read more of this school tonight than most Masters read in a life. Use it. One thing.' }],
         prompt: 'Cite a clue.',
         options: [
           { id: 'law0', text: 'Law 0 — "COLD is written by four hands" — struck in 212, the same year and the same hand as Law 6. Knot read the page.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The same hand. Yes. They could not afford four Masters, so they made it grammar.' }] },
-          { id: 'mere', text: 'Mere\'s rubbing: "I offered to go alone and was refused. One was never asked." The Founder who kept the fire wrote it herself.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'Mere. Who kept the fire, *after*. I have that sheet in my study. I have had it for twenty years.' }] },
+          { id: 'mere', text: 'Mere\'s rubbing: "I offered to go alone and was refused. One was never asked." The Founder who kept the fire wrote it herself.', next: 'ch7_argue_yield', if: (s) => !!(s.flags.LETTER_READ || s.flags.LETTER), after: [{ speaker: 'Marrow', text: 'Mere. Who kept the fire, *after*. I have that sheet in my study. I have had it for twenty years.' }] },
           { id: 'break', text: 'Then we break the oath.', next: 'ch7_argue3', cls: 'dark', after: [{ speaker: 'Marrow', text: 'KNOT cannot be unbound. You do not get to be brave by forgetting what you signed. One more. The last one, and then I decide for you.' }] },
         ],
       },
       ch7_argue3: {
-        type: 'choice', art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE3',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE3',
         text: [{ speaker: 'Wren', text: 'Come *on*. You told me in the laundry. Tell her.' }],
         prompt: 'Cite a clue.',
         options: [
-          { id: 'niche', text: 'The strip in Mere\'s niche, read from its mark: "four · as one · went through." Not "one went down alone."', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The niche. Nobody has stood behind that plinth since the rebuild.' }] },
-          { id: 'tapestry', text: 'The tapestry under the paint: four figures walking into the flame, no child, and the fourth hand writing COLD.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'I scraped it myself, as a girl. I painted it back. I have never told anyone that.' }] },
+          { id: 'niche', text: 'The strip in Mere\'s niche, read from its mark: "four · as one · went through." Not "one went down alone."', next: 'ch7_argue_yield', if: () => Store.chose('CH2_NICHE', 'mere'), after: [{ speaker: 'Marrow', text: 'The niche. Nobody has stood behind that plinth since the rebuild.' }] },
+          { id: 'tapestry', text: 'The tapestry under the paint: four figures walking into the flame, no child, and the fourth hand writing COLD.', next: 'ch7_argue_yield', if: (s) => !!s.flags.TAPESTRY, after: [{ speaker: 'Marrow', text: 'I scraped it myself, as a girl. I painted it back. I have never told anyone that.' }] },
+          { id: 'thrones', text: 'Four statues and four thrones in the Vault; "four went down," said the portraits in the Gallery. Not one. Never one.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'Four thrones. I have sat in the Chair\'s for twenty years and never once counted the others.' }] },
           { id: 'anyway', text: 'We\'re going in anyway.', next: 'ch7_argue1', cls: 'dark', after: [{ speaker: 'Marrow', text: 'No. Not through me, and not without a reason you can say aloud. From the top.' }] },
         ],
       },
       ch7_argue_yield: {
-        art: 'ch7_edge', mood: 'sorrow', fx: 'ash', flame: 0.06,
+        art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06,
         text: [
           { speaker: 'Marrow', text: 'Then the oath was sworn to the wrong reading, and the one you swore it to is telling you so.' },
           { speaker: 'Marrow', text: 'It was sworn to the Chair. That does not go away because I wish it. Idony\'s Law is on the rim: build the ring by the Laws, and then turn it until my mark sits at the first mark. You know my glyph. It is on every seal in this school.' },
@@ -213,7 +215,7 @@
         next: 'ch7_dec_fourfold', button: 'The Walk',
       },
       ch7_dec_walk: {
-        art: 'ch7_edge', mood: 'sorrow', fx: 'ash', flame: 0.06,
+        art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06,
         text: (s) => [
           { speaker: 'Wren', text: 'Right. Good. That\'s — good. That\'s what the stone says and I\'ve had fourteen years to get used to it, which is more than most people get for anything.' },
           { speaker: 'Wren', text: `Don't do faces. ${group(s)} don't do faces. Build the ring; I'll stand in the bit that isn't written.` },
@@ -223,7 +225,7 @@
         next: (s) => finaleValues(s) ? 'ch7_tokens_intro' : 'ch7_ring_intro', button: 'Continue',
       },
       ch7_dec_refuse: {
-        art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06,
+        art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: [
           { speaker: 'Marrow', text: 'Nobody.' },
           'You say it again, all four, so it is on the record of a room that has heard every kind of vow.',
@@ -235,7 +237,7 @@
         next: (s) => finaleValues(s) ? 'ch7_tokens_intro' : 'ch7_ring_intro', button: 'Continue',
       },
       ch7_dec_fourfold: {
-        art: 'ch7_edge', mood: 'wonder', fx: 'ash', flame: 0.06, sfx: 'chime',
+        art: 'ch7_edge', artParams: artP, mood: 'wonder', fx: 'ash', flame: 0.06, sfx: 'chime',
         text: (s) => [
           'You say it the way the Founders wrote it: four, as one, go through.',
           { speaker: 'Wren', text: 'You realise the *deal* was I go in. It was a very simple deal. I had a speech.' },
@@ -246,7 +248,7 @@
         next: (s) => finaleValues(s) ? 'ch7_tokens_intro' : 'ch7_ring_intro', button: 'Continue',
       },
       ch7_dec_vane: {
-        art: 'ch7_edge', mood: 'dread', fx: 'ash', flame: 0.03, sfx: 'boom',
+        art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.03, sfx: 'boom',
         enter: (s) => { s.flags.ENDING = 4; Store.save(); },
         text: [
           'Vane does not gloat. That is the worst of it. He holds out his hand as if he is helping someone across a stream.',
@@ -261,7 +263,7 @@
 
       /* ---------- private tokens ---------- */
       ch7_tokens_intro: {
-        type: 'custom', art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06,
+        type: 'custom', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: (s) => {
           const v = finaleValues(s);
           const out = ['Every phone, now. Open SPEAK. What it asks you is yours; nobody else at this table will see the question, and nobody will see the answer.'];
@@ -287,7 +289,7 @@
         }),
       },
       ch7_tokens: {
-        type: 'token', art: 'ch7_ring', mood: 'tense', fx: 'ash', flame: 0.06,
+        type: 'token', art: 'ch7_ring', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: ['Four sealed words, in seat order. The Hearth answers only "received" — never what it received.'],
         prompt: 'Each of you: read the sealed word from your SPEAK page into the slot with your name.',
         slots: [0, 1, 2, 3].map(i => ({ label: nick(i), player: i, length: 4 })),
@@ -308,7 +310,7 @@
 
       /* ---------- Stage 2: bargains in the room ---------- */
       ...Object.fromEntries(ROLES.map((r, i) => ['ch7_bargain_' + r, {
-        type: 'choice', art: 'ch7_edge', mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_BARGAIN_' + r, timer: 15, timerText: '*Fifteen heartbeats. A kept bargain binds your key.*', timeout: 'keep', sfx: 'heart',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_BARGAIN_' + r, timer: 15, timerText: '*Fifteen heartbeats. A kept bargain binds your key.*', timeout: 'keep', sfx: 'heart',
         text: [
           { text: `Bound by the Envoy's word: ${nickOf(r)}.`, cls: 'big' },
           'The fire says it out loud. It does not say anything else, and the room is very quiet.',
@@ -321,7 +323,7 @@
         ],
       }])),
       ch7_bargains_done: {
-        art: 'ch7_edge', mood: 'tense', fx: 'ash', flame: 0.06,
+        art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         enter: (s) => { if (kept(s).length >= 2) { s.flags.ENDING = 4; Store.save(); } },
         text: (s) => {
           const k = kept(s), b = broken(s);
@@ -342,12 +344,12 @@
 
       /* ---------- the Great Sigil ---------- */
       ch7_ring_intro: {
-        art: 'ch7_ring', mood: 'tense', fx: 'ash', flame: 0.06,
+        art: 'ch7_ring', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: (s) => {
           const sh = shieldCount(s);
           const out = [
             'The floor-ring: eight sockets in a circle, the whole grammar of the night at once. Around the walls, two inscriptions in two halves — one on the west wall, one on the east.',
-            'Carved on the rim, where the Binder can read it and the fire cannot: *a Great Sigil names every glyph once*.',
+            'Carved on the rim, in the Founders\' hand, a Law the fire cannot read. Knot can; it is on the Binder\'s page, and on Bookmoth\'s.',
           ];
           if (sh.west || sh.east) out.push(`${sh.west && sh.east ? 'Two soldiers stand' : 'A soldier stands'} against the wall${sh.west && sh.east ? 's' : ''}, shield up, and a glyph is behind ${sh.west && sh.east ? 'each' : 'it'}. A shield hides a carving; it does not change it.`);
           else if (s.flags.VANE_ALLY) out.push('Vane\'s soldiers face the stair. Nothing stands against the walls.');
@@ -357,7 +359,7 @@
         next: 'ch7_sigil', button: 'The ring',
       },
       ch7_sigil: {
-        type: 'puzzle', puzzle: 'ring', art: 'ch7_ring', mood: 'tense', fx: 'ash', flame: 0.06, puzzleId: 'ch7_sigil', par: [6, 10],
+        type: 'puzzle', puzzle: 'ring', art: 'ch7_ring', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, puzzleId: 'ch7_sigil', par: [6, 10],
         enter: (s) => ensureClock(s),
         text: [
           'Eight slots, sunwise. Two walls, two marks, seven Laws and one that was struck. Nobody at this table can do another\'s job.',
@@ -367,7 +369,7 @@
           const sh = shieldCount(s);
           const west = WEST.map((it, i) => Object.assign({}, it, { hidden: sh.west && i === 1 }));
           const east = EAST.map((it, i) => Object.assign({}, it, { hidden: sh.east && i === 1 }));
-          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim: "a Great Sigil names every glyph once"</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
+          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim, in the Founders' hand: a Law — Knot has it</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
           let placed = 0;
           return {
             title: 'THE GREAT SIGIL', html, slots: 8, glyphs: glyphPalette(), allowEmpty: true, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat. The Hymn plays.',
@@ -385,7 +387,7 @@
         },
         hints: [
           'The east wall is turned; the west is not; each has its own mark — Owl has both. Bookmoth has both readings of each wall.',
-          (s) => 'Turned means widdershins from its mark: the east wall runs from slot 8 backwards — 8, 7, 6, 5. Knot\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: turn it until the Chair\'s glyph, CROWN, sits at slot 1.' : '.'),
+          (s) => 'Turned means widdershins from its mark — Owl says which mark, Hush says which reading climbs. Knot\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: the Chair\'s glyph at the first mark.' : '.'),
           (s) => oathKnot(s)
             ? 'CROWN in slot 1, WELL in 2, ASH in 3, THORN in 4, KNOT in 5, VEIL in 6, EMBER in 7, and slot 8 left empty (or COLD, by four hands). Then four hands.'
             : 'THORN in slot 1, KNOT in 2, VEIL in 3, EMBER in 4, slot 5 left empty (or COLD, by four hands), CROWN in 6, WELL in 7, ASH in 8. Then four hands.',
@@ -401,7 +403,7 @@
         next: 'ch7_binding',
       },
       ch7_binding: {
-        type: 'puzzle', puzzle: 'binding', art: 'ch7_ring', mood: 'tense', fx: 'ash', flame: 0.1, puzzleId: 'ch7_binding', par: [3],
+        type: 'puzzle', puzzle: 'binding', art: 'ch7_ring', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.1, puzzleId: 'ch7_binding', par: [3],
         enter: (s) => ensureClock(s),
         text: (s) => {
           const k = kept(s), cracked = s.flags.BELLS_CRACKED | 0;
@@ -430,7 +432,7 @@
         ],
         onSolve: (s, r) => {
           s.flags.BINDING_LANDED = true; if (!(r && r.success)) s.flags.WITH_HELP = true;
-          s.flags.MIDNIGHT_SPARE = Game.clock.left(); Game.clock.stop(); s.flags.MIDNIGHT_LEFT = 0;
+          s.flags.MIDNIGHT_SPARE = Game.clock.left(); Game.clock.stop(); s.flags.MIDNIGHT_LEFT = s.flags.MIDNIGHT_SPARE; /* the Epilogue reads MIDNIGHT_LEFT as "to spare"; ensureClock never restarts once BINDING_LANDED */
           s.flags.ENDING = computeEnding(s); Store.save();
           Store.note(r && r.success ? `The Binding held, released ${((r.releaseSpread || 0) / 1000).toFixed(2)} s apart, with ${Math.floor((s.flags.MIDNIGHT_SPARE || 0) / 60)}:${String((s.flags.MIDNIGHT_SPARE || 0) % 60).padStart(2, '0')} to midnight.` : 'The Binding held, with help.');
           if (s.flags.ENDING === 0) Audio.mood('wonder');
@@ -455,7 +457,7 @@
         run: (box, api) => new Promise((resolve) => {
           api.button('Try again from CROWN', () => {
             const s = Store.state;
-            ['DECISION', 'ENDING', 'WITH_HELP', 'BINDING_LANDED', 'BINDING_FAILS', 'MIDNIGHT_SPARE', 'MIDNIGHT_STARTED'].forEach(k => delete s.flags[k]);
+            ['DECISION', 'ENDING', 'WITH_HELP', 'BINDING_LANDED', 'BINDING_FAILS', 'MIDNIGHT_SPARE', 'MIDNIGHT_STARTED', 'WREN_SHOWN'].forEach(k => delete s.flags[k]);
             ROLES.forEach(r => { delete s.flags['WALK_' + r]; delete s.flags['BARGAIN_' + r]; });
             s.flags.MIDNIGHT_LEFT = 0;
             ['ch7_sigil', 'ch7_binding'].forEach(id => delete s.solved[id]);
@@ -468,7 +470,7 @@
 
       /* ---------- the true path: writing COLD ---------- */
       ch7_cold_slot: {
-        art: 'ch7_ring', mood: 'wonder', fx: 'motes', flame: 0.1,
+        art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.1,
         text: [
           'The ring is full but for one slot. Wren walks to it, the way Wren walks to everything, and stands in it.',
           { text: 'It is never written.', cls: 'omen' },
@@ -480,7 +482,8 @@
         next: 'ch7_wren_code', button: 'Look',
       },
       ch7_wren_code: {
-        type: 'code', art: 'ch7_ring', mood: 'wonder', fx: 'motes', flame: 0.1, code: 'WREN',
+        type: 'code', art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.1, code: 'WREN',
+        enter: (s) => { s.flags.WREN_SHOWN = true; Store.save(); }, /* the Epilogue skips its own WREN·cast on the true path when this is set */
         cast: (s) => S.cast('WREN', S.pack(L.chapter('ch8').cast, Object.assign({}, s.flags, { ENDING: s.flags.ENDING | 0 }))),
         codeLabel: 'It is never written. Write it.',
         codeSub: 'Everyone types it. Each phone, in seat order, will show you something, and then it will go dark. **Your Sighting is spent. Look up.**',
@@ -492,7 +495,7 @@
         next: 'ch7_fourhands',
       },
       ch7_fourhands: {
-        type: 'custom', art: 'ch7_ring', mood: 'wonder', fx: 'motes', flame: 0.12,
+        type: 'custom', art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.12,
         text: [
           'Nothing is left on the table but the keyboard and each other.',
           'Wren steps out of the empty slot and stands behind the Warden of the Hearth, and puts one hand over the hand on the key.',
@@ -576,7 +579,7 @@
         next: 'ch7_flow', button: 'The night, whole',
       },
       ch7_flow: {
-        type: 'flow', art: 'ch7_edge', mood: 'sorrow', fx: 'ash', flame: 0.06,
+        type: 'flow', art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06,
         text: ['The Finale, as you walked it. What the night meant is in the Epilogue.'],
         flowTitle: 'Finale — the paths you walked',
         stats: (s) => {
