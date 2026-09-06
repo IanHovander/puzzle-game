@@ -51,6 +51,15 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn.ghost { background: transparent; border-color: rgba(255,255,255,0.15); }
 .btn.danger { border-color: var(--blood); color: #f0b0b0; }
+.btn.primary.danger { border-color: #d24b4b; color: #fff3ee; background: linear-gradient(180deg, #d24b4b, #9e2f2f); text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
+.btn.primary.danger:hover, .btn.primary.danger:focus-visible { color: #fff; background: linear-gradient(180deg, #e05a5a, #b23a3a); box-shadow: 0 0 22px rgba(178,58,58,0.35); }
+.btn.audio-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn.audio-btn .audio-icon { flex: 0 0 auto; }
+.btn.audio-btn.playing { border-color: var(--sea); color: var(--sea); }
+.btn.audio-btn.playing .audio-icon path { animation: eq 0.9s ease-in-out infinite; transform-origin: center; }
+.btn.audio-btn.playing .audio-icon path:nth-child(2) { animation-delay: .15s; } .btn.audio-btn.playing .audio-icon path:nth-child(3) { animation-delay: .3s; }
+.btn.audio-btn.playing .audio-icon path:nth-child(4) { animation-delay: .45s; } .btn.audio-btn.playing .audio-icon path:nth-child(5) { animation-delay: .6s; }
+@keyframes eq { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
 

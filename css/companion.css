@@ -86,6 +86,12 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 44px; padding: 6px 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
 .arrow-strip .step b { font-size: 20px; color: var(--sea); }
 .arrow-strip .step.rest b { color: var(--ink-dim); }
+.arrow-strip .step.start b, .arrow-strip .step.same b { color: var(--gold); }
+.arrow-strip .step { transition: background .15s, border-color .15s, box-shadow .15s; }
+.arrow-strip .step.on { background: rgba(79,179,191,0.28); border-color: var(--sea); box-shadow: 0 0 14px rgba(79,179,191,0.45); }
+.arrow-strip .step.done { border-color: rgba(79,179,191,0.45); }
+.blk-audio .nohear { margin: 8px 0 0; font-size: 13px; opacity: .75; }
+.blk-audio .btn.audio-btn.playing { background: rgba(79,179,191,0.14); }
 .underlayer { background: #000 !important; border-color: rgba(255,255,255,0.25) !important; }
 .underlayer svg { color: #fff; }
 .laws .law { padding: 8px 10px; border-left: 2px solid var(--line); margin-bottom: 8px; }
@@ -107,3 +113,6 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .pick-grid .pk { border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 8px; background: rgba(0,0,0,0.3); text-align: center; cursor: pointer; }
 .pick-grid .pk.sel { border-color: var(--gold); background: rgba(212,169,78,0.2); }
 .pick-grid .pk svg { width: 44px; height: 44px; }
+.seq-list { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 10px; min-height: 30px; }
+.seq-chip { font-family: var(--display); font-size: 13px; letter-spacing: .08em; padding: 4px 9px; border: 1px solid rgba(79,179,191,0.45); border-radius: 999px; background: rgba(79,179,191,0.1); color: var(--ink); }
+.seq-empty { font-size: 14px; color: var(--ink-dim); font-style: italic; }

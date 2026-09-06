@@ -176,6 +176,36 @@
   function wrap(text, n) { const words = text.split(' '); const lines = []; let cur = ''; for (const w of words) { if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); } if (cur) lines.push(cur); return lines.slice(0, 3); }
 
   /* Simple pluralize / list join */
+  /* A button that plays something. onPlay() returns the phrase length in ms (or nothing); while it plays the button
+     shows it is listening, so a phone with its sound off still shows that the press did something. The icon is an
+     inline drawing rather than a ♪ character, which some phone fonts do not have. */
+  UI.AUDIO_ICON = '<svg class="audio-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 7v10"/><path d="M20 10v4"/></g></svg>';
+  UI.audioButton = function (label, onPlay, opts) {
+    opts = opts || {};
+    const text = String(label || 'Cup your ear').replace(/^[♪♫🔊]\s*/, '');
+    const btn = UI.el('button', { class: 'btn audio-btn ' + (opts.cls || ''), type: 'button', 'aria-label': text });
+    const setLabel = (t) => { btn.innerHTML = UI.AUDIO_ICON + '<span class="audio-label">' + UI.esc(t) + '</span>'; };
+    setLabel(text);
+    let timer = null;
+    btn.addEventListener('click', () => {
+      let ms = 0;
+      try { const r = onPlay(); ms = typeof r === 'number' && isFinite(r) ? r : 1800; } catch (e) { console.error(e); ms = 0; }
+      if (timer) clearTimeout(timer);
+      if (ms <= 0) { btn.classList.remove('playing'); setLabel(text); return; }
+      btn.classList.add('playing'); setLabel(opts.playing || 'Listening…');
+      timer = setTimeout(() => { btn.classList.remove('playing'); setLabel(text); timer = null; }, ms);
+    });
+    return btn;
+  };
+  /* Light each .step of the arrow strip inside el as its note sounds (the audio helpers announce 'vigil:step'). */
+  UI.lightStrip = function (el, ms) {
+    if (!el) return;
+    const steps = () => Array.from(el.querySelectorAll('.arrow-strip .step'));
+    steps().forEach(s => s.classList.remove('on', 'done'));
+    const on = (ev) => { const d = ev.detail || {}; const list = steps(); list.forEach((s, i) => { if (i < d.step) { s.classList.remove('on'); s.classList.add('done'); } }); const s = list[d.step]; if (s) { s.classList.add('on'); setTimeout(() => { s.classList.remove('on'); s.classList.add('done'); }, 600); } };
+    document.addEventListener('vigil:step', on);
+    setTimeout(() => { document.removeEventListener('vigil:step', on); steps().forEach(s => s.classList.remove('on', 'done')); }, ms || 20000);
+  };
   UI.list = (arr) => arr.length <= 1 ? (arr[0] || '') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
 
   window.VigilUI = UI;

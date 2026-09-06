@@ -59,6 +59,15 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn.ghost { background: transparent; border-color: rgba(255,255,255,0.15); }
 .btn.danger { border-color: var(--blood); color: #f0b0b0; }
+.btn.primary.danger { border-color: #d24b4b; color: #fff3ee; background: linear-gradient(180deg, #d24b4b, #9e2f2f); text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
+.btn.primary.danger:hover, .btn.primary.danger:focus-visible { color: #fff; background: linear-gradient(180deg, #e05a5a, #b23a3a); box-shadow: 0 0 22px rgba(178,58,58,0.35); }
+.btn.audio-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn.audio-btn .audio-icon { flex: 0 0 auto; }
+.btn.audio-btn.playing { border-color: var(--sea); color: var(--sea); }
+.btn.audio-btn.playing .audio-icon path { animation: eq 0.9s ease-in-out infinite; transform-origin: center; }
+.btn.audio-btn.playing .audio-icon path:nth-child(2) { animation-delay: .15s; } .btn.audio-btn.playing .audio-icon path:nth-child(3) { animation-delay: .3s; }
+.btn.audio-btn.playing .audio-icon path:nth-child(4) { animation-delay: .45s; } .btn.audio-btn.playing .audio-icon path:nth-child(5) { animation-delay: .6s; }
+@keyframes eq { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
 
@@ -213,6 +222,12 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 44px; padding: 6px 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
 .arrow-strip .step b { font-size: 20px; color: var(--sea); }
 .arrow-strip .step.rest b { color: var(--ink-dim); }
+.arrow-strip .step.start b, .arrow-strip .step.same b { color: var(--gold); }
+.arrow-strip .step { transition: background .15s, border-color .15s, box-shadow .15s; }
+.arrow-strip .step.on { background: rgba(79,179,191,0.28); border-color: var(--sea); box-shadow: 0 0 14px rgba(79,179,191,0.45); }
+.arrow-strip .step.done { border-color: rgba(79,179,191,0.45); }
+.blk-audio .nohear { margin: 8px 0 0; font-size: 13px; opacity: .75; }
+.blk-audio .btn.audio-btn.playing { background: rgba(79,179,191,0.14); }
 .underlayer { background: #000 !important; border-color: rgba(255,255,255,0.25) !important; }
 .underlayer svg { color: #fff; }
 .laws .law { padding: 8px 10px; border-left: 2px solid var(--line); margin-bottom: 8px; }
@@ -234,6 +249,9 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .pick-grid .pk { border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 8px; background: rgba(0,0,0,0.3); text-align: center; cursor: pointer; }
 .pick-grid .pk.sel { border-color: var(--gold); background: rgba(212,169,78,0.2); }
 .pick-grid .pk svg { width: 44px; height: 44px; }
+.seq-list { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 10px; min-height: 30px; }
+.seq-chip { font-family: var(--display); font-size: 13px; letter-spacing: .08em; padding: 4px 9px; border: 1px solid rgba(79,179,191,0.45); border-radius: 999px; background: rgba(79,179,191,0.1); color: var(--ink); }
+.seq-empty { font-size: 14px; color: var(--ink-dim); font-style: italic; }
 
 </style>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%230b0a10' stroke='%234fb3bf' stroke-width='6'/><circle cx='50' cy='50' r='16' fill='%234fb3bf'/></svg>">
@@ -426,6 +444,36 @@ html:has(body.companion) { overflow: auto; height: auto; }
   function wrap(text, n) { const words = text.split(' '); const lines = []; let cur = ''; for (const w of words) { if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); } if (cur) lines.push(cur); return lines.slice(0, 3); }
 
   /* Simple pluralize / list join */
+  /* A button that plays something. onPlay() returns the phrase length in ms (or nothing); while it plays the button
+     shows it is listening, so a phone with its sound off still shows that the press did something. The icon is an
+     inline drawing rather than a ♪ character, which some phone fonts do not have. */
+  UI.AUDIO_ICON = '<svg class="audio-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 7v10"/><path d="M20 10v4"/></g></svg>';
+  UI.audioButton = function (label, onPlay, opts) {
+    opts = opts || {};
+    const text = String(label || 'Cup your ear').replace(/^[♪♫🔊]\s*/, '');
+    const btn = UI.el('button', { class: 'btn audio-btn ' + (opts.cls || ''), type: 'button', 'aria-label': text });
+    const setLabel = (t) => { btn.innerHTML = UI.AUDIO_ICON + '<span class="audio-label">' + UI.esc(t) + '</span>'; };
+    setLabel(text);
+    let timer = null;
+    btn.addEventListener('click', () => {
+      let ms = 0;
+      try { const r = onPlay(); ms = typeof r === 'number' && isFinite(r) ? r : 1800; } catch (e) { console.error(e); ms = 0; }
+      if (timer) clearTimeout(timer);
+      if (ms <= 0) { btn.classList.remove('playing'); setLabel(text); return; }
+      btn.classList.add('playing'); setLabel(opts.playing || 'Listening…');
+      timer = setTimeout(() => { btn.classList.remove('playing'); setLabel(text); timer = null; }, ms);
+    });
+    return btn;
+  };
+  /* Light each .step of the arrow strip inside el as its note sounds (the audio helpers announce 'vigil:step'). */
+  UI.lightStrip = function (el, ms) {
+    if (!el) return;
+    const steps = () => Array.from(el.querySelectorAll('.arrow-strip .step'));
+    steps().forEach(s => s.classList.remove('on', 'done'));
+    const on = (ev) => { const d = ev.detail || {}; const list = steps(); list.forEach((s, i) => { if (i < d.step) { s.classList.remove('on'); s.classList.add('done'); } }); const s = list[d.step]; if (s) { s.classList.add('on'); setTimeout(() => { s.classList.remove('on'); s.classList.add('done'); }, 600); } };
+    document.addEventListener('vigil:step', on);
+    setTimeout(() => { document.removeEventListener('vigil:step', on); steps().forEach(s => s.classList.remove('on', 'done')); }, ms || 20000);
+  };
   UI.list = (arr) => arr.length <= 1 ? (arr[0] || '') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
 
   window.VigilUI = UI;
@@ -454,7 +502,30 @@ html:has(body.companion) { overflow: auto; height: auto; }
     return buf;
   }
 
+  /* iOS routes Web Audio through the "ambient" session, which the ringer (silent) switch mutes. A playing
+     <audio> element moves the session to "playback", which the switch does not mute. So on iOS, the first
+     gesture that starts audio also starts a looping, silent wav. Harmless anywhere it fails. */
+  let media = null, mediaOk = false;
+  const isIOS = () => { try { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); } catch (e) { return false; } };
+  function silentWav(seconds) {
+    const rate = 8000, n = Math.floor(rate * seconds), buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+    const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); str(36, 'data'); v.setUint32(40, n, true);
+    for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+    let s = ''; const bytes = new Uint8Array(buf); for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return 'data:audio/wav;base64,' + btoa(s);
+  }
+  Audio.unlockMedia = function () {
+    if (mediaOk || !isIOS()) return;
+    try {
+      if (!media) { media = document.createElement('audio'); media.setAttribute('playsinline', ''); media.setAttribute('webkit-playsinline', ''); media.loop = true; media.volume = 0.01; media.preload = 'auto'; media.src = silentWav(0.4); }
+      const p = media.play(); if (p && p.then) p.then(() => { mediaOk = true; }, () => {});
+    } catch (e) {}
+  };
+  try { document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && mediaOk && media && media.paused) media.play().catch(() => {}); }); } catch (e) {}
   Audio.init = function () {
+    Audio.unlockMedia();
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return true; }
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return false;
@@ -830,16 +901,22 @@ html:has(body.companion) { overflow: auto; height: auto; }
   G.readTurned = (items) => items.slice().reverse().map(it => G.invert(G.read(it.shape, it.inv)));
   G.readLine = (items, mark) => mark === 'right' ? G.readTurned(items) : G.readNaive(items);
 
-  /* Steps between consecutive glyphs on the ladder. Returns array of numbers or 'rest'. */
+  /* Steps between consecutive glyphs on the ladder. Returns an array with one entry per glyph after the first:
+     a number (the step from the last glyph that sounded), 'rest' (this glyph is COLD, a pause), or 'start'
+     (this glyph sounds first — only when the row opens with a rest). A rest is a pause, not a reset: the glyph
+     after it is measured from the last one that sounded. */
   G.steps = function (names) {
-    const out = [];
-    for (let i = 1; i < names.length; i++) {
-      const a = GLYPHS[names[i - 1]].step, b = GLYPHS[names[i]].step;
-      if (b == null) out.push('rest'); else if (a == null) out.push('start'); else out.push(b - a);
+    const out = []; let last = null;
+    for (let i = 0; i < names.length; i++) {
+      const g = GLYPHS[names[i]]; const s = g ? g.step : null;
+      if (i === 0) { if (s != null) last = s; continue; }
+      if (s == null) out.push('rest');
+      else if (last == null) { out.push('start'); last = s; }
+      else { out.push(s - last); last = s; }
     }
     return out;
   };
-  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
+  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then it begins' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
   /* Which orderings of a set match a contour? (used to verify uniqueness) */
   G.orderingsMatching = function (set, contour) {
     const res = []; const perm = (arr, m) => { if (!arr.length) { if (JSON.stringify(G.steps(m)) === JSON.stringify(contour)) res.push(m.slice()); return; } arr.forEach((x, i) => perm(arr.slice(0, i).concat(arr.slice(i + 1)), m.concat([x]))); };
@@ -867,25 +944,42 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
 
   /* ---------- audio helpers ---------- */
   const CA = {};
-  CA.stepLabel = (s) => s === 'rest' ? 'rest' : (typeof s === 'string' ? s : (s > 0 ? '+' + s : String(s)));
-  CA.strip = function (steps) {
-    return `<div class="arrow-strip">${steps.map(s => { const r = s === 'rest'; const v = typeof s === 'string' ? parseInt(s, 10) : s; return `<span class="step${r ? ' rest' : ''}"><b>${r ? '—' : (v > 0 ? '▲' : '▼')}</b>${r ? 'rest' : (v > 0 ? 'up ' + v : 'down ' + (-v))}</span>`; }).join('')}</div>`;
+  /* A step is a number (up/down the ladder), 'rest' (a pause) or 'start' (the first note after an opening rest).
+     Anything else — or a number that is not finite — is drawn as a start and played as nothing, never as NaN. */
+  CA.stepKind = function (s) {
+    if (s === 'rest') return { kind: 'rest' };
+    const v = typeof s === 'number' ? s : (typeof s === 'string' && /^[-+]?\d+$/.test(s.trim()) ? parseInt(s, 10) : NaN);
+    return Number.isFinite(v) ? { kind: 'step', v } : { kind: 'start' };
   };
-  /* Play a contour of steps relative to a starting pitch (room-tuned: absolute pitch varies per call). */
-  CA.playSteps = function (Audio, steps, base) {
+  CA.stepLabel = (s) => { const k = CA.stepKind(s); return k.kind === 'rest' ? 'rest' : k.kind === 'start' ? 'begins' : (k.v > 0 ? '+' + k.v : String(k.v)); };
+  CA.strip = function (steps) {
+    return `<div class="arrow-strip">${steps.map(s => { const k = CA.stepKind(s); if (k.kind === 'rest') return '<span class="step rest"><b>—</b>rest</span>'; if (k.kind === 'start') return '<span class="step start"><b>◆</b>begins</span>'; return `<span class="step${k.v === 0 ? ' same' : ''}"><b>${k.v > 0 ? '▲' : k.v < 0 ? '▼' : '='}</b>${k.v > 0 ? 'up ' + k.v : k.v < 0 ? 'down ' + (-k.v) : 'same'}</span>`; }).join('')}</div>`;
+  };
+  /* Tell whichever strip is listening that step i (0-based, in the array the strip was drawn from) is sounding now. */
+  CA.announce = function (i, extra) { try { document.dispatchEvent(new CustomEvent('vigil:step', { detail: Object.assign({ step: i }, extra || {}) })); } catch (e) {} };
+  /* Play a contour of steps relative to a starting pitch (room-tuned: absolute pitch varies per call).
+     Returns the length of the phrase in ms. opts.offset shifts the announced step index (for a second voice). */
+  CA.playSteps = function (Audio, steps, base, opts) {
     Audio.init(); if (Audio.isMuted()) Audio.setMuted(false);
+    const off = (opts && opts.offset) || 0;
     let midi = base || (60 + Math.floor(Math.random() * 7));
     const ladder = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23];
     let idx = 4; // start mid-ladder
     const at = (k) => { const oct = Math.floor(k / 7), d = ((k % 7) + 7) % 7; return midi + oct * 12 + ladder[d]; };
     Audio.note(at(idx), 1.0, 0.18);
     let t = 650;
-    steps.forEach(s => { const v = typeof s === 'string' ? (s === 'rest' ? 'rest' : parseInt(s, 10)) : s; if (v === 'rest') { t += 700; return; } idx += v; const m = at(idx); setTimeout(() => Audio.note(m, 1.0, 0.18), t); t += 650; });
-    return t;
+    steps.forEach((s, i) => {
+      const k = CA.stepKind(s);
+      if (k.kind === 'rest') { const tt = t; setTimeout(() => CA.announce(off + i, { rest: true }), tt); t += 700; return; }
+      if (k.kind === 'step') idx += k.v; // 'start' keeps the pitch and just sounds
+      const m = at(idx), tt = t; setTimeout(() => { Audio.note(m, 1.0, 0.18); CA.announce(off + i); }, tt); t += 650;
+    });
+    return t + 500;
   };
-  CA.playGlyphs = function (Audio, names) { Audio.init(); let t = 0; names.forEach(n => { const m = G.MIDI[n]; setTimeout(() => { if (m) Audio.note(m, 1.0, 0.18); }, t); t += 650; }); };
-  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (!bpm) return; const iv = 60000 / bpm; for (let i = 0; i < (beats || 8); i++) setTimeout(() => Audio.sfx('heart'), i * iv); };
-  CA.pulses = function (Audio, n, gapMs) { Audio.init(); for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('chime'), i * (gapMs || 420)); };
+  /* Play glyphs by their own pitch (the Book's row-player); COLD is a silent beat. Returns the length in ms. */
+  CA.playGlyphs = function (Audio, names) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); let t = 0; names.forEach((n, i) => { const m = G.MIDI[n]; const tt = t; setTimeout(() => { if (m) Audio.note(m, 1.0, 0.18); if (i > 0) CA.announce(i - 1, m ? {} : { rest: true }); }, tt); t += 650; }); return t + 500; };
+  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); if (!bpm) return 0; const iv = 60000 / bpm, n = beats || 8; for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('heart'), i * iv); return n * iv + 300; };
+  CA.pulses = function (Audio, n, gapMs) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('chime'), i * (gapMs || 420)); return n * (gapMs || 420) + 400; };
   window.CompanionAudio = CA;
 
   /* ---------- shared drawing helpers ---------- */
@@ -926,10 +1020,11 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         const render = () => { UI.clear(seqEl); if (!row.length) seqEl.appendChild(UI.el('span', { class: 'seq-empty', text: 'No glyphs yet.' })); row.forEach(nm => seqEl.appendChild(UI.el('span', { class: 'seq-chip', text: nm }))); };
         G.ORDER.forEach(nm => grid.appendChild(UI.el('div', { class: 'pk', html: G.svg(nm, { size: 40, color: '#4fb3bf' }) + '<div>' + nm + '</div>', onclick: () => { row.push(nm); render(); } })));
         el.appendChild(grid); el.appendChild(seqEl);
-        const strip = UI.el('div', {});
+        const strip = UI.el('div', { class: 'strip' });
+        const showSteps = () => { if (row.length < 2) { strip.innerHTML = '<p class="fine">Tap at least two glyphs to see a step.</p>'; return; } strip.innerHTML = CA.strip(G.steps(row)) + '<p class="fine">' + UI.esc(G.stepsText(row)) + '.</p>'; };
         el.appendChild(UI.el('div', { class: 'row' }, [
-          UI.el('button', { class: 'btn small', text: '♪ Play row', onclick: () => { CA.playGlyphs(window.VigilAudio, row); strip.innerHTML = CA.strip(G.steps(row)); } }),
-          UI.el('button', { class: 'btn small ghost', text: 'Show steps', onclick: () => { strip.innerHTML = CA.strip(G.steps(row)); } }),
+          UI.audioButton('Play row', () => { showSteps(); if (!row.length) return 0; UI.lightStrip(strip); return CA.playGlyphs(window.VigilAudio, row); }, { cls: 'small' }),
+          UI.el('button', { class: 'btn small ghost', text: 'Show steps', onclick: showSteps }),
           UI.el('button', { class: 'btn small ghost', text: 'Clear', onclick: () => { row.length = 0; render(); strip.innerHTML = ''; } }),
         ]));
         el.appendChild(strip); render();
@@ -1797,7 +1892,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'The memory-bell (page 1 of 4)' });
         P.sight.push({ t: 'p', text: 'On the mantel, older than the mantel. Struck, it says back the last thing said near it — to an Ear. The Hearth hears a hum. Cup yours.' });
-        P.sight.push({ t: 'audio', label: 'The bell remembers: two voices', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]), play: (A) => { CA.playSteps(A, [-1, -2], 58); setTimeout(() => CA.playSteps(A, [2, 1, -3], 66), 2400); },
+        P.sight.push({ t: 'audio', label: 'The bell remembers: two voices', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]), play: (A) => { CA.playSteps(A, [-1, -2], 58); setTimeout(() => CA.announce(2, { rest: true }), 2000); setTimeout(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
           text: 'A low voice, courteous and certain — **the Envoy, Vane:** *"The Crown will have the Cold open, Ilsabet, one way or another."*\n\nThen a voice you know from two floors down — **the Provost:** *"Then the Crown will go through me. And through it."*' });
         P.sight.push({ t: 'fine', text: 'Say it word for word. Then say whose. *Through it.* Nobody at the table will like that sentence; say it anyway.' });
         P.sight.push({ t: 'h', text: 'The Founders\' phrase, again (page 2 of 4)' });
@@ -1976,7 +2071,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     binder: { q: 'Five oaths carved on the newel. Law 12 (Founders\'): *an oath binds only if its lock is KNOT or EMBER.* The lock is the last glyph. **How many bind?**', html: oathsHtml },
   };
   const PEAL = 'HLHLHHLHLHHL'; // lower bell strikes 5 times, the higher 7
-  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => setTimeout(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); }
+  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => setTimeout(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); return PEAL.length * 480 + 600; }
 
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
@@ -1992,7 +2087,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         UI.clear(box); api.audio.init();
         box.appendChild(UI.el('p', { html: UI.rich(mat.q) }));
         if (mat.html) box.appendChild(UI.el('div', { html: mat.html }));
-        if (roleId === 'listener') { box.appendChild(UI.el('button', { class: 'btn', text: '♪ Cup your ear — the peal', onclick: () => playPeal(api.audio) })); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
+        if (roleId === 'listener') { box.appendChild(UI.audioButton('Cup your ear — the peal', () => playPeal(api.audio))); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
         const cd = UI.el('div', { class: 'cd', text: '45' }); box.appendChild(cd);
         const ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
         ctl.promise.then(() => { cd.textContent = 'TIME — pick your digit'; });
@@ -2760,7 +2855,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         UI.clear(el);
         const g = UI.el('div', { html: GOODBYE[roleId](ctx) });
         el.appendChild(g);
-        if (roleId === 'listener') { const btn = UI.el('button', { class: 'btn', text: '♪ Cup your ear — once', onclick: () => { try { CA.heartbeat(ctx.audio, 64, 8); } catch (e) {} } }); g.appendChild(btn); }
+        if (roleId === 'listener') { const btn = UI.audioButton('Cup your ear — once', () => CA.heartbeat(ctx.audio, 64, 8)); g.appendChild(btn); }
         const look = UI.el('button', { class: 'btn primary big-btn', text: 'Look up', style: { marginTop: '14px' }, onclick: burn });
         el.appendChild(look);
         el.appendChild(UI.el('p', { class: 'fine', text: 'The page burns when you look up. Or in a little while, whether you do or not.' }));
@@ -3060,9 +3155,16 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           const w = UI.el('div', { class: 'blk-audio' });
           if (b.label) w.appendChild(UI.el('div', { class: 'label', text: b.label }));
           if (b.strip) w.appendChild(UI.el('div', { class: 'strip', html: typeof b.strip === 'function' ? b.strip(cx) : b.strip }));
-          const btn = UI.el('button', { class: 'btn', text: b.button || '♪ Cup your ear', onclick: () => { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); try { b.play(Audio, cx); } catch (e) { console.error(e); } } });
+          const btn = UI.audioButton(b.button || 'Cup your ear', () => {
+            Audio.init(); if (Audio.isMuted()) Audio.setMuted(false);
+            const ms = b.play(Audio, cx);
+            const len = typeof ms === 'number' && isFinite(ms) ? ms : 2200;
+            UI.lightStrip(w.querySelector('.strip'), len);
+            return len;
+          });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

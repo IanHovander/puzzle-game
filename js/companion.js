@@ -162,9 +162,16 @@
           const w = UI.el('div', { class: 'blk-audio' });
           if (b.label) w.appendChild(UI.el('div', { class: 'label', text: b.label }));
           if (b.strip) w.appendChild(UI.el('div', { class: 'strip', html: typeof b.strip === 'function' ? b.strip(cx) : b.strip }));
-          const btn = UI.el('button', { class: 'btn', text: b.button || '♪ Cup your ear', onclick: () => { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); try { b.play(Audio, cx); } catch (e) { console.error(e); } } });
+          const btn = UI.audioButton(b.button || 'Cup your ear', () => {
+            Audio.init(); if (Audio.isMuted()) Audio.setMuted(false);
+            const ms = b.play(Audio, cx);
+            const len = typeof ms === 'number' && isFinite(ms) ? ms : 2200;
+            UI.lightStrip(w.querySelector('.strip'), len);
+            return len;
+          });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

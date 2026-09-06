@@ -97,7 +97,7 @@
     binder: { q: 'Five oaths carved on the newel. Law 12 (Founders\'): *an oath binds only if its lock is KNOT or EMBER.* The lock is the last glyph. **How many bind?**', html: oathsHtml },
   };
   const PEAL = 'HLHLHHLHLHHL'; // lower bell strikes 5 times, the higher 7
-  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => setTimeout(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); }
+  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => setTimeout(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); return PEAL.length * 480 + 600; }
 
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
@@ -113,7 +113,7 @@
         UI.clear(box); api.audio.init();
         box.appendChild(UI.el('p', { html: UI.rich(mat.q) }));
         if (mat.html) box.appendChild(UI.el('div', { html: mat.html }));
-        if (roleId === 'listener') { box.appendChild(UI.el('button', { class: 'btn', text: '♪ Cup your ear — the peal', onclick: () => playPeal(api.audio) })); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
+        if (roleId === 'listener') { box.appendChild(UI.audioButton('Cup your ear — the peal', () => playPeal(api.audio))); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
         const cd = UI.el('div', { class: 'cd', text: '45' }); box.appendChild(cd);
         const ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
         ctl.promise.then(() => { cd.textContent = 'TIME — pick your digit'; });

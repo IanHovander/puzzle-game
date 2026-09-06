@@ -19,7 +19,30 @@
     return buf;
   }
 
+  /* iOS routes Web Audio through the "ambient" session, which the ringer (silent) switch mutes. A playing
+     <audio> element moves the session to "playback", which the switch does not mute. So on iOS, the first
+     gesture that starts audio also starts a looping, silent wav. Harmless anywhere it fails. */
+  let media = null, mediaOk = false;
+  const isIOS = () => { try { return /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); } catch (e) { return false; } };
+  function silentWav(seconds) {
+    const rate = 8000, n = Math.floor(rate * seconds), buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+    const str = (o, s) => { for (let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+    str(0, 'RIFF'); v.setUint32(4, 36 + n, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true); str(36, 'data'); v.setUint32(40, n, true);
+    for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+    let s = ''; const bytes = new Uint8Array(buf); for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return 'data:audio/wav;base64,' + btoa(s);
+  }
+  Audio.unlockMedia = function () {
+    if (mediaOk || !isIOS()) return;
+    try {
+      if (!media) { media = document.createElement('audio'); media.setAttribute('playsinline', ''); media.setAttribute('webkit-playsinline', ''); media.loop = true; media.volume = 0.01; media.preload = 'auto'; media.src = silentWav(0.4); }
+      const p = media.play(); if (p && p.then) p.then(() => { mediaOk = true; }, () => {});
+    } catch (e) {}
+  };
+  try { document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && mediaOk && media && media.paused) media.play().catch(() => {}); }); } catch (e) {}
   Audio.init = function () {
+    Audio.unlockMedia();
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return true; }
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return false;

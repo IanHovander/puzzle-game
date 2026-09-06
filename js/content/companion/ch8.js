@@ -133,7 +133,7 @@
         UI.clear(el);
         const g = UI.el('div', { html: GOODBYE[roleId](ctx) });
         el.appendChild(g);
-        if (roleId === 'listener') { const btn = UI.el('button', { class: 'btn', text: '♪ Cup your ear — once', onclick: () => { try { CA.heartbeat(ctx.audio, 64, 8); } catch (e) {} } }); g.appendChild(btn); }
+        if (roleId === 'listener') { const btn = UI.audioButton('Cup your ear — once', () => CA.heartbeat(ctx.audio, 64, 8)); g.appendChild(btn); }
         const look = UI.el('button', { class: 'btn primary big-btn', text: 'Look up', style: { marginTop: '14px' }, onclick: burn });
         el.appendChild(look);
         el.appendChild(UI.el('p', { class: 'fine', text: 'The page burns when you look up. Or in a little while, whether you do or not.' }));

@@ -8,25 +8,42 @@
 
   /* ---------- audio helpers ---------- */
   const CA = {};
-  CA.stepLabel = (s) => s === 'rest' ? 'rest' : (typeof s === 'string' ? s : (s > 0 ? '+' + s : String(s)));
-  CA.strip = function (steps) {
-    return `<div class="arrow-strip">${steps.map(s => { const r = s === 'rest'; const v = typeof s === 'string' ? parseInt(s, 10) : s; return `<span class="step${r ? ' rest' : ''}"><b>${r ? '—' : (v > 0 ? '▲' : '▼')}</b>${r ? 'rest' : (v > 0 ? 'up ' + v : 'down ' + (-v))}</span>`; }).join('')}</div>`;
+  /* A step is a number (up/down the ladder), 'rest' (a pause) or 'start' (the first note after an opening rest).
+     Anything else — or a number that is not finite — is drawn as a start and played as nothing, never as NaN. */
+  CA.stepKind = function (s) {
+    if (s === 'rest') return { kind: 'rest' };
+    const v = typeof s === 'number' ? s : (typeof s === 'string' && /^[-+]?\d+$/.test(s.trim()) ? parseInt(s, 10) : NaN);
+    return Number.isFinite(v) ? { kind: 'step', v } : { kind: 'start' };
   };
-  /* Play a contour of steps relative to a starting pitch (room-tuned: absolute pitch varies per call). */
-  CA.playSteps = function (Audio, steps, base) {
+  CA.stepLabel = (s) => { const k = CA.stepKind(s); return k.kind === 'rest' ? 'rest' : k.kind === 'start' ? 'begins' : (k.v > 0 ? '+' + k.v : String(k.v)); };
+  CA.strip = function (steps) {
+    return `<div class="arrow-strip">${steps.map(s => { const k = CA.stepKind(s); if (k.kind === 'rest') return '<span class="step rest"><b>—</b>rest</span>'; if (k.kind === 'start') return '<span class="step start"><b>◆</b>begins</span>'; return `<span class="step${k.v === 0 ? ' same' : ''}"><b>${k.v > 0 ? '▲' : k.v < 0 ? '▼' : '='}</b>${k.v > 0 ? 'up ' + k.v : k.v < 0 ? 'down ' + (-k.v) : 'same'}</span>`; }).join('')}</div>`;
+  };
+  /* Tell whichever strip is listening that step i (0-based, in the array the strip was drawn from) is sounding now. */
+  CA.announce = function (i, extra) { try { document.dispatchEvent(new CustomEvent('vigil:step', { detail: Object.assign({ step: i }, extra || {}) })); } catch (e) {} };
+  /* Play a contour of steps relative to a starting pitch (room-tuned: absolute pitch varies per call).
+     Returns the length of the phrase in ms. opts.offset shifts the announced step index (for a second voice). */
+  CA.playSteps = function (Audio, steps, base, opts) {
     Audio.init(); if (Audio.isMuted()) Audio.setMuted(false);
+    const off = (opts && opts.offset) || 0;
     let midi = base || (60 + Math.floor(Math.random() * 7));
     const ladder = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23];
     let idx = 4; // start mid-ladder
     const at = (k) => { const oct = Math.floor(k / 7), d = ((k % 7) + 7) % 7; return midi + oct * 12 + ladder[d]; };
     Audio.note(at(idx), 1.0, 0.18);
     let t = 650;
-    steps.forEach(s => { const v = typeof s === 'string' ? (s === 'rest' ? 'rest' : parseInt(s, 10)) : s; if (v === 'rest') { t += 700; return; } idx += v; const m = at(idx); setTimeout(() => Audio.note(m, 1.0, 0.18), t); t += 650; });
-    return t;
+    steps.forEach((s, i) => {
+      const k = CA.stepKind(s);
+      if (k.kind === 'rest') { const tt = t; setTimeout(() => CA.announce(off + i, { rest: true }), tt); t += 700; return; }
+      if (k.kind === 'step') idx += k.v; // 'start' keeps the pitch and just sounds
+      const m = at(idx), tt = t; setTimeout(() => { Audio.note(m, 1.0, 0.18); CA.announce(off + i); }, tt); t += 650;
+    });
+    return t + 500;
   };
-  CA.playGlyphs = function (Audio, names) { Audio.init(); let t = 0; names.forEach(n => { const m = G.MIDI[n]; setTimeout(() => { if (m) Audio.note(m, 1.0, 0.18); }, t); t += 650; }); };
-  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (!bpm) return; const iv = 60000 / bpm; for (let i = 0; i < (beats || 8); i++) setTimeout(() => Audio.sfx('heart'), i * iv); };
-  CA.pulses = function (Audio, n, gapMs) { Audio.init(); for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('chime'), i * (gapMs || 420)); };
+  /* Play glyphs by their own pitch (the Book's row-player); COLD is a silent beat. Returns the length in ms. */
+  CA.playGlyphs = function (Audio, names) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); let t = 0; names.forEach((n, i) => { const m = G.MIDI[n]; const tt = t; setTimeout(() => { if (m) Audio.note(m, 1.0, 0.18); if (i > 0) CA.announce(i - 1, m ? {} : { rest: true }); }, tt); t += 650; }); return t + 500; };
+  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); if (!bpm) return 0; const iv = 60000 / bpm, n = beats || 8; for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('heart'), i * iv); return n * iv + 300; };
+  CA.pulses = function (Audio, n, gapMs) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('chime'), i * (gapMs || 420)); return n * (gapMs || 420) + 400; };
   window.CompanionAudio = CA;
 
   /* ---------- shared drawing helpers ---------- */
@@ -67,10 +84,11 @@
         const render = () => { UI.clear(seqEl); if (!row.length) seqEl.appendChild(UI.el('span', { class: 'seq-empty', text: 'No glyphs yet.' })); row.forEach(nm => seqEl.appendChild(UI.el('span', { class: 'seq-chip', text: nm }))); };
         G.ORDER.forEach(nm => grid.appendChild(UI.el('div', { class: 'pk', html: G.svg(nm, { size: 40, color: '#4fb3bf' }) + '<div>' + nm + '</div>', onclick: () => { row.push(nm); render(); } })));
         el.appendChild(grid); el.appendChild(seqEl);
-        const strip = UI.el('div', {});
+        const strip = UI.el('div', { class: 'strip' });
+        const showSteps = () => { if (row.length < 2) { strip.innerHTML = '<p class="fine">Tap at least two glyphs to see a step.</p>'; return; } strip.innerHTML = CA.strip(G.steps(row)) + '<p class="fine">' + UI.esc(G.stepsText(row)) + '.</p>'; };
         el.appendChild(UI.el('div', { class: 'row' }, [
-          UI.el('button', { class: 'btn small', text: '♪ Play row', onclick: () => { CA.playGlyphs(window.VigilAudio, row); strip.innerHTML = CA.strip(G.steps(row)); } }),
-          UI.el('button', { class: 'btn small ghost', text: 'Show steps', onclick: () => { strip.innerHTML = CA.strip(G.steps(row)); } }),
+          UI.audioButton('Play row', () => { showSteps(); if (!row.length) return 0; UI.lightStrip(strip); return CA.playGlyphs(window.VigilAudio, row); }, { cls: 'small' }),
+          UI.el('button', { class: 'btn small ghost', text: 'Show steps', onclick: showSteps }),
           UI.el('button', { class: 'btn small ghost', text: 'Clear', onclick: () => { row.length = 0; render(); strip.innerHTML = ''; } }),
         ]));
         el.appendChild(strip); render();
