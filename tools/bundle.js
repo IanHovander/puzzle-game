@@ -41,4 +41,9 @@ function fragment(html) {
 const H = bundle('index.html', hearthInject), C = bundle('companion.html', '');
 fs.writeFileSync(path.join(outDir, 'hearth.html'), artifact ? fragment(H) : H);
 fs.writeFileSync(path.join(outDir, 'companion.html'), artifact ? fragment(C) : C);
+if (args.includes('--host-sim')) {
+  const wrap = (frag) => `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>:root{color-scheme:light}body{margin:0;font:14px system-ui;background:#f6f5f1}img{max-width:100%}[hidden]{display:none!important}</style></head><body>\n${frag}</body></html>`;
+  fs.writeFileSync(path.join(outDir, 'hearth-hosted.html'), wrap(fragment(H)));
+  fs.writeFileSync(path.join(outDir, 'companion-hosted.html'), wrap(fragment(C)));
+}
 for (const f of ['hearth.html', 'companion.html']) console.log(f, Math.round(fs.statSync(path.join(outDir, f)).size / 1024) + ' KB');

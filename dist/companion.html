@@ -36,8 +36,9 @@ html, body { height: 100%; margin: 0; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--serif); font-size: 20px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+body.hearth { overflow: hidden; }
 h1, h2, h3, .display { font-family: var(--display); font-weight: 600; letter-spacing: 0.06em; }
 a { color: var(--gold); }
 em { font-style: italic; color: var(--gold-2); }
@@ -126,6 +127,8 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 <style>
 /* Companion (phone) layout */
 body.companion { overflow: auto; font-size: 18px; background: var(--bg); }
+html:has(body.companion) { overflow: auto; height: auto; }
+#capp { position: relative; }
 #capp { min-height: 100vh; display: flex; flex-direction: column; }
 #chead { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(11,10,16,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
 #chead .brand { font-family: var(--display); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
@@ -2899,6 +2902,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   'use strict';
   const UI = window.VigilUI, Shared = window.VigilShared, Audio = window.VigilAudio, Lore = window.VigilLore;
   const C = window.CompanionContent;
+  document.body.classList.add('companion'); document.body.classList.remove('hearth');
   const KEY = 'vigil.companion.v2';
   const fresh = () => ({ role: null, name: '', unlocked: {}, mini: {}, answers: {}, notes: {}, done: {}, tab: 'sight', current: null });
   let st = fresh();

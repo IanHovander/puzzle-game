@@ -2,6 +2,7 @@
 (function () {
   'use strict';
   const UI = window.VigilUI, Store = window.VigilStore, Audio = window.VigilAudio, FX = window.VigilFX, Input = window.VigilInput, Lore = window.VigilLore;
+  document.body.classList.add('hearth'); document.body.classList.remove('companion');
 
   Game.mount({ stage: 'stage', fx: 'fx', text: 'text', actions: 'actions', widget: 'widget', chapter: 'chapter', timer: 'timer', hint: 'hint', mute: 'mute', menu: 'menu' });
   document.getElementById('qr').addEventListener('click', () => Game.showQR());

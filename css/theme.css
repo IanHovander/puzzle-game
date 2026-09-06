@@ -28,8 +28,9 @@ html, body { height: 100%; margin: 0; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--serif); font-size: 20px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+body.hearth { overflow: hidden; }
 h1, h2, h3, .display { font-family: var(--display); font-weight: 600; letter-spacing: 0.06em; }
 a { color: var(--gold); }
 em { font-style: italic; color: var(--gold-2); }

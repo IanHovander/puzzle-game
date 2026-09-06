@@ -34,8 +34,9 @@ html, body { height: 100%; margin: 0; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--serif); font-size: 20px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+body.hearth { overflow: hidden; }
 h1, h2, h3, .display { font-family: var(--display); font-weight: 600; letter-spacing: 0.06em; }
 a { color: var(--gold); }
 em { font-style: italic; color: var(--gold-2); }
@@ -123,7 +124,7 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 
 <style>
 /* Hearth (main screen) layout */
-#app { position: relative; height: 100vh; width: 100vw; display: grid; grid-template-rows: 52px 1fr; overflow: hidden; }
+#app { position: fixed; inset: 0; display: grid; grid-template-rows: 52px 1fr; overflow: hidden; }
 
 /* stage / art */
 #stage { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: radial-gradient(1200px 700px at 50% 30%, #1a1626 0%, var(--bg) 70%); }
@@ -208,7 +209,8 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea); }
 
 /* title screen */
-#title { position: relative; z-index: 20; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; text-align: center; padding: 20px; }
+#title { position: absolute; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: safe center; gap: 18px; text-align: center; padding: 20px; overflow-y: auto; }
+#title > * { flex-shrink: 0; }
 #title h1 { font-size: clamp(42px, 7vw, 84px); margin: 0; color: var(--gold-2); text-shadow: 0 0 40px rgba(212,169,78,0.35), 0 4px 30px rgba(0,0,0,0.7); font-weight: 700; letter-spacing: 0.12em; animation: fadeUp 1.6s ease both; }
 #title .tagline { font-family: var(--hand); font-style: italic; font-size: 24px; color: var(--ink-dim); margin: -6px 0 10px; animation: fadeUp 1.6s .4s ease both; }
 #title .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 22px 30px; backdrop-filter: blur(8px); box-shadow: var(--shadow); max-width: 760px; width: 100%; animation: fadeUp 1s .7s ease both; }
@@ -417,7 +419,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 
 </style>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%230b0a10' stroke='%23d4a94e' stroke-width='6'/><path d='M50 18 L58 42 L82 42 L62 56 L70 80 L50 66 L30 80 L38 56 L18 42 L42 42 Z' fill='%23d4a94e'/></svg>">
-<script>window.COMPANION_URL = "https://example.invalid/companion";</script>
+<script>window.COMPANION_URL = "https://claude.ai/code/artifact/8f607ee5-620a-40fc-9d95-77d95baaac51";</script>
 </head>
 <body>
 <div id="app">
@@ -9563,6 +9565,7 @@ window.VigilMeta = { title: 'Hearthfall' };
 (function () {
   'use strict';
   const UI = window.VigilUI, Store = window.VigilStore, Audio = window.VigilAudio, FX = window.VigilFX, Input = window.VigilInput, Lore = window.VigilLore;
+  document.body.classList.add('hearth'); document.body.classList.remove('companion');
 
   Game.mount({ stage: 'stage', fx: 'fx', text: 'text', actions: 'actions', widget: 'widget', chapter: 'chapter', timer: 'timer', hint: 'hint', mute: 'mute', menu: 'menu' });
   document.getElementById('qr').addEventListener('click', () => Game.showQR());

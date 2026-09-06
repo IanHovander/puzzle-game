@@ -4,6 +4,7 @@
   'use strict';
   const UI = window.VigilUI, Shared = window.VigilShared, Audio = window.VigilAudio, Lore = window.VigilLore;
   const C = window.CompanionContent;
+  document.body.classList.add('companion'); document.body.classList.remove('hearth');
   const KEY = 'vigil.companion.v2';
   const fresh = () => ({ role: null, name: '', unlocked: {}, mini: {}, answers: {}, notes: {}, done: {}, tab: 'sight', current: null });
   let st = fresh();
