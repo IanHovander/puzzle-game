@@ -53,7 +53,7 @@ Text then a Continue button. `auto: ms` advances automatically.
 ```js
 { type: 'puzzle', puzzle: 'ring', puzzleId: 'ch2_door',   // puzzleId defaults to scene id; solved puzzles are skipped on resume
   config: (state) => ({ ... }),                            // widget config (see §3)
-  hints: ['Owl knows where a ring begins.', 'Sunwise from slot 3.', (s) => 'ASH at 3, EMBER at 4.'], par: [3, 6],
+  hints: ['The Seer knows where a ring begins.', 'Sunwise from slot 3.', (s) => 'ASH at 3, EMBER at 4.'], par: [3, 6],
   onSolve: (state, result) => { ... },                     // side effects
   solvedText: ['The lamp catches.'], next: 'ch0_x', autoNext: false }
 ```
@@ -61,7 +61,7 @@ The widget resolves with a result object; `result.set` (if present) is written t
 
 ### 2.4 `code` — attunement word (chapter boundary)
 ```js
-{ type: 'code', text: ['The word is carved above the door.'], roles: 'Warden of the Hearth: **Owl**. Voice: **Bookmoth**.', sightSeconds: 90, next: 'ch2_1' }
+{ type: 'code', text: ['The word is carved above the door.'], roles: 'Warden of the Hearth: **The Seer**. Voice: **The Reader**.', sightSeconds: 90, next: 'ch2_1' }
 ```
 The word comes from the chapter's `code`; the cast is computed automatically from `VigilLore.chapter(id).cast` and current flags. Use `code: 'LINEN'` on a scene to show a mini-word (no cast). After the code scene, the Companion has the chapter's pages.
 
@@ -79,7 +79,7 @@ The word comes from the chapter's `code`; the cast is computed automatically fro
 ```js
 flow: { nodes: [ { id: 'ch1_vote', label: 'The Convocation votes', col: 0, row: 1 },
                  { id: 'ch1_vote_lost', label: 'Wren is taken', col: 1, row: 2, kind: 'choice', when: (s) => s.flags.VOTE_LOST, secret: true },
-                 { id: 'ch1_private', label: 'only Hush knows', col: 2, row: 0, kind: 'end', secret: true } ],
+                 { id: 'ch1_private', label: 'only the Listener knows', col: 2, row: 0, kind: 'end', secret: true } ],
         edges: [ ['ch1_vote', 'ch1_vote_lost'] ] }
 { type: 'flow', text: ['The bell. The night moves on.'], stats: (s) => 'Hints so far: ' + (s.flags.hintsTotal || 0), next: 'ch2_start' }
 ```
@@ -174,7 +174,7 @@ A chapter may inject its own CSS from its Hearth file (`document.head.appendChil
 
 ## 11. Asymmetry rules for widgets (integrator notes)
 
-- Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs Bookmoth to name what is carved. Do not add shapes to palette tiles.
+- Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs the Reader to name what is carved. Do not add shapes to palette tiles.
 - A solved widget stays on screen while `solvedText` plays (set `clearWidget: true` on the scene to hide it instead).
 - `seats` accepts `keepSelection: true` to keep the current approaches after a non-final wrong check.
 

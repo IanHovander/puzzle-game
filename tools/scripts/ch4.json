@@ -13,7 +13,7 @@
   {"wait": 400}, {"expect": "2 found"}, {"click": ".ch4-hot[data-id=\"tapestry\"]"}, {"wait": 400}, {"shot": "ch4_tapestry_before"}, {"clickText": "Scrape"}, {"wait": 300}, {"clickText": "Scrape"}, {"wait": 300}, {"clickText": "Scrape"}, {"wait": 300}, {"clickText": "Scrape"}, {"wait": 2200}, {"shot": "ch4_tapestry_scraped"}, {"click": ".ch4-opts .btn >> nth=2"}, {"wait": 1000}, {"expect": "So he had"}, {"clickText": "Back to the room"},
   {"wait": 400}, {"expect": "3 found"}, {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"click": ".ch4-opts .btn >> nth=2"}, {"wait": 1000}, {"expect": "Oriel"}, {"shot": "ch4_chair"}, {"clickText": "Back to the room"},
   {"wait": 400}, {"expect": "4 found"}, {"shot": "ch4_secrets_done"}, {"clickText": "Marrow returns"},
-  {"wait": 800}, {"key": "Space"}, {"expect": "all four"}, {"expect": "So. Seer."}, {"clickText": "Unroll the scroll"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "all four"}, {"expect": "So. The Seer."}, {"clickText": "Unroll the scroll"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch4_swear"}, {"click": ".btn.choice >> nth=0"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"slots": [[4, "THORN"], [1, "ASH"], [2, "WELL"], [3, "COLD"]]}, {"clickText": "Close the sigil"}, {"wait": 600}, {"expect": "Law 4"}, {"wait": 1200},
   {"slots": [[4, "THORN"], [1, "ASH"], [2, "WELL"], [3, "KNOT"]]}, {"shot": "ch4_oath_placed"}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch4_oath_fourhands"}, {"keys": "acm/"}, {"wait": 2200},

@@ -31,7 +31,7 @@
   if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
-  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.nick} · ${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
+  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
   const chapterOrder = () => Lore.chapters.map(c => c.id);
   const maxUnlockedN = () => Math.max(-1, ...Object.keys(st.unlocked).map(id => Lore.chapter(id).n));
 
@@ -52,7 +52,7 @@
     const grid = UI.el('div', { class: 'role-grid' });
     Lore.roles.forEach((r, i) => {
       grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { switchRole(r.id); save(); Audio.sfx('chime'); showName(); } }, [
-        UI.el('span', { class: 'rname', text: `${r.name} — "${r.nick}"` }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
+        UI.el('span', { class: 'rname', text: r.name }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
       ]));
     });
     p.appendChild(grid); main.appendChild(p);

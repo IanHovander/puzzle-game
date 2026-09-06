@@ -5,7 +5,7 @@
   {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_e0"}, {"expect": "grey-eyed and ordinary"}, {"clickText": "Dawn"},
   {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"expect": "first true thing"}, {"clickText": "Years later"},
   {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_years"}, {"expect": "would do it again"}, {"clickText": "The whole night"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"shot": "ch8_night"}, {"expect": "only Listener knows"}, {"clickText": "Onward"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"shot": "ch8_night"}, {"expect": "only the Listener knows"}, {"clickText": "Onward"},
   {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_unseal"}, {"expect": "Unseal what each of you chose in the dark?"}, {"click": ".btn.choice >> nth=0"}, {"wait": 600}, {"key": "Space"}, {"clickText": "Continue"},
   {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"clickText": "Unseal Reader"}, {"wait": 300}, {"clickText": "Unseal Listener"}, {"wait": 300}, {"clickText": "Unseal Seer"}, {"wait": 300}, {"clickText": "Unseal Binder"}, {"wait": 500}, {"shot": "ch8_unsealed"}, {"expect": "said yes to the stair"}, {"expect": "broke it in the room"}, {"clickText": "Onward"},
   {"wait": 900}, {"key": "Space"}, {"wait": 5500}, {"shot": "ch8_map"}, {"expect": "IT IS THE GLYPH KNOT"}, {"clickText": "The numbers"},

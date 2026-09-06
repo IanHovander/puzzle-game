@@ -25,7 +25,7 @@
     Lore.roles.forEach((r, i) => {
       const lab = UI.el('label', { class: 'p' + i });
       lab.appendChild(UI.el('span', { text: r.name }));
-      lab.appendChild(UI.el('span', { class: 'seat-nick', text: '"' + r.nick + '"' }));
+      lab.appendChild(UI.el('span', { class: 'seat-nick', text: r.gift }));
       lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.gift }));
       lab.appendChild(UI.el('span', { class: 'seat-key', html: `key <b>${UI.esc(Store.state.keys[i] === ' ' ? 'SPACE' : Store.state.keys[i])}</b>` }));
       seats.appendChild(lab);
