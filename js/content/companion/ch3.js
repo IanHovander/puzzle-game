@@ -108,8 +108,8 @@
   }
   const loopTable = (loop) => ({ t: 'table', head: ['beat', 'you hear them at'], rows: loop.map((l, i) => [String(i + 1), l]) });
 
-  const playSteps = (A, light) => { A.init(); if (A.isMuted()) A.setMuted(false); const n = light ? 8 : 5; for (let i = 0; i < n; i++) setTimeout(() => A.sfx(light ? 'step' : 'miss'), i * (light ? 260 : 620)); };
-  const playPortraits = (A) => { A.init(); if (A.isMuted()) A.setMuted(false); [0, 1400, 2800].forEach((t, k) => setTimeout(() => { A.sfx('whoosh'); [55, 52, 48, 43].forEach((m, i) => setTimeout(() => A.note(m, 0.9, 0.06), 250 + i * 220)); }, t)); };
+  const playSteps = (A, light) => { A.init(); if (A.isMuted()) A.setMuted(false); const n = light ? 8 : 5, gap = light ? 260 : 620; for (let i = 0; i < n; i++) CA.later(() => A.sfx(light ? 'step' : 'miss'), i * gap); return n * gap + 400; };
+  const playPortraits = (A) => { A.init(); if (A.isMuted()) A.setMuted(false); [0, 1400, 2800].forEach((t, k) => CA.later(() => { A.sfx('whoosh'); [55, 52, 48, 43].forEach((m, i) => CA.later(() => A.note(m, 0.9, 0.06), 250 + i * 220)); }, t)); return 2800 + 250 + 4 * 220 + 900; };
 
   C.chapters.push({
     id: 'ch3',

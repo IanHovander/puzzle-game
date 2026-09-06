@@ -90,7 +90,9 @@
       const key = 'ch7:finale';
       const draw = () => {
         UI.clear(el);
-        const chosen = cx.state.answers[key];
+        const stored = cx.state.answers[key];
+        const parts = typeof stored === 'string' ? stored.split('_') : [];
+        const chosen = parts.length === 2 && ['WALK', 'STAY'].includes(parts[0]) && ['ACCEPT', 'REFUSE'].includes(parts[1]) ? stored : null;
         const w = UI.el('div', { class: 'blk-choice' });
         if (chosen) {
           const [walk, barg] = chosen.split('_');

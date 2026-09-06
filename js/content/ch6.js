@@ -176,6 +176,7 @@
     id: 'ch6', label: 'Chapter VI', title: 'The Bells of Thornhallow', start: 'ch6_start', code: 'WELL',
     mood: 'tense', fx: 'ash', art: 'ch6_chamber', flame: 0.22,
     flow: buildFlow(Store.state),
+    buildFlow, // the labels depend on what was chosen; the epilogue rebuilds the chart from the saved night
     scenes: {
       /* ---------- the bell-chamber ---------- */
       ch6_start: {

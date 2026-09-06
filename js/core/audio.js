@@ -35,14 +35,20 @@
   }
   Audio.unlockMedia = function () {
     if (mediaOk || !isIOS()) return;
+    try { if (navigator.audioSession && 'type' in navigator.audioSession) { navigator.audioSession.type = 'playback'; mediaOk = true; return; } } catch (e) {}
     try {
       if (!media) { media = document.createElement('audio'); media.setAttribute('playsinline', ''); media.setAttribute('webkit-playsinline', ''); media.loop = true; media.volume = 0.01; media.preload = 'auto'; media.src = silentWav(0.4); }
       const p = media.play(); if (p && p.then) p.then(() => { mediaOk = true; }, () => {});
     } catch (e) {}
   };
-  try { document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && mediaOk && media && media.paused) media.play().catch(() => {}); }); } catch (e) {}
+  try {
+    document.addEventListener('visibilitychange', () => {
+      if (!media) return;
+      if (document.visibilityState === 'hidden') { if (!media.paused) media.pause(); }
+      else if (mediaOk && media.paused) media.play().catch(() => {});
+    });
+  } catch (e) {}
   Audio.init = function () {
-    Audio.unlockMedia();
     if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return true; }
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return false;

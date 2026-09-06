@@ -140,8 +140,9 @@
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'The memory-bell (page 1 of 4)' });
         P.sight.push({ t: 'p', text: 'On the mantel, older than the mantel. Struck, it says back the last thing said near it — to an Ear. The Hearth hears a hum. Cup yours.' });
-        P.sight.push({ t: 'audio', label: 'The bell remembers: two voices', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]), play: (A) => { CA.playSteps(A, [-1, -2], 58); setTimeout(() => CA.announce(2, { rest: true }), 2000); setTimeout(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
+        P.sight.push({ t: 'audio', label: 'The bell remembers: two voices', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]), play: (A) => { CA.playSteps(A, [-1, -2], 58); CA.later(() => CA.announce(2, { rest: true }), 2000); CA.later(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
           text: 'A low voice, courteous and certain — **the Envoy, Vane:** *"The Crown will have the Cold open, Ilsabet, one way or another."*\n\nThen a voice you know from two floors down — **the Provost:** *"Then the Crown will go through me. And through it."*' });
+        P.sight.push({ t: 'fine', text: 'Voices, not glyphs: two people speaking, low then high. There is nothing here for the row-player.' });
         P.sight.push({ t: 'fine', text: 'Say it word for word. Then say whose. *Through it.* Nobody at the table will like that sentence; say it anyway.' });
         P.sight.push({ t: 'h', text: 'The Founders\' phrase, again (page 2 of 4)' });
         P.sight.push({ t: 'audio', label: 'The Hymn\'s opening, as the Founders left it', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Over the four glyphs the Founders left on their plinths there is only one order that climbs like this. Your row-player is in the Book if you want to test it.' });

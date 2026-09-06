@@ -97,7 +97,7 @@
     binder: { q: 'Five oaths carved on the newel. Law 12 (Founders\'): *an oath binds only if its lock is KNOT or EMBER.* The lock is the last glyph. **How many bind?**', html: oathsHtml },
   };
   const PEAL = 'HLHLHHLHLHHL'; // lower bell strikes 5 times, the higher 7
-  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => setTimeout(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); return PEAL.length * 480 + 600; }
+  function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => CA.later(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); return PEAL.length * 480 + 600; }
 
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
@@ -200,10 +200,11 @@
           counts.forEach((n, i) => {
             const cracked = f.EMBER_LOST && n === 5;
             const row = UI.el('div', { class: 'row', style: { alignItems: 'center', gap: '10px', margin: '6px 0' } });
-            row.appendChild(UI.el('button', { class: 'btn small' + (cracked ? ' ghost' : ''), text: `♪ Bell ${i + 1}${cracked ? ' — cracked' : ''}`, onclick: () => { cx.audio.init(); if (cx.audio.isMuted()) cx.audio.setMuted(false); if (cracked) cx.audio.sfx('miss'); else CA.pulses(cx.audio, n, 440); } }));
+            row.appendChild(UI.audioButton(`Bell ${i + 1}${cracked ? ' — cracked' : ''}`, () => { cx.audio.init(); if (cx.audio.isMuted()) cx.audio.setMuted(false); if (cracked) { cx.audio.sfx('miss'); return 700; } return CA.pulses(cx.audio, n, 440); }, { cls: 'small' + (cracked ? ' ghost' : '') }));
             row.appendChild(UI.el('span', { class: 'fine', text: cracked ? 'over the second shape. It does not sound.' : `over the ${['first', 'second', 'third', 'fourth', 'fifth'][i]} shape` }));
             wrap.appendChild(row);
           });
+          wrap.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. The counts are also written under "If your ear fails", below.' }));
           el.appendChild(wrap);
         } });
         if (f.EMBER_LOST) P.sight.push({ t: 'p', text: 'The second bell is **cracked** — a hairline from the night the Ember left the school — and gives nothing. But the five counts are one each of **1 to 5**, so the missing count is whichever the other four do not say.' });

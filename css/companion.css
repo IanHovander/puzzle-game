@@ -1,6 +1,6 @@
 /* Companion (phone) layout */
 body.companion { overflow: auto; font-size: 18px; background: var(--bg); }
-html:has(body.companion) { overflow: auto; height: auto; }
+html:has(body.companion), html.companion-page { overflow: auto; height: auto; }
 #capp { position: relative; }
 #capp { min-height: 100vh; display: flex; flex-direction: column; }
 #chead { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(11,10,16,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
@@ -25,7 +25,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .chap-list { display: flex; flex-direction: column; gap: 8px; }
 .chap-btn { text-align: left; display: flex; justify-content: space-between; align-items: center; text-transform: none; font-family: var(--serif); font-size: 18px; letter-spacing: 0; }
 .chap-btn .lock { font-family: var(--display); font-size: 12px; letter-spacing: 0.1em; color: var(--ink-dim); }
-.chap-btn.locked { opacity: .45; }
+.chap-btn.locked { color: var(--ink-dim); background: rgba(0,0,0,0.25); border-color: rgba(255,255,255,0.1); }
+.chap-btn.locked .lock { color: var(--gold); }
 
 /* content blocks */
 .blk-svg { margin: 8px 0 12px; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); }
@@ -49,7 +50,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-reveal > .btn { width: 100%; }
 .blk-reveal .inner { margin-top: 10px; }
 .blk-secret { border: 1px dashed var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0 12px; }
-.blk-secret .label { font-family: var(--display); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--blood); margin-bottom: 6px; }
+.blk-secret .label { font-family: var(--display); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: #e07a7a; margin-bottom: 6px; }
 .blk-secret .hold { width: 100%; }
 .blk-secret .content { display: none; margin-top: 8px; }
 .blk-secret.open .content { display: block; }
@@ -58,6 +59,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-choice .opt { text-align: left; text-transform: none; font-family: var(--serif); font-size: 17px; letter-spacing: 0; padding: 12px 14px; }
 .blk-choice .opt.chosen { border-color: var(--gold); background: rgba(212,169,78,0.2); }
 .blk-choice .opt:disabled { opacity: .5; }
+.blk-choice .opt.chosen:disabled { opacity: 1; cursor: default; }
 .blk-note textarea { width: 100%; min-height: 90px; font-family: var(--hand); font-size: 18px; color: var(--ink); background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px; resize: vertical; }
 .blk-task { margin: 8px 0 12px; border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: rgba(0,0,0,0.25); }
 .blk-task .task-title { font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
@@ -90,7 +92,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .arrow-strip .step { transition: background .15s, border-color .15s, box-shadow .15s; }
 .arrow-strip .step.on { background: rgba(79,179,191,0.28); border-color: var(--sea); box-shadow: 0 0 14px rgba(79,179,191,0.45); }
 .arrow-strip .step.done { border-color: rgba(79,179,191,0.45); }
-.blk-audio .nohear { margin: 8px 0 0; font-size: 13px; opacity: .75; }
+.blk-audio .nohear { margin: 8px 0 0; font-size: 14px; }
 .blk-audio .btn.audio-btn.playing { background: rgba(79,179,191,0.14); }
 .underlayer { background: #000 !important; border-color: rgba(255,255,255,0.25) !important; }
 .underlayer svg { color: #fff; }

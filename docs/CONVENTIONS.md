@@ -135,7 +135,7 @@ Blocks: `{t:'h', text}`, `{t:'p', text}`, `{t:'fine', text}`, `{t:'letter', text
 
 Token choices: the block `id` must equal the beat name used on the Hearth (`'whisper'`, `'hold'`, `'finale'`), and `options` ids must equal `VigilLore.tokens.*` values for that role. The token shown is `Shared.token(lore.channel(id, roleId), optionId, values)`.
 
-Listener audio: `Audio.init()` is called by the block; play steps with `CompanionAudio.playSteps(['+1','+3','-2','rest'])` or `CompanionAudio.playContour(names)` from `js/content/companion/book.js`; arrow strips with `CompanionAudio.strip(steps)`. Heartbeats: `CompanionAudio.heartbeat(bpm)`.
+Listener audio: `Audio.init()` is called by the block; play steps with `CompanionAudio.playSteps(Audio, [1, 3, -2, 'rest'])` or a row of glyphs with `CompanionAudio.playGlyphs(Audio, names)` from `js/content/companion/book.js`; arrow strips with `CompanionAudio.strip(steps)`. Heartbeats: `CompanionAudio.heartbeat(Audio, bpm, beats)`; chimes: `CompanionAudio.pulses(Audio, n, gapMs)`. Every player returns the phrase length in ms — a block's `play` should return it too, so the button's *Listening…* state lasts as long as the sound. Schedule chained sounds with `CompanionAudio.later(fn, ms)` so a new press cancels them. Buttons that play something are built with `UI.audioButton(label, onPlay, { cls })`.
 
 The Seer's under-layer: `{ t: 'svg', cls: 'underlayer', svg: VigilArt.underlayer(...) }` or hand-written white-on-black SVG. In every under-layer with Wren and a flame, draw four shadows away from the fire and Wren's toward it.
 

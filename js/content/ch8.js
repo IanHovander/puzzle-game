@@ -243,7 +243,7 @@
             sec.appendChild(UI.el('h4', { text: (ch.label ? ch.label + ' — ' : '') + ch.title }));
             const reached = api.state.visited.some(v => Game.sceneChapter[v] === ch.id);
             if (!reached) sec.appendChild(UI.el('p', { class: 'ch8-sub', text: 'The fire has no record of this hour.' }));
-            try { sec.appendChild(UI.flowchart(ch.flow, done)); } catch (e) { console.error(e); }
+            try { sec.appendChild(UI.flowchart(ch.buildFlow ? ch.buildFlow(api.state) : ch.flow, done)); } catch (e) { console.error(e); }
             wrap.appendChild(sec);
           });
           const sealsSec = UI.el('div', { class: 'ch8-chapter' });

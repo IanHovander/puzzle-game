@@ -51,8 +51,9 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn.ghost { background: transparent; border-color: rgba(255,255,255,0.15); }
 .btn.danger { border-color: var(--blood); color: #f0b0b0; }
-.btn.primary.danger { border-color: #d24b4b; color: #fff3ee; background: linear-gradient(180deg, #d24b4b, #9e2f2f); text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
-.btn.primary.danger:hover, .btn.primary.danger:focus-visible { color: #fff; background: linear-gradient(180deg, #e05a5a, #b23a3a); box-shadow: 0 0 22px rgba(178,58,58,0.35); }
+.btn.primary.danger { border-color: #d24b4b; color: #fff3ee; background: linear-gradient(180deg, #c04444, #8e2a2a); text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
+.btn.primary.danger:hover { color: #fff; background: linear-gradient(180deg, #c94a4a, #9a2f2f); box-shadow: 0 0 22px rgba(178,58,58,0.35); filter: none; }
+.btn.primary.danger:focus-visible { color: #fff; background: linear-gradient(180deg, #c94a4a, #9a2f2f); box-shadow: 0 0 22px rgba(178,58,58,0.35); filter: none; }
 .btn.audio-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
 .btn.audio-btn .audio-icon { flex: 0 0 auto; }
 .btn.audio-btn.playing { border-color: var(--sea); color: var(--sea); }
@@ -62,6 +63,11 @@ strong { color: var(--gold-2); font-weight: 600; }
 @keyframes eq { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
+/* small bar buttons (both screens) and the utility class that hides a block */
+.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: all .15s; }
+.iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
+.iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
+.hidden { display: none !important; }
 
 input.field, textarea.field {
   font-family: var(--display); font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; text-align: center;
@@ -106,7 +112,7 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 .fc-node rect, .fc-node path { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.18); stroke-width: 1.2; }
 .fc-node.on rect, .fc-node.on path { fill: rgba(212,169,78,0.16); stroke: var(--gold); }
 .fc-node.end.on rect { fill: rgba(159,123,216,0.25); stroke: var(--violet); }
-.fc-node text { fill: rgba(233,226,210,0.45); font-family: var(--serif); font-size: 12.5px; }
+.fc-node text { fill: rgba(233,226,210,0.58); font-family: var(--serif); font-size: 12.5px; }
 .fc-node.on text { fill: var(--ink); }
 .fc-node.choice text { font-size: 11.5px; }
 

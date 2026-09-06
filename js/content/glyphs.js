@@ -94,11 +94,12 @@
     }
     return out;
   };
-  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then it begins' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
+  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then it begins' : s === 0 ? 'the same' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
   /* Which orderings of a set match a contour? (used to verify uniqueness) */
   G.orderingsMatching = function (set, contour) {
     const res = []; const perm = (arr, m) => { if (!arr.length) { if (JSON.stringify(G.steps(m)) === JSON.stringify(contour)) res.push(m.slice()); return; } arr.forEach((x, i) => perm(arr.slice(0, i).concat(arr.slice(i + 1)), m.concat([x]))); };
-    perm(set, []); return res;
+    perm(set, []);
+    const seen = new Set(); return res.filter(m => { const k = m.join(','); if (seen.has(k)) return false; seen.add(k); return true; });
   };
 
   window.VigilGlyphs = G;

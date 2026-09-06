@@ -16,8 +16,8 @@
         wrap.appendChild(UI.el('div', { class: 'dial-label', text: d.label || '' }));
         const face = UI.el('div', { class: 'dial-face' }); faces.push(face);
         const btns = UI.el('div', { class: 'dial-btns' }, [
-          UI.el('button', { class: 'btn small ghost', text: '‹', onclick: () => { state[i] = (state[i] - 1 + d.options.length) % d.options.length; Audio.sfx('tick'); render(); } }),
-          UI.el('button', { class: 'btn small ghost', text: '›', onclick: () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); } }),
+          UI.el('button', { class: 'btn small ghost', text: '‹', title: 'Turn back', 'aria-label': 'Turn back', onclick: () => { state[i] = (state[i] - 1 + d.options.length) % d.options.length; Audio.sfx('tick'); render(); } }),
+          UI.el('button', { class: 'btn small ghost', text: '›', title: 'Turn forward', 'aria-label': 'Turn forward', onclick: () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); } }),
         ]);
         face.addEventListener('click', () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); });
         wrap.appendChild(face); wrap.appendChild(btns); dialsEl.appendChild(wrap);

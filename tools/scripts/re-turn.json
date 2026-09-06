@@ -1,0 +1,15 @@
+{ "start": "ch7_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["CROWN", "BGV"]},
+  {"tab": "Speak"}, {"expect": "Two questions"},
+  {"clickText": "WALK"}, {"clickText": "ACCEPT"}, {"clickText": "Seal both"}, {"wait": 500},
+  {"expect": "One word answers both"},
+  {"clickText": "Pages"}, {"unlock": ["CROWN", "BGV"]}, {"tab": "Speak"}, {"wait": 300},
+  {"expect": "One word answers both"},
+  {"clickText": "Pages"}, {"unlock": ["CROWN", "DLP"]}, {"tab": "Speak"}, {"wait": 300}, {"shot": "re-turn-finale"},
+  {"expect": "do you walk into the fire, or stay"},
+  {"assert": "!document.querySelector('.blk-choice .opt.chosen') && [...document.querySelectorAll('.blk-choice .opt')].every(b => !b.disabled) && !document.querySelector('.blk-code')"},
+  {"clickText": "STAY"}, {"wait": 400},
+  {"assert": "(function(){const t=document.querySelector('.blk-code .word').textContent; return window.VigilShared.decode(window.VigilLore.channel('finale','reader'), t, ['WALK','STAY'])==='STAY';})()"},
+  {"clickText": "Pages"}, {"unlock": ["CROWN", "BGV"]}, {"tab": "Speak"}, {"wait": 300},
+  {"expect": "Two questions"}, {"assert": "!document.querySelector('.blk-choice .opt.chosen') && !document.querySelector('.blk-code')"}
+] }

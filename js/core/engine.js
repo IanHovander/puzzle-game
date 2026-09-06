@@ -21,8 +21,8 @@
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    dom.mute.addEventListener('click', () => { Audio.init(); const m = Audio.toggleMute(); dom.mute.textContent = m ? '🔇' : '🔊'; });
-    dom.mute.textContent = Audio.isMuted() ? '🔇' : '🔊';
+    dom.mute.addEventListener('click', () => { Audio.init(); const m = Audio.toggleMute(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; });
+    dom.mute.textContent = Audio.isMuted() ? '🔇 Muted' : '🔊 Sound';
     dom.menu.addEventListener('click', () => Game.showMenu());
     setInterval(() => { dom.timer.textContent = Store.elapsedText(); }, 500);
     document.addEventListener('keydown', (e) => { if (e.key === ' ' && !e.target.matches('input,textarea,button')) { UI.requestSkip(); } });

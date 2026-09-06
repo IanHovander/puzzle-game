@@ -182,29 +182,44 @@
   UI.AUDIO_ICON = '<svg class="audio-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 10v4"/><path d="M8 7v10"/><path d="M12 4v16"/><path d="M16 7v10"/><path d="M20 10v4"/></g></svg>';
   UI.audioButton = function (label, onPlay, opts) {
     opts = opts || {};
-    const text = String(label || 'Cup your ear').replace(/^[♪♫🔊]\s*/, '');
+    const text = String(label || 'Cup your ear').replace(/^[♪♫🔊]\s*/u, '');
     const btn = UI.el('button', { class: 'btn audio-btn ' + (opts.cls || ''), type: 'button', 'aria-label': text });
     const setLabel = (t) => { btn.innerHTML = UI.AUDIO_ICON + '<span class="audio-label">' + UI.esc(t) + '</span>'; };
     setLabel(text);
     let timer = null;
+    const reset = () => { if (timer) clearTimeout(timer); timer = null; btn.classList.remove('playing'); setLabel(text); };
     btn.addEventListener('click', () => {
+      UI.stopAudio(); // one phrase at a time: silence whatever else is playing and reset its button and strip
+      try { if (window.VigilAudio && window.VigilAudio.unlockMedia) window.VigilAudio.unlockMedia(); } catch (e) {}
       let ms = 0;
       try { const r = onPlay(); ms = typeof r === 'number' && isFinite(r) ? r : 1800; } catch (e) { console.error(e); ms = 0; }
-      if (timer) clearTimeout(timer);
-      if (ms <= 0) { btn.classList.remove('playing'); setLabel(text); return; }
+      if (ms <= 0) { reset(); return; }
       btn.classList.add('playing'); setLabel(opts.playing || 'Listening…');
-      timer = setTimeout(() => { btn.classList.remove('playing'); setLabel(text); timer = null; }, ms);
+      playingButton = reset;
+      timer = setTimeout(() => { reset(); if (playingButton === reset) playingButton = null; }, ms);
     });
     return btn;
+  };
+  /* Only one phrase plays at a time. UI.stopAudio() resets the playing button and lit strip and tells the audio
+     helpers (which listen for 'vigil:stop') to drop their pending notes. */
+  let playingButton = null, litStrip = null;
+  UI.stopAudio = function () {
+    if (playingButton) { const r = playingButton; playingButton = null; r(); }
+    if (litStrip) { const t = litStrip; litStrip = null; t(); }
+    try { document.dispatchEvent(new CustomEvent('vigil:stop')); } catch (e) {}
   };
   /* Light each .step of the arrow strip inside el as its note sounds (the audio helpers announce 'vigil:step'). */
   UI.lightStrip = function (el, ms) {
     if (!el) return;
+    if (litStrip) { const t = litStrip; litStrip = null; t(); }
     const steps = () => Array.from(el.querySelectorAll('.arrow-strip .step'));
     steps().forEach(s => s.classList.remove('on', 'done'));
     const on = (ev) => { const d = ev.detail || {}; const list = steps(); list.forEach((s, i) => { if (i < d.step) { s.classList.remove('on'); s.classList.add('done'); } }); const s = list[d.step]; if (s) { s.classList.add('on'); setTimeout(() => { s.classList.remove('on'); s.classList.add('done'); }, 600); } };
     document.addEventListener('vigil:step', on);
-    setTimeout(() => { document.removeEventListener('vigil:step', on); steps().forEach(s => s.classList.remove('on', 'done')); }, ms || 20000);
+    let timer = null;
+    const teardown = () => { if (timer) clearTimeout(timer); timer = null; document.removeEventListener('vigil:step', on); steps().forEach(s => s.classList.remove('on', 'done')); };
+    litStrip = teardown;
+    timer = setTimeout(() => { teardown(); if (litStrip === teardown) litStrip = null; }, ms || 20000);
   };
   UI.list = (arr) => arr.length <= 1 ? (arr[0] || '') : arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
 

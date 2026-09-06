@@ -143,8 +143,9 @@
 .bind-lane .bind-orb { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,255,255,0.08); transition: all .2s; }
 .bind-lane.on .bind-orb { background: radial-gradient(circle at 35% 35%, #fff4c0, var(--gold) 60%); box-shadow: 0 0 30px rgba(242,210,122,0.8); transform: scale(1.2); }
 .bind-lane.on { background: rgba(212,169,78,0.12); }
-.bind-lane.dead { opacity: .3; }
-.bind-lane.dead::after { content: 'BOUND'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--display); color: var(--blood); font-size: 14px; letter-spacing: .15em; }
+.bind-lane.dead { background: rgba(0,0,0,0.45); }
+.bind-lane.dead > * { opacity: .3; }
+.bind-lane.dead::after { content: 'BOUND'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--display); color: #f0b0b0; font-size: 14px; letter-spacing: .15em; }
 .wheel.rowlayout, .wheel.striplayout { width: 100%; height: auto; max-width: 900px; }
 .seat-banner svg { width: 26px; height: 26px; display: block; margin: 0 auto 2px; }
 .seat.locked { opacity: .55; border-style: dashed; }

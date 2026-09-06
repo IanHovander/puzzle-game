@@ -5,6 +5,7 @@
   const UI = window.VigilUI, Shared = window.VigilShared, Audio = window.VigilAudio, Lore = window.VigilLore;
   const C = window.CompanionContent;
   document.body.classList.add('companion'); document.body.classList.remove('hearth');
+  document.documentElement.classList.add('companion-page'); // the scroll rules for browsers without :has()
   const KEY = 'vigil.companion.v2';
   const fresh = () => ({ role: null, name: '', unlocked: {}, mini: {}, answers: {}, notes: {}, done: {}, tab: 'sight', current: null });
   let st = fresh();
@@ -14,8 +15,20 @@
   document.addEventListener('pointerdown', () => { try { Audio.init(); } catch (e) {} }, { once: true });
   document.getElementById('cmenu').addEventListener('click', menu);
 
+  /* Answers, task results and notes belong to the player in the seat, not to the phone: changing seat parks the
+     current seat's private state under st.seats and restores the new seat's (chapter unlocks stay: the Hearth's
+     words are the same for everyone). Otherwise a second player on this phone would see, and be unable to change,
+     the first one's sealed answers. */
+  function switchRole(id) {
+    if (st.role === id) return;
+    st.seats = st.seats || {};
+    if (st.role) st.seats[st.role] = { answers: st.answers, done: st.done, notes: st.notes };
+    const s = (id && st.seats[id]) || {};
+    st.answers = s.answers || {}; st.done = s.done || {}; st.notes = s.notes || {};
+    st.role = id;
+  }
   const qs = new URLSearchParams(location.search);
-  if (qs.get('role') && Lore.roleById(qs.get('role'))) { st.role = qs.get('role'); save(); }
+  if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
   function setHeader() { const r = role(); roleEl.textContent = r ? `${r.nick} · ${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
@@ -38,7 +51,7 @@
     p.appendChild(UI.el('p', { class: 'fine', html: UI.rich(C.roleIntro || 'Sit left to right: Reader, Listener, Seer, Binder. Pick the seat you are in. What appears here is for your eyes — share it by talking.') }));
     const grid = UI.el('div', { class: 'role-grid' });
     Lore.roles.forEach((r, i) => {
-      grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { st.role = r.id; save(); Audio.sfx('chime'); showName(); } }, [
+      grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { switchRole(r.id); save(); Audio.sfx('chime'); showName(); } }, [
         UI.el('span', { class: 'rname', text: `${r.name} — "${r.nick}"` }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
       ]));
     });
@@ -79,6 +92,13 @@
         const data = Shared.uncast(lc.word, m);
         if (data == null) { fail('The mark is not right. Look again at the Hearth.'); return; }
         flags = Shared.unpack(lc.cast, data); castStr = m;
+      }
+      const prev = st.unlocked[lc.id];
+      if (prev && (prev.cast || null) !== (castStr || null)) {
+        // The same page turned again with a different mark: the Hearth's night has changed (a retry), so this
+        // chapter's sealed answers and finished tasks are stale — the option sets and tokens may differ now.
+        [st.answers, st.done].forEach(o => Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; }));
+        UI.toast('A new mark: this page\'s answers begin again.', 2600);
       }
       st.unlocked[lc.id] = { cast: castStr, flags }; st.current = lc.id; st.tab = 'sight'; save(); Audio.sfx('unlock'); showChapter(lc.id);
     };
@@ -195,19 +215,21 @@
           if (b.prompt) w.appendChild(UI.el('p', { html: UI.rich(b.prompt) }));
           const opts = UI.el('div', { class: 'opts' });
           const key = ch.id + ':' + b.id;
-          const chosen = st.answers[key];
           const values = b.options.map(o => o.id);
+          // A stored answer that is not one of this page's options is stale (another seat's, or an older mark's): unanswered.
+          let chosen = values.includes(st.answers[key]) ? st.answers[key] : undefined;
           const channel = b.channel || Lore.channel(b.id, st.role);
           const showToken = (optId) => {
             const tok = Shared.token(channel, optId, values);
             w.appendChild(UI.el('div', { class: 'blk-code sea' }, [UI.el('div', { class: 'label', text: b.tokenLabel || 'Your sealed word — type it into the Hearth when it asks' }), UI.el('div', { class: 'word', text: tok })]));
-            if (b.after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(typeof b.after === 'function' ? b.after(optId, cx) : b.after) }));
+            const after = b.after ? (typeof b.after === 'function' ? b.after(optId, cx) : b.after) : '';
+            if (after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(after) }));
           };
           b.options.forEach(o => {
             const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: async () => {
-              if (st.answers[key] !== undefined && !b.changeable) return;
+              if (chosen !== undefined && !b.changeable) return;
               if (!b.changeable && !(await UI.confirm('Seal this answer? It cannot be unsaid.', { ok: 'Seal it', cancel: 'Not yet' }))) return;
-              st.answers[key] = o.id; save(); Audio.sfx('seal');
+              chosen = o.id; st.answers[key] = o.id; save(); Audio.sfx('seal');
               Array.from(opts.children).forEach(x => { x.classList.toggle('chosen', x === btn); x.disabled = !b.changeable; });
               w.querySelectorAll('.blk-code, .fine.after').forEach(x => x.remove()); showToken(o.id);
             } });

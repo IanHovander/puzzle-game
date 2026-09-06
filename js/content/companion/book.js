@@ -21,6 +21,12 @@
   };
   /* Tell whichever strip is listening that step i (0-based, in the array the strip was drawn from) is sounding now. */
   CA.announce = function (i, extra) { try { document.dispatchEvent(new CustomEvent('vigil:step', { detail: Object.assign({ step: i }, extra || {}) })); } catch (e) {} };
+  /* Every note the helpers schedule goes through CA.later, so a new press (UI.stopAudio → 'vigil:stop') can drop
+     the rest of the phrase that was playing. Content that chains its own timeouts should use CA.later too. */
+  let pending = [];
+  CA.later = function (fn, ms) { const id = setTimeout(() => { pending = pending.filter(x => x !== id); fn(); }, ms); pending.push(id); return id; };
+  CA.stop = function () { pending.forEach(clearTimeout); pending = []; };
+  try { document.addEventListener('vigil:stop', CA.stop); } catch (e) {}
   /* Play a contour of steps relative to a starting pitch (room-tuned: absolute pitch varies per call).
      Returns the length of the phrase in ms. opts.offset shifts the announced step index (for a second voice). */
   CA.playSteps = function (Audio, steps, base, opts) {
@@ -34,16 +40,16 @@
     let t = 650;
     steps.forEach((s, i) => {
       const k = CA.stepKind(s);
-      if (k.kind === 'rest') { const tt = t; setTimeout(() => CA.announce(off + i, { rest: true }), tt); t += 700; return; }
+      if (k.kind === 'rest') { const tt = t; CA.later(() => CA.announce(off + i, { rest: true }), tt); t += 700; return; }
       if (k.kind === 'step') idx += k.v; // 'start' keeps the pitch and just sounds
-      const m = at(idx), tt = t; setTimeout(() => { Audio.note(m, 1.0, 0.18); CA.announce(off + i); }, tt); t += 650;
+      const m = at(idx), tt = t; CA.later(() => { Audio.note(m, 1.0, 0.18); CA.announce(off + i); }, tt); t += 650;
     });
     return t + 500;
   };
   /* Play glyphs by their own pitch (the Book's row-player); COLD is a silent beat. Returns the length in ms. */
-  CA.playGlyphs = function (Audio, names) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); let t = 0; names.forEach((n, i) => { const m = G.MIDI[n]; const tt = t; setTimeout(() => { if (m) Audio.note(m, 1.0, 0.18); if (i > 0) CA.announce(i - 1, m ? {} : { rest: true }); }, tt); t += 650; }); return t + 500; };
-  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); if (!bpm) return 0; const iv = 60000 / bpm, n = beats || 8; for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('heart'), i * iv); return n * iv + 300; };
-  CA.pulses = function (Audio, n, gapMs) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); for (let i = 0; i < n; i++) setTimeout(() => Audio.sfx('chime'), i * (gapMs || 420)); return n * (gapMs || 420) + 400; };
+  CA.playGlyphs = function (Audio, names) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); let t = 0; names.forEach((n, i) => { const m = G.MIDI[n]; const tt = t; CA.later(() => { if (m) Audio.note(m, 1.0, 0.18); if (i > 0) CA.announce(i - 1, m ? {} : { rest: true }); }, tt); t += 650; }); return t + 500; };
+  CA.heartbeat = function (Audio, bpm, beats) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); if (!bpm) return 0; const iv = 60000 / bpm, n = beats || 8; for (let i = 0; i < n; i++) CA.later(() => Audio.sfx('heart'), i * iv); return n * iv + 300; };
+  CA.pulses = function (Audio, n, gapMs) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); n = n | 0; const gap = gapMs || 420; for (let i = 0; i < n; i++) CA.later(() => Audio.sfx('chime'), i * gap); return n * gap + 400; };
   window.CompanionAudio = CA;
 
   /* ---------- shared drawing helpers ---------- */
@@ -76,7 +82,7 @@
       blocks.push({ t: 'h', text: 'The Ladder' });
       blocks.push({ t: 'fine', text: 'The Founders\' Tongue is a ladder of seven steps and a rest. You never hear a glyph\'s *name* — every room is tuned differently — only how far the tune **steps** from one glyph to the next. COLD is the rest.' });
       blocks.push({ t: 'html', html: `<div class="lexicon">${G.LADDER.map((nm, i) => `<div class="lx"><div>${G.svg(nm, { size: 36, color: '#4fb3bf' })}</div><div><b>${nm}</b><span>step ${i}</span></div></div>`).join('')}<div class="lx"><div>${G.svg('COLD', { size: 36, color: '#4fb3bf' })}</div><div><b>COLD</b><span>a rest — no step</span></div></div></div>` });
-      blocks.push({ t: 'fine', text: 'So THORN (1) to KNOT (2) is *up one*; KNOT (2) to VEIL (5) is *up three*; VEIL (5) to EMBER (3) is *down two*.' });
+      blocks.push({ t: 'fine', text: 'So THORN (1) to KNOT (2) is *up one*; KNOT (2) to VEIL (5) is *up three*; VEIL (5) to EMBER (3) is *down two*. A rest is a pause, not a new start: the step after it is counted from the last glyph that sounded.' });
       blocks.push({ t: 'h', text: 'Row-player' });
       blocks.push({ t: 'custom', render: (el, cx) => {
         el.appendChild(UI.el('p', { class: 'fine', text: 'Tap glyphs in an order to hear how that row would step. Compare it with the room\'s phrase by ear or by the arrows.' }));
@@ -87,7 +93,7 @@
         const strip = UI.el('div', { class: 'strip' });
         const showSteps = () => { if (row.length < 2) { strip.innerHTML = '<p class="fine">Tap at least two glyphs to see a step.</p>'; return; } strip.innerHTML = CA.strip(G.steps(row)) + '<p class="fine">' + UI.esc(G.stepsText(row)) + '.</p>'; };
         el.appendChild(UI.el('div', { class: 'row' }, [
-          UI.audioButton('Play row', () => { showSteps(); if (!row.length) return 0; UI.lightStrip(strip); return CA.playGlyphs(window.VigilAudio, row); }, { cls: 'small' }),
+          UI.audioButton('Play row', () => { showSteps(); if (!row.length) return 0; const len = CA.playGlyphs(window.VigilAudio, row); UI.lightStrip(strip, len); return len; }, { cls: 'small' }),
           UI.el('button', { class: 'btn small ghost', text: 'Show steps', onclick: showSteps }),
           UI.el('button', { class: 'btn small ghost', text: 'Clear', onclick: () => { row.length = 0; render(); strip.innerHTML = ''; } }),
         ]));
