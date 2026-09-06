@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearthfall</title>
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/hearth.css">
+<link rel="stylesheet" href="css/puzzles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%230b0a10' stroke='%23d4a94e' stroke-width='6'/><path d='M50 18 L58 42 L82 42 L62 56 L70 80 L50 66 L30 80 L38 56 L18 42 L42 42 Z' fill='%23d4a94e'/></svg>">
+</head>
+<body>
+<div id="app">
+  <div id="stage"></div>
+  <canvas id="fx"></canvas>
+  <div id="vignette"></div>
+
+  <div id="title">
+    <h1>Hearthfall</h1>
+    <div class="tagline">One born of four shall walk into the Cold.</div>
+    <div class="card">
+      <div id="title-body"></div>
+    </div>
+  </div>
+
+  <div id="bar" class="hidden">
+    <span class="brand">Hearthfall</span>
+    <span class="sep">·</span>
+    <span id="chapter"></span>
+    <span class="spacer"></span>
+    <span id="flame" title="The Hearth's light"><span class="flame-bar"><div style="width:100%"></div></span></span>
+    <span id="timer">00:00</span>
+    <button id="hint" class="iconbtn hidden" title="Ask the Vigil for a hint">✦ Hint</button>
+    <button id="qr" class="iconbtn" title="Companion QR code">▦ Phones</button>
+    <button id="mute" class="iconbtn" title="Sound">🔊</button>
+    <button id="menu" class="iconbtn" title="Menu">☰</button>
+  </div>
+
+  <div id="panel" class="hidden">
+    <div id="text"></div>
+    <div id="right">
+      <div id="widget" class="hidden"></div>
+      <div id="actions"></div>
+    </div>
+  </div>
+</div>
+
+<script src="vendor/qrcode.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/core/fx.js"></script>
+<script src="js/core/store.js"></script>
+<script src="js/core/input.js"></script>
+<script src="js/core/ui.js"></script>
+<script src="js/core/engine.js"></script>
+<script src="js/art/art.js"></script>
+<script src="js/art/scenes-ch0.js"></script>
+<script src="js/art/scenes-ch1.js"></script>
+<script src="js/art/scenes-ch2.js"></script>
+<script src="js/art/scenes-ch3.js"></script>
+<script src="js/art/scenes-ch4.js"></script>
+<script src="js/art/scenes-ch5.js"></script>
+<script src="js/art/scenes-ch6.js"></script>
+<script src="js/art/scenes-ch7.js"></script>
+<script src="js/art/scenes-ch8.js"></script>
+<script src="js/content/glyphs.js"></script>
+<script src="js/puzzles/wheel.js"></script>
+<script src="js/puzzles/reaction.js"></script>
+<script src="js/puzzles/answer.js"></script>
+<script src="js/puzzles/dials.js"></script>
+<script src="js/puzzles/tiles.js"></script>
+<script src="js/puzzles/ring.js"></script>
+<script src="js/puzzles/grid.js"></script>
+<script src="js/puzzles/binding.js"></script>
+<script src="js/puzzles/seats.js"></script>
+<script src="js/puzzles/dialseq.js"></script>
+<script src="js/puzzles/widgets.js"></script>
+<script src="js/content/shared.js"></script>
+<script src="js/content/lore.js"></script>
+<script src="js/content/chapters.js"></script>
+<script src="js/content/ch0.js"></script>
+<script src="js/content/ch1.js"></script>
+<script src="js/content/ch2.js"></script>
+<script src="js/content/ch3.js"></script>
+<script src="js/content/ch4.js"></script>
+<script src="js/content/ch5.js"></script>
+<script src="js/content/ch6.js"></script>
+<script src="js/content/ch7.js"></script>
+<script src="js/content/ch8.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
