@@ -21,8 +21,9 @@
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    dom.mute.addEventListener('click', () => { Audio.init(); const m = Audio.toggleMute(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; });
-    dom.mute.textContent = Audio.isMuted() ? '🔇 Muted' : '🔊 Sound';
+    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
+    dom.mute.addEventListener('click', () => { Audio.init(); Audio.toggleMute(); muteLabel(); });
+    muteLabel();
     dom.menu.addEventListener('click', () => Game.showMenu());
     setInterval(() => { dom.timer.textContent = Store.elapsedText(); }, 500);
     document.addEventListener('keydown', (e) => { if (e.key === ' ' && !e.target.matches('input,textarea,button')) { UI.requestSkip(); } });
@@ -257,7 +258,7 @@
         const v = scene.decode(inp.value.trim().toUpperCase(), i, Store.state);
         if (v == null) { bad = true; inp.classList.add('wrong'); } else values.push(v);
       });
-      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) UI.toast(scene.stuckText, 5000); return; }
+      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) setTimeout(() => UI.toast(scene.stuckText, Math.max(5000, scene.stuckText.split(' ').length * 320)), 2500); return; }
       Audio.sfx('success');
       Store.state.tokens[scene.id] = values; Store.save();
       if (scene.onTokens) scene.onTokens(values, Store.state);

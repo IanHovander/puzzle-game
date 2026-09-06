@@ -1,8 +1,10 @@
 /* Companion (phone) layout */
 body.companion { overflow: auto; font-size: 18px; background: var(--bg); }
-html:has(body.companion), html.companion-page { overflow: auto; height: auto; }
+html.companion-page { overflow: auto; height: auto; }
+html:has(body.companion) { overflow: auto; height: auto; }
 #capp { position: relative; }
 #capp { min-height: 100vh; display: flex; flex-direction: column; }
+#chead .iconbtn { padding: 10px 12px; }
 #chead { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(11,10,16,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
 #chead .brand { font-family: var(--display); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
 #chead .crole { flex: 1; font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }

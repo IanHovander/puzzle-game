@@ -16,6 +16,12 @@
     body.companion.ch8-white .ctab.on { color: #5a4a2a; border-color: #b8a070; background: rgba(184,160,112,0.15); }
     body.companion.ch8-white .btn { color: #5a4a2a; border-color: rgba(90,74,42,0.4); background: rgba(255,255,255,0.5); }
     body.companion.ch8-white .tag { color: #7a6a4a; border-color: rgba(122,106,74,0.4); }
+    body.companion.ch8-white .iconbtn { color: #5a4a2a; }
+    body.companion.ch8-white .iconbtn:hover { color: #3a2e1a; border-color: rgba(90,74,42,0.4); }
+    body.companion.ch8-white .cpanel .fine, body.companion.ch8-white .end-mark { color: #6b5d48; }
+    body.companion.ch8-white .end-mark { opacity: 1; }
+    body.companion.ch8-white .ctab { color: #6b5d48; }
+    body.companion.ch8-white .laws .law .era, body.companion.ch8-white em, body.companion.ch8-white strong { color: #7a6a4a; }
     body.companion.ch8-white .back-row .btn { color: #7a6a4a; }
     body.companion.ch8-dark { background: #000 !important; }
     body.companion.ch8-dark .cpanel { background: #000; border-color: rgba(255,255,255,0.06); }

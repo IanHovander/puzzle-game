@@ -97,7 +97,10 @@
       if (prev && (prev.cast || null) !== (castStr || null)) {
         // The same page turned again with a different mark: the Hearth's night has changed (a retry), so this
         // chapter's sealed answers and finished tasks are stale — the option sets and tokens may differ now.
-        [st.answers, st.done].forEach(o => Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; }));
+        // Seats parked on this phone are cleared as well; they never turn the page themselves.
+        const wipe = (o) => o && Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; });
+        [st.answers, st.done].forEach(wipe);
+        Object.values(st.seats || {}).forEach(s => { wipe(s.answers); wipe(s.done); });
         UI.toast('A new mark: this page\'s answers begin again.', 2600);
       }
       st.unlocked[lc.id] = { cast: castStr, flags }; st.current = lc.id; st.tab = 'sight'; save(); Audio.sfx('unlock'); showChapter(lc.id);
@@ -191,7 +194,7 @@
           });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. Everything you would hear is also written on this page.' }));
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {
@@ -218,12 +221,13 @@
           const values = b.options.map(o => o.id);
           // A stored answer that is not one of this page's options is stale (another seat's, or an older mark's): unanswered.
           let chosen = values.includes(st.answers[key]) ? st.answers[key] : undefined;
+          if (chosen === undefined && st.answers[key] !== undefined) { delete st.answers[key]; save(); } // a stale answer is no answer, to content too
           const channel = b.channel || Lore.channel(b.id, st.role);
           const showToken = (optId) => {
             const tok = Shared.token(channel, optId, values);
             w.appendChild(UI.el('div', { class: 'blk-code sea' }, [UI.el('div', { class: 'label', text: b.tokenLabel || 'Your sealed word — type it into the Hearth when it asks' }), UI.el('div', { class: 'word', text: tok })]));
             const after = b.after ? (typeof b.after === 'function' ? b.after(optId, cx) : b.after) : '';
-            if (after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(after) }));
+            if (after) w.appendChild(UI.el('p', { class: 'fine after', html: UI.rich(after) }));
           };
           b.options.forEach(o => {
             const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: async () => {

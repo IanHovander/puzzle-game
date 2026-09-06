@@ -76,6 +76,7 @@ strong { color: var(--gold-2); font-weight: 600; }
 .iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
 .iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
 .hidden { display: none !important; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 
 input.field, textarea.field {
   font-family: var(--display); font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; text-align: center;
@@ -142,9 +143,11 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 <style>
 /* Companion (phone) layout */
 body.companion { overflow: auto; font-size: 18px; background: var(--bg); }
-html:has(body.companion), html.companion-page { overflow: auto; height: auto; }
+html.companion-page { overflow: auto; height: auto; }
+html:has(body.companion) { overflow: auto; height: auto; }
 #capp { position: relative; }
 #capp { min-height: 100vh; display: flex; flex-direction: column; }
+#chead .iconbtn { padding: 10px 12px; }
 #chead { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(11,10,16,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
 #chead .brand { font-family: var(--display); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
 #chead .crole { flex: 1; font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
@@ -350,6 +353,7 @@ html:has(body.companion), html.companion-page { overflow: auto; height: auto; }
     const start = performance.now();
     function step(t) {
       if (done) return;
+      if (!wrap.isConnected) { done = true; resolve('cancel'); return; } // the box was cleared or the tab changed
       const left = Math.max(0, seconds - (t - start) / 1000);
       fill.style.width = (left / seconds * 100) + '%';
       const s = Math.ceil(left); if (num.textContent != s) { num.textContent = s; if (onTick) onTick(s); if (s <= 5 && window.VigilAudio) window.VigilAudio.sfx('tick'); }
@@ -2113,6 +2117,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
       const key = 'ch5:count'; const prev = api.state.done[key];
+      let ctl = null;
       const mat = MATERIAL[roleId];
       const idle = () => {
         UI.clear(box);
@@ -2121,12 +2126,14 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         box.appendChild(UI.el('button', { class: 'btn primary big-btn', text: prev != null ? 'Count again' : 'Start', onclick: start }));
       };
       const start = () => {
-        UI.clear(box); api.audio.init();
+        UI.stopAudio(); // Start is a press like any other: drop a peal still sounding from the last attempt
+        if (ctl) { ctl.cancel(); ctl = null; }
+        UI.clear(box); api.audio.init(); if (api.audio.unlockMedia) api.audio.unlockMedia();
         box.appendChild(UI.el('p', { html: UI.rich(mat.q) }));
         if (mat.html) box.appendChild(UI.el('div', { html: mat.html }));
         if (roleId === 'listener') { box.appendChild(UI.audioButton('Cup your ear — the peal', () => playPeal(api.audio))); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
         const cd = UI.el('div', { class: 'cd', text: '45' }); box.appendChild(cd);
-        const ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
+        ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
         ctl.promise.then(() => { cd.textContent = 'TIME — pick your digit'; });
         box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit:' }));
         const grid = UI.el('div', { class: 'pick-grid', style: { gridTemplateColumns: 'repeat(5, 1fr)' } });
@@ -2215,7 +2222,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
             row.appendChild(UI.el('span', { class: 'fine', text: cracked ? 'over the second shape. It does not sound.' : `over the ${['first', 'second', 'third', 'fourth', 'fifth'][i]} shape` }));
             wrap.appendChild(row);
           });
-          wrap.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. The counts are also written under "If your ear fails", below.' }));
+          wrap.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. The counts are also written under "If your ear fails", below.' }));
           el.appendChild(wrap);
         } });
         if (f.EMBER_LOST) P.sight.push({ t: 'p', text: 'The second bell is **cracked** — a hairline from the night the Ember left the school — and gives nothing. But the five counts are one each of **1 to 5**, so the missing count is whichever the other four do not say.' });
@@ -2442,7 +2449,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         ] });
         if (volRole) S.push({ t: 'fine', text: `${volRole.nick}'s bell is silent in rounds one and two (the thread on the Stair). ${laneOwner(neighbour(vol - 1))} takes both keys; ${volRole.nick}'s bells fall into ${laneOwner(neighbour(vol - 1))}'s lane. The thread is tied off before round three.` });
         if (precracked) S.push({ t: 'fine', text: 'One bell is already cracked from the fall of the stair. You can hear it: Halvard\'s bell hums a quarter-tone flat. It still counts as rung when it is rung.' });
-        S.push({ t: 'audio', label: 'Feel the tempo — 70, then 76, then 60', strip: '<div class="arrow-strip"><span class="step"><b>♥</b>70</span><span class="step"><b>♥</b>76</span><span class="step"><b>♥</b>60</span></div>', play: (A) => { CA.heartbeat(A, 70, 6); CA.later(() => CA.heartbeat(A, 76, 6), 5600); CA.later(() => CA.heartbeat(A, 60, 6), 10600); return 10600 + 6 * 1000 + 300; }, text: 'Six beats at each. Every second beat is a bell.' });
+        S.push({ t: 'audio', label: 'Feel the tempo — 70, then 76, then 60', strip: '<div class="arrow-strip"><span class="step"><b>♥</b>70</span><span class="step"><b>♥</b>76</span><span class="step"><b>♥</b>60</span></div>', play: (A) => { CA.announce(0); CA.heartbeat(A, 70, 6); CA.later(() => { CA.announce(1); CA.heartbeat(A, 76, 6); }, 5600); CA.later(() => { CA.announce(2); CA.heartbeat(A, 60, 6); }, 10600); return 10600 + 6 * 1000 + 300; }, text: 'Six beats at each. Every second beat is a bell.' });
         S.push({ t: 'h', text: 'Round three — the script. You call it.' });
         S.push({ t: 'p', text: 'Bell *n* falls on beat *2n − 1*. Call each bell **two bells ahead** — four beats, four seconds — in one word: **BOOK**, **OWL**, **KNOT**, or **ALL** (Bookmoth, Owl and Knot together). Before the count reaches 1, call the first two. Then, when the count says 1, call bell 3; when it says 3, call bell 4; and so on. Keep your voice on the beat and your eyes on this list.' });
         S.push(round3Block());
@@ -2778,6 +2785,12 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     body.companion.ch8-white .ctab.on { color: #5a4a2a; border-color: #b8a070; background: rgba(184,160,112,0.15); }
     body.companion.ch8-white .btn { color: #5a4a2a; border-color: rgba(90,74,42,0.4); background: rgba(255,255,255,0.5); }
     body.companion.ch8-white .tag { color: #7a6a4a; border-color: rgba(122,106,74,0.4); }
+    body.companion.ch8-white .iconbtn { color: #5a4a2a; }
+    body.companion.ch8-white .iconbtn:hover { color: #3a2e1a; border-color: rgba(90,74,42,0.4); }
+    body.companion.ch8-white .cpanel .fine, body.companion.ch8-white .end-mark { color: #6b5d48; }
+    body.companion.ch8-white .end-mark { opacity: 1; }
+    body.companion.ch8-white .ctab { color: #6b5d48; }
+    body.companion.ch8-white .laws .law .era, body.companion.ch8-white em, body.companion.ch8-white strong { color: #7a6a4a; }
     body.companion.ch8-white .back-row .btn { color: #7a6a4a; }
     body.companion.ch8-dark { background: #000 !important; }
     body.companion.ch8-dark .cpanel { background: #000; border-color: rgba(255,255,255,0.06); }
@@ -3130,7 +3143,10 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       if (prev && (prev.cast || null) !== (castStr || null)) {
         // The same page turned again with a different mark: the Hearth's night has changed (a retry), so this
         // chapter's sealed answers and finished tasks are stale — the option sets and tokens may differ now.
-        [st.answers, st.done].forEach(o => Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; }));
+        // Seats parked on this phone are cleared as well; they never turn the page themselves.
+        const wipe = (o) => o && Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; });
+        [st.answers, st.done].forEach(wipe);
+        Object.values(st.seats || {}).forEach(s => { wipe(s.answers); wipe(s.done); });
         UI.toast('A new mark: this page\'s answers begin again.', 2600);
       }
       st.unlocked[lc.id] = { cast: castStr, flags }; st.current = lc.id; st.tab = 'sight'; save(); Audio.sfx('unlock'); showChapter(lc.id);
@@ -3224,7 +3240,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. Everything you would hear is also written on this page.' }));
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {
@@ -3251,12 +3267,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           const values = b.options.map(o => o.id);
           // A stored answer that is not one of this page's options is stale (another seat's, or an older mark's): unanswered.
           let chosen = values.includes(st.answers[key]) ? st.answers[key] : undefined;
+          if (chosen === undefined && st.answers[key] !== undefined) { delete st.answers[key]; save(); } // a stale answer is no answer, to content too
           const channel = b.channel || Lore.channel(b.id, st.role);
           const showToken = (optId) => {
             const tok = Shared.token(channel, optId, values);
             w.appendChild(UI.el('div', { class: 'blk-code sea' }, [UI.el('div', { class: 'label', text: b.tokenLabel || 'Your sealed word — type it into the Hearth when it asks' }), UI.el('div', { class: 'word', text: tok })]));
             const after = b.after ? (typeof b.after === 'function' ? b.after(optId, cx) : b.after) : '';
-            if (after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(after) }));
+            if (after) w.appendChild(UI.el('p', { class: 'fine after', html: UI.rich(after) }));
           };
           b.options.forEach(o => {
             const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: async () => {

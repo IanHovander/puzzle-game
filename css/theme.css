@@ -68,6 +68,7 @@ strong { color: var(--gold-2); font-weight: 600; }
 .iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
 .iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
 .hidden { display: none !important; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 
 input.field, textarea.field {
   font-family: var(--display); font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; text-align: center;

@@ -102,6 +102,7 @@
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
       const key = 'ch5:count'; const prev = api.state.done[key];
+      let ctl = null;
       const mat = MATERIAL[roleId];
       const idle = () => {
         UI.clear(box);
@@ -110,12 +111,14 @@
         box.appendChild(UI.el('button', { class: 'btn primary big-btn', text: prev != null ? 'Count again' : 'Start', onclick: start }));
       };
       const start = () => {
-        UI.clear(box); api.audio.init();
+        UI.stopAudio(); // Start is a press like any other: drop a peal still sounding from the last attempt
+        if (ctl) { ctl.cancel(); ctl = null; }
+        UI.clear(box); api.audio.init(); if (api.audio.unlockMedia) api.audio.unlockMedia();
         box.appendChild(UI.el('p', { html: UI.rich(mat.q) }));
         if (mat.html) box.appendChild(UI.el('div', { html: mat.html }));
         if (roleId === 'listener') { box.appendChild(UI.audioButton('Cup your ear — the peal', () => playPeal(api.audio))); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
         const cd = UI.el('div', { class: 'cd', text: '45' }); box.appendChild(cd);
-        const ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
+        ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
         ctl.promise.then(() => { cd.textContent = 'TIME — pick your digit'; });
         box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit:' }));
         const grid = UI.el('div', { class: 'pick-grid', style: { gridTemplateColumns: 'repeat(5, 1fr)' } });
@@ -204,7 +207,7 @@
             row.appendChild(UI.el('span', { class: 'fine', text: cracked ? 'over the second shape. It does not sound.' : `over the ${['first', 'second', 'third', 'fourth', 'fifth'][i]} shape` }));
             wrap.appendChild(row);
           });
-          wrap.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Turn the phone\'s silent switch off and the volume up, then press again. The counts are also written under "If your ear fails", below.' }));
+          wrap.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. The counts are also written under "If your ear fails", below.' }));
           el.appendChild(wrap);
         } });
         if (f.EMBER_LOST) P.sight.push({ t: 'p', text: 'The second bell is **cracked** — a hairline from the night the Ember left the school — and gives nothing. But the five counts are one each of **1 to 5**, so the missing count is whichever the other four do not say.' });

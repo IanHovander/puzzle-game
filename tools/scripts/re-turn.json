@@ -11,5 +11,9 @@
   {"clickText": "STAY"}, {"wait": 400},
   {"assert": "(function(){const t=document.querySelector('.blk-code .word').textContent; return window.VigilShared.decode(window.VigilLore.channel('finale','reader'), t, ['WALK','STAY'])==='STAY';})()"},
   {"clickText": "Pages"}, {"unlock": ["CROWN", "BGV"]}, {"tab": "Speak"}, {"wait": 300},
-  {"expect": "Two questions"}, {"assert": "!document.querySelector('.blk-choice .opt.chosen') && !document.querySelector('.blk-code')"}
+  {"expect": "Two questions"}, {"assert": "!document.querySelector('.blk-choice .opt.chosen') && !document.querySelector('.blk-code')"},
+  {"clickText": "WALK"}, {"clickText": "REFUSE"}, {"clickText": "Seal both"}, {"wait": 500}, {"expect": "One word answers both"},
+  {"clickText": "Pages"}, {"unlock": ["CROWN", "FGE"]}, {"wait": 400}, {"tab": "Speak"}, {"wait": 300},
+  {"expect": "Two questions"},
+  {"assert": "!document.querySelector('.blk-choice .opt.chosen') && !document.querySelector('.blk-code') && window.Companion.state().answers['ch7:finale']===undefined"}
 ] }

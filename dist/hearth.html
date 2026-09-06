@@ -74,6 +74,7 @@ strong { color: var(--gold-2); font-weight: 600; }
 .iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
 .iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
 .hidden { display: none !important; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 
 input.field, textarea.field {
   font-family: var(--display); font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; text-align: center;
@@ -151,7 +152,7 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 #vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.65) 100%); }
 
 /* top bar */
-#bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 0 18px; background: linear-gradient(180deg, rgba(0,0,0,0.82), rgba(0,0,0,0.5)); font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+#bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 0 18px; background: linear-gradient(180deg, rgba(0,0,0,0.88), rgba(0,0,0,0.78)); font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
 #bar .brand { color: var(--gold); font-weight: 600; }
 #bar .sep { opacity: 0.35; }
 #bar .spacer { flex: 1; }
@@ -211,7 +212,6 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 .flow-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; backdrop-filter: blur(8px); max-height: calc(100vh - 220px); overflow: auto; }
 .flow-title { margin: 0 0 6px; font-size: 16px; color: var(--gold); }
 .flow-stats { font-size: 16px; color: var(--ink-dim); margin-top: 6px; }
-.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 .pname { font-family: var(--display); }
 .pname.p0 { color: var(--p1);} .pname.p1 { color: var(--p2);} .pname.p2 { color: var(--p3);} .pname.p3 { color: var(--p4);}
 .chapter-list { display: flex; flex-direction: column; gap: 8px; }
@@ -3282,6 +3282,7 @@ var qrcode = function() {
     const start = performance.now();
     function step(t) {
       if (done) return;
+      if (!wrap.isConnected) { done = true; resolve('cancel'); return; } // the box was cleared or the tab changed
       const left = Math.max(0, seconds - (t - start) / 1000);
       fill.style.width = (left / seconds * 100) + '%';
       const s = Math.ceil(left); if (num.textContent != s) { num.textContent = s; if (onTick) onTick(s); if (s <= 5 && window.VigilAudio) window.VigilAudio.sfx('tick'); }
@@ -3459,8 +3460,9 @@ var qrcode = function() {
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    dom.mute.addEventListener('click', () => { Audio.init(); const m = Audio.toggleMute(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; });
-    dom.mute.textContent = Audio.isMuted() ? '🔇 Muted' : '🔊 Sound';
+    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
+    dom.mute.addEventListener('click', () => { Audio.init(); Audio.toggleMute(); muteLabel(); });
+    muteLabel();
     dom.menu.addEventListener('click', () => Game.showMenu());
     setInterval(() => { dom.timer.textContent = Store.elapsedText(); }, 500);
     document.addEventListener('keydown', (e) => { if (e.key === ' ' && !e.target.matches('input,textarea,button')) { UI.requestSkip(); } });
@@ -3695,7 +3697,7 @@ var qrcode = function() {
         const v = scene.decode(inp.value.trim().toUpperCase(), i, Store.state);
         if (v == null) { bad = true; inp.classList.add('wrong'); } else values.push(v);
       });
-      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) UI.toast(scene.stuckText, 5000); return; }
+      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) setTimeout(() => UI.toast(scene.stuckText, Math.max(5000, scene.stuckText.split(' ').length * 320)), 2500); return; }
       Audio.sfx('success');
       Store.state.tokens[scene.id] = values; Store.save();
       if (scene.onTokens) scene.onTokens(values, Store.state);
@@ -5492,8 +5494,8 @@ var qrcode = function() {
         wrap.appendChild(UI.el('div', { class: 'dial-label', text: d.label || '' }));
         const face = UI.el('div', { class: 'dial-face' }); faces.push(face);
         const btns = UI.el('div', { class: 'dial-btns' }, [
-          UI.el('button', { class: 'btn small ghost', text: '‹', title: 'Turn back', 'aria-label': 'Turn back', onclick: () => { state[i] = (state[i] - 1 + d.options.length) % d.options.length; Audio.sfx('tick'); render(); } }),
-          UI.el('button', { class: 'btn small ghost', text: '›', title: 'Turn forward', 'aria-label': 'Turn forward', onclick: () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); } }),
+          UI.el('button', { class: 'btn small ghost', text: '‹', title: 'Turn back', 'aria-label': 'Turn back' + (d.label ? ' — ' + d.label : ''), onclick: () => { state[i] = (state[i] - 1 + d.options.length) % d.options.length; Audio.sfx('tick'); render(); } }),
+          UI.el('button', { class: 'btn small ghost', text: '›', title: 'Turn forward', 'aria-label': 'Turn forward' + (d.label ? ' — ' + d.label : ''), onclick: () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); } }),
         ]);
         face.addEventListener('click', () => { state[i] = (state[i] + 1) % d.options.length; Audio.sfx('tick'); render(); });
         wrap.appendChild(face); wrap.appendChild(btns); dialsEl.appendChild(wrap);
@@ -8939,7 +8941,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         slots: [0, 1, 2, 3].map(i => ({ label: nick(i), player: i, length: 4 })),
         decode: (tok, i, s) => { const v = finaleValues(s); return v ? S.decode(L.channel('finale', ROLES[i]), tok, v) : null; },
         badText: 'The fire does not know that word. Check the phones; a sealed word can be re-read as often as it takes.',
-        stuckText: 'A sealed word is four letters, exactly as the phone shows it, from this chapter\'s SPEAK page — not an older one. If the fire was relit and the mark beside CROWN changed, each phone must turn the page again with the new mark and seal again.',
+        stuckText: 'A sealed word is four letters from this chapter\'s SPEAK page, not an older one. If the fire was relit, each phone turns CROWN again with the mark now shown, and seals again.',
         onTokens: (values, s) => {
           values.forEach((v, i) => {
             const r = ROLES[i]; const parts = String(v).split('_');
@@ -9097,7 +9099,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           'Under the lid the Cold opens, and it is quiet, and nobody has to decide anything any more.',
           { text: 'Some nights simply end.', cls: 'omen' },
           { text: 'The fire can be relit from CROWN. The first attempt is recorded, and the flowchart will remember it.', cls: 'whisper' },
-          { text: 'When CROWN shows again, look at the mark beside it. If it has changed, every phone turns the page again with the new mark before anyone speaks a sealed word: the night has changed, and so have the words.', cls: 'whisper' },
+          { text: 'When CROWN shows again, every phone turns the page again with the word and the mark beside it, before anyone speaks a sealed word. If the night has changed, the phone will say so, and its sealed words begin again.', cls: 'whisper' },
         ],
         run: (box, api) => new Promise((resolve) => {
           api.button('Try again from CROWN', () => {

@@ -295,7 +295,7 @@
         slots: [0, 1, 2, 3].map(i => ({ label: nick(i), player: i, length: 4 })),
         decode: (tok, i, s) => { const v = finaleValues(s); return v ? S.decode(L.channel('finale', ROLES[i]), tok, v) : null; },
         badText: 'The fire does not know that word. Check the phones; a sealed word can be re-read as often as it takes.',
-        stuckText: 'A sealed word is four letters, exactly as the phone shows it, from this chapter\'s SPEAK page — not an older one. If the fire was relit and the mark beside CROWN changed, each phone must turn the page again with the new mark and seal again.',
+        stuckText: 'A sealed word is four letters from this chapter\'s SPEAK page, not an older one. If the fire was relit, each phone turns CROWN again with the mark now shown, and seals again.',
         onTokens: (values, s) => {
           values.forEach((v, i) => {
             const r = ROLES[i]; const parts = String(v).split('_');
@@ -453,7 +453,7 @@
           'Under the lid the Cold opens, and it is quiet, and nobody has to decide anything any more.',
           { text: 'Some nights simply end.', cls: 'omen' },
           { text: 'The fire can be relit from CROWN. The first attempt is recorded, and the flowchart will remember it.', cls: 'whisper' },
-          { text: 'When CROWN shows again, look at the mark beside it. If it has changed, every phone turns the page again with the new mark before anyone speaks a sealed word: the night has changed, and so have the words.', cls: 'whisper' },
+          { text: 'When CROWN shows again, every phone turns the page again with the word and the mark beside it, before anyone speaks a sealed word. If the night has changed, the phone will say so, and its sealed words begin again.', cls: 'whisper' },
         ],
         run: (box, api) => new Promise((resolve) => {
           api.button('Try again from CROWN', () => {

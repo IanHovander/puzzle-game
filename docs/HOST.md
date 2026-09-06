@@ -61,7 +61,7 @@ The Hearth saves after every scene. Closing the laptop or the tab is fine: the t
 - **The wrong scene, or a mistake you want to undo** — the menu (☰) has *Replay scene* and *Chapter select*.
 - **Someone typed a private word wrong** — the Hearth just says it isn't attuned; retype it.
 - **No sound** — click anywhere once (browsers require a gesture), then check the speaker icon.
-- **No sound on a phone** — on an iPhone, flip the ringer switch off silent and turn the volume up, then press the listening button again; on Android, check the media volume. Every sound a Companion page plays is also written on that page, so nobody is stuck without it.
+- **No sound on a phone** — on an iPhone, set the Ring/Silent switch to ring (no orange showing) and turn the volume up, then press the listening button again; on Android, check the media volume. Every sound a Companion page plays is also written on that page, so nobody is stuck without it.
 - **You want to start over** — menu → *Abandon game*, or *New game* on the title screen.
 
 ## For the host who wants to know more

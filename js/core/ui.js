@@ -74,6 +74,7 @@
     const start = performance.now();
     function step(t) {
       if (done) return;
+      if (!wrap.isConnected) { done = true; resolve('cancel'); return; } // the box was cleared or the tab changed
       const left = Math.max(0, seconds - (t - start) / 1000);
       fill.style.width = (left / seconds * 100) + '%';
       const s = Math.ceil(left); if (num.textContent != s) { num.textContent = s; if (onTick) onTick(s); if (s <= 5 && window.VigilAudio) window.VigilAudio.sfx('tick'); }

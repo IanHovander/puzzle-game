@@ -11,7 +11,7 @@
 #vignette { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 45%, rgba(0,0,0,0.65) 100%); }
 
 /* top bar */
-#bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 0 18px; background: linear-gradient(180deg, rgba(0,0,0,0.82), rgba(0,0,0,0.5)); font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+#bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 0 18px; background: linear-gradient(180deg, rgba(0,0,0,0.88), rgba(0,0,0,0.78)); font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
 #bar .brand { color: var(--gold); font-weight: 600; }
 #bar .sep { opacity: 0.35; }
 #bar .spacer { flex: 1; }
@@ -71,7 +71,6 @@
 .flow-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; backdrop-filter: blur(8px); max-height: calc(100vh - 220px); overflow: auto; }
 .flow-title { margin: 0 0 6px; font-size: 16px; color: var(--gold); }
 .flow-stats { font-size: 16px; color: var(--ink-dim); margin-top: 6px; }
-.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 .pname { font-family: var(--display); }
 .pname.p0 { color: var(--p1);} .pname.p1 { color: var(--p2);} .pname.p2 { color: var(--p3);} .pname.p3 { color: var(--p4);}
 .chapter-list { display: flex; flex-direction: column; gap: 8px; }
