@@ -159,3 +159,11 @@ Tone: warm and funny at the table, cold underneath. Wren is fourteen, kind, quic
 - `node tools/run.js ch2_start --shots /tmp/shots` — loads a scene headlessly, reports console errors, screenshots. Add `--flags VOTE_LOST,SORREL` or `--set OATH=1`.
 - `node tools/play.js <script.json>` — scripted click-through (see the file header) for full puzzle walkthroughs.
 Every chapter must load every one of its scenes with zero console errors before it is handed back.
+
+## 9. Additional engine helpers
+
+- **Midnight clock** (Finale): `Game.clock.start(900, onZero)`, `Game.clock.penalty(30)`, `Game.clock.bonus(60)`, `Game.clock.stop()`, `Game.clock.left()`, `Game.clock.resume(onZero)` (after a reload; the remaining seconds are saved in `flags.MIDNIGHT_LEFT`). It renders in the top bar and persists across scenes.
+- **Reaction lanes extras**: `deadLanes: [idx]` (that lane is silent; its events are re-routed to a neighbour), `dark: true` (orbs invisible — the Listener calls the script), `bpm: 60` (shows a large beat counter with a tick pulse; `pulse: false` silences it), `laneNames`.
+- **Finale token values**: `VigilLore.finaleValues(flags)` returns the value list for the finale token given cast flags (`WALK_UNLOCKED`, `VANE_ALLY`), or `null` when no token is needed. Both sides must use it.
+- **Mini-words**: a `code` scene with its own `code: 'LINEN'` shows that word with no cast; the Companion unlocks it via `miniWords` on the chapter.
+- **Hint attention**: widgets pulse the hint bell after two wrong tries; `par` on a puzzle scene also pulses it after N minutes.

@@ -27,7 +27,12 @@
       cfg.container.appendChild(root);
 
       const fall = cfg.fallMs || 1800, win = cfg.windowMs || 380, braceWin = cfg.braceWindowMs || 350;
-      const events = cfg.events.map(e => Object.assign({ done: false, pressed: {}, orbs: [] }, e));
+      const dead = cfg.deadLanes || [];
+      const remap = (l) => { if (!dead.includes(l)) return l; const order = [l - 1, l + 1, l - 2, l + 2].filter(x => x >= 0 && x < 4 && !dead.includes(x)); return order[0]; };
+      dead.forEach(d => { lanes[d].classList.add('dead'); lanes[d].querySelector('.lane-name').textContent += ' — silent'; });
+      const events = cfg.events.map(e => { const ls = Array.from(new Set(e.lanes.map(remap).filter(x => x != null))).sort(); const kind = (e.kind === 'brace' || e.kind === 'all') && ls.length === 1 ? 'single' : (e.kind === 'all' && ls.length < 4 ? 'brace' : e.kind); return Object.assign({ done: false, pressed: {}, orbs: [] }, e, { lanes: ls, kind }); });
+      if (cfg.dark) lanesEl.classList.add('dark');
+      let beatEl = null; if (cfg.bpm) { beatEl = UI.el('div', { class: 'beat-counter', text: '—' }); wrap.appendChild(beatEl); }
       const total = events.filter(e => e.kind !== 'mimic').length + events.filter(e => e.kind === 'mimic').length;
       let hits = 0, misses = 0, health = 1, started = false, t0 = 0, raf = null, finished = false;
       const scoreEl = hud.lastChild, meterFill = meter.firstChild;
@@ -88,10 +93,12 @@
         }
       }
 
+      let lastBeat = 0;
       function frame() {
         if (finished) return;
         raf = requestAnimationFrame(frame);
         const now = performance.now() - t0; const hy = hitY();
+        if (beatEl) { const b = Math.floor(now / (60000 / cfg.bpm)) + 1; if (b !== lastBeat && b >= 1) { lastBeat = b; beatEl.textContent = b; beatEl.classList.add('tick'); setTimeout(() => beatEl.classList.remove('tick'), 120); if (cfg.pulse !== false) Audio.sfx('tick'); } }
         for (const e of events) {
           if (e.done) continue;
           if (!e.spawned && now >= e.t - fall) spawn(e);

@@ -60,6 +60,21 @@
     document.body.dataset.chapter = ch ? ch.id : '';
   }
   Game.setArt = setArt;
+  /* Persistent countdown shown in the top bar (the Finale's midnight). */
+  Game.clock = (function () {
+    let el = null, endAt = 0, iv = null, onZero = null, running = false;
+    function ensure() { if (!el) { el = UI.el('span', { id: 'midnight', class: 'hidden' }); dom.timer.parentNode.insertBefore(el, dom.timer); } return el; }
+    function render() { const left = Math.max(0, endAt - Date.now()); const s = Math.ceil(left / 1000); el.textContent = 'MIDNIGHT ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); el.classList.toggle('urgent', s <= 60); Store.state.flags.MIDNIGHT_LEFT = s; if (left <= 0 && running) { running = false; clearInterval(iv); iv = null; Audio.sfx('boom'); if (onZero) onZero(); } }
+    return {
+      start: (seconds, cb) => { ensure(); endAt = Date.now() + seconds * 1000; onZero = cb; running = true; el.classList.remove('hidden'); if (iv) clearInterval(iv); iv = setInterval(render, 250); render(); },
+      resume: (cb) => { const s = Store.state.flags.MIDNIGHT_LEFT; if (s > 0) Game.clock.start(s, cb); },
+      penalty: (seconds) => { if (!running) return; endAt -= seconds * 1000; render(); UI.toast('Midnight comes ' + seconds + ' seconds closer.', 2200, 'bad'); },
+      bonus: (seconds) => { if (!running) return; endAt += seconds * 1000; render(); },
+      stop: () => { running = false; if (iv) clearInterval(iv); iv = null; if (el) el.classList.add('hidden'); },
+      left: () => Math.max(0, Math.ceil((endAt - Date.now()) / 1000)),
+      running: () => running,
+    };
+  })();
   Game.flame = function (level) { const f = document.querySelector('#flame .flame-bar > div'); if (f) f.style.width = Math.round(Math.max(0, Math.min(1, level)) * 100) + '%'; Store.set('FLAME', level); };
 
   /* ---------- Scene execution ---------- */
@@ -203,7 +218,7 @@
     const code = scene.code || ch.code;
     let cast = null;
     if (scene.cast) cast = typeof scene.cast === 'function' ? scene.cast(Store.state) : scene.cast;
-    else if (window.VigilLore && window.VigilLore.chapter(ch.id) && window.VigilLore.chapter(ch.id).cast.length) {
+    else if (!scene.code && window.VigilLore && window.VigilLore.chapter(ch.id) && window.VigilLore.chapter(ch.id).cast.length) {
       const spec = window.VigilLore.chapter(ch.id).cast; cast = window.VigilShared.cast(code, window.VigilShared.pack(spec, Store.state.flags));
     }
     if (cast) Store.state.flags['CAST_' + code] = cast;

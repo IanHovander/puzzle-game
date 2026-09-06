@@ -35,6 +35,14 @@
     finale:  ['WALK_ACCEPT', 'WALK_REFUSE', 'STAY_ACCEPT', 'STAY_REFUSE', 'ACCEPT', 'REFUSE', 'WALK', 'STAY'],
   };
   L.channel = (beat, roleId) => 'hf:' + beat + ':' + roleId;
+  /* Finale token value set depends only on cast flags (both sides compute it identically). Returns null when no token is needed. */
+  L.finaleValues = (flags) => {
+    const walk = !!flags.WALK_UNLOCKED, ally = !!flags.VANE_ALLY;
+    if (walk && !ally) return ['WALK_ACCEPT', 'WALK_REFUSE', 'STAY_ACCEPT', 'STAY_REFUSE'];
+    if (walk && ally) return ['WALK', 'STAY'];
+    if (!walk && !ally) return ['ACCEPT', 'REFUSE'];
+    return null;
+  };
 
   /* The Book of Laws. era: 'F' Founders (Year 0) or 'O' Order (year given). learned: chapter id where it appears. */
   L.laws = [

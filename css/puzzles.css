@@ -150,3 +150,8 @@
 .seat.locked { opacity: .55; border-style: dashed; }
 .table-svg { width: 100%; height: 100%; }
 .dialseq .dial-face.sel { border-color: var(--gold-2); box-shadow: 0 0 16px rgba(242,210,122,0.5); }
+
+.lanes.dark .orb { opacity: 0; }
+.lane.dead { opacity: .35; }
+.beat-counter { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-family: var(--display); font-size: 54px; color: var(--gold-2); text-shadow: 0 0 24px rgba(0,0,0,.9); z-index: 4; pointer-events: none; transition: transform .1s; }
+.beat-counter.tick { transform: translateX(-50%) scale(1.15); }
