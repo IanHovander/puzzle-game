@@ -1,0 +1,10 @@
+{ "start": "ch7_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_reader_sight"}, {"expect": "West wall"}, {"expect": "Law 8"}, {"tab": "Wren"}, {"shot": "c7_reader_wren"}, {"expect": "To you alone"}, {"expect": "Ana"}, {"tab": "Speak"}, {"shot": "c7_reader_speak"}, {"expect": "Seal both"},
+  {"click": ".blk-choice .opt:has-text('WALK')"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"clickText": "Seal both"}, {"wait": 500}, {"shot": "c7_reader_token"}, {"expect": "6N6Z"},
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_listener_sight"}, {"expect": "up one"}, {"expect": "one — two — three — OFF"}, {"expect": "1 cracked bell"}, {"tab": "Speak"}, {"click": ".blk-choice .opt:has-text('STAY')"}, {"click": ".blk-choice .opt:has-text('ACCEPT')"}, {"clickText": "Seal both"}, {"wait": 500}, {"expect": "ZHHT"},
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_seer_sight"}, {"expect": "slot 8"}, {"expect": "turned"}, {"tab": "Wren"}, {"expect": "shadow"},
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_binder_sight"}, {"expect": "Idony"}, {"expect": "CROWN"}, {"expect": "RESTORED"}, {"expect": "the knot itself"}, {"tab": "Book"}, {"shot": "c7_binder_book"}, {"expect": "Law 7"},
+  {"companion": true}, {"role": "Reader"}, {"unlock": ["CROWN", "DLP"]}, {"tab": "Speak"}, {"shot": "c7_reader_speak_ally"}, {"expect": "walk into the fire"}, {"click": ".blk-choice .opt:has-text('WALK')"}, {"wait": 400}, {"expect": "ZZPN"}, {"tab": "Wren"}, {"expect": "Nobody scraped the paint"},
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "ALK"]}, {"tab": "Speak"}, {"expect": "Vane's word"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"wait": 400}, {"expect": "YTN3"},
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["CROWN", "CGN"]}, {"tab": "Speak"}, {"expect": "Nothing to speak"}
+] }

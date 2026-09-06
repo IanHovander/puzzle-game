@@ -1,0 +1,10 @@
+{ "start": "ch4_secrets", "flags": "SURRENDERED,WREN_SCARED,SORREL", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"shot": "ch4alt_secrets"},
+  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"click": ".ch4-opts .btn >> nth=2"}, {"wait": 1000}, {"expect": "shape of her"}, {"expect": "does not ask what colour"}, {"clickText": "Back to the room"},
+  {"wait": 400}, {"expect": "1 found"}, {"clickText": "Stop searching"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "You found one"}, {"expect": "says nothing at all"}, {"shot": "ch4alt_return"}, {"clickText": "Unroll the scroll"},
+  {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=1"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "no part of the Sealing"}, {"expect": "they said no"}, {"shot": "ch4alt_refused"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "refused"}, {"shot": "ch4alt_flow"},
+  {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, GREY: VigilStore.state.flags.GREY})"}
+] }

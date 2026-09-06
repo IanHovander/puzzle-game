@@ -1,0 +1,6 @@
+{ "start": "ch1_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["thorn"]}, {"shot": "c1_reader_sight"}, {"expect": "Sorrel"}, {"expect": "the Chair's mark"}, {"expect": "CROWN"}, {"tab": "Wren"}, {"shot": "c1_reader_wren"}, {"expect": "under the paint"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["THORN"]}, {"shot": "c1_listener_sight"}, {"expect": "asks me to my face"}, {"expect": "I stand with the Provost"}, {"expect": "hear no one else"}, {"expect": "too quiet to catch"}, {"tab": "Wren"}, {"expect": "skipped"},
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["THORN"]}, {"shot": "c1_seer_sight"}, {"expect": "Seat 5"}, {"expect": "Seat 8"}, {"expect": "Seat 6"}, {"tab": "Wren"}, {"expect": "toward the Hearth"},
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["THORN"]}, {"shot": "c1_binder_sight"}, {"expect": "Quill follows Sorrel"}, {"expect": "opposite"}, {"expect": "waiting to be tied"}, {"expect": "Gold"}, {"tab": "Wren"}, {"expect": "knot itself"}, {"tab": "Book"}, {"expect": "STRUCK"}
+] }

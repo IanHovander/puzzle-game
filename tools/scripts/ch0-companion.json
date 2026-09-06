@@ -1,0 +1,6 @@
+{ "start": "ch0_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["kindle"]}, {"shot": "c0_reader_sight"}, {"expect": "Flame"}, {"tab": "Wren"}, {"shot": "c0_reader_wren"}, {"tab": "Book"}, {"shot": "c0_reader_book"},
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["KINDLE"]}, {"shot": "c0_listener_sight"}, {"expect": "up three"}, {"tab": "Book"}, {"shot": "c0_listener_book"},
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["KINDLE"]}, {"shot": "c0_seer_sight"}, {"expect": "slot 3"}, {"tab": "Book"}, {"shot": "c0_seer_book"},
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["KINDLE"]}, {"shot": "c0_binder_sight"}, {"expect": "Law 1"}, {"tab": "Book"}, {"shot": "c0_binder_book"}, {"expect": "STRUCK"}
+] }
