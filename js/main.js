@@ -5,6 +5,7 @@
 
   Game.mount({ stage: 'stage', fx: 'fx', text: 'text', actions: 'actions', widget: 'widget', chapter: 'chapter', timer: 'timer', hint: 'hint', mute: 'mute', menu: 'menu' });
   document.getElementById('qr').addEventListener('click', () => Game.showQR());
+  document.getElementById('mapbtn').addEventListener('click', () => window.VigilMap.show());
   FX.set('embers', 0.6);
   Game.setArt('title');
   Audio.mood('hearth');

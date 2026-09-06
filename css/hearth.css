@@ -119,3 +119,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 
 #midnight { font-family: var(--display); color: var(--ember); letter-spacing: .12em; font-variant-numeric: tabular-nums; margin-right: 10px; }
 #midnight.urgent { color: #ff8b8b; animation: pulse .6s infinite; }
+
+.map-box { min-width: min(900px, 88vw); }
+.night-map { width: 100%; height: auto; display: block; }
+.modal.wide { max-width: min(980px, 94vw); }
