@@ -26,16 +26,17 @@
       const joinMs = cfg.joinMs || 1000, holdMs = cfg.holdMs || 6000, releaseMs = cfg.releaseMs || 500, maxAttempts = cfg.attempts || 3;
       const active = (cfg.deadLanes || []).length ? [0, 1, 2, 3].filter(i => !(cfg.deadLanes || []).includes(i)) : [0, 1, 2, 3];
       let sounding = [false, false, false, false], onTimes = [null, null, null, null], offTimes = [null, null, null, null];
-      let phase = 'join', holdStart = null, attempts = 0, fill = 0, raf = null, done = false, voices = [];
+      let phase = 'join', holdStart = null, attempts = 0, fill = 0, raf = null, done = false, voices = [], ignoreUntil = 0;
 
       function startVoice(i) { if (Audio.ready && Audio.ready() && !Audio.isMuted()) { /* sustained tone via repeated bell */ voices[i] = setInterval(() => Audio.note(NOTES[i], 1.2, 0.12), 900); Audio.note(NOTES[i], 1.2, 0.14); } }
       function stopVoice(i) { if (voices[i]) { clearInterval(voices[i]); voices[i] = null; } }
       function setLane(i, on) { lanes[i].classList.toggle('on', on); Input.setPadState(i, 'good', on); }
-      function resetAll(msg, cls) { active.forEach(i => { sounding[i] = false; onTimes[i] = null; offTimes[i] = null; setLane(i, false); stopVoice(i); }); phase = 'join'; holdStart = null; fill = 0; flame.firstChild.style.width = '0%'; if (msg) { status.className = 'pz-status ' + (cls || ''); status.textContent = msg; } }
+      function resetAll(msg, cls) { ignoreUntil = performance.now() + 700; active.forEach(i => { sounding[i] = false; onTimes[i] = null; offTimes[i] = null; setLane(i, false); stopVoice(i); }); phase = 'join'; holdStart = null; fill = 0; flame.firstChild.style.width = '0%'; if (msg) { status.className = 'pz-status ' + (cls || ''); status.textContent = msg; } }
 
       Input.activate(pads, (idx) => {
         if (done || !active.includes(idx)) return;
         const now = performance.now();
+        if (now < ignoreUntil) return; // settle window after a reset: the other hands' in-flight presses are not new joins
         if (!sounding[idx]) {
           if (phase === 'release') { resetAll('A hand came back after letting go. Again.', 'bad'); Audio.sfx('miss'); fail(); return; }
           sounding[idx] = true; onTimes[idx] = now; setLane(idx, true); startVoice(idx);

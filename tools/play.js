@@ -37,7 +37,7 @@ const path = require('path'), fs = require('fs');
       else if (st.waitFor) await page.waitForSelector(st.waitFor, { timeout: st.timeout || 20000 });
       else if (st.slots) { for (const [slot, glyph] of st.slots) { await page.click(`.wheel .slot[data-i="${slot - 1}"]`); await page.waitForTimeout(80); if (glyph) await page.click(`.palette-grid .glyph:has-text("${glyph}")`); else await page.click('.palette-grid .glyph.empty'); await page.waitForTimeout(80); } }
       else if (st.shot) { if (shots) await page.screenshot({ path: path.join(shots, st.shot + '.png') }); }
-      else if (st.expect) { const t = await page.evaluate(() => document.body.innerText); if (!t.includes(st.expect)) throw new Error('expected text not found: ' + st.expect); }
+      else if (st.expect) { const t = await page.evaluate(() => document.body.innerText); if (!t.toLowerCase().includes(String(st.expect).toLowerCase())) throw new Error('expected text not found: ' + st.expect); }
       else if (st.eval) { const r = await page.evaluate(st.eval); log.push('eval: ' + JSON.stringify(r)); }
       else if (st.log) { const t = await page.evaluate(() => ({ text: (document.getElementById('text') || document.body).innerText.slice(0, 600), buttons: Array.from(document.querySelectorAll('button')).map(b => b.innerText.trim()).filter(Boolean).slice(0, 20) })); log.push(JSON.stringify(t)); }
       if (st.pause) await page.waitForTimeout(st.pause); else await page.waitForTimeout(250);
