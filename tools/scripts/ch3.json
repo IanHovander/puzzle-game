@@ -25,7 +25,7 @@
   {"clickText": "Turn around"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch3_door"}, {"expect": "SIXTY HEARTBEATS"}, {"click": ".btn.choice >> nth=0"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch3_fight"}, {"slots": [[1, "ASH"], [2, "THORN"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch3_fourhands"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "Not tonight, then"}, {"clickText": "Continue"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch3_flow"}, {"expect": "the ward, woken"}, {"expect": "turn 11"}, {"expect": "only Owl knows"}, {"log": true},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch3_flow"}, {"expect": "the ward, woken"}, {"expect": "turn 11"}, {"expect": "only Seer knows"}, {"log": true},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.LINEN,f.CH3_TURNS,f.CH3_SPOTTED,f.WREN_SCARED]})()"},
   {"clickText": "The Oath"}, {"wait": 1200}, {"log": true}
 ] }

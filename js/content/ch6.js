@@ -52,7 +52,7 @@
   }
   /* event n (1-based) falls on beat 2n-1: t = LEAD + beatMs*(2n-1) */
   function roundEvents(script, bpm) { const beatMs = 60000 / bpm; return parseScript(script).map((e, i) => Object.assign({ t: Math.round(LEAD + beatMs * (2 * i + 1)) }, e)); }
-  const callWord = (e) => e.kind === 'all' ? 'ALL' : e.lanes.map(l => ['BOOK', 'HUSH', 'OWL', 'KNOT'][l]).join('+');
+  const callWord = (e) => e.kind === 'all' ? 'ALL' : e.lanes.map(l => ['READER', 'LISTENER', 'SEER', 'BINDER'][l]).join('+');
   const scriptWords = (script) => parseScript(script).map(callWord).join(' · ');
 
   const volunteerLane = (s) => { const v = s.flags.VOLUNTEER | 0; return v >= 1 && v <= 4 ? v - 1 : null; };
@@ -124,10 +124,10 @@
   const REPLY = {
     listener: { LOUD: 'You said loud. In the laundry. I let you.', NO: 'You said no. You were the only one who didn\'t flinch.' },
     seer: { TELL: 'You told me in the laundry. I thought you were being poetic.', NOTHING: 'You looked at the wall. You\'re looking at it now.' },
-    reader: { TELL: '\'A small brave bird.\' Bookmoth. It isn\'t even in your alphabet.', DONTKNOW: 'You said you didn\'t know yet. Do you now?' },
+    reader: { TELL: '\'A small brave bird.\' The Reader. It isn\'t even in your alphabet.', DONTKNOW: 'You said you didn\'t know yet. Do you now?' },
     binder: { YES: 'You said yes. You see every thread in this room. Show me mine.', DONTKNOW: 'That was the kindest thing anyone said to me tonight.' },
   };
-  const FALLBACK = { listener: 'You never answered me in the laundry, Hush. You\'re answering now.', seer: 'You never answered me in the laundry, Owl. You\'re answering now.', reader: 'You never answered me in the laundry, Bookmoth. You\'re answering now.', binder: 'You never answered me in the laundry, Knot. You\'re answering now.' };
+  const FALLBACK = { listener: 'You never answered me in the laundry, the Listener. You\'re answering now.', seer: 'You never answered me in the laundry, the Seer. You\'re answering now.', reader: 'You never answered me in the laundry, the Reader. You\'re answering now.', binder: 'You never answered me in the laundry, the Binder. You\'re answering now.' };
   const TRUTH = { listener: 'NO', seer: 'TELL', reader: 'DONTKNOW', binder: 'DONTKNOW' };
   const wrenReply = (s, role) => { const v = W(s, role); return (REPLY[role][v]) || FALLBACK[role]; };
   const asked = (role, right, lead, wrongLead) => (s) => [
@@ -219,7 +219,7 @@
       ch6_attune: {
         type: 'code', art: 'ch6_lid', mood: 'dread', fx: 'ash', flame: 0.2,
         text: ['Cut into the rim of the lid, where the four ropes meet, a word worn nearly smooth by chalk and salt. Each of you: open your Companion and turn the page with it — and its mark.'],
-        roles: 'Warden of the Hearth (keyboard): **all four keys**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **all four keys**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: 'ch6_ready',
       },
       /* ---------- the ready screen ---------- */
@@ -230,8 +230,8 @@
         text: (s) => {
           const v = volunteerLane(s);
           const out = [
-            'Four lanes, left to right: Bookmoth, Hush, Owl, Knot. A light falls down your lane; press your key as it crosses the line. Lights joined across lanes are a chord — those hands together, within a breath. A purple chain across every lane means everyone.',
-            'Three rounds. Each round the pattern changes, and Hush will tell you how before it starts. Seven bells in ten hold the Cold; fewer than that cracks a bell — the night goes on either way.',
+            'Four lanes, left to right: Reader, Listener, Seer, Binder. A light falls down your lane; press your key as it crosses the line. Lights joined across lanes are a chord — those hands together, within a breath. A purple chain across every lane means everyone.',
+            'Three rounds. Each round the pattern changes, and the Listener will tell you how before it starts. Seven bells in ten hold the Cold; fewer than that cracks a bell — the night goes on either way.',
           ];
           if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first two rounds — ${nick(v)}'s Sight is up the Stair, holding a thread. ${nick(neighbourOf(v, [v]))}, take both keys: ${nick(v)}'s bells fall into your lane.`, cls: 'whisper' });
           out.push('First, a practice peal with these lanes. Nothing is at stake in it. Then the bells.');
@@ -243,7 +243,7 @@
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE BELLS OF THORNHALLOW — READY' }));
           const grid = UI.el('div', { class: 'ch6-ready' });
           const rounds = UI.el('div', { class: 'ch6-rounds' });
-          [['Round one', '70 to the minute · 24 bells · one hand at a time'], ['Round two', '76 to the minute · 24 bells · chords: two, three, all four'], ['Round three', '60 to the minute · 24 bells · the lights go dark; Hush\'s bell is the voice']].forEach(([a, b]) => rounds.appendChild(UI.el('div', { class: 'ch6-round', html: `<b>${a}</b><span>${b}</span>` })));
+          [['Round one', '70 to the minute · 24 bells · one hand at a time'], ['Round two', '76 to the minute · 24 bells · chords: two, three, all four'], ['Round three', '60 to the minute · 24 bells · the lights go dark; the Listener\'s bell is the voice']].forEach(([a, b]) => rounds.appendChild(UI.el('div', { class: 'ch6-round', html: `<b>${a}</b><span>${b}</span>` })));
           grid.appendChild(rounds);
           const lanes = UI.el('div', { class: 'ch6-lanes' });
           for (let i = 0; i < 4; i++) lanes.appendChild(UI.el('div', { class: 'ch6-lane p' + i + (v === i ? ' silent' : ''), html: `${nick(i)}${v === i ? ' — silent, rounds 1–2' : ''}<span class="k">${window.VigilInput.keyLabel(i)}</span>` }));
@@ -256,7 +256,7 @@
           slow.appendChild(slowTxt); slow.appendChild(slowBtn); paint();
           grid.appendChild(slow);
           wrap.appendChild(grid);
-          wrap.appendChild(UI.el('p', { class: 'small', style: { marginTop: '12px' }, text: 'Hush: your Sight has the shape of every round, and the third round\'s whole script. Read it now; nobody else can.' }));
+          wrap.appendChild(UI.el('p', { class: 'small', style: { marginTop: '12px' }, text: 'The Listener: your Sight has the shape of every round, and the third round\'s whole script. Read it now; nobody else can.' }));
           box.appendChild(wrap);
           api.button('Practice peal', () => resolve('ch6_practice'), 'primary');
         }),
@@ -269,7 +269,7 @@
           const bpm = tempo(s, PRACTICE.bpm); beatOverlay({ lead: LEAD, beatMs: 60000 / bpm, total: 16, numbers: false });
           return { practice: true, laneNames: L.nicks, events: roundEvents(PRACTICE.script, bpm), fallMs: 1800, windowMs: win(s, 350), braceWindowMs: win(s, 300), deadLanes: volunteerLane(s) != null ? [volunteerLane(s)] : [], pulse: false };
         },
-        solvedText: (s, r) => [`${r.hits} of ${r.total}. ${r.hits === r.total ? 'Clean. Marrow, at the lid, almost smiles.' : r.hits >= r.total * 0.7 ? 'That would hold. Do it again if you want; the Cold is patient tonight.' : 'The bells do not mind a bad practice. Ring it again if you like — nothing counted.'}`, { text: 'When you are ready, the first round. Hush has the shape of it.', cls: 'whisper' }],
+        solvedText: (s, r) => [`${r.hits} of ${r.total}. ${r.hits === r.total ? 'Clean. Marrow, at the lid, almost smiles.' : r.hits >= r.total * 0.7 ? 'That would hold. Do it again if you want; the Cold is patient tonight.' : 'The bells do not mind a bad practice. Ring it again if you like — nothing counted.'}`, { text: 'When you are ready, the first round. The Listener has the shape of it.', cls: 'whisper' }],
         next: 'ch6_round1', button: 'Ring the first round',
       },
       /* ---------- rounds ---------- */
@@ -312,8 +312,8 @@
             out.push({ text: `${nick(v)}, your Sight comes back like blood into a numb hand. Open it. The rest of the chapter is yours again — and so is your bell.`, cls: 'whisper' });
           }
           out.push('Then Marrow does something to the lamps. There are no lamps. The chamber goes dark except for the coin of the Hearth far above, and the beat of the lid under your feet, which you can feel now more than hear.');
-          out.push({ speaker: 'Marrow', text: 'The Founders rang the last pattern blind. One of them called it; three of them rang. Hush — your bell is the voice. Nobody in this room can see a light fall. You can see the script. Call it.' });
-          out.push('The Hearth will count the beats aloud, one to forty-eight. Hush calls each bell two bells ahead — four beats, four seconds — in one word: **BOOK**, **OWL**, **KNOT**, or **ALL**. Bookmoth, Owl, Knot: press on the beat you were given. Sixty to the minute. The lights are gone. The line is still there.');
+          out.push({ speaker: 'Marrow', text: 'The Founders rang the last pattern blind. One of them called it; three of them rang. The Listener — your bell is the voice. Nobody in this room can see a light fall. You can see the script. Call it.' });
+          out.push('The Hearth will count the beats aloud, one to forty-eight. The Listener calls each bell two bells ahead — four beats, four seconds — in one word: **READER**, **SEER**, **BINDER**, or **ALL**. The Reader, the Seer, the Binder: press on the beat you were given. Sixty to the minute. The lights are gone. The line is still there.');
           return out;
         },
         next: 'ch6_round3', button: 'Ring it blind',
@@ -321,11 +321,11 @@
       ch6_round3: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', mood: 'dread', fx: 'void', flame: 0.15, puzzleId: 'ch6_round3', par: 3.5,
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); },
-        text: (s) => [`Twenty-four bells at sixty${s.flags.SLOW_BELLS ? ', eased' : ''}, on the odd beats: one, three, five. Hush calls; three hands ring. Nothing falls that you can see.`],
+        text: (s) => [`Twenty-four bells at sixty${s.flags.SLOW_BELLS ? ', eased' : ''}, on the odd beats: one, three, five. The Listener calls; three hands ring. Nothing falls that you can see.`],
         config: (s) => bellCfg(s, 3),
         hints: [
-          'Hush reads the list; the Hearth reads the count. A bell falls on every *odd* beat — one, three, five — so Hush calls the bell for beat five while the count says one.',
-          'Ring on the count, not on the call: when Hush says OWL, Owl presses on the next odd beat after the one that is sounding. ALL is Bookmoth, Owl and Knot together. Slow bells ease the count to forty-eight to the minute.',
+          'The Listener reads the list; the Hearth reads the count. A bell falls on every *odd* beat — one, three, five — so the Listener calls the bell for beat five while the count says one.',
+          'Ring on the count, not on the call: when the Listener says SEER, the Seer presses on the next odd beat after the one that is sounding. ALL is Reader, Seer and Binder together. Slow bells ease the count to forty-eight to the minute.',
           (s) => `The dark round, in order (one bell every odd beat from beat 1): ${scriptWords(ROUNDS[3].script)}.`,
         ],
         onSolve: roundSolve(3),
@@ -357,13 +357,13 @@
           { speaker: 'Wren', text: 'Before I do — I asked you all something in the laundry. I\'ll ask again. Out loud, this time. Look at me when you answer.' },
           { text: 'Four questions, each for the one whose gift it is. The table may argue. The one asked must answer.', cls: 'whisper' },
         ],
-        next: 'ch6_ask_owl', button: 'Owl first',
+        next: 'ch6_ask_owl', button: 'Seer first',
       },
       ch6_ask_owl: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_OWL',
-        text: [{ speaker: 'Wren', text: 'Owl. You see under things. Which way does my shadow fall?' }],
-        prompt: 'Owl answers.',
-        hints: ['Owl\'s page. Every chapter.', 'The under-layer of the dormitory, the vault, the study, this chamber: four shadows fall one way from every fire. One does not.', 'TOWARD THE FIRE.'],
+        text: [{ speaker: 'Wren', text: 'Seer. You see under things. Which way does my shadow fall?' }],
+        prompt: 'The Seer answers.',
+        hints: ['The Seer\'s page. Every chapter.', 'The under-layer of the dormitory, the vault, the study, this chamber: four shadows fall one way from every fire. One does not.', 'TOWARD THE FIRE.'],
         options: [
           askOpt('away', 'Away from the fire. Like everyone\'s.', 'seer', false, 'ch6_ask_hush', '', 'Wren glances at the coin of light overhead, and then at the floor by Wren\'s feet, and says nothing about it.'),
           askOpt('toward', 'Toward the fire.', 'seer', true, 'ch6_ask_hush', 'Wren nods once, as if a sum had come out.', ''),
@@ -372,9 +372,9 @@
       },
       ch6_ask_hush: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_HUSH',
-        text: [{ speaker: 'Wren', text: 'Hush. You hear every heart in a room. Can you hear mine?' }],
-        prompt: 'Hush answers.',
-        hints: ['Hush\'s page. The heartbeats, every chapter.', 'Five names in the dormitory, nine Masters in the Hall, everyone on the Stair — one line on every page has always been flat.', 'NONE.'],
+        text: [{ speaker: 'Wren', text: 'Listener. You hear every heart in a room. Can you hear mine?' }],
+        prompt: 'The Listener answers.',
+        hints: ['The Listener\'s page. The heartbeats, every chapter.', 'Five names in the dormitory, nine Masters in the Hall, everyone on the Stair — one line on every page has always been flat.', 'NONE.'],
         options: [
           askOpt('loud', 'Loud.', 'listener', false, 'ch6_ask_bookmoth', '', 'Wren smiles at that, which is worse than if Wren had not.'),
           askOpt('faint', 'Faint. Far off.', 'listener', false, 'ch6_ask_bookmoth', '', 'Wren tilts a head, listening for it too, and does not find it either.'),
@@ -383,9 +383,9 @@
       },
       ch6_ask_bookmoth: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_BOOKMOTH',
-        text: [{ speaker: 'Wren', text: 'Bookmoth. You read the old tongue now. What does my name mean?' }],
-        prompt: 'Bookmoth answers.',
-        hints: ['Bookmoth\'s page. The glossary, since the study.', 'The Vigil roll spells it WRENN in the older alphabet — and the lexicon\'s gloss for COLD already says the same word.', 'A HOLLOW — the space inside a bell.'],
+        text: [{ speaker: 'Wren', text: 'Reader. You read the old tongue now. What does my name mean?' }],
+        prompt: 'The Reader answers.',
+        hints: ['The Reader\'s page. The glossary, since the study.', 'The Vigil roll spells it WRENN in the older alphabet — and the lexicon\'s gloss for COLD already says the same word.', 'A HOLLOW — the space inside a bell.'],
         options: [
           askOpt('bird', 'A small bird. A brave one.', 'reader', false, 'ch6_ask_knot', '', 'Wren waits a moment longer, in case there is more, and there is not.'),
           askOpt('hollow', 'A hollow. The space inside a bell — the part that rings.', 'reader', true, 'ch6_ask_knot', 'Wren looks up at the four bells, and at the dark inside each of them, and back.', ''),
@@ -394,9 +394,9 @@
       },
       ch6_ask_knot: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_KNOT',
-        text: [{ speaker: 'Wren', text: 'Knot. You see the threads. Do I have one?' }],
-        prompt: 'Knot answers.',
-        hints: ['Knot\'s page. Wren\'s entry, every chapter.', '"No thread found. Not unbound — the knot itself." It has said that since the dormitory.', 'NONE.'],
+        text: [{ speaker: 'Wren', text: 'Binder. You see the threads. Do I have one?' }],
+        prompt: 'The Binder answers.',
+        hints: ['The Binder\'s page. Wren\'s entry, every chapter.', '"No thread found. Not unbound — the knot itself." It has said that since the dormitory.', 'NONE.'],
         options: [
           askOpt('red', 'Red. An oath — to us.', 'binder', false, 'ch6_iknow', '', 'Wren holds out an arm, as if a thread might be seen on it, and the arm is only an arm.'),
           askOpt('grey', 'Grey. Grief.', 'binder', false, 'ch6_iknow', '', 'Wren looks past you at the Provost when you say grey, and does not argue.'),
@@ -425,9 +425,9 @@
         enter: () => { Store.note('Marrow confessed what came out of the fire.'); },
         text: [
           'Nobody says anything for a while. The Hearth, far above, gutters — and for a moment the shaft is full of a light that comes from below, blue, and the underside of the prophecy stone is lit from an angle nobody has ever lit it from.',
-          { text: 'The fire has never been this low. Owl — the foot of the stone.', cls: 'big' },
+          { text: 'The fire has never been this low. The Seer — the foot of the stone.', cls: 'big' },
           'Eight shapes, cut deep, in a line. The Order has read them from the Hall side, over the fire, for four hundred years, and the fire has hidden the foot of the stone every one of those years — the foot, where a carver puts the mark.',
-          { text: 'Bookmoth has the shapes. Owl has the foot. Hush has the tune. Knot has the Law. Lay it on the strip the way it was carved.', cls: 'whisper' },
+          { text: 'The Reader has the shapes. The Seer has the foot. The Listener has the tune. The Binder has the Law. Lay it on the strip the way it was carved.', cls: 'whisper' },
         ],
         next: 'ch6_strip', button: 'Read it',
       },
@@ -444,16 +444,16 @@
           check: (m) => {
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (got.every((g, i) => g === TURNED[i])) return true;
-            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. Hush — does the tune agree with that? Owl — which end is the mark on?';
-            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also inverts every glyph. Bookmoth: every shape reads as its other word.';
+            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. The Listener — does the tune agree with that? The Seer — which end is the mark on?';
+            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also inverts every glyph. The Reader: every shape reads as its other word.';
             if (got.every((g, i) => g === TURNED.slice().reverse()[i])) return 'Every glyph inverted — but a turned line is read from its mark, right to left. Slot 1 is the shape farthest from the mark.';
             if (got.some(g => !g)) return 'Eight shapes, eight slots. COLD is a glyph too, whatever the Order says; the stone shows the shape.';
             return 'The stone does not answer. Frost feathers across the strip and it clears.';
           },
         }),
         hints: [
-          'Owl — the foot of the stone.',
-          'Turned: right to left, every glyph flips — and a glyph keeps its place on the stone (Knot, Law 10). Hush — where is the rest?',
+          'The Seer — the foot of the stone.',
+          'Turned: right to left, every glyph flips — and a glyph keeps its place on the stone (The Binder, Law 10). The Listener — where is the rest?',
           'Slot 1 KNOT, slot 2 CROWN, slot 3 ASH, slot 4 WELL, slot 5 VEIL, slot 6 EMBER, slot 7 ASH, slot 8 COLD. Then four hands.',
         ],
         onSolve: (s) => {
@@ -481,7 +481,7 @@
       ch6_open: {
         art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.14,
         text: (s) => [
-          { text: 'Knot, your Book turns a page by itself: *Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.* Law 0 is written again, and it is older than Law 6.', cls: 'whisper' },
+          { text: 'Binder, your Book turns a page by itself: *Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.* Law 0 is written again, and it is older than Law 6.', cls: 'whisper' },
           { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
           'Wren has been very quiet. Wren looks at the four of you, and at the lid, and at the shaft full of white light going orange again, and grins — the sideways one, the one from the dormitory door.',
           { speaker: 'Wren', text: 'Then ask me a third time. In there.' },

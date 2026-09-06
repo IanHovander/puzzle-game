@@ -2,7 +2,7 @@
   {"key": "Space"}, {"shot": "ch2_start"}, {"expect": "Five to four"}, {"clickText": "Down"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "The bottom"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"},
-  {"wait": 800}, {"key": "Space"}, {"shot": "ch2_attune"}, {"expect": "KNOT"}, {"expect": "AC4"}, {"expect": "Owl"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"shot": "ch2_attune"}, {"expect": "KNOT"}, {"expect": "AC4"}, {"expect": "Seer"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_door"},
   {"click": ".dialseq .dial-face >> nth=0"}, {"click": ".palette-grid .glyph:has-text(\"CROWN\")"},
   {"click": ".dialseq .dial-face >> nth=1"}, {"click": ".palette-grid .glyph:has-text(\"THORN\")"},

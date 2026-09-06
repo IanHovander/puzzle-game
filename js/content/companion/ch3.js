@@ -63,7 +63,7 @@
     <g fill="#fff" opacity=".9"><circle cx="90" cy="110" r="6"/><circle cx="130" cy="96" r="6"/><circle cx="150" cy="128" r="6"/><circle cx="190" cy="106" r="6"/><circle cx="250" cy="112" r="5"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,110 L52,110"/><path d="M130,96 L96,92"/><path d="M150,128 L116,132"/><path d="M190,106 L154,104"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,112 L300,112"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="78" y="128">Bookmoth</text><text x="120" y="86">Hush</text><text x="140" y="146">Owl</text><text x="180" y="124">Knot</text><text x="238" y="130" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="78" y="128">Reader</text><text x="120" y="86">Listener</text><text x="140" y="146">Seer</text><text x="180" y="124">Binder</text><text x="238" y="130" fill="#a482e6">Wren</text></g>
     <text x="180" y="214" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall — the portraits have none</text>
   </svg>`;
 
@@ -128,7 +128,7 @@
         P.sight.push({ t: 'p', text: '**The second lintel** — the Laundry\'s back door. A **Spike**.' });
         P.sight.push({ t: 'html', html: G.inscription([{ shape: 'Spike', inv: false }], { showMark: false }) });
         P.sight.push({ t: 'table', head: ['If the mark is…', 'the word is'], rows: [['on the left (upright)', `${G.svg('THORN', { size: 30, color: '#f2d27a' })} THORN — <em>a gate; to go through</em>`], ['on the right (turned)', `${G.svg('WELL', { size: 30, color: '#f2d27a' })} WELL — <em>down; from</em>`]] });
-        P.sight.push({ t: 'fine', text: 'A lone glyph with its mark on the right simply inverts; there is nothing to read backwards. **Owl knows which end the mark is on.** Speak the wrong word and the wall stays a wall — nothing worse.' });
+        P.sight.push({ t: 'fine', text: 'A lone glyph with its mark on the right simply inverts; there is nothing to read backwards. **The Seer knows which end the mark is on.** Speak the wrong word and the wall stays a wall — nothing worse.' });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'Over the Tower door' });
         P.sight.push({ t: 'p', text: 'Two shapes, deep-cut, a Founder\'s hand: a **Flame**, then a **Spike**. A threshold, not a lock.' });
@@ -144,7 +144,7 @@
       /* ================= LISTENER ================= */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Two patrols, by landmark' });
-        P.sight.push({ t: 'p', text: 'The lamps are out, and the Hearth draws no guards. You hear them. Two rounds, each **twelve beats** long, each repeating exactly; one beat is one turn on the Hearth. You hear *where* they are by what their boots pass — not by room letters. Owl knows where the landmarks are.' });
+        P.sight.push({ t: 'p', text: 'The lamps are out, and the Hearth draws no guards. You hear them. Two rounds, each **twelve beats** long, each repeating exactly; one beat is one turn on the Hearth. You hear *where* they are by what their boots pass — not by room letters. The Seer knows where the landmarks are.' });
         P.sight.push({ t: 'audio', label: 'Light steps — Patrol A', strip: `<div class="fine">quick, soft, a lantern swinging; ${LOOP_A.length} beats then round again</div>`, play: (A) => playSteps(A, true), text: 'On the beat before the first turn they are at **west corridor south**.' });
         P.sight.push(loopTable(LOOP_A));
         P.sight.push({ t: 'audio', label: 'Heavy boots — Patrol B', strip: `<div class="fine">slow, iron-shod, two of them; they stand a long time at the tower stair-foot</div>`, play: (A) => playSteps(A, false), text: 'On the beat before the first turn they are at the **east cross**.' });
@@ -156,27 +156,27 @@
         P.sight.push({ t: 'h', text: 'The portraits' });
         P.sight.push({ t: 'audio', label: 'Two hundred years of Masters, muttering', strip: `<div class="fine">…four went down… four went down… four went down…</div>`, play: playPortraits, text: 'They all say the same thing, over and over, in different voices. Nobody else can make out the words. **"…four went down…"** You have not decided what it means and you are not going to decide tonight.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the Gallery' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['Bess, in the Laundry', 'normal'], ['Hob, at the lodge', 'fast'], ['Vane\'s captain', 'normal'], ['Bookmoth', 'normal'], ['Owl', 'normal'], ['Knot', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['Bess, in the Laundry', 'normal'], ['Hob, at the lodge', 'fast'], ['Vane\'s captain', 'normal'], ['Reader', 'normal'], ['Seer', 'normal'], ['Binder', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Hob\'s is quick and greedy. The Provost\'s is slower than it was in the Hall. Wren: too quiet to catch. Still.' });
         P.wren.push({ t: 'h', text: 'What the frames say' });
         P.wren.push({ t: 'whisper', text: '…four went down… four went down… four went down…' });
-        P.wren.push({ t: 'p', text: hurt ? 'Wren, one arm strapped up in a sling of Knot\'s cloak, walked past the frames whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Wren, one arm strapped up in a sling of the Binder\'s cloak, walked past the frames whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
         P.wren.push({ t: 'p', text: 'In the dark, with the lamps out, you will be able to hear every heart in these corridors. Every guard\'s. Bess\'s. Hob\'s. Not the one walking next to you.' });
       }
 
       /* ================= SEER ================= */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the corridors' });
-        P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. Hush hears the patrols by **landmark**. Only you can put the two together. Beneath the plaster: two hidden doors the Hearth does not draw, and a spyhole.' });
+        P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. The Listener hears the patrols by **landmark**. Only you can put the two together. Beneath the plaster: two hidden doors the Hearth does not draw, and a spyhole.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
         P.sight.push({ t: 'list', items: [
           '**The Laundry (B3)** has two hidden doors: one from the west corridor by the **linen chute (A3)**, one out through its back wall to the **damp wall (C3)**. Neither is drawn on the Hearth; each needs its word spoken.',
-          '**The west door\'s lintel** (A3→B3): its mark is on the **right**. **The Laundry\'s back door** (B3→C3): its mark is on the **left**. Bookmoth reads the shapes.',
+          '**The west door\'s lintel** (A3→B3): its mark is on the **right**. **The Laundry\'s back door** (B3→C3): its mark is on the **left**. The Reader reads the shapes.',
           '**Hob\'s spyhole** in the porter\'s lodge (C5) looks into the boot-room (B5), the drying-rack corridor (C4) and the corridor past the lodge (D5). Step into any of those and Hob sees.',
           'Sight passes only along open passages. A hidden door blocks it; so does a wall.',
         ] });
         P.sight.push({ t: 'h', text: 'Landmarks by room' });
-        P.sight.push({ t: 'table', head: ['Hush hears…', 'which is'], rows: [['west stair-foot', 'A5'], ['boot-room', 'B5'], ['porter\'s lodge', 'C5'], ['drying-rack', 'C4'], ['damp wall — the Laundry\'s back', 'C3'], ['west corridor south', 'A4'], ['linen chute', 'A3'], ['tower stair-foot', 'E4'], ['east cross', 'E3'], ['east corridor', 'E2'], ['cook\'s door', 'E1 (the door itself is D1, locked)']] });
+        P.sight.push({ t: 'table', head: ['The Listener hears…', 'which is'], rows: [['west stair-foot', 'A5'], ['boot-room', 'B5'], ['porter\'s lodge', 'C5'], ['drying-rack', 'C4'], ['damp wall — the Laundry\'s back', 'C3'], ['west corridor south', 'A4'], ['linen chute', 'A3'], ['tower stair-foot', 'E4'], ['east cross', 'E3'], ['east corridor', 'E2'], ['cook\'s door', 'E1 (the door itself is D1, locked)']] });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'Under the Tower door' });
         P.sight.push({ t: 'p', text: 'A threshold sigil of **two slots**. The lintel\'s mark is on the **left** — upright, left to right. The ring\'s scratch is at **slot 1**.' });
@@ -195,7 +195,7 @@
         P.sight.push({ t: 'h', text: 'Threads in the corridors' });
         P.sight.push({ t: 'p', text: 'Three people live between the Gallery and the Tower tonight, and each of them is tied to something. The Hearth cannot see the thread. You can.' });
         P.sight.push({ t: 'list', items: [
-          '**Bess, in the Laundry.** A **red** thread, old and thick, to the Provost — an oath, thirty years kept. The Laundry is Bess\'s and nobody else\'s; it has *never* been searched, by soldiers or Masters or anyone. Wren could sit on a tub in there until morning and be safe. Owl can find its doors.',
+          '**Bess, in the Laundry.** A **red** thread, old and thick, to the Provost — an oath, thirty years kept. The Laundry is Bess\'s and nobody else\'s; it has *never* been searched, by soldiers or Masters or anyone. Wren could sit on a tub in there until morning and be safe. The Seer can find its doors.',
           '**Hob, the porter, in his lodge.** A **gold** thread, new and bright, to the Envoy. Crown coin. Hob has a spyhole and a loud voice, and he is being paid to use both.',
           '**The cook, behind the locked door.** No thread at all. Asleep, or pretending. The door stays locked either way; row 1 goes nowhere.',
           '**The two patrols.** Gold threads, thin ones, to Vane\'s captain. They walk their rounds and would not know Wren from a laundry basket in the dark — unless they stand in the same room, or see straight down an open passage.',
@@ -205,7 +205,7 @@
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'The Laws that bind tonight' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 1 · Founders' · Year 0</div><div class="txt">A sigil is read sunwise from the mark.</div></div><div class="law founders"><div class="era">Law 3 · Founders' · Year 0</div><div class="txt">Where two Laws disagree, the older binds.</div></div></div>` });
-        P.sight.push({ t: 'p', text: 'The Tower door\'s threshold is a sigil like any other: Owl calls the mark, Bookmoth the glyphs, Hush the order, and it is placed **sunwise from the mark**. No newer Law touches it. There is no Law about the Laundry; there is only Bess.' });
+        P.sight.push({ t: 'p', text: 'The Tower door\'s threshold is a sigil like any other: Seer calls the mark, the Reader the glyphs, the Listener the order, and it is placed **sunwise from the mark**. No newer Law touches it. There is no Law about the Laundry; there is only Bess.' });
         P.sight.push({ t: 'fine', text: 'The full Book of Laws is in your **Book**, in the order learned and by year.' });
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
         P.wren.push({ t: 'p', text: 'Every thread in the Gallery tonight, you read at a glance: Bess, Hob, the captain, the two hundred dead in oil (none — paint has no threads). There is one you have not let yourself look at: the one from the Provost to Wren. You know what colour a mother\'s thread is. You have decided not to find out what colour this one is. Not tonight.' });
@@ -219,16 +219,16 @@
         P.speak.push({ t: 'fine', text: L.houseRule });
       } else {
         const Q = {
-          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean laundry sheet, does not look at you while asking it. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
+          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean laundry sheet, does not look at you while asking it. *"The Reader. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"The Reader. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
             opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know yet."** ~~(the truth)~~']],
             after: { TELL: 'Wren grins, delighted, and says it twice under the breath. *A small brave bird.* You made that up. It sounded true, which is not the same thing.', DONTKNOW: 'Wren nods, not disappointed. *"Yet. Good. Tell me when."* You will, you think. You are not sure when.' } },
-          listener: { prompt: hurt ? 'Wren, sitting on a tub with the bad arm held close, asks it to the arm rather than to you. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*',
+          listener: { prompt: hurt ? 'Wren, sitting on a tub with the bad arm held close, asks it to the arm rather than to you. *"The Listener. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"The Listener. You say you hear everyone\'s heart. Can you hear mine?"*',
             opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No."** ~~(the truth)~~']],
             after: { LOUD: 'Wren looks pleased, and then looks at you a moment too long, and then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The kettle covers whatever comes next.' } },
-          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Owl. You look at me strangely sometimes. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"Owl. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',
+          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"The Seer. You look at me strangely sometimes. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"The Seer. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',
             opts: [['TELL', 'Tell Wren about **the shadow**: it falls toward the fire. Every fire. ~~(the truth)~~'], ['NOTHING', '**Say nothing.** Look at the wall.']],
-            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, after a while: *"That\'s very poetic, Owl."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
-          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"Knot. Honestly. Do you think I\'m really the one? Because the one should be able to walk down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"Knot. Honestly. Do you think I\'m really the one?"*',
+            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, after a while: *"That\'s very poetic, the Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
+          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"The Binder. Honestly. Do you think I\'m really the one? Because the one should be able to walk down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"The Binder. Honestly. Do you think I\'m really the one?"*',
             opts: [['YES', '**"Yes."**'], ['DONTKNOW', '**"I don\'t know."** ~~(the truth)~~']],
             after: { YES: 'Wren nods like someone receiving a verdict they expected. *"Right. Yes. Good to have it from a Binder."* You said yes because it was kind. You are not sure it was kind.', DONTKNOW: 'Wren is quiet for a moment. *"Nobody\'s ever said that to me. Everyone always knows."* And then, almost too low to hear: *"Thanks."*' } },
         }[roleId];

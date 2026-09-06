@@ -2,7 +2,7 @@
   "_auto": "the eval below is an auto-ringer: it presses each lane's key when that lane's orb crosses the strike line (works for the dark round too, where orbs are invisible but present)",
   "steps": [
   {"key": "Space"}, {"shot": "ch6_start"}, {"clickText": "Look up"}, {"wait": 600}, {"key": "Space"}, {"shot": "ch6_shaft"}, {"clickText": "The Provost"},
-  {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"}, {"wait": 800}, {"key": "Space"}, {"shot": "ch6_attune"}, {"expect": "WELL"}, {"expect": "Hush"}, {"clickText": "All phones are ready"},
+  {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"}, {"wait": 800}, {"key": "Space"}, {"shot": "ch6_attune"}, {"expect": "WELL"}, {"expect": "Listener"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch6_ready"}, {"expect": "Slow bells"}, {"clickText": "Practice peal"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300},
   {"eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (Math.abs(y - hy) < 22) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 25); return 'auto-ringer on'; })()"},
@@ -13,7 +13,7 @@
   {"wait": 800}, {"key": "Space"}, {"wait": 12000}, {"shot": "ch6_round3"}, {"waitFor": "#actions .btn.primary", "timeout": 80000}, {"expect": "bells struck clean"}, {"log": true}, {"clickText": "The Cold is held"},
   {"eval": "clearInterval(window.__auto); 'auto-ringer off'"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch6_held"}, {"expect": "Now, love. Walk."}, {"clickText": "Wren"},
-  {"wait": 800}, {"key": "Space"}, {"clickText": "Owl first"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "Seer first"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch6_ask_owl"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"expect": "being poetic"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=2"}, {"wait": 800}, {"key": "Space"}, {"expect": "didn't flinch"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"expect": "Do you now?"}, {"clickText": "Continue"},

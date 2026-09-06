@@ -40,7 +40,7 @@
         { id: 'ch2_start', label: "Marrow's errand", col: 0, row: 1 },
         { id: 'ch2_door', label: "The Founders' Door", col: 1, row: 1 },
         { id: 'ch2_niche_found', label: "Found Mere's niche?", col: 2, row: 0, kind: 'choice', when: (s) => Store.chose('CH2_NICHE', 'mere') },
-        { id: 'ch2_rubbing', label: 'Bookmoth took a rubbing', col: 3, row: 0, secret: true, when: (s) => !!s.flags.LETTER },
+        { id: 'ch2_rubbing', label: 'The Reader took a rubbing', col: 3, row: 0, secret: true, when: (s) => !!s.flags.LETTER },
         { id: 'ch2_ember', label: 'The Cold Ember, the bricked road', col: 2, row: 1 },
         { id: 'ch2_stairfall', label: 'The stair falls', col: 3, row: 1, kind: 'choice' },
         { id: 'ch2_grab_wren', label: 'Grabbed Wren — the Ember fell', col: 4, row: 0, secret: true, when: (s) => Store.chose('CH2_STAIR', 'wren') },
@@ -95,7 +95,7 @@
       ch2_attune: {
         type: 'code', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust',
         text: ['Cut into the lintel of the Founders\' Door, deep and unworn, a word — and beside it, a small mark the torchlight catches. Each of you: open your Companion and turn the page with both.'],
-        roles: 'Warden of the Hearth (keyboard): **Owl**. Voice (reads aloud): **Bookmoth**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Seer**. Voice (reads aloud): **The Reader**.', sightSeconds: 90,
         next: 'ch2_door',
       },
       /* ---------- the Founders' Door ---------- */
@@ -116,14 +116,14 @@
           successText: 'The door remembers the count. Stone grinds on stone.',
         }),
         hints: [
-          'Two plinths are upside down — Owl knows which; Bookmoth\'s lexicon has both readings of every epitaph.',
-          'The statues lie about where they look — the older Law binds, and Owl can see the original sockets. Hush has the order the dials must turn in.',
+          'Two plinths are upside down — The Seer knows which; the Reader\'s lexicon has both readings of every epitaph.',
+          'The statues lie about where they look — the older Law binds, and the Seer can see the original sockets. The Listener has the order the dials must turn in.',
           'Four turns, in this order: dial **C** to THORN, then dial **A** to KNOT, then dial **D** to VEIL, then dial **B** to EMBER. Nothing else, and nothing first.',
         ],
         onSolve: (s, r) => { Store.note('You opened the Founders\' Door' + (r && r.tries > 1 ? ' on the ' + r.tries + (r.tries === 2 ? 'nd' : r.tries === 3 ? 'rd' : 'th') + ' count' : ' on the first count') + '.'); },
         solvedText: [
           'The door does not open so much as remember that it was never really shut. It swings inward on a breath of air four hundred years old, and the cold blue light beyond it fills the antechamber.',
-          'Four glyphs, four Founders, each on the dial they truly faced: **THORN, KNOT, VEIL, EMBER.** *A gate. Together. Hidden. Kept.* Bookmoth says it aloud, and nobody quite likes how it sounds.',
+          'Four glyphs, four Founders, each on the dial they truly faced: **THORN, KNOT, VEIL, EMBER.** *A gate. Together. Hidden. Kept.* the Reader says it aloud, and nobody quite likes how it sounds.',
         ],
         next: 'ch2_opened',
       },
@@ -138,7 +138,7 @@
           { id: 'ember', text: 'Take the Ember.', next: 'ch2_ember' },
           { id: 'niche', text: 'Look around before you take it.', sub: 'The antechamber, the plinths, the rebuilders\' work.', next: 'ch2_niche' },
         ],
-        hints: ['Owl — behind Mere.', 'Owl\'s under-layer shows a hollow behind one of the plinths. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look around before you take it*, then *Behind Mere*. Let Bookmoth read what is inside — twice.'],
+        hints: ['The Seer — behind Mere.', 'The Seer\'s under-layer shows a hollow behind one of the plinths. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look around before you take it*, then *Behind Mere*. Let the Reader read what is inside — twice.'],
       },
       /* ---------- Mere's niche (optional) ---------- */
       ch2_niche: {
@@ -159,7 +159,7 @@
             wrap.appendChild(UI.el('div', { class: 'pz-title', text: "MERE'S NICHE" }));
             wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the strip — three shapes, left to right' }));
             wrap.appendChild(UI.el('div', { html: G.inscription(STRIP, { showMark: false }) }));
-            wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('Bookmoth can read the shapes; only Owl can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
+            wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('The Reader can read the shapes; only the Seer can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
             wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the sheet — the older alphabet' }));
             wrap.appendChild(UI.el('div', { html: oldSheet() }));
             const status = UI.el('div', { class: 'pz-status' }); wrap.appendChild(status);
@@ -169,14 +169,14 @@
             ]);
             if (!api.alive()) return;
             if (Store.get('LETTER')) {
-              status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into Bookmoth\'s sleeve.';
+              status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into the Reader\'s sleeve.';
               api.button('Take the Ember', done, 'primary'); return;
             }
-            const rub = api.button('Take a rubbing (Bookmoth)', async () => {
-              Store.set('LETTER', true); Store.note('Bookmoth took a rubbing of Mere\'s sheet.');
+            const rub = api.button('Take a rubbing (The Reader)', async () => {
+              Store.set('LETTER', true); Store.note('The Reader took a rubbing of Mere\'s sheet.');
               api.audio.sfx('reveal'); rub.disabled = true;
-              status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into Bookmoth\'s sleeve, unread.';
-              await api.say([{ speaker: 'Bookmoth', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
+              status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into the Reader\'s sleeve, unread.';
+              await api.say([{ speaker: 'Reader', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
             }, '');
             api.button('Leave the sheet. Take the Ember', done, 'primary');
           };
@@ -193,7 +193,7 @@
           wrap.appendChild(row); wrap.appendChild(status);
           api.button('Enough. Take the Ember', done, 'primary');
         }),
-        hints: ['Owl — behind Mere. Then: Bookmoth has both readings of the strip; Owl has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
+        hints: ['The Seer — behind Mere. Then: Reader has both readings of the strip; the Seer has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
         next: 'ch2_ember',
       },
       /* ---------- the Cold Ember ---------- */
@@ -202,8 +202,8 @@
         text: (s) => [
           'The case lifts from the plinth with no ward, no click, no protest. It is lighter than it looks and colder than anything has a right to be; the hands that carry it go numb to the wrist.',
           'Inside the glass the blue flame leans, very slightly, toward whoever holds it.',
-          s.flags.LETTER ? 'Bookmoth keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'Owl looks back through the door at the antechamber one more time, and says nothing, and the moment passes.',
-          { speaker: 'Knot', text: 'Four statues. Four dials. Four of us. Does anyone else feel like a set?' },
+          s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'The Seer looks back through the door at the antechamber one more time, and says nothing, and the moment passes.',
+          { speaker: 'Binder', text: 'Four statues. Four dials. Four of us. Does anyone else feel like a set?' },
         ],
         next: 'ch2_road', button: 'The archway',
       },
@@ -239,7 +239,7 @@
             after: [
               'The case comes over the gap into eight numb hands. Wren does not. Wren goes down with the step, and there is a sound from the dark that nobody at the table will forget — and then, worse, a small voice.',
               { speaker: 'Wren', text: 'I\'m fine. I\'m fine. It\'s only my arm. I landed on the — I\'m fine. Don\'t look like that. You got the box.' },
-              'It takes ten minutes and Knot\'s cloak, torn into a rope, to get Wren up. The arm is not fine. Wren does not mention it again, which is the worst part.',
+              'It takes ten minutes and the Binder\'s cloak, torn into a rope, to get Wren up. The arm is not fine. Wren does not mention it again, which is the worst part.',
             ] },
         ],
       },

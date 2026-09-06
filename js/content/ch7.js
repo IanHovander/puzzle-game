@@ -65,10 +65,10 @@
         { id: 'ch7_argue1', label: 'Marrow bars the Walk', col: 1, row: 4, kind: 'choice', secret: true },
         { id: 'ch7_dec_vane', label: 'Wren given to Vane', col: 2, row: 0, kind: 'end', secret: true },
         { id: 'ch7_tokens', label: 'Four sealed words', col: 2, row: 2 },
-        { id: 'ch7_p0', label: 'only Bookmoth knows', col: 3, row: 0, kind: 'end', secret: true },
-        { id: 'ch7_p1', label: 'only Hush knows', col: 3, row: 1, kind: 'end', secret: true },
-        { id: 'ch7_p2', label: 'only Owl knows', col: 3, row: 3, kind: 'end', secret: true },
-        { id: 'ch7_p3', label: 'only Knot knows', col: 3, row: 4, kind: 'end', secret: true },
+        { id: 'ch7_p0', label: 'only the Reader knows', col: 3, row: 0, kind: 'end', secret: true },
+        { id: 'ch7_p1', label: 'only the Listener knows', col: 3, row: 1, kind: 'end', secret: true },
+        { id: 'ch7_p2', label: 'only the Seer knows', col: 3, row: 3, kind: 'end', secret: true },
+        { id: 'ch7_p3', label: 'only the Binder knows', col: 3, row: 4, kind: 'end', secret: true },
         { id: 'ch7_bargains_done', label: 'Bargains, in the room', col: 3, row: 2, kind: 'choice', secret: true, when: (s) => accepted(s).length + kept(s).length + broken(s).length > 0 },
         { id: 'ch7_sigil', label: 'The Great Sigil', col: 4, row: 2 },
         { id: 'ch7_cold', label: 'Cold Hearth', col: 4, row: 4, kind: 'end', secret: true, when: (s) => (s.flags.COLD_HEARTH_ATTEMPTS | 0) > 0 },
@@ -130,7 +130,7 @@
           Store.save();
         },
         text: ['Cut into the rim of the floor-ring, the seventh word. Each of you: turn the page with it, and read. Say nothing yet — there will be time to say everything.'],
-        roles: 'Warden of the Hearth (keyboard): **passed around by name**, then all four keys. Voice (reads aloud): **Knot**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **passed around by name**, then all four keys. Voice (reads aloud): **The Binder**.', sightSeconds: 90,
         next: 'ch7_decision',
       },
 
@@ -150,14 +150,14 @@
           { id: 'vane', text: 'GIVE WREN TO VANE.', sub: 'The Crown keeps the child. Nobody walks.', cls: 'dark', next: 'ch7_dec_vane', set: { DECISION: 'VANE' }, note: 'You gave Wren to the Envoy.', if: (s) => !s.flags.VANE_ALLY },
           { id: 'refuse', text: 'REFUSE. Nobody walks.', sub: 'Not Wren, not any of you. Let the fire go out and see.', next: 'ch7_dec_refuse', set: { DECISION: 'REFUSE' }, note: 'You refused to send anyone.' },
           { id: 'fourfold', text: 'THE FOURFOLD WALK.', sub: 'Four who love what they close. The road the Founders took.', cls: 'bright', next: (s) => oathKnot(s) ? 'ch7_argue1' : 'ch7_dec_fourfold', set: { DECISION: 'FOURFOLD' }, note: 'You chose the Fourfold Walk.', if: (s) => !!s.flags.WALK_UNLOCKED },
-          { id: 'wall', text: 'SHOW VANE THE WALL.', sub: 'Owl scraped the tapestry. Turn it to him.', next: 'ch7_wall', if: (s) => !!s.flags.TAPESTRY && !s.flags.VANE_ALLY },
+          { id: 'wall', text: 'SHOW VANE THE WALL.', sub: 'The Seer scraped the tapestry. Turn it to him.', next: 'ch7_wall', if: (s) => !!s.flags.TAPESTRY && !s.flags.VANE_ALLY },
         ],
       },
       ch7_wall: {
         art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06, sfx: 'reveal',
         enter: (s) => { s.flags.VANE_ALLY = true; s.flags.VANE_STOOD_DOWN = true; Store.save(); },
         text: [
-          'Owl says what is under the paint, in the same words as in the study, and the Hearth turns the tapestry to the chamber\'s edge: four figures, no child, the fourth hand writing a flame the wrong way up.',
+          'The Seer says what is under the paint, in the same words as in the study, and the Hearth turns the tapestry to the chamber\'s edge: four figures, no child, the fourth hand writing a flame the wrong way up.',
           'Vane looks at it for a long time.',
           { speaker: 'Vane', text: 'Twenty-two years. I told them, Ilsabet. I stood in your Hall with the paint under my nails and told them, and they sent me to the capital to learn manners.' },
           { speaker: 'Vane', text: 'Nobody scraped the paint. Not one of them. Not once.' },
@@ -177,7 +177,7 @@
         ],
         prompt: 'Cite a clue.',
         options: [
-          { id: 'stone', text: 'The prophecy stone is carved turned — Owl saw the mark at its foot, on the right. Read that way, it says four.', next: 'ch7_argue_yield', after: ['Marrow closes her eyes.', { speaker: 'Marrow', text: 'The foot of the stone. Four hundred years of fire in front of it, and one Seer with the fire low enough to look.' }] },
+          { id: 'stone', text: 'The prophecy stone is carved turned — The Seer saw the mark at its foot, on the right. Read that way, it says four.', next: 'ch7_argue_yield', after: ['Marrow closes her eyes.', { speaker: 'Marrow', text: 'The foot of the stone. Four hundred years of fire in front of it, and one Seer with the fire low enough to look.' }] },
           { id: 'vane', text: 'Vane says four went in. He saw the paint.', next: 'ch7_argue2', after: [{ speaker: 'Marrow', text: 'Vane has said many things in my Hall. An oath does not bend to an Envoy. Again.' }] },
           { id: 'feel', text: 'Because it\'s Wren, and we\'re not doing it.', next: 'ch7_argue2', after: [{ speaker: 'Marrow', text: 'I know. I have known for fourteen years. That is not a reading. Again.' }] },
         ],
@@ -187,7 +187,7 @@
         text: [{ speaker: 'Marrow', text: 'You have read more of this school tonight than most Masters read in a life. Use it. One thing.' }],
         prompt: 'Cite a clue.',
         options: [
-          { id: 'law0', text: 'Law 0 — "COLD is written by four hands" — struck in 212, the same year and the same hand as Law 6. Knot read the page.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The same hand. Yes. They could not afford four Masters, so they made it grammar.' }] },
+          { id: 'law0', text: 'Law 0 — "COLD is written by four hands" — struck in 212, the same year and the same hand as Law 6. The Binder read the page.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The same hand. Yes. They could not afford four Masters, so they made it grammar.' }] },
           { id: 'mere', text: 'Mere\'s rubbing: "I offered to go alone and was refused. One was never asked." The Founder who kept the fire wrote it herself.', next: 'ch7_argue_yield', if: (s) => !!(s.flags.LETTER_READ || s.flags.LETTER), after: [{ speaker: 'Marrow', text: 'Mere. Who kept the fire, *after*. I have that sheet in my study. I have had it for twenty years.' }] },
           { id: 'break', text: 'Then we break the oath.', next: 'ch7_argue3', cls: 'dark', after: [{ speaker: 'Marrow', text: 'KNOT cannot be unbound. You do not get to be brave by forgetting what you signed. One more. The last one, and then I decide for you.' }] },
         ],
@@ -349,7 +349,7 @@
           const sh = shieldCount(s);
           const out = [
             'The floor-ring: eight sockets in a circle, the whole grammar of the night at once. Around the walls, two inscriptions in two halves — one on the west wall, one on the east.',
-            'Carved on the rim, in the Founders\' hand, a Law the fire cannot read. Knot can; it is on the Binder\'s page, and on Bookmoth\'s.',
+            'Carved on the rim, in the Founders\' hand, a Law the fire cannot read. The Binder can; it is on the Binder\'s page, and on the Reader\'s.',
           ];
           if (sh.west || sh.east) out.push(`${sh.west && sh.east ? 'Two soldiers stand' : 'A soldier stands'} against the wall${sh.west && sh.east ? 's' : ''}, shield up, and a glyph is behind ${sh.west && sh.east ? 'each' : 'it'}. A shield hides a carving; it does not change it.`);
           else if (s.flags.VANE_ALLY) out.push('Vane\'s soldiers face the stair. Nothing stands against the walls.');
@@ -363,13 +363,13 @@
         enter: (s) => ensureClock(s),
         text: [
           'Eight slots, sunwise. Two walls, two marks, seven Laws and one that was struck. Nobody at this table can do another\'s job.',
-          { text: 'Bookmoth reads. Owl calls the marks. Hush holds the Hymn and its rest. Knot reconciles the Laws aloud — all of them, at once.', cls: 'whisper' },
+          { text: 'The Reader reads. The Seer calls the marks. The Listener holds the Hymn and its rest. The Binder reconciles the Laws aloud — all of them, at once.', cls: 'whisper' },
         ],
         config: (s) => {
           const sh = shieldCount(s);
           const west = WEST.map((it, i) => Object.assign({}, it, { hidden: sh.west && i === 1 }));
           const east = EAST.map((it, i) => Object.assign({}, it, { hidden: sh.east && i === 1 }));
-          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim, in the Founders' hand: a Law — Knot has it</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
+          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim, in the Founders' hand: a Law — The Binder has it</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
           let placed = 0;
           return {
             title: 'THE GREAT SIGIL', html, slots: 8, glyphs: glyphPalette(), allowEmpty: true, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat. The Hymn plays.',
@@ -386,8 +386,8 @@
           };
         },
         hints: [
-          'The east wall is turned; the west is not; each has its own mark — Owl has both. Bookmoth has both readings of each wall.',
-          (s) => 'Turned means widdershins from its mark — Owl says which mark, Hush says which reading climbs. Knot\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: the Chair\'s glyph at the first mark.' : '.'),
+          'The east wall is turned; the west is not; each has its own mark — The Seer has both. The Reader has both readings of each wall.',
+          (s) => 'Turned means widdershins from its mark — The Seer says which mark, the Listener says which reading climbs. The Binder\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: the Chair\'s glyph at the first mark.' : '.'),
           (s) => oathKnot(s)
             ? 'CROWN in slot 1, WELL in 2, ASH in 3, THORN in 4, KNOT in 5, VEIL in 6, EMBER in 7, and slot 8 left empty (or COLD, by four hands). Then four hands.'
             : 'THORN in slot 1, KNOT in 2, VEIL in 3, EMBER in 4, slot 5 left empty (or COLD, by four hands), CROWN in 6, WELL in 7, ASH in 8. Then four hands.',
@@ -409,8 +409,8 @@
           const k = kept(s), cracked = s.flags.BELLS_CRACKED | 0;
           const out = ['Press once to sound your note; it holds. All four within a heartbeat. The fire climbs only while all four sound. When the Hymn reaches its rest, let go — together, within half a second — and the Hearth gives no count. Count yourselves in aloud.'];
           if (k.length) out.push(`${nickOf(k[0])}'s key is bound to the Envoy. Three notes; hold it eight seconds; one note missing.`);
-          if (cracked) out.push(`${cracked} cracked bell${cracked > 1 ? 's' : ''}: ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light. Press on Hush's count.`);
-          out.push({ text: 'Each failure costs thirty seconds of midnight. Hush has the count.', cls: 'whisper' });
+          if (cracked) out.push(`${cracked} cracked bell${cracked > 1 ? 's' : ''}: ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light. Press on the Listener's count.`);
+          out.push({ text: 'Each failure costs thirty seconds of midnight. The Listener has the count.', cls: 'whisper' });
           return out;
         },
         config: (s) => {
@@ -426,7 +426,7 @@
           };
         },
         hints: [
-          'Hush has the count on the Listener\'s page: press on "four"; release on "one — two — three — off".',
+          'The Listener has the count on the Listener\'s page: press on "four"; release on "one — two — three — off".',
           'Say it aloud, all four, before anyone moves: "one, two, three, OFF" — and let go on OFF. The release must land within half a second.',
           'If it fails a third time the Hearth counts for you and the night goes on. Nothing ends here except the clock.',
         ],
@@ -491,7 +491,7 @@
         text: [
           'The eighth word. Every phone, now — it is the last time tonight anyone will ask you to look down.',
         ],
-        roles: 'Bookmoth first, then Hush, then Owl, then Knot. When your phone has gone dark, put it face down on the table.',
+        roles: 'The Reader first, then the Listener, then the Seer, then the Binder. When your phone has gone dark, put it face down on the table.',
         button: 'Every phone is dark',
         next: 'ch7_fourhands',
       },
@@ -536,8 +536,8 @@
             out.push({ text: `Walked into the Cold: ${UI.list(w)}. Stayed: no one. Wren waited on the stones.`, cls: 'big' });
             out.push('The Hearth roars white. For a moment nobody in the chamber can see anything at all, and Vane\'s soldiers, who have seen fire, put their arms over their faces like children.');
             out.push('Then four people come out of the white, one after another, grey-eyed and ordinary, blinking like people who have woken somewhere warm.');
-            out.push('Bookmoth looks at the wall and sees shapes. Hush hears a room, the way rooms sound. Owl looks at the floor and it is just a floor. Knot looks at Marrow and does not know what she is feeling, and has to ask.');
-            out.push('Wren is sitting on the warm stones. Wren has been crying, which Wren will deny. And — Hush would tell you, if Hush could still hear it — there is a heartbeat.');
+            out.push('The Reader looks at the wall and sees shapes. The Listener hears a room, the way rooms sound. The Seer looks at the floor and it is just a floor. The Binder looks at Marrow and does not know what she is feeling, and has to ask.');
+            out.push('Wren is sitting on the warm stones. Wren has been crying, which Wren will deny. And — The Listener would tell you, if the Listener could still hear it — there is a heartbeat.');
             out.push({ speaker: 'Wren', text: 'You *idiots*. You absolute — I had a *speech*.' });
             out.push('Marrow sits down on the floor beside the child she named, and says nothing, because she has been allowed to say nothing for the first time in fourteen years.');
             out.push('Vane\'s report to the Crown, written that morning on the chamber\'s edge, says the Cold is closed and there is nothing beneath Thornhallow to harness. It is the first true thing he has ever sent them.');
@@ -548,10 +548,10 @@
             out.push(`The flame goes white, narrower than the wall shows it. ${UI.list(w)} step through. ${UI.list(st)} hold the keys and the fire and watch ${w.length === 1 ? 'a friend' : 'their friends'} go.`);
             out.push('The Cold closes. Not all the way; enough. The walkers come out grey-eyed and free of every gift they had, and the stayers keep their Sightings for life — the new Masters of a school that finally knows what it is standing on.');
             out.push('Wren lives. Wren stands up off the stones and makes a joke that does not quite land, because the room is not ready for it yet.');
-            out.push('Hush — if Hush stayed — listens, and hears the room, and every heart in it. Except one. That is the one visible difference, and it is not visible at all.');
+            out.push('The Listener — if the Listener stayed — listens, and hears the room, and every heart in it. Except one. That is the one visible difference, and it is not visible at all.');
             out.push({ speaker: 'Wren', text: 'Half a walk. Story of my life. Come on. Somebody help Mum up.' });
           } else if (E === 2) {
-            out.push({ text: 'Walked into the Cold: Wren. Stayed: Bookmoth, Hush, Owl and Knot.', cls: 'big' });
+            out.push({ text: 'Walked into the Cold: Wren. Stayed: Reader, Listener, Seer and Binder.', cls: 'big' });
             out.push({ speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry — since before the laundry. I just wanted to hear what you\'d say.' });
             out.push('Wren steps into the empty slot, and the fire takes the shape of a door, and Wren goes through it without looking back, because looking back is what you do when you expect to be stopped.');
             out.push('The Hearth catches. Four hundred years of fire, and it will burn four hundred more.');
@@ -559,7 +559,7 @@
             out.push('Marrow stands alone at the fire with a grey thread that nobody can cut, and the Binder does not tell her it is there.');
             out.push({ text: 'On the flowchart, one step from where you stood, a node stays grey: "They went in together."', cls: 'whisper' });
           } else if (E === 3) {
-            out.push({ text: 'Walked into the Cold: the Provost. Stayed: Bookmoth, Hush, Owl and Knot — and Wren.', cls: 'big' });
+            out.push({ text: 'Walked into the Cold: the Provost. Stayed: Reader, Listener, Seer and Binder — and Wren.', cls: 'big' });
             if (s.flags.DECISION === 'FOURFOLD') out.push(`The Walk was chosen and, when the sigil closed, ${w.length ? `only ${UI.list(w)} would have gone` : 'nobody would have gone'}. The fire does not close on good intentions.`);
             out.push({ speaker: 'Marrow', text: 'Then I go. I should have gone fourteen years ago, and I told myself a story instead. Move.' });
             out.push('She takes off the Chair\'s seal and gives it to Wren, and does not say goodbye, because she has already said it, in grey, every day for fourteen years.');

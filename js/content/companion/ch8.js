@@ -92,7 +92,7 @@
         `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="200"/><path d="M150,150 L150,110 A30,30 0 0 1 210,110 L210,150 Z"/></g>` +
         `<g stroke="#fff" fill="none" stroke-width="1.5"><path d="M180,146 C168,132 172,120 180,110 C188,120 192,132 180,146 Z"/><path d="M180,146 L180,128"/></g>` +
         `<text x="180" y="168" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
-        fig(70, 70, 'Bookmoth', [38, 44]) + fig(70, 170, 'Hush', [38, 196]) + fig(290, 70, 'Owl', [322, 44]) + fig(290, 170, 'Knot', [322, 196]) +
+        fig(70, 70, 'Reader', [38, 44]) + fig(70, 170, 'Listener', [38, 196]) + fig(290, 70, 'Seer', [322, 44]) + fig(290, 170, 'Binder', [322, 196]) +
         fig(180, 44, 'Wren', [180, 14], '#a482e6') +
         `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">five shadows, all falling away from the fire. The right way, at last.</text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
@@ -162,10 +162,10 @@
   }
 
   const SEALING_LINE = {
-    reader: 'Bookmoth. Eat something. And read the name on the door tomorrow — you\'ll be able to. That was always going to be the price of learning it.',
-    listener: 'Hush. It was never a fault in you. Nothing was there. You listened anyway. That\'s the whole of what you are.',
-    seer: 'Owl. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
-    binder: 'Knot. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
+    reader: 'The Reader. Eat something. And read the name on the door tomorrow — you\'ll be able to. That was always going to be the price of learning it.',
+    listener: 'The Listener. It was never a fault in you. Nothing was there. You listened anyway. That\'s the whole of what you are.',
+    seer: 'The Seer. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
+    binder: 'The Binder. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
   };
   const oathSworn = (ctx) => { try { const u = ctx.state.unlocked && ctx.state.unlocked.ch5; if (!u || !u.flags || u.flags.OATH == null) return null; return +u.flags.OATH > 0; } catch (e) { return null; } };
   const KEEPER_LINE = {
@@ -175,7 +175,7 @@
     binder: 'The oath you swore tonight was to a Chair. Swear the next one to a person. Wren will need at least one of you to have done that.',
   };
   const STAY_LINE = {
-    reader: 'The wall still reads. You will teach the next Bookmoth what the shapes say, and never tell them which of the shapes you cannot look at.',
+    reader: 'The wall still reads. You will teach the next the Reader what the shapes say, and never tell them which of the shapes you cannot look at.',
     listener: 'Every heart in the room, still. All but one, still. You will listen for it every day and it will never be there, and it will not be a fault.',
     seer: 'Every shadow in the room, still. Four fall away from the fire. One falls toward it. It always will.',
     binder: 'Every thread in the room, still. Between you and the ones who walked: red, and thin, and held.',

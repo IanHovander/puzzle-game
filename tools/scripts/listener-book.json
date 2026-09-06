@@ -1,5 +1,5 @@
 { "start": "ch0_start", "steps": [
-  {"companion": true}, {"role": "Listener", "name": "Hush"}, {"unlock": ["KINDLE"]},
+  {"companion": true}, {"role": "Listener", "name": "Sam"}, {"unlock": ["KINDLE"]},
   {"expect": "up three"}, {"expectNot": "♪"},
   {"assert": "window.VigilUI.audioButton('♪ X',()=>0).textContent.trim()==='X'"},
   {"assert": "![...document.querySelectorAll('.audio-btn')].some(b=>/[♪♫]/.test(b.textContent))"},

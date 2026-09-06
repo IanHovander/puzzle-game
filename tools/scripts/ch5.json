@@ -1,7 +1,7 @@
 { "start": "ch5_start", "set": "OATH=1,DOOR=BLUFF", "steps": [
   {"key": "Space"}, {"shot": "ch5_start"}, {"expect": "Sworn to the Chair"}, {"clickText": "Down"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "Read it"},
-  {"wait": 600}, {"key": "Space"}, {"shot": "ch5_attune"}, {"expect": "ASH"}, {"expect": "BEE"}, {"expect": "Bookmoth"}, {"clickText": "All phones are ready"},
+  {"wait": 600}, {"key": "Space"}, {"shot": "ch5_attune"}, {"expect": "ASH"}, {"expect": "BEE"}, {"expect": "Reader"}, {"clickText": "All phones are ready"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "The Turned Gate"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch5_gate1_naive"}, {"slots": [[1, "CROWN"], [2, "KNOT"], [3, "THORN"]]}, {"clickText": "Close the sigil"}, {"wait": 500}, {"expect": "coming UP"}, {"wait": 1200},
   {"slots": [[1, "WELL"], [5, "VEIL"], [4, "EMBER"]]}, {"shot": "ch5_gate1_solved"}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "forget it was ever shut"}, {"clickText": "Continue"},
@@ -17,7 +17,7 @@
   {"wait": 800}, {"key": "Space"}, {"clickText": "Every phone has answered"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"type": ["#widget input.token >> nth=0", "DYND"]}, {"type": ["#widget input.token >> nth=1", "XXXX"]}, {"type": ["#widget input.token >> nth=2", "958U"]}, {"type": ["#widget input.token >> nth=3", "EP8P"]}, {"clickText": "Speak the words"}, {"wait": 500}, {"expect": "does not know that word"},
   {"type": ["#widget input.token >> nth=1", "83Z6"]}, {"shot": "ch5_hold"}, {"clickText": "Speak the words"},
-  {"wait": 1000}, {"key": "Space"}, {"wait": 300}, {"shot": "ch5_hold_named"}, {"expect": "OWL WAS FASTER"}, {"expect": "Two of you said yes"}, {"clickText": "The Founders' road"},
+  {"wait": 1000}, {"key": "Space"}, {"wait": 300}, {"shot": "ch5_hold_named"}, {"expect": "SEER WAS FASTER"}, {"expect": "Two of you said yes"}, {"clickText": "The Founders' road"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch5_endcard"}, {"expect": "NEXT: THE BELLS"}, {"clickText": "The paths you walked"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch5_flow"}, {"expect": "Owl holds the stair"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, SOLDIERS: VigilStore.state.flags.SOLDIERS, LAW0: VigilStore.state.flags.LAW0, GATE2_COLD: VigilStore.state.flags.GATE2_COLD})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch5_flow"}, {"expect": "Seer holds the stair"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, SOLDIERS: VigilStore.state.flags.SOLDIERS, LAW0: VigilStore.state.flags.LAW0, GATE2_COLD: VigilStore.state.flags.GATE2_COLD})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
 ] }

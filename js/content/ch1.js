@@ -91,7 +91,7 @@
           'Nine banners hang from the rafters, one for each House of the Marches, and beneath each banner sits a Master with the Sighting their House sent them here to keep.',
           'At the far end, the Hearth. It has burned for four hundred years without a keeper. Tonight it is doing something nobody in this hall has seen it do. It is *breathing*.',
           'You have been put at the back with the other fourth-years, where you can see everything and touch nothing. Wren waved at you on the way in. Wren is not supposed to wave.',
-          { text: 'Knot has the keys tonight. Hush reads the Hearth aloud.', cls: 'whisper' },
+          { text: 'The Binder has the keys tonight. The Listener reads the Hearth aloud.', cls: 'whisper' },
         ],
         next: 'ch1_dais', button: 'The presenting',
       },
@@ -111,7 +111,7 @@
           'The great doors open before anyone has asked them to. Cold comes in first, then the soldiers, then a man in a grey coat who walks as if the hall were his and he were being gracious about it.',
           'Lord Cassian Vane, the Crown\'s Envoy. He carries a writ with a seal the size of a saucer.',
           { speaker: 'Vane', text: 'Provost. Masters. His Majesty greets the Vigil and asks a small thing: the child, for safekeeping, tonight. The Crown has a warm room and a long road, and no wish to trouble a school.' },
-          'Marrow does not move. Vane lowers his voice — not enough. Hush hears it. Everyone hears it.',
+          'Marrow does not move. Vane lowers his voice — not enough. The Listener hears it. Everyone hears it.',
           { speaker: 'Vane', text: 'I have seen what is under the paint in this hall, Ilsabet.' },
         ],
         next: 'ch1_flicker', button: 'The Provost answers',
@@ -131,7 +131,7 @@
       ch1_attune: {
         type: 'code', art: 'ch1_hall', mood: 'tense', fx: 'embers',
         text: ['Cut into the lintel of the Masters\' door, worn smooth by four hundred years of Masters ducking under it: a word. Each of you, open your Companion and turn the page with it. Read your Sight. Say nothing yet.'],
-        roles: 'Warden of the Hearth (keyboard): **Knot**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Binder**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: 'ch1_vote',
       },
       /* ---------- the Convocation vote ---------- */
@@ -171,8 +171,8 @@
           };
         },
         hints: [
-          'Two seats are bought — Owl can see the coin. Do not waste an approach on either.',
-          'Who follows whom? Knot\'s threads say who votes with whom; Hush\'s murmurs say who will listen — and who will not. Bookmoth has the names under the banners. One approach can be worth two votes.',
+          'Two seats are bought — The Seer can see the coin. Do not waste an approach on either.',
+          'Who follows whom? The Binder\'s threads say who votes with whom; the Listener\'s murmurs say who will listen — and who will not. The Reader has the names under the banners. One approach can be worth two votes.',
           'Approach Seat 1 (Sorrel) and Seat 7 (Oriel). Sorrel brings Quill with her; Oriel is undecided and can be persuaded; with Brack and the Chair that is five.',
         ],
         onSolve: (s, r) => {
@@ -192,10 +192,10 @@
       ch1_won: {
         art: 'ch1_dais', mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: [
-          'Five to four. Marrow lets out a breath so small that only Hush hears it.',
+          'Five to four. Marrow lets out a breath so small that only the Listener hears it.',
           { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, the Vigil thanks the Crown for its concern, and will see the Crown to a warm room and a long road in the morning.' },
           'Vane bows. It is a good bow. He has clearly done it to people he has later ruined.',
-          { speaker: 'Wren', text: 'Was that *you*? That was you. I saw Knot talking to Seat One. Knot never talks to anyone.' },
+          { speaker: 'Wren', text: 'Was that *you*? That was you. I saw the Binder talking to Seat One. The Binder never talks to anyone.' },
           'Then the two Masters you spoke to are at your elbows, one on each side, and neither of them is smiling any more.',
         ],
         next: 'ch1_prices', button: 'Their prices',
@@ -247,7 +247,7 @@
             ? 'The Provost will have the boy back from my men by morning. I know her; I have known her longer than you have been alive. When she does — bring him to me before dawn.'
             : 'Bring the boy to me before dawn.' },
           { speaker: 'Vane', text: 'He lives — I promise you that. And the Crown makes you Masters. All four of you, younger than any in that hall.' },
-          { speaker: 'Vane', text: 'You think I am the villain of this night. Ask your Owl what is under the paint.' },
+          { speaker: 'Vane', text: 'You think I am the villain of this night. Ask your Seer what is under the paint.' },
           'He waits.',
         ],
         prompt: 'The Envoy waits.',
@@ -266,11 +266,11 @@
           const out = [];
           if (s.flags.VOTE_LOST) {
             out.push('Wren is still on the dais, between two soldiers, and has found a way to sit on the step that makes the soldiers look like furniture.');
-            out.push({ speaker: 'Wren', text: 'It\'s fine. It\'s *fine*. They\'ve got a warm room. I\'ve never had a warm room. Bookmoth, don\'t make that face.' });
+            out.push({ speaker: 'Wren', text: 'It\'s fine. It\'s *fine*. They\'ve got a warm room. I\'ve never had a warm room. The Reader, don\'t make that face.' });
             out.push('Wren is lying, and is fourteen, and is doing it for you.');
           } else {
             out.push('Wren finds you last, as the hall empties, and sits on the end of a bench with the particular exhaustion of someone who has stood still for an hour.');
-            out.push({ speaker: 'Wren', text: 'Seat Seven looked at me the whole time. Not unkindly. Like I was a sum she was doing. Owl, stop looking at the wall. What is *on* the wall?' });
+            out.push({ speaker: 'Wren', text: 'Seat Seven looked at me the whole time. Not unkindly. Like I was a sum she was doing. The Seer, stop looking at the wall. What is *on* the wall?' });
           }
           out.push('Marrow comes to you when the last Master has gone. She stands with her back to the Hearth, which flickers again — a short one, a cough — and she does not turn round.');
           out.push({ speaker: 'Provost Marrow', text: 'It has not done that in fourteen years. Beneath this school is the Cold Ember, which relights the Hearth if it gutters again. In the morning I would have sent —' });

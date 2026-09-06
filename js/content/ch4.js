@@ -1,4 +1,4 @@
-/* Chapter IV — The Oath (the Provost's study). Pass-around Warden; Owl is the Voice. */
+/* Chapter IV — The Oath (the Provost's study). Pass-around Warden; the Seer is the Voice. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, UI = window.VigilUI, Store = window.VigilStore, Audio = window.VigilAudio, FX = window.VigilFX;
@@ -87,10 +87,10 @@
     // chair (right, bottom)
     s += `<g transform="translate(790,330)"><rect x="-44" y="-96" width="88" height="96" rx="12" fill="#1c1418"/><rect x="-54" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="38" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="-36" y="-34" width="72" height="34" rx="6" fill="#2a1e24"/></g>`;
     // hotspots
-    s += hot('desk', 40, 190, 260, 150, 'the desk', 'Bookmoth', '#e0b04a', f.JOURNAL);
-    s += hot('tapestry', 320, 20, 300, 250, 'the tapestry', 'Owl', '#a482e6', f.TAPESTRY);
-    s += hot('bell', 650, 90, 230, 80, 'the bell on the mantel', 'Hush', '#4fb3bf', f.MEMORY);
-    s += hot('chair', 680, 220, 200, 130, 'the Provost\'s chair', 'Knot', '#d96b4a', f.GREY);
+    s += hot('desk', 40, 190, 260, 150, 'the desk', 'Reader', '#e0b04a', f.JOURNAL);
+    s += hot('tapestry', 320, 20, 300, 250, 'the tapestry', 'Seer', '#a482e6', f.TAPESTRY);
+    s += hot('bell', 650, 90, 230, 80, 'the bell on the mantel', 'Listener', '#4fb3bf', f.MEMORY);
+    s += hot('chair', 680, 220, 200, 130, 'the Provost\'s chair', 'Binder', '#d96b4a', f.GREY);
     return s + `</svg>`;
   }
 
@@ -146,10 +146,10 @@
         { id: 'ch4_start', label: 'The Provost\'s study', col: 0, row: 2 },
         { id: 'ch4_attune', label: 'EMBER', col: 1, row: 2 },
         { id: 'ch4_shelf', label: 'The False Shelf', col: 2, row: 2 },
-        { id: 'ch4_s_journal', label: 'the journal — Bookmoth', col: 3, row: 0, secret: true, when: (s) => !!s.flags.JOURNAL },
-        { id: 'ch4_s_memory', label: 'the memory-bell — Hush', col: 3, row: 1, secret: true, when: (s) => !!s.flags.MEMORY },
-        { id: 'ch4_s_tapestry', label: 'under the paint — Owl', col: 3, row: 3, secret: true, when: (s) => !!s.flags.TAPESTRY },
-        { id: 'ch4_s_grey', label: 'the grey thread — Knot', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
+        { id: 'ch4_s_journal', label: 'the journal — The Reader', col: 3, row: 0, secret: true, when: (s) => !!s.flags.JOURNAL },
+        { id: 'ch4_s_memory', label: 'the memory-bell — The Listener', col: 3, row: 1, secret: true, when: (s) => !!s.flags.MEMORY },
+        { id: 'ch4_s_tapestry', label: 'under the paint — The Seer', col: 3, row: 3, secret: true, when: (s) => !!s.flags.TAPESTRY },
+        { id: 'ch4_s_grey', label: 'the grey thread — The Binder', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
         { id: 'ch4_s_rubbing', label: 'Mere\'s rubbing, read', col: 4, row: 0, secret: true, kind: 'end', when: (s) => !!s.flags.LETTER_READ },
         { id: 'ch4_s_note', label: 'a note under the cushion', col: 4, row: 4, secret: true, kind: 'end', when: (s) => !!(s.flags.ORIEL_NOTE || s.flags.MARROW_LETTER) },
         { id: 'ch4_swear', label: 'The Warden\'s Oath', col: 4, row: 2, kind: 'choice' },
@@ -198,7 +198,7 @@
           out.push('A bell rings twice, far below. Marrow closes her eyes for exactly one breath.');
           out.push({ speaker: 'Marrow', text: 'The Convocation. Ten minutes. Stay with them, Wren. Stay *put*, for once in your life.' });
           out.push('The door shuts behind her. The primer of the older alphabet lies open on the desk — which she did not close.');
-          out.push(f.WREN_SCARED ? { speaker: 'Wren', text: 'She left the primer.' } : { speaker: 'Wren', text: 'She left the primer *open*. She never leaves anything open. Bookmoth. *Bookmoth.*' });
+          out.push(f.WREN_SCARED ? { speaker: 'Wren', text: 'She left the primer.' } : { speaker: 'Wren', text: 'She left the primer *open*. She never leaves anything open. The Reader. *the Reader.*' });
           return out;
         },
         next: 'ch4_attune', button: 'The word',
@@ -207,16 +207,16 @@
         type: 'code', art: 'ch4_study', mood: 'tower', fx: 'dust',
         text: [
           'Cut into the mantel above the fire, where four hundred years of smoke have not quite hidden it: a word, and a mark beside it. Each of you — your Companion, the word, the mark.',
-          { text: 'This chapter the keyboard passes from hand to hand; the Hearth will call you by name. Owl reads aloud.', cls: 'whisper' },
+          { text: 'This chapter the keyboard passes from hand to hand; the Hearth will call you by name. The Seer reads aloud.', cls: 'whisper' },
         ],
-        roles: 'Warden of the Hearth (keyboard): **pass it round — the Hearth calls names**. Voice (reads aloud): **Owl**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **pass it round — the Hearth calls names**. Voice (reads aloud): **The Seer**.', sightSeconds: 90,
         next: 'ch4_shelf',
       },
       /* ---------- the False Shelf ---------- */
       ch4_shelf: {
         type: 'puzzle', puzzle: 'wheel', art: 'ch4_shelf', mood: 'tower', fx: 'dust', puzzleId: 'ch4_shelf', par: [3, 5],
         text: [
-          'Four shelves. The third is wrong — Owl said so before anyone touched it, and Wren says the Provost hides things there "the way she hides everything: badly, and in plain sight."',
+          'Four shelves. The third is wrong — The Seer said so before anyone touched it, and Wren says the Provost hides things there "the way she hides everything: badly, and in plain sight."',
           'Eight great books, spines out, each stamped with one shape. Pull four, in an order, and the shelf opens — or it does not.',
           { text: 'Say what you see. Which way does this shelf hang, and what did the Founders leave behind them?', cls: 'whisper' },
         ],
@@ -228,8 +228,8 @@
           onWrong: (ids) => { const m = ids.join(',') === '5,6,3,8' ? 'The shelf sighs, and stays.' : 'The books slide back into their places. The shelf stays.'; UI.toast(m, 3200, 'bad'); return m; },
         }),
         hints: [
-          'The shelf is one turned line — Owl knows which way it hangs, and Knot\'s Book says what a turned line does to every glyph on it.',
-          'Which four glyphs did the Founders leave on their plinths in the Vault — Bookmoth\'s glossary keeps them — and in what order does the Hymn sing them? Hush has the phrase.',
+          'The shelf is one turned line — The Seer knows which way it hangs, and the Binder\'s Book says what a turned line does to every glyph on it.',
+          'Which four glyphs did the Founders leave on their plinths in the Vault — The Reader\'s glossary keeps them — and in what order does the Hymn sing them? The Listener has the phrase.',
           'Pull the books in positions 1, 3, 6 and 4, in that order. Read the way the shelf truly hangs, those are THORN, KNOT, VEIL, EMBER.',
         ],
         onSolve: () => { Store.note('You opened the false shelf in the Provost\'s study.'); },
@@ -253,8 +253,8 @@
         type: 'custom', art: 'ch4_study', artParams: (s) => ({ scraped: !!s.flags.TAPESTRY }), mood: 'tower', fx: 'dust',
         text: ['Ten minutes, less now. The keyboard goes to whoever\'s corner it is; everyone else says what they see.'],
         hints: [
-          'Each corner of the study belongs to one Sighting: the desk is Bookmoth\'s, the bell is Hush\'s, the tapestry is Owl\'s, the chair is Knot\'s. Nobody can find another\'s.',
-          'Bookmoth: the primer on your page reads the journal letter by letter. Hush: cup your ear to the bell. Owl: scrape until the paint gives, then say what the last hand holds. Knot: the thread\'s colour is the whole answer.',
+          'Each corner of the study belongs to one Sighting: the desk is the Reader\'s, the bell is the Listener\'s, the tapestry is the Seer\'s, the chair is the Binder\'s. Nobody can find another\'s.',
+          'The Reader: the primer on your page reads the journal letter by letter. The Listener: cup your ear to the bell. The Seer: scrape until the paint gives, then say what the last hand holds. The Binder: the thread\'s colour is the whole answer.',
           'The journal says FOURTEEN YEARS. IT LAUGHS AT MY JOKES. The bell keeps the Envoy\'s voice and the Provost\'s. The fourth hand on the tapestry holds a flame turned over. The Provost\'s thread to Wren is grey.',
         ],
         run: (box, api) => new Promise((resolve) => {
@@ -291,23 +291,23 @@
               if (f.JOURNAL) { para(panel, ['The journal lies where it lay. The line is read.', { text: 'Fourteen years. It laughs at my jokes.', cls: 'letter' }]); back(); return; }
               para(panel, ['The primer of the older alphabet lies open. Under it, the Provost\'s journal, its ribbon marking a page written fourteen years ago. One line shows:']);
               panel.appendChild(UI.el('div', { html: runeBlock(['FOURTEEN YEARS.', 'IT LAUGHS AT MY JOKES.'], { height: 48 }) }));
-              para(panel, [{ text: 'The Hearth cannot read it. Bookmoth can. Say it aloud, letter by letter if you must; the Warden types what it says.', cls: 'whisper' }]);
-              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES/.test(v[0]), wrongText: 'That is not what it says. Bookmoth — letter by letter, and all of it: the second line too.', submitText: 'Read it', successText: 'Read.' }, api);
+              para(panel, [{ text: 'The Hearth cannot read it. The Reader can. Say it aloud, letter by letter if you must; the Warden types what it says.', cls: 'whisper' }]);
+              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES/.test(v[0]), wrongText: 'That is not what it says. The Reader — letter by letter, and all of it: the second line too.', submitText: 'Read it', successText: 'Read.' }, api);
               if (!api.alive()) return; void r;
-              Store.set('JOURNAL', true); Store.note('Bookmoth read the Provost\'s journal.');
+              Store.set('JOURNAL', true); Store.note('The Reader read the Provost\'s journal.');
               const out = [{ text: 'Fourteen years. It laughs at my jokes.', cls: 'letter' }];
               out.push(wren({ speaker: 'Wren', text: '"It." Huh. She writes *it*.' }, { speaker: 'Wren', text: 'It laughs.' }));
               out.push(wren('A pause, in which Wren decides to be flattered.', 'A pause.'), wren({ speaker: 'Wren', text: 'Well. I *am* funny.' }, { speaker: 'Wren', text: 'She wrote *it*.' }));
-              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s rubbing was read at last.'); out.push({ text: 'And in the primer\'s light the rubbing from Mere\'s niche comes clear on Bookmoth\'s page. It has waited four hundred years for a reader. Bookmoth — all of it, aloud.', cls: 'whisper' }); }
+              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s rubbing was read at last.'); out.push({ text: 'And in the primer\'s light the rubbing from Mere\'s niche comes clear on the Reader\'s page. It has waited four hundred years for a reader. The Reader — all of it, aloud.', cls: 'whisper' }); }
               para(panel, out); Audio.sfx('reveal'); back(); return;
             }
             if (id === 'bell') {
               head('THE MANTEL — HUSH\'S CORNER');
               if (f.MEMORY) { para(panel, ['The bell is quiet now. It has said what it remembers.']); back(); return; }
-              para(panel, ['A small bell, older than the mantel it sits on. A memory-bell: struck, it says back the last thing said near it — but only to an Ear. To the Hearth it hums, and that is all.', { text: 'Hush — cup your ear to your page. Then say what the bell remembers, word for word, before anyone touches the keys.', cls: 'whisper' }]);
-              await ask(panel, 'The bell keeps two voices. Whose?', [{ id: 'sorrel', text: 'Master Sorrel\'s, and Master Tarn\'s.' }, { id: 'vane', text: 'The Envoy\'s, and the Provost\'s.' }, { id: 'wren', text: 'Wren\'s, and the Provost\'s.' }], 'vane', 'The bell hums. Hush — listen again.');
+              para(panel, ['A small bell, older than the mantel it sits on. A memory-bell: struck, it says back the last thing said near it — but only to an Ear. To the Hearth it hums, and that is all.', { text: 'The Listener — cup your ear to your page. Then say what the bell remembers, word for word, before anyone touches the keys.', cls: 'whisper' }]);
+              await ask(panel, 'The bell keeps two voices. Whose?', [{ id: 'sorrel', text: 'Master Sorrel\'s, and Master Tarn\'s.' }, { id: 'vane', text: 'The Envoy\'s, and the Provost\'s.' }, { id: 'wren', text: 'Wren\'s, and the Provost\'s.' }], 'vane', 'The bell hums. The Listener — listen again.');
               if (!api.alive()) return;
-              Store.set('MEMORY', true); Store.note('Hush heard what the memory-bell kept.');
+              Store.set('MEMORY', true); Store.note('The Listener heard what the memory-bell kept.');
               para(panel, ['The bell goes quiet. Far below, the Hearth gutters and steadies, as if it had heard too.', wren({ speaker: 'Wren', text: 'She said that? *Through* her?' }, 'Wren has gone very still on the window seat.'), wren({ speaker: 'Wren', text: 'She never says things like that to my face. Only to Envoys.' }, { speaker: 'Wren', text: 'Through *it*. She said through it.' })]);
               Audio.sfx('chime'); back(); return;
             }
@@ -315,25 +315,25 @@
               head('THE TAPESTRY — OWL\'S CORNER');
               api.flashArt('ch4_tapestry', { scraped: !!f.TAPESTRY });
               if (f.TAPESTRY) { para(panel, ['The paint is gone. Four figures walk into the flame; the fourth hand holds a flame turned over. It will not go back under.']); back(); return; }
-              para(panel, ['A hall, a fire, and one small figure walking into it alone: the Order\'s picture, woven — no. Painted. Painted *over* something. Owl has been saying so since the door.', { text: 'Scrape. Drag across the cloth, or press the button, until the paint gives. Then Owl says what the last hand holds.', cls: 'whisper' }]);
+              para(panel, ['A hall, a fire, and one small figure walking into it alone: the Order\'s picture, woven — no. Painted. Painted *over* something. The Seer has been saying so since the door.', { text: 'Scrape. Drag across the cloth, or press the button, until the paint gives. Then the Seer says what the last hand holds.', cls: 'whisper' }]);
               await scrape(panel); if (!api.alive()) return;
               api.flashArt('ch4_tapestry', { scraped: true });
-              await ask(panel, 'Four figures, walking into the flame. What does the fourth hand hold?', [{ id: 'child', text: 'A child, by the hand.' }, { id: 'crown', text: 'A crown.' }, { id: 'cold', text: 'A flame, turned over.' }], 'cold', 'Look again. Owl — say what you see, not what the Order painted.');
+              await ask(panel, 'Four figures, walking into the flame. What does the fourth hand hold?', [{ id: 'child', text: 'A child, by the hand.' }, { id: 'crown', text: 'A crown.' }, { id: 'cold', text: 'A flame, turned over.' }], 'cold', 'Look again. The Seer — say what you see, not what the Order painted.');
               if (!api.alive()) return;
-              Store.set('TAPESTRY', true); Store.note('Owl scraped the tapestry and found four.');
+              Store.set('TAPESTRY', true); Store.note('The Seer scraped the tapestry and found four.');
               para(panel, ['Four figures walking into the flame. No child. The fourth hand holds a flame turned over — the glyph that is never written, written.', { text: '"I have seen what is under the paint in this hall," the Envoy said. So he had.', cls: 'omen' }, wren({ speaker: 'Wren', text: 'Four. That\'s — there are four of them. Where\'s the one born of four? Where am I?' }, { speaker: 'Wren', text: 'There\'s no child in it.' })]);
               back(); return;
             }
             if (id === 'chair') {
               head('THE CHAIR — KNOT\'S CORNER');
               if (f.GREY) { para(panel, ['The chair, still warm. The thread is grey. It was grey before you looked.']); back(); return; }
-              para(panel, ['The Provost\'s chair, by the fire, still warm. Nothing in it; nothing on it. Knot — the threads: hers to the four of you, hers to the Convocation, hers to Wren.', { text: 'Knot says the colours. Then the Warden answers for the chair.', cls: 'whisper' }]);
-              await ask(panel, 'The thread from the Provost to Wren is —', [{ id: 'red', text: 'Red. An oath.' }, { id: 'gold', text: 'Gold. The Crown\'s.' }, { id: 'grey', text: 'Grey.' }], 'grey', 'Look again, Knot. The colour is the whole of it.');
+              para(panel, ['The Provost\'s chair, by the fire, still warm. Nothing in it; nothing on it. The Binder — the threads: hers to the four of you, hers to the Convocation, hers to Wren.', { text: 'The Binder says the colours. Then the Warden answers for the chair.', cls: 'whisper' }]);
+              await ask(panel, 'The thread from the Provost to Wren is —', [{ id: 'red', text: 'Red. An oath.' }, { id: 'gold', text: 'Gold. The Crown\'s.' }, { id: 'grey', text: 'Grey.' }], 'grey', 'Look again, the Binder. The colour is the whole of it.');
               if (!api.alive()) return;
-              Store.set('GREY', true); Store.note('Knot saw the grey thread.');
+              Store.set('GREY', true); Store.note('The Binder saw the grey thread.');
               const out = [{ text: 'Grey. The colour of someone who has already said goodbye.', cls: 'omen' }];
-              if (f.ORIEL) { Store.set('ORIEL_NOTE', true); Store.note('Oriel\'s note was found in the Provost\'s chair.'); out.push('Under the cushion, folded small: a note in Master Oriel\'s hand, left for whoever searched this chair. Knot has it. Knot — read it to them.'); }
-              else if (hasMarrowLetter(f)) { Store.set('MARROW_LETTER', true); Store.note('Marrow\'s unsent letter was found in her chair.'); out.push('Under the cushion, an unsent letter in the Provost\'s hand, addressed to the Convocation and never sent. Knot has it. Knot — read it to them.'); }
+              if (f.ORIEL) { Store.set('ORIEL_NOTE', true); Store.note('Oriel\'s note was found in the Provost\'s chair.'); out.push('Under the cushion, folded small: a note in Master Oriel\'s hand, left for whoever searched this chair. The Binder has it. The Binder — read it to them.'); }
+              else if (hasMarrowLetter(f)) { Store.set('MARROW_LETTER', true); Store.note('Marrow\'s unsent letter was found in her chair.'); out.push('Under the cushion, an unsent letter in the Provost\'s hand, addressed to the Convocation and never sent. The Binder has it. The Binder — read it to them.'); }
               else out.push('Under the cushion, nothing but the shape of her.');
               out.push(wren({ speaker: 'Wren', text: 'Grey\'s a colour. I\'ve seen grey. Grey\'s fine.' }, 'Wren does not ask what colour.'));
               if (!f.WREN_SCARED) out.push('Nobody answers.');
@@ -350,9 +350,9 @@
           const f = s.flags, n = secretsFound(f), out = [];
           out.push(`The study kept four secrets. You found ${['none', 'one', 'two', 'three', 'all four'][n]}.`);
           out.push('The stair creaks. Marrow is back before her ten minutes, which means the Convocation went badly, or quickly, or both.');
-          if (f.TAPESTRY) out.push('She sees the tapestry. She stops in the doorway for a long moment.', { speaker: 'Marrow', text: 'So. Owl.' }, 'And nothing else.');
+          if (f.TAPESTRY) out.push('She sees the tapestry. She stops in the doorway for a long moment.', { speaker: 'Marrow', text: 'So. The Seer.' }, 'And nothing else.');
           if (f.JOURNAL) out.push('The journal is exactly where it was. She notices anyway; she notices everything. She does not mention it.');
-          out.push({ speaker: 'Marrow', text: 'The scroll. Bookmoth reads the glyphs, Owl the mark, Hush the order, Knot the Law. Then you swear, or you do not.' });
+          out.push({ speaker: 'Marrow', text: 'The scroll. The Reader reads the glyphs, the Seer the mark, the Listener the order, the Binder the Law. Then you swear, or you do not.' });
           out.push(wren({ speaker: 'Wren', text: 'For the record, I don\'t get a vote on the whatever-the-cost part. I checked.' }, 'Wren says nothing at all.'));
           return out;
         },
@@ -368,7 +368,7 @@
         ],
         prompt: 'Swear the Warden\'s Oath?',
         options: [
-          { id: 'swear', text: 'Swear it. Place the glyphs.', sub: 'Knot chooses the lock.', next: 'ch4_oath', set: { REFUSED_OATH: false } },
+          { id: 'swear', text: 'Swear it. Place the glyphs.', sub: 'The Binder chooses the lock.', next: 'ch4_oath', set: { REFUSED_OATH: false } },
           { id: 'refuse', text: 'Refuse to swear.', sub: 'No oath at all. Marrow will not ask twice.', cls: 'dark', next: 'ch4_refused', set: { OATH: 0, OATH_KNOT: false, REFUSED_OATH: true }, note: 'You refused the Warden\'s Oath.' },
         ],
       },
@@ -376,7 +376,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch4_scroll', mood: 'court', fx: 'embers', puzzleId: 'ch4_oath', /* untimed and no auto-hint: the design's pacing table gives the oath no hint bell; the table argues as long as it needs */
         text: [
           'The scroll\'s ring: four slots. Above them, three glyphs worn nearly smooth, and a fourth space the scroll calls the lock.',
-          { text: 'Bookmoth places the first glyph. Hush the second. Owl the third. Knot places the lock — and Law 4 says what a lock is.', cls: 'whisper' },
+          { text: 'The Reader places the first glyph. The Listener the second. The Seer the third. The Binder places the lock — and Law 4 says what a lock is.', cls: 'whisper' },
         ],
         config: () => {
           const mine = {};   // slots filled so far (re-placing a slot does not move the keyboard on)
@@ -384,22 +384,22 @@
             title: 'THE WARDEN\'S OATH — sworn to the Chair', note: 'Pass the keyboard by name. Four glyphs; the last placed is the lock.',
             html: G.inscription([{ shape: 'Spike', inv: false, worn: true }, { shape: 'Flame', inv: false, worn: true }, { shape: 'Spike', inv: true, worn: true }, { shape: 'Crown', inv: false, worn: true, hidden: true }], { showMark: false }).replace('SHIELD', 'LOCK'),
             slots: 4, glyphs: glyphPalette(), fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to swear it',
-            onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Hush', 'Owl', 'Knot'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
+            onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Listener', 'Seer', 'Binder'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
             check: (m) => {
               const three = m[4] === 'THORN' && m[1] === 'ASH' && m[2] === 'WELL';
               if (three && (m[3] === 'KNOT' || m[3] === 'EMBER')) return true;
-              if (three && m[3] === 'COLD') return 'The scroll will not take that lock. Knot — Law 4: which glyphs can lock an oath?';
-              if (three && !m[3]) return 'Three glyphs and no lock. An oath without a lock is a wish. Knot — Law 4.';
-              if (three) return 'The three are right. The lock is not: Knot — Law 4.';
+              if (three && m[3] === 'COLD') return 'The scroll will not take that lock. The Binder — Law 4: which glyphs can lock an oath?';
+              if (three && !m[3]) return 'Three glyphs and no lock. An oath without a lock is a wish. The Binder — Law 4.';
+              if (three) return 'The three are right. The lock is not: Binder — Law 4.';
               return false;
             },
             wrongText: 'Frost creeps over the ring. It resets. The scroll waits.',
           };
         },
         hints: [
-          'Owl — where is the mark on this ring? Bookmoth — three glyphs and a lock; which three?',
-          'Down one, up four, then the lock: Hush\'s order, placed sunwise from the mark at slot 4. Knot\'s Law 4 says which glyphs can be a lock — and what each of them costs.',
-          'THORN in slot 4, ASH in slot 1, WELL in slot 2. Slot 3 is the lock: KNOT or EMBER — both close the oath. Knot chooses which.',
+          'The Seer — where is the mark on this ring? The Reader — three glyphs and a lock; which three?',
+          'Down one, up four, then the lock: Listener\'s order, placed sunwise from the mark at slot 4. The Binder\'s Law 4 says which glyphs can be a lock — and what each of them costs.',
+          'THORN in slot 4, ASH in slot 1, WELL in slot 2. Slot 3 is the lock: KNOT or EMBER — both close the oath. The Binder chooses which.',
         ],
         onSolve: (s, r) => {
           const lock = r && r.map ? r.map[3] : 'KNOT';
@@ -421,7 +421,7 @@
             out.push('The ring closes under EMBER. The wax of the seal does not change. Marrow looks at the ring, and at the four of you, and sees an oath sworn.');
             out.push({ speaker: 'Marrow', text: 'Bound. Good. Then I need not carry it alone.' });
             out.push('She notices nothing, which is its own kind of grief.');
-            out.push(wren({ speaker: 'Wren', text: 'That one\'s EMBER. *What remains.* Knot, you\'re shaking. Is that a Binder thing?' }, 'Wren is watching Knot, not the ring.'));
+            out.push(wren({ speaker: 'Wren', text: 'That one\'s EMBER. *What remains.* the Binder, you\'re shaking. Is that a Binder thing?' }, 'Wren is watching the Binder, not the ring.'));
           }
           out.push({ speaker: 'Marrow', text: 'When the bells ring, hold them. Hold them whatever it costs. I will do the rest.' });
           out.push(f.WREN_SCARED ? 'Wren gets up off the window seat without being told, and goes to stand beside her.' : { speaker: 'Wren', text: 'She means me. "The rest." I\'m the rest.' });

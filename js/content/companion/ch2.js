@@ -70,7 +70,7 @@
     <circle cx="300" cy="150" r="6" fill="${V}"/>
     <path d="M300,150 L340,148" stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"/>
     <path d="M300,150 C295,140 285,134 281,128" stroke="${V}" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>
-    <g fill="#fff" font-size="9" ${F}><text x="28" y="212">Bookmoth</text><text x="60" y="166">Hush</text><text x="88" y="212">Owl</text><text x="118" y="158">Knot</text><text x="292" y="176" fill="${V}">Wren</text><text x="281" y="106" text-anchor="middle" fill="${SEA}">the Ember</text></g>
+    <g fill="#fff" font-size="9" ${F}><text x="28" y="212">Reader</text><text x="60" y="166">Listener</text><text x="88" y="212">Seer</text><text x="118" y="158">Binder</text><text x="292" y="176" fill="${V}">Wren</text><text x="281" y="106" text-anchor="middle" fill="${SEA}">the Ember</text></g>
     <text x="180" y="222" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">four shadows fall away from the cold light. One reaches for it.</text>
   </svg>`;
 
@@ -84,13 +84,13 @@
       /* ================= READER ================= */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The four epitaphs' });
-        P.sight.push({ t: 'p', text: 'One shape on each plinth, clean on your page where the Hearth shows them worn. Left to right as the statues stand: **Mere, Halvard, Rook, Idony.** A single carved glyph has only two readings — upright, or *turned* (inverted). Which of these plinths are turned is Under-Sight, not yours: **Owl knows which plinths are upside down.**' });
+        P.sight.push({ t: 'p', text: 'One shape on each plinth, clean on your page where the Hearth shows them worn. Left to right as the statues stand: **Mere, Halvard, Rook, Idony.** A single carved glyph has only two readings — upright, or *turned* (inverted). Which of these plinths are turned is Under-Sight, not yours: **The Seer knows which plinths are upside down.**' });
         P.sight.push({ t: 'html', html: G.inscription(EPITAPHS.map(e => ({ shape: e.shape, inv: false, label: e.name.toUpperCase() })), { showMark: false, color: '#fff' }) });
         P.sight.push({ t: 'table', head: ['Statue', 'Shape', 'Upright reads', 'Turned reads'], rows: EPITAPHS.map(e => { const up = G.read(e.shape, false), tr = G.invert(up); return [`<b>${e.name}</b>`, `${G.shapeSvg(e.shape, false, { size: 34, color: '#fff' })} ${e.shape}`, `${gl(up)}<br><em>${G.GLYPHS[up].gloss}</em>`, `${gl(tr)}<br><em>${G.GLYPHS[tr].gloss}</em>`]; }) });
-        P.sight.push({ t: 'fine', text: 'Read them all upright and you get CROWN, THORN, KNOT, KNOT — two Founders with the same glyph, which the Founders would not have done. Say both readings aloud; let Owl say which is carved turned.' });
+        P.sight.push({ t: 'fine', text: 'Read them all upright and you get CROWN, THORN, KNOT, KNOT — two Founders with the same glyph, which the Founders would not have done. Say both readings aloud; let the Seer say which is carved turned.' });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'The strip in the niche' });
-        P.sight.push({ t: 'p', text: 'Somewhere in the antechamber, where the rebuilders did not look, there is a hollow with a stone strip of three shapes in it — if the table finds it. Owl knows where; you know what it says. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only Owl can see which end it is.' });
+        P.sight.push({ t: 'p', text: 'Somewhere in the antechamber, where the rebuilders did not look, there is a hollow with a stone strip of three shapes in it — if the table finds it. The Seer knows where; you know what it says. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only the Seer can see which end it is.' });
         P.sight.push({ t: 'html', html: G.inscription(STRIP, { showMark: false, color: '#fff' }) });
         P.sight.push({ t: 'table', head: ['If the strip is…', 'it reads'], rows: [
           ['upright (mark on the left) — left to right, as carved', `${gl('WELL')}, ${gl('EMBER')}, ${gl('VEIL')}<br><em>went down · kept · alone</em> — the Order\'s version: <em>one went down alone and kept it.</em>`],
@@ -111,11 +111,11 @@
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: "The Founders' phrase" });
         P.sight.push({ t: 'p', text: 'When the dials are touched the door hums the Founders\' phrase — four notes, tuned to this room, so the Hearth\'s speakers give away nothing but the **steps** between them. You hear those. Nobody else does.' });
-        P.sight.push({ t: 'audio', label: 'The door\'s phrase — four notes', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Four glyphs, three steps. Bookmoth can name the four glyphs on the plinths; of every order they could be turned in, only one climbs like this. That order is the order the dials must be turned in — Knot\'s Law says so.' });
+        P.sight.push({ t: 'audio', label: 'The door\'s phrase — four notes', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Four glyphs, three steps. The Reader can name the four glyphs on the plinths; of every order they could be turned in, only one climbs like this. That order is the order the dials must be turned in — The Binder\'s Law says so.' });
         P.sight.push({ t: 'fine', text: 'Your **Ladder** is in the Book: ASH 0 · THORN 1 · KNOT 2 · EMBER 3 · WELL 4 · VEIL 5 · CROWN 6 · COLD is a rest. Use the **row-player** there: tap four glyphs in an order and it shows the steps; compare them with the arrows above until they match.' });
-        P.sight.push({ t: 'p', text: 'One thing you *cannot* hear: which dial was turned. A dial touched on the Hearth sounds through the Hearth, and everyone at the table hears the same thing. Your gift is the order. Owl\'s is the place.' });
+        P.sight.push({ t: 'p', text: 'One thing you *cannot* hear: which dial was turned. A dial touched on the Hearth sounds through the Hearth, and everyone at the table hears the same thing. Your gift is the order. The Seer\'s is the place.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the vault' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'The Ember: nothing. It is a stone in a box; you did not expect a heart. Wren: ' + (lost ? 'should be on the dais under guard, two floors up and out of any range you have. And yet there are footsteps on the stair behind you — light, quick, familiar — and no heart walking with them. Too quiet to catch.' : 'promised to stay put. And yet there are footsteps on the stair behind you — light, quick, familiar — and no heart walking with them. Too quiet to catch.') });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'p', text: 'You have heard those footsteps every day for a year. You could pick them out of a crowded Hall. It has never once occurred to you, until this stair, that you have only ever heard the feet.' });
@@ -131,9 +131,9 @@
           '**Turned plinths** (mark on the right — the Reader must invert the glyph): **Mere, Rook.** Halvard\'s and Idony\'s marks are on the left: upright.',
           '**A niche** behind Mere\'s plinth, knee height, where the rebuilders did not look. The Hearth will not point at it. You can.',
         ] });
-        P.sight.push({ t: 'fine', text: 'Bookmoth reads the shapes; Hush has the order; Knot has the Law that says which of two disagreeing rules is the one that binds. Say what you see.' });
+        P.sight.push({ t: 'fine', text: 'The Reader reads the shapes; the Listener has the order; the Binder has the Law that says which of two disagreeing rules is the one that binds. Say what you see.' });
         P.sight.push({ t: 'h', text: 'The strip in the niche' });
-        P.sight.push({ t: 'p', text: 'Three shapes on a stone strip. Its **mark is on the right**: the strip is turned — read right to left, every glyph inverted. Bookmoth has both readings; only you can say which is the one Mere cut.' });
+        P.sight.push({ t: 'p', text: 'Three shapes on a stone strip. Its **mark is on the right**: the strip is turned — read right to left, every glyph inverted. The Reader has both readings; only you can say which is the one Mere cut.' });
         P.sight.push({ t: 'html', html: G.inscription(STRIP, { showMark: true, mark: 'right', color: '#fff', markColor: V }) });
         P.sight.push({ t: 'h', text: 'Under the stair' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underVault });
@@ -147,8 +147,8 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'The Laws of the door' });
         P.sight.push({ t: 'html', html: laws([2, 9, 3]) });
-        P.sight.push({ t: 'p', text: 'Law 9 was written in **212** — the year the vault was rebuilt and the statues re-set. It says a Founder faces *the dial before them*. Law 2, four hundred years older, says each Founder\'s glyph sits on the dial *they face* — and the Founders faced the sockets their plinths were cut for, which Owl can see. The two Laws agree only if the statues never moved. They moved.' });
-        P.sight.push({ t: 'p', text: '**Law 3: the older binds.** The sockets, not the rebuild. Then Law 2\'s second half: turn the dials **in the Hymn\'s order** — Hush has the phrase — and know that the door *counts every turn*. A wrong turn is not undone by a right one after it; the door forgets the whole count and you begin again.' });
+        P.sight.push({ t: 'p', text: 'Law 9 was written in **212** — the year the vault was rebuilt and the statues re-set. It says a Founder faces *the dial before them*. Law 2, four hundred years older, says each Founder\'s glyph sits on the dial *they face* — and the Founders faced the sockets their plinths were cut for, which the Seer can see. The two Laws agree only if the statues never moved. They moved.' });
+        P.sight.push({ t: 'p', text: '**Law 3: the older binds.** The sockets, not the rebuild. Then Law 2\'s second half: turn the dials **in the Hymn\'s order** — The Listener has the phrase — and know that the door *counts every turn*. A wrong turn is not undone by a right one after it; the door forgets the whole count and you begin again.' });
         P.sight.push({ t: 'fine', text: 'The 212 page of your Book now holds an Order\'s Law written that year beside a Founders\' Law struck through in the same hand. The vault was rebuilt in 212, and a road behind it was bricked up in 212. You have not been told what else happened in 212.' });
         P.sight.push({ t: 'h', text: 'Threads in the vault' });
         P.sight.push({ t: 'list', items: [

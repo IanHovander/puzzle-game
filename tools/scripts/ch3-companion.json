@@ -1,5 +1,5 @@
 { "start": "ch3_start", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"}, {"expect": "Hook"}, {"expect": "Owl knows which end the mark is on"},
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"}, {"expect": "Hook"}, {"expect": "Seer knows which end the mark is on"},
   {"tab": "Wren"}, {"expect": "plaques"}, {"tab": "Speak"}, {"expect": "Sealed"}, {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the Laundry"}, {"shot": "c3_reader_speak"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "VYXX"}, {"shot": "c3_reader_token"},
   {"companion": true}, {"role": "Listener"}, {"unlock": ["VEIL", "CLE"]}, {"shot": "c3_listener_sight"}, {"expect": "west stair-foot"}, {"expect": "four went down"}, {"clickText": "next beat"}, {"expect": "beat 1"},

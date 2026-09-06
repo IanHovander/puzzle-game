@@ -78,7 +78,7 @@
       ch5_attune: {
         type: 'code', art: 'ch5_foundations', mood: 'dread', fx: 'dust',
         text: ['The word, and the mark beside it. Every phone. Read your Sight; say nothing until all four pages have turned.'],
-        roles: 'Warden of the Hearth (keyboard): **Bookmoth**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Reader**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: (s) => F(s).REFUSED_OATH ? 'ch5_door' : 'ch5_gates',
       },
       /* ---------- Mere's door (only if the oath was refused) ---------- */
@@ -93,7 +93,7 @@
           slots: 4, glyphs: glyphPalette(), answer: { 2: 'ASH', 3: 'THORN', 4: 'WELL' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
           wrongText: 'The wall stays a wall. The ring forgets.',
         }),
-        hints: ['Owl knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4; slot 1 empty. Then four hands.'],
+        hints: ['The Seer knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4; slot 1 empty. Then four hands.'],
         onSolve: () => { Store.note('You came down by Mere\'s door, unasked.'); },
         solvedText: ['The wall opens on the stair one flight below. Marrow\'s lantern, ahead, does not slow down.', { speaker: 'Wren', text: '*Told* you they\'d find it.', cls: 'whisper' }, 'Marrow says nothing. She knew.'],
         next: 'ch5_gates',
@@ -121,12 +121,12 @@
             const filled = Object.keys(m).filter(k => m[k]).length;
             if (m[1] === 'WELL' && m[5] === 'VEIL' && m[4] === 'EMBER' && filled === 3) return true;
             if (m[1] === 'CROWN' && m[2] === 'KNOT' && m[3] === 'THORN') return 'Frost — slow, patient, as if the gate had heard that reading before. It was carved for those coming UP. Read it the way it was cut.';
-            if (m[1] === 'WELL' && m[2] === 'VEIL' && m[3] === 'EMBER') return 'The right words, the wrong way round the ring. Two Laws disagree here, Knot. Which is older?';
+            if (m[1] === 'WELL' && m[2] === 'VEIL' && m[3] === 'EMBER') return 'The right words, the wrong way round the ring. Two Laws disagree here, the Binder. Which is older?';
             if (m[1] === 'WELL' && m[5] === 'VEIL' && m[4] === 'EMBER') return 'Nearly. The gate wants three glyphs and nothing else in the ring.';
             return 'Frost creeps over the ring. It resets.';
           },
         }),
-        hints: ['Which end is the mark on, Owl?', 'Turned means inverted, right to left — and the older Law says *widdershins* from the mark.', 'WELL at 1, VEIL at 5, EMBER at 4. Slots 2 and 3 empty. Then four hands.'],
+        hints: ['Which end is the mark on, the Seer?', 'Turned means inverted, right to left — and the older Law says *widdershins* from the mark.', 'WELL at 1, VEIL at 5, EMBER at 4. Slots 2 and 3 empty. Then four hands.'],
         onSolve: (s, r) => { Store.note('The Turned Gate: read turned, placed widdershins.' + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : '')); },
         solvedText: [
           'The gate does not open so much as forget it was ever shut. Mere\'s grammar: turned, and widdershins, and the older Law binds.',
@@ -162,7 +162,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [4, 7],
         text: (s) => [
           'Five shapes, five slots, and a scratch where the ring begins. The bells are silent on the Hearth. Somebody in the room can still count them.',
-          law0(s) ? { text: 'One slot may have to stay empty. Or not. Knot has two Laws about that, written two hundred years apart, and they do not agree.', cls: 'whisper' } : { text: 'One slot may have to stay empty. Knot has a Law about that. Ask what it says — and what it was written over.', cls: 'whisper' },
+          law0(s) ? { text: 'One slot may have to stay empty. Or not. The Binder has two Laws about that, written two hundred years apart, and they do not agree.', cls: 'whisper' } : { text: 'One slot may have to stay empty. The Binder has a Law about that. Ask what it says — and what it was written over.', cls: 'whisper' },
         ],
         config: (s) => ({
           title: 'THE SILENT GATE', note: 'Five shapes carved above the ring, left to right; five muted bells above them:', html: G.inscription(GATE2, { showMark: false }),
@@ -171,14 +171,14 @@
           check: (m) => {
             const base = m[1] === 'WELL' && m[2] === 'ASH' && m[4] === 'CROWN' && m[5] === 'KNOT';
             if (base && !m[3]) return true;
-            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Frost, thick and sudden, over the third slot alone — the gate will not take that glyph from one Book. Knot: what does the Order say is done with it?'; }
+            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Frost, thick and sudden, over the third slot alone — the gate will not take that glyph from one Book. The Binder: what does the Order say is done with it?'; }
             if (base) return 'Four of five sit right. The slot on the mark is the one the Order says is never written — what does the Book say to do with it?';
-            if (m[1] === 'CROWN' && m[2] === 'ASH' && m[4] === 'KNOT' && m[5] === 'WELL') return 'Read right, placed from the wrong slot. The gate begins where the mark is — Owl has it — and the bells say how far from it each glyph sits.';
+            if (m[1] === 'CROWN' && m[2] === 'ASH' && m[4] === 'KNOT' && m[5] === 'WELL') return 'Read right, placed from the wrong slot. The gate begins where the mark is — The Seer has it — and the bells say how far from it each glyph sits.';
             if (m[3] && m[3] !== 'COLD') return 'The slot on the mark takes one glyph only, and the Order says it takes none. Frost.';
             return 'Frost creeps over the ring. It resets.';
           },
         }),
-        hints: ['Hush counts the bells — one bell per shape, first to fifth. A bell\'s count is its slot, counted sunwise from the mark.', 'The first slot from the mark is the one that is never written — Knot\'s Law 6 says why. Owl has the mark.', (s) => law0(s) ? 'WELL at 1, ASH at 2, slot 3 empty — or COLD at 3, written by four hands — CROWN at 4, KNOT at 5.' : 'WELL at 1, ASH at 2, slot 3 empty, CROWN at 4, KNOT at 5. Then four hands.'],
+        hints: ['The Listener counts the bells — one bell per shape, first to fifth. A bell\'s count is its slot, counted sunwise from the mark.', 'The first slot from the mark is the one that is never written — The Binder\'s Law 6 says why. The Seer has the mark.', (s) => law0(s) ? 'WELL at 1, ASH at 2, slot 3 empty — or COLD at 3, written by four hands — CROWN at 4, KNOT at 5.' : 'WELL at 1, ASH at 2, slot 3 empty, CROWN at 4, KNOT at 5. Then four hands.'],
         onSolve: (s, r) => { const cold = r && r.map && r.map[3] === 'COLD'; Store.set('GATE2_COLD', !!cold); Store.note(cold ? 'The Silent Gate: you wrote COLD with four hands.' : 'The Silent Gate: you left the cold slot empty.'); },
         solvedText: (s, r) => r && r.map && r.map[3] === 'COLD' ? [
           'You wrote the glyph that is never written, with four hands on the cold slot — and the gate took it, the way a door takes a key that was cut for it.',
@@ -198,7 +198,7 @@
         text: [
           'The third gate is not a door. It is a count.',
           { speaker: 'Marrow', text: 'Mere\'s last ward. It asks each Sighting one question, and wants one number from the four of you. She built it so that no one person could answer it. She did not trust one person. Ever.' },
-          'Each phone will ask you for a **digit** — a job of forty-five seconds. When it is done, say your digit aloud in seat order, Bookmoth first, and the Warden types the four digits as one number.',
+          'Each phone will ask you for a **digit** — a job of forty-five seconds. When it is done, say your digit aloud in seat order, the Reader first, and the Warden types the four digits as one number.',
           { text: 'Every phone: open SPEAK and find *The Founders\' Count*. Do not press Start until the Hearth says START.', cls: 'whisper' },
         ],
         next: 'ch5_count_start', button: 'Everyone has the page — count us in',
@@ -227,14 +227,14 @@
       },
       ch5_count: {
         type: 'puzzle', puzzle: 'answer', art: 'ch5_gate', artParams: { n: 2, cold: 0.6 }, mood: 'tense', fx: 'motes', puzzleId: 'ch5_count', par: [1.5, 4],
-        text: ['Four digits, one number. Seat order: Bookmoth, Hush, Owl, Knot. A wrong digit is nobody\'s fault and everybody\'s job.'],
+        text: ['Four digits, one number. Seat order: Reader, Listener, Seer, Binder. A wrong digit is nobody\'s fault and everybody\'s job.'],
         config: () => ({
-          title: 'THE FOUNDERS\' COUNT', note: 'Bookmoth · Hush · Owl · Knot — four digits, as one number.',
+          title: 'THE FOUNDERS\' COUNT', note: 'The Reader · the Listener · the Seer · the Binder — four digits, as one number.',
           fields: [{ label: 'the count', placeholder: '· · · ·', len: 4 }], submitText: 'Count',
           accept: (v) => v[0] === '3524',
           onWrong: (v) => { const w = v[0] || ''; if (w.length !== 4 || /\D/.test(w)) return 'Four digits, and only digits.'; let n = 0; for (let i = 0; i < 4; i++) if (w[i] === '3524'[i]) n++; return n === 0 ? 'The gate counts, and disagrees with all four of you.' : `The gate counts ${n === 1 ? 'one digit' : n + ' digits'} true, and does not say which.`; },
         }),
-        hints: ['Each phone yields one digit. Seat order: Bookmoth\'s first, then Hush, then Owl, then Knot. If one is doubted, that phone can count again.', 'Bookmoth counts glyphs that read EMBER — the Crown turned. Hush counts the *lower* bell\'s strikes. Owl counts hollow stones. Knot counts oaths whose lock is KNOT or EMBER — Law 12.', 'Three, five, two, four: **3524**.'],
+        hints: ['Each phone yields one digit. Seat order: Reader\'s first, then the Listener, then the Seer, then the Binder. If one is doubted, that phone can count again.', 'The Reader counts glyphs that read EMBER — the Crown turned. The Listener counts the *lower* bell\'s strikes. The Seer counts hollow stones. The Binder counts oaths whose lock is KNOT or EMBER — Law 12.', 'Three, five, two, four: **3524**.'],
         onSolve: (s, r) => { Store.note('The Founders\' Count: 3524' + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : '')); },
         solvedText: [
           'Three, five, two, four. The count closes, and the gate is simply not there any more.',
@@ -274,7 +274,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch5_stair', artParams: { broken: false }, mood: 'tense', fx: 'ash', puzzleId: 'ch5_collapse', par: [1, 2],
         text: [
           'The quick sigil. Two slots cut into the newel, one hand — there is no time for four. Fire, and the absence of fire.',
-          { text: 'Knot has one thing to say before it is written. Let Knot say it. Then write.', cls: 'whisper' },
+          { text: 'The Binder has one thing to say before it is written. Let the Binder say it. Then write.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE COLLAPSE — ONE HAND', note: 'Two slots. The Warden places both. No ritual; there is no time.',

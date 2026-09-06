@@ -14,7 +14,7 @@
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"type": ["#widget input.field", "3524"]}, {"clickText": "Count"}, {"wait": 1500}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"expect": "flared at the Tower door"}, {"clickText": "Ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "alt_stair"}, {"expect": "THIRTY HEARTBEATS"}, {"click": ".btn.choice >> nth=0"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "alt_collapse"}, {"expect": "Let Knot say it"}, {"slots": [[1, "ASH"], [2, "COLD"]]}, {"clickText": "Write it"}, {"wait": 1500}, {"key": "Space"}, {"wait": 400}, {"expect": "the sound a bell makes when it cracks"}, {"clickText": "Continue"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "alt_collapse"}, {"expect": "Let Binder say it"}, {"slots": [[1, "ASH"], [2, "COLD"]]}, {"clickText": "Write it"}, {"wait": 1500}, {"key": "Space"}, {"wait": 400}, {"expect": "the sound a bell makes when it cracks"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"expect": "NEXT: THE BELLS"}, {"clickText": "The paths you walked"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "alt_flow"}, {"expect": "one bell cracked"}, {"expect": "COLD with four hands"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, PRECRACKED: VigilStore.state.flags.PRECRACKED, BELLS_CRACKED: VigilStore.state.flags.BELLS_CRACKED, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, GATE2_COLD: VigilStore.state.flags.GATE2_COLD, LAW0: VigilStore.state.flags.LAW0})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
 ] }

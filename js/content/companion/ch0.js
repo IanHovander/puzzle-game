@@ -22,7 +22,7 @@
       <path d="M120,100 L80,88"/><path d="M160,70 L124,52"/><path d="M170,140 L134,138"/><path d="M210,110 L178,96"/>
     </g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L276,150"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="112" y="118">Bookmoth</text><text x="150" y="60">Hush</text><text x="158" y="158">Owl</text><text x="202" y="128">Knot</text><text x="230" y="168" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="112" y="118">Reader</text><text x="150" y="60">Listener</text><text x="158" y="158">Seer</text><text x="202" y="128">Binder</text><text x="230" y="168" fill="#a482e6">Wren</text></g>
     <text x="180" y="210" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
   </svg>`;
 
@@ -57,12 +57,12 @@
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'The lamp\'s phrase' });
         P.sight.push({ t: 'p', text: 'Two notes, when the ring is touched. You do not hear the glyphs\' names — the lamp is tuned to its own room — only the **step** between them.' });
-        P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note steps **up three** from the first. Your Ladder is in the **Book**: of the two glyphs Bookmoth reads, only one order climbs three.' });
+        P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note steps **up three** from the first. Your Ladder is in the **Book**: of the two glyphs the Reader reads, only one order climbs three.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the room' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Wren: too quiet to catch. It has always been too quiet to catch. You have decided this is a fault in your gift.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
-        P.wren.push({ t: 'p', text: 'You can hear the Provost\'s heart from two floors down when she is angry. You can hear Knot\'s when Knot is lying, which is never. You have never once heard Wren\'s, and you have never once said so.' });
+        P.wren.push({ t: 'p', text: 'You can hear the Provost\'s heart from two floors down when she is angry. You can hear the Binder\'s when the Binder is lying, which is never. You have never once heard Wren\'s, and you have never once said so.' });
       }
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the lamp' });
@@ -77,9 +77,9 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Law 1' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 1 · Founders' · Year 0</div><div class="txt">A sigil is read sunwise from the mark.</div></div></div>` });
-        P.sight.push({ t: 'p', text: 'Sunwise is clockwise. The mark is a scratch on the ring; Owl can see it. Place the first glyph *on* the mark and the rest after it, clockwise.' });
+        P.sight.push({ t: 'p', text: 'Sunwise is clockwise. The mark is a scratch on the ring; the Seer can see it. Place the first glyph *on* the mark and the rest after it, clockwise.' });
         P.sight.push({ t: 'h', text: 'Threads in the room' });
-        P.sight.push({ t: 'list', items: ['**Bookmoth — Hush:** a red thread, old, well-knotted. Friends since the sorting.', '**Owl — Knot:** the practice thread you tied last week, for the exam. It would not hold. It has never not held before.', '**Wren:** *No thread found.* Not unbound — you know unbound; unbound is a loose end. This is the other thing. The knot itself.'] });
+        P.sight.push({ t: 'list', items: ['**The Reader — The Listener:** a red thread, old, well-knotted. Friends since the sorting.', '**The Seer — The Binder:** the practice thread you tied last week, for the exam. It would not hold. It has never not held before.', '**Wren:** *No thread found.* Not unbound — you know unbound; unbound is a loose end. This is the other thing. The knot itself.'] });
         P.sight.push({ t: 'fine', text: 'The Book of Laws is in your **Book** — including the one on the 212 page that has been struck through.' });
         P.wren.push({ t: 'h', text: 'The struck Law' });
         P.wren.push({ t: 'p', text: 'You have read the 212 page a dozen times. Three Order\'s Laws written that year, and one Founders\' Law struck through in the same hand: *COLD is written by four hands.* Nobody has ever explained to you why a Law is struck instead of simply forgotten.' });

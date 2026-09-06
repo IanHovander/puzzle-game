@@ -109,7 +109,7 @@
         enter: (s) => { dress(s, ['ch8_white', 'ch8_stones', 'ch8_stones', 'ch8_flicker', 'ch8_cage'], ['triumph', 'wonder', 'sorrow', 'sorrow', 'dread'], ['motes', 'embers', 'embers', 'ash', 'ash']); Game.flame([1, 0.65, 1, 0.3, 0.15][ending(s)]); if (Game.clock && Game.clock.running()) Game.clock.stop(); Store.set('EPILOGUE_ENDING', ENDING_NAMES[ending(s)]); },
         text: (s) => {
           const e = ending(s);
-          const voice = { text: 'The Voice, for what is left of the night: all four of you, a paragraph each, sunwise from Bookmoth. The keyboard: whoever is nearest.', cls: 'small' };
+          const voice = { text: 'The Voice, for what is left of the night: all four of you, a paragraph each, sunwise from the Reader. The keyboard: whoever is nearest.', cls: 'small' };
           if (e === 0) return [
             { text: `Walked into the fire: **${UI.list(walkers(s))}**.`, cls: 'center' },
             { text: 'Stayed on the stones: **nobody**.', cls: 'center' },
@@ -153,17 +153,17 @@
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
           'White. Not the white of snow — the white of a forge, of a thing too hot to have a colour. The Hearth of Thornhallow roars, and for the first time in four hundred years it is not holding anything shut. It is simply a fire.',
-          'You come out of it the way the Founders came out: grey-eyed and ordinary. Bookmoth looks at the stone and sees shapes. Hush hears a room. Owl sees a floor. Knot sees four friends and nothing between them but air.',
+          'You come out of it the way the Founders came out: grey-eyed and ordinary. The Reader looks at the stone and sees shapes. The Listener hears a room. The Seer sees a floor. The Binder sees four friends and nothing between them but air.',
           'Wren is waiting on the stones.',
           { speaker: 'Wren', text: 'You took your *time*.' },
-          'There is a pulse in Wren\'s throat. You can see it from here. Hush, who will never hear anything like it again, does not need to.',
+          'There is a pulse in Wren\'s throat. You can see it from here. The Listener, who will never hear anything like it again, does not need to.',
         ],
         next: 'ch8_report', button: 'Dawn',
       },
       ch8_report: {
         art: 'ch8_stones', mood: 'wonder', fx: 'embers', flame: 1,
         text: [
-          'The Provost sits down on the bottom step of the Long Stair, which she has never done, and stays there a long time. Wren sits down next to her. Neither says anything. Knot, who cannot see threads any more, does not need to.',
+          'The Provost sits down on the bottom step of the Long Stair, which she has never done, and stays there a long time. Wren sits down next to her. Neither says anything. The Binder, who cannot see threads any more, does not need to.',
           'Lord Cassian Vane writes his report to the Crown by the light of a fire that no longer needs him. It says the Cold is closed. It says there is nothing under Thornhallow to harness. It is the first true thing he has ever sent them.',
           'Master Tarn goes home. Nobody stops him. The nine Houses find, in the morning, that the school beneath them is still there, and that it is warm.',
         ],
@@ -173,12 +173,12 @@
         title: 'Years later', art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
         text: [
           'Four unremarkable people, in a house that is too small for all of them, every winter.',
-          'They argue about what the ring looked like. Bookmoth says the mark was at the top. Owl says there were two marks and Bookmoth is remembering the lamp. Hush says the whole thing went up one, up three, and is told, every year, that nobody else could ever hear that.',
-          'Bookmoth keeps a letter in the drawer by the bed. It is one line of glyphs. Bookmoth cannot read it, and will not have it translated.',
-          'Hush says the house is too quiet, and means the opposite.',
-          'Knot ties the others to each other, and calls it kindness, and it holds.',
+          'They argue about what the ring looked like. The Reader says the mark was at the top. The Seer says there were two marks and the Reader is remembering the lamp. The Listener says the whole thing went up one, up three, and is told, every year, that nobody else could ever hear that.',
+          'The Reader keeps a letter in the drawer by the bed. It is one line of glyphs. The Reader cannot read it, and will not have it translated.',
+          'The Listener says the house is too quiet, and means the opposite.',
+          'The Binder ties the others to each other, and calls it kindness, and it holds.',
           'They would do it again. They say so, every winter, at the point in the evening when it becomes true.',
-          'Wren visits. Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that Hush cannot hear, and does not need to.',
+          'Wren visits. Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that the Listener cannot hear, and does not need to.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -190,7 +190,7 @@
           `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free, and stand blinking at a room they cannot see under any more.`,
           `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. There is a school above you that knows now what it is built on, and it will need Masters who can read the wall. Those are the Masters.`,
           'Wren lives. Wren stands on the stones and laughs and hugs everyone, walkers and stayers alike, and holds on slightly too long.',
-          'There is no pulse in Wren\'s throat. It is the one visible difference, and only Hush would ever have known.',
+          'There is no pulse in Wren\'s throat. It is the one visible difference, and only the Listener would ever have known.',
           { speaker: 'Wren', text: 'Half of you can\'t see me properly any more. Good. I looked *terrible*.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -200,8 +200,8 @@
         text: [
           { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry.' },
           'Wren walks into the Hearth the way Wren walks through doors. It closes behind. Four hundred years of fire, again, from a spark.',
-          'In the morning a mason carves a fifth name over the Hearth, beneath the four Founders. He has to ask how to spell it. Nobody in the room can tell him, in the older alphabet, and Bookmoth does not offer.',
-          'The Provost stands at the fire with a thread nobody can see but Knot. It is grey. It has been grey for fourteen years.',
+          'In the morning a mason carves a fifth name over the Hearth, beneath the four Founders. He has to ask how to spell it. Nobody in the room can tell him, in the older alphabet, and the Reader does not offer.',
+          'The Provost stands at the fire with a thread nobody can see but the Binder. It is grey. It has been grey for fourteen years.',
           'On the chart of the night, one step from where you stood, there is a box you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -209,7 +209,7 @@
       ch8_e3: {
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
-          'She does not say goodbye to Wren. She has been saying it for fourteen years; Knot has seen the colour of it. She puts her hand on the fire as if it were a door, and it is.',
+          'She does not say goodbye to Wren. She has been saying it for fourteen years; the Binder has seen the colour of it. She puts her hand on the fire as if it were a door, and it is.',
           'The seal holds. Thin — the kind of hold that needs watching — but it holds.',
           'Wren lives. No pulse. Wren does not seem to mind, and stands a long time where the Provost stood, and then makes a joke about it that nobody laughs at, and then one that everybody does.',
           { text: 'Years later.', cls: 'big' },
@@ -373,7 +373,7 @@
         text: (s) => [
           ending(s) === 0 ? 'The last word. In the dormitory it was a dare. Write it.' : 'The last word, for the phones. In the dormitory it was a dare; the fire never got to see it written properly. Write it now, and look at your own page — nobody else\'s.',
         ],
-        roles: 'Warden of the Hearth (keyboard): **whoever is nearest**. Voice: **all four of you** — a paragraph each, sunwise from Bookmoth.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **whoever is nearest**. Voice: **all four of you** — a paragraph each, sunwise from the Reader.', sightSeconds: 90,
         codeSub: 'Each phone shows its last page. Read yours. Say nothing.',
         enter: () => { Store.set('WREN_SHOWN', true); },
         next: 'ch8_flow', button: 'Every phone has gone dark',

@@ -64,7 +64,7 @@
     // the spark at centre
     s += `<circle cx="180" cy="150" r="4" fill="#fff"/><circle cx="180" cy="150" r="9" fill="none" stroke="#fff" opacity=".5"/>`;
     // the four: shadows away from the spark; Wren's toward it
-    const four = [[120, 205, 'Bookmoth'], [150, 212, 'Hush'], [210, 212, 'Owl'], [240, 205, 'Knot']];
+    const four = [[120, 205, 'Reader'], [150, 212, 'Listener'], [210, 212, 'Seer'], [240, 205, 'Binder']];
     s += `<g fill="#fff">${four.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}<circle cx="180" cy="110" r="5" fill="${V}"/></g>`;
     s += `<g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round">${four.map(([x, y]) => { const dx = x - 180, dy = y - 150, n = Math.hypot(dx, dy); return `<path d="M${x},${y} L${(x + dx / n * 22).toFixed(1)},${(y + dy / n * 22).toFixed(1)}"/>`; }).join('')}</g>`;
     s += `<g stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,110 L180,138"/></g>`;
@@ -150,8 +150,8 @@
         const tbl = (items, hiddenIdx, label) => { const up = reading(items, 'left', hiddenIdx), tn = reading(items, 'right', hiddenIdx); return { t: 'table', head: [`If the ${label} wall is…`, 'it reads'], rows: [['upright (mark on the left)', row(up) + ` — <em>${gloss(up)}</em>`], ['turned (mark on the right)', row(tn) + ` — <em>${gloss(tn)}</em>`]] }; };
         const shapesText = (items, hiddenIdx) => items.map((it, i) => i === hiddenIdx ? 'a soldier\'s shield' : it.shape + (it.inv ? '-inverted' : '')).join(', ');
         P.sight.push({ t: 'h', text: 'Two walls' });
-        P.sight.push({ t: 'p', text: 'Clean on your page: what the fire shows worn, you see cut. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — Owl\'s — not yours.' });
-        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'p', text: 'A soldier stands against ' + (sh.west >= 0 && sh.east >= 0 ? 'each wall' : sh.west >= 0 ? 'the west wall' : 'the east wall') + ', shield up. Glyph-Sight reads stone, not steel: the carving behind it is blank on your page too. The Law on the rim, and Hush\'s Hymn, say what it must be.' });
+        P.sight.push({ t: 'p', text: 'Clean on your page: what the fire shows worn, you see cut. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — The Seer\'s — not yours.' });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'p', text: 'A soldier stands against ' + (sh.west >= 0 && sh.east >= 0 ? 'each wall' : sh.west >= 0 ? 'the west wall' : 'the east wall') + ', shield up. Glyph-Sight reads stone, not steel: the carving behind it is blank on your page too. The Law on the rim, and the Listener\'s Hymn, say what it must be.' });
         P.sight.push({ t: 'p', text: `**West wall**, shapes left to right: ${shapesText(WEST, sh.west)}.` });
         P.sight.push({ t: 'html', html: wall(WEST, 'left', false, sh.west) });
         P.sight.push(tbl(WEST, sh.west, 'west'));
@@ -167,13 +167,13 @@
         P.sight.push({ t: 'h', text: 'The Founders\' Hymn, whole' });
         P.sight.push({ t: 'p', text: 'Every room tonight sang a piece of it. This is all of it: seven steps and the rest. The rest is where COLD sits — the eighth glyph, the one that is never written.' });
         P.sight.push({ t: 'audio', label: 'The Hymn, eight glyphs in wall order', strip: CA.strip([1, 3, -2, -3, 4, 2, 'rest']), play: (A) => CA.playSteps(A, [1, 3, -2, -3, 4, 2, 'rest']), text: '**Up one, up three, down two, down three, up four, up two, then the rest.** Over the eight glyphs only one order climbs like that — the Ladder is in your Book. The first four are the west wall in order; the last four are the east wall in order; the rest is last.' });
-        P.sight.push({ t: 'fine', text: 'Use the row-player in your **Book** to test any order Bookmoth reads against this contour, by ear or by the arrows.' });
+        P.sight.push({ t: 'fine', text: 'Use the row-player in your **Book** to test any order the Reader reads against this contour, by ear or by the arrows.' });
         P.sight.push({ t: 'h', text: 'The Binding count' });
         P.sight.push({ t: 'p', text: 'The Hearth gives no count. You do. Say it aloud, and the others move on your word.' });
         P.sight.push({ t: 'list', items: ['**To sound:** "one — two — three — FOUR." Everyone presses on **four**. All four notes within one heartbeat.', '**Hold.** Say nothing while the fire climbs (about six seconds; eight if a key is bound). The Hearth chimes when it has climbed.', '**To release:** "one — two — three — OFF." Everyone presses again on **off**. Within half a second of each other.', cracked ? `**${cracked} cracked bell${cracked > 1 ? 's' : ''}:** ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light on the Hearth. They press on your count and nothing else.` : '**No bells cracked.** Every lane has its light; call the count anyway.'] });
         P.sight.push({ t: 'audio', label: 'Practise the count (60 to the minute)', strip: '<div class="arrow-strip"><span class="step"><b>1</b>one</span><span class="step"><b>2</b>two</span><span class="step"><b>3</b>three</span><span class="step"><b>●</b>FOUR / OFF</span></div>', play: (A) => CA.heartbeat(A, 60, 4), text: 'Four beats, a second apart. Say the count on the beats.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the chamber' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['Bookmoth', 'fast'], ['Hush', 'fast'], ['Owl', 'fast'], ['Knot', 'fast'], ['Provost Marrow', 'normal'], ['Lord Vane', 'fast'], ['Master Tarn', 'normal'], ['the guards', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['Reader', 'fast'], ['Listener', 'fast'], ['Seer', 'fast'], ['Binder', 'fast'], ['Provost Marrow', 'normal'], ['Lord Vane', 'fast'], ['Master Tarn', 'normal'], ['the guards', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Wren: too quiet to catch. You stopped calling it a fault in the laundry.' });
       }
       if (roleId === 'seer') {
@@ -181,13 +181,13 @@
         P.sight.push({ t: 'p', text: 'The floor-ring has **two** marks, carved by two hands facing each other. The **west wall\'s** mark is at **slot 1**; the **east wall\'s** mark is at **slot 8**. The east half of the ring — slots 5 to 8 — is **turned**. Sunwise is clockwise.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: twoMarks() });
         P.sight.push({ t: 'h', text: 'The walls' });
-        P.sight.push({ t: 'p', text: 'West wall: mark on the **left** — upright, read left to right. East wall: mark on the **right** — carved turned. Bookmoth has both readings of each; the Binder\'s Laws say where a turned line goes.' });
+        P.sight.push({ t: 'p', text: 'West wall: mark on the **left** — upright, read left to right. East wall: mark on the **right** — carved turned. The Reader has both readings of each; the Binder\'s Laws say where a turned line goes.' });
         const sh = shields(ctx);
         P.sight.push({ t: 'html', html: `<div class="underlayer" style="padding:8px;border-radius:8px"><div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center">west — mark left</div>${wall(WEST, 'left', true, sh.west)}<div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center;margin-top:8px">east — mark right</div>${wall(EAST, 'right', true, sh.east)}</div>` });
-        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'fine', text: 'A soldier\'s shield covers a carving. Under-Sight sees through paint, not steel: the mark is yours to call; the glyph behind the shield is Bookmoth\'s to reason out.' });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'fine', text: 'A soldier\'s shield covers a carving. Under-Sight sees through paint, not steel: the mark is yours to call; the glyph behind the shield is the Reader\'s to reason out.' });
         P.sight.push({ t: 'h', text: 'Under the bell-chamber' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underChamber() });
-        P.sight.push({ t: 'fine', text: 'The empty socket is not empty. Something is cut in its floor, in the older alphabet, that Bookmoth can read. You do not need to say so yet.' });
+        P.sight.push({ t: 'fine', text: 'The empty socket is not empty. Something is cut in its floor, in the older alphabet, that the Reader can read. You do not need to say so yet.' });
       }
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Every Law at once' });
@@ -207,7 +207,7 @@
           '**Vane:** two threads. Red — an oath, old, to the child. Gold — to the capital. He is pulled both ways and stands still.' + (ally ? ' Tonight the gold one went slack.' : ''),
           '**Master Tarn:** gold, bright, and only gold.',
           '**Marrow — Wren:** grey. The colour of someone who has already said goodbye. It has been grey since before the Vigil.',
-          '**Bookmoth, Hush, Owl, Knot:** four red threads to one place. Not to Wren. To each other.',
+          '**Reader, Listener, Seer, Binder:** four red threads to one place. Not to Wren. To each other.',
           '**Wren:** *No thread found.* Not unbound; the knot itself.',
         ] });
         P.sight.push({ t: 'fine', text: 'The full Book of Laws, by year, is in your **Book**.' });

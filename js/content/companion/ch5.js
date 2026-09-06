@@ -58,7 +58,7 @@
     <g fill="#fff" opacity=".9"><circle cx="90" cy="120" r="6"/><circle cx="120" cy="105" r="6"/><circle cx="150" cy="125" r="6"/><circle cx="175" cy="108" r="6"/><circle cx="110" cy="140" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,120 L124,132"/><path d="M120,105 L154,113"/><path d="M150,125 L184,133"/><path d="M175,108 L208,114"/></g>
     <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M110,140 L72,130"/></g>
-    <g fill="#fff" font-size="9" ${F}><text x="82" y="112">Bookmoth</text><text x="112" y="97">Hush</text><text x="142" y="118">Owl</text><text x="167" y="100">Knot</text><text x="100" y="158" fill="${VIOLET}">Wren</text></g>
+    <g fill="#fff" font-size="9" ${F}><text x="82" y="112">Reader</text><text x="112" y="97">Listener</text><text x="142" y="118">Seer</text><text x="167" y="100">Binder</text><text x="100" y="158" fill="${VIOLET}">Wren</text></g>
     <text x="180" y="30" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">shadows on the ledge, as they fall</text>
   </svg>`;
 
@@ -106,7 +106,7 @@
       const mat = MATERIAL[roleId];
       const idle = () => {
         UI.clear(box);
-        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: String(prev) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit. Say it aloud when the Hearth asks — in seat order, Bookmoth first. Never show the phone.' })); }
+        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: String(prev) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); }
         else box.appendChild(UI.el('p', { class: 'fine', text: 'The Hearth will count 3, 2, 1, START. On START, press Start. You have forty-five seconds to find one digit.' }));
         box.appendChild(UI.el('button', { class: 'btn primary big-btn', text: prev != null ? 'Count again' : 'Start', onclick: start }));
       };
@@ -125,7 +125,7 @@
         for (let d = 0; d <= 9; d++) grid.appendChild(UI.el('div', { class: 'pk', text: String(d), onclick: () => { ctl.cancel(); api.state.done[key] = d; api.save(); api.audio.sfx('seal'); render(d); } }));
         box.appendChild(grid);
       };
-      const render = (d) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: String(d) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. Say it aloud when the Hearth asks — in seat order, Bookmoth first. Never show the phone.' })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
+      const render = (d) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: String(d) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
       idle();
     } };
   }
@@ -163,7 +163,7 @@
         let p = 1;
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — three shapes' });
-          P.sight.push({ t: 'p', text: 'Over a ring of four slots, if the Hearth shows a door: a **Flame**, a **Spike**, a **Spike inverted**. Which way the line is read is Owl\'s to say.' });
+          P.sight.push({ t: 'p', text: 'Over a ring of four slots, if the Hearth shows a door: a **Flame**, a **Spike**, a **Spike inverted**. Which way the line is read is the Seer\'s to say.' });
           P.sight.push({ t: 'html', html: insc(DOOR) });
           P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left)', `${gl('ASH')} ASH · ${gl('THORN')} THORN · ${gl('WELL')} WELL — <em>fire · a gate · down</em>`], ['turned (mark right)', `${gl('THORN')} THORN · ${gl('WELL')} WELL · ${gl('COLD')} COLD — <em>a gate · down · cold</em>`]] });
         }
@@ -171,16 +171,16 @@
         P.sight.push({ t: 'p', text: 'Clean on your page where the Hearth shows them worn: a **Crown**, a **Hook**, a **Spike**, all standing upright, left to right.' });
         P.sight.push({ t: 'html', html: insc(GATE1) });
         P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left), left to right', `${gl('CROWN')} CROWN · ${gl('KNOT')} KNOT · ${gl('THORN')} THORN — <em>one · bound · a gate</em>`], ['turned (mark right), right to left, every glyph inverted', `${gl('WELL')} WELL · ${gl('VEIL')} VEIL · ${gl('EMBER')} EMBER — <em>down · hidden · kept</em>`]] });
-        P.sight.push({ t: 'fine', text: 'A glyph never changes its place on the stone — only its reading. Which end the mark is on is Under-Sight, not yours. Where a turned line is *placed* on a ring is Knot\'s Law.' });
+        P.sight.push({ t: 'fine', text: 'A glyph never changes its place on the stone — only its reading. Which end the mark is on is Under-Sight, not yours. Where a turned line is *placed* on a ring is the Binder\'s Law.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — five shapes' });
         P.sight.push({ t: 'p', text: 'Five shapes as they physically stand, left to right: a **Crown**, a **Flame**, a **Flame inverted**, a **Hook**, a **Spike inverted**.' });
         P.sight.push({ t: 'html', html: insc(GATE2) });
         P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left)', `${gl('CROWN')} CROWN · ${gl('ASH')} ASH · ${gl('COLD')} COLD · ${gl('KNOT')} KNOT · ${gl('WELL')} WELL — <em>one · fire · cold · bound · down</em>`], ['turned (mark right)', `${gl('THORN')} THORN · ${gl('VEIL')} VEIL · ${gl('ASH')} ASH · ${gl('COLD')} COLD · ${gl('EMBER')} EMBER — <em>a gate · hidden · fire · cold · kept</em>`]] });
-        P.sight.push({ t: 'fine', text: 'Either way, one of the five is **COLD** — the glyph the Order says is never written. The Book of Laws is Knot\'s; the bells\' counts are Hush\'s; the mark is Owl\'s.' });
+        P.sight.push({ t: 'fine', text: 'Either way, one of the five is **COLD** — the glyph the Order says is never written. The Book of Laws is the Binder\'s; the bells\' counts are the Listener\'s; the mark is the Seer\'s.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Founders\' Count' });
         P.sight.push({ t: 'p', text: 'The third gate asks you for a **digit**: nine worn glyphs, and a question. It is on your **SPEAK** page. Do not start it until the Hearth says START.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
-        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones, and says without turning: "You went quiet in the study, Bookmoth. You read something with my name in it." A pause. "You don\'t have to say. I just — I wanted you to know I noticed you being kind."' });
+        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones, and says without turning: "You went quiet in the study, the Reader. You read something with my name in it." A pause. "You don\'t have to say. I just — I wanted you to know I noticed you being kind."' });
         if (f.WREN_HURT) P.wren.push({ t: 'p', text: 'Wren\'s strapped arm is between you. Wren has not mentioned it since the Vault, and has laughed twice on the stair, both times at the wrong moment.' });
         P.wren.push({ t: 'fine', text: 'The glossary in your Book still says what it said in the study. You have not told anyone. You are not sure what there is to tell.' });
       }
@@ -190,13 +190,13 @@
         let p = 1;
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — the phrase' });
-          P.sight.push({ t: 'audio', label: 'The door, three notes', strip: CA.strip([1, 3]), play: (A) => CA.playSteps(A, [1, 3]), text: 'Up one, then up three. Of the glyphs Bookmoth reads, only one order climbs that way.' });
+          P.sight.push({ t: 'audio', label: 'The door, three notes', strip: CA.strip([1, 3]), play: (A) => CA.playSteps(A, [1, 3]), text: 'Up one, then up three. Of the glyphs the Reader reads, only one order climbs that way.' });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Turned Gate — the phrase' });
         P.sight.push({ t: 'audio', label: 'The gate, three notes', strip: CA.strip([1, -2]), play: (A) => CA.playSteps(A, [1, -2]), text: '**Up one, then down two.** Your Ladder is in the **Book**.' });
-        P.sight.push({ t: 'p', text: 'Say this before anyone touches the ring: if Bookmoth reads the carving *upright* — CROWN, KNOT, THORN — those three fit this phrase in **no order at all**. CROWN is step 6, KNOT step 2, THORN step 1; nothing there goes up one and down two. Only the *turned* reading fits, and it fits exactly one way.' });
+        P.sight.push({ t: 'p', text: 'Say this before anyone touches the ring: if the Reader reads the carving *upright* — CROWN, KNOT, THORN — those three fit this phrase in **no order at all**. CROWN is step 6, KNOT step 2, THORN step 1; nothing there goes up one and down two. Only the *turned* reading fits, and it fits exactly one way.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — five muted bells' });
-        P.sight.push({ t: 'p', text: 'One bell hangs above each of the five shapes, first to fifth, left to right. The Hearth cannot hear them. You can: each bell taps a **count**. A bell\'s count is its glyph\'s slot, counted **sunwise from the mark** — and the mark is Owl\'s.' });
+        P.sight.push({ t: 'p', text: 'One bell hangs above each of the five shapes, first to fifth, left to right. The Hearth cannot hear them. You can: each bell taps a **count**. A bell\'s count is its glyph\'s slot, counted **sunwise from the mark** — and the mark is the Seer\'s.' });
         const counts = [2, 5, 1, 3, 4];
         P.sight.push({ t: 'custom', render: (el, cx) => {
           const wrap = UI.el('div', { class: 'blk-audio' });
@@ -215,7 +215,7 @@
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Founders\' Count' });
         P.sight.push({ t: 'p', text: 'The third gate asks you for a **digit**: a peal of two bells, and a question. It is on your **SPEAK** page. Do not start it until the Hearth says START.' });
         P.sight.push({ t: 'h', text: 'Heartbeats on the stair' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Provost Marrow</span>${D.trace('normal')}</div><div class="hb"><span>the soldiers, above</span>${D.trace('fast')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Provost Marrow</span>${D.trace('normal')}</div><div class="hb"><span>the soldiers, above</span>${D.trace('fast')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Marrow\'s is the slowest you have ever heard it — the beat of someone who has decided. Wren: too quiet to catch. The stair is quiet enough now that you would hear it, if there were anything to hear.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'p', text: 'Boots above, in step, twelve pairs. Water below, moving very slowly. Marrow, once, drawing a breath as if to say something to Wren, and not saying it. And beside you on the ledge, where Wren is standing, the thing you have been calling a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
@@ -232,9 +232,9 @@
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underDoor });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'Under the Turned Gate' });
-        P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the RIGHT**. It was cut for those coming *up* the stair: the line is **turned** — Bookmoth reads it right to left with every glyph inverted. The ring\'s scratch is at **slot 1** of five.' });
+        P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the RIGHT**. It was cut for those coming *up* the stair: the line is **turned** — The Reader reads it right to left with every glyph inverted. The ring\'s scratch is at **slot 1** of five.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underGate1 });
-        P.sight.push({ t: 'fine', text: 'Where a *turned* line is placed around a ring — sunwise or the other way — is not yours to see. Knot has two Laws about it. Ask.' });
+        P.sight.push({ t: 'fine', text: 'Where a *turned* line is placed around a ring — sunwise or the other way — is not yours to see. The Binder has two Laws about it. Ask.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'Under the Silent Gate' });
         P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the LEFT**: upright, left to right. The ring\'s scratch is at **slot 3** of five — the sigil begins there, in the middle of the ring, and goes sunwise.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underGate2 });
@@ -254,12 +254,12 @@
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — one Law' });
           P.sight.push({ t: 'html', html: lawHtml([law(1)]) });
-          P.sight.push({ t: 'p', text: 'Sunwise from the mark, three glyphs. Owl has the mark; Bookmoth the words; Hush the order. Nothing here disagrees with anything.' });
+          P.sight.push({ t: 'p', text: 'Sunwise from the mark, three glyphs. The Seer has the mark; the Reader the words; the Listener the order. Nothing here disagrees with anything.' });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Turned Gate — two Laws that disagree' });
         P.sight.push({ t: 'html', html: lawHtml([law(5), law(11), law(3)]) });
         P.sight.push({ t: 'p', text: 'Read them by year. Law 11 is the Order\'s, written in 212: *every* inscription sunwise. Law 5 is the Founders\': a **turned** inscription is placed **widdershins** — anticlockwise — from its mark. Law 3 says which wins. This is the first time tonight two Laws have truly disagreed. It will not be the last.' });
-        P.sight.push({ t: 'fine', text: 'So: if Owl says the carving is turned, place its first glyph *on* the mark and the rest going the other way round the ring. If Owl says upright, sunwise as ever.' });
+        P.sight.push({ t: 'fine', text: 'So: if the Seer says the carving is turned, place its first glyph *on* the mark and the rest going the other way round the ring. If the Seer says upright, sunwise as ever.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — the glyph that is never written' });
         P.sight.push({ t: 'html', html: lawHtml([law(6)]) });
         P.sight.push({ t: 'p', text: 'Order\'s, 212 — the same year as Law 11, the same year the Vault was rebuilt, the same year Law 0 was struck. Where the carving shows COLD, the Order leaves that slot **empty**.' });

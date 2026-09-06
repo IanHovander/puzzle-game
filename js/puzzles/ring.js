@@ -61,7 +61,7 @@
         const grid = UI.el('div', { class: 'palette-grid' });
         cfg.glyphs.forEach(g => {
           const used = !cfg.allowRepeat && map.includes(g.id);
-          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'Bookmoth reads the shapes; the palette names only the words.', onclick: () => {
+          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'The Reader reads the shapes; the palette names only the words.', onclick: () => {
             if (sel == null) { status.textContent = 'Choose a slot first.'; Audio.sfx('wrong'); return; }
             if (used) { const j = map.indexOf(g.id); map[j] = null; }
             map[sel] = g.id; Audio.sfx('click'); if (cfg.onPlace) cfg.onPlace(g.id, sel + 1);

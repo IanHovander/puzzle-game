@@ -69,7 +69,7 @@
     const four = [[110, 285], [150, 292], [200, 292], [240, 285]];
     four.forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="5" fill="#fff"/><path d="M${x},${y} l${(x - 180) * 0.12},20" stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"/>`; });
     s += `<circle cx="300" cy="90" r="5" fill="#fff"/><path d="M300,90 L246,64" stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"/>`;
-    s += `<g fill="#fff" font-size="8" ${F}><text x="94" y="279">Bookmoth</text><text x="141" y="313">Hush</text><text x="192" y="313">Owl</text><text x="232" y="279">Knot</text><text x="306" y="84" fill="#a482e6">Wren</text></g>`;
+    s += `<g fill="#fff" font-size="8" ${F}><text x="94" y="279">Reader</text><text x="141" y="313">Listener</text><text x="192" y="313">Seer</text><text x="232" y="279">Binder</text><text x="306" y="84" fill="#a482e6">Wren</text></g>`;
     s += `<text x="180" y="326" text-anchor="middle" fill="#fff" font-size="8" ${F} opacity=".7">shadows, as they fall</text>`;
     return s + '</svg>';
   })();
@@ -103,7 +103,7 @@
     const rows = [];
     HOUSES.forEach(h => rows.push([h.n === 9 ? 'The Provost (the Chair)' : `Seat ${h.n} · ${h.house}`, 'normal']));
     rows.push(['The Envoy, Lord Vane', 'fast']);
-    rows.push(['Bookmoth', 'normal'], ['Hush', 'normal'], ['Owl', 'normal'], ['Knot', 'normal']);
+    rows.push(['Reader', 'normal'], ['Listener', 'normal'], ['Seer', 'normal'], ['Binder', 'normal']);
     rows.push(['Wren', 'flat']);
     return `<div class="heartbeats">${rows.map(([n, k]) => `<div class="hb"><span>${n}${k === 'fast' ? ' <small>(fast)</small>' : k === 'flat' ? ' <small>(too quiet to catch)</small>' : ''}</span>${D.trace(k)}</div>`).join('')}</div>`;
   };
@@ -151,7 +151,7 @@
         P.sight.push({ t: 'fine', text: 'The word over the Masters\' door is upright, mark on the left. Nothing to turn tonight.' });
         P.wren.push({ t: 'h', text: 'The shadows, again' });
         P.wren.push({ t: 'p', text: 'You have stopped calling it a trick of the lamp. In the Great Hall there is no lamp; there is the Hearth, and forty torches, and Wren\'s shadow falls toward the Hearth through all of them.' });
-        P.wren.push({ t: 'p', text: '"Ask your Owl what is under the paint," the Envoy said. He was not looking at you when he said it. He was looking at the tapestry. He is Eye-Sighted; you would swear it. And he has *seen* what is under it.' });
+        P.wren.push({ t: 'p', text: '"Ask your Seer what is under the paint," the Envoy said. He was not looking at you when he said it. He was looking at the tapestry. He is Eye-Sighted; you would swear it. And he has *seen* what is under it.' });
       }
 
       if (roleId === 'binder') {

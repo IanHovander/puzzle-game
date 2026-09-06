@@ -59,7 +59,7 @@
       },
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
-        text: ['Left to right: Bookmoth, Hush, Owl, Knot. Press your key when your lantern glows.'],
+        text: ['Left to right: Reader, Listener, Seer, Binder. Press your key when your lantern glows.'],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
           const st = UI.el('div', { class: 'pz-status' });
@@ -109,11 +109,11 @@
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent. I have decided you need names, because "the fourth-years" sounds like a disease.' },
           { speaker: 'Wren', text: 'You —' },
           'Wren points at the Reader.',
-          { speaker: 'Wren', text: '— read everything and eat nothing. *Bookmoth.* You —' },
+          { speaker: 'Wren', text: '— read everything and eat nothing. *the Reader.* You —' },
           'The Listener.',
-          { speaker: 'Wren', text: '— hear a spider change its mind. *Hush.* You look at walls like they owe you money. *Owl.* And you —' },
+          { speaker: 'Wren', text: '— hear a spider change its mind. *the Listener.* You look at walls like they owe you money. *the Seer.* And you —' },
           'The Binder.',
-          { speaker: 'Wren', text: '— tie everyone to everyone and call it kindness. *Knot.* There. Done. You\'re welcome.' },
+          { speaker: 'Wren', text: '— tie everyone to everyone and call it kindness. *the Binder.* There. Done. You\'re welcome.' },
         ],
         next: 'ch0_dare', button: 'And you?',
       },
@@ -137,7 +137,7 @@
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
         text: ['Scratched into the sill beneath the lamp, worn smooth by four hundred years of thumbs, a word. Each of you: open your Companion, choose your seat if you have not, and turn the page with it.'],
-        roles: 'Warden of the Hearth (keyboard): **anyone**. Voice (reads aloud): **Bookmoth**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **anyone**. Voice (reads aloud): **The Reader**.', sightSeconds: 90,
         next: 'ch0_lamp',
       },
       /* ---------- the tutorial sigil ---------- */
@@ -152,7 +152,7 @@
           slots: 4, glyphs: glyphPalette(), answer: { 3: 'ASH', 4: 'EMBER' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
           wrongText: 'The brass stays cold. The ring forgets.',
         }),
-        hints: ['Owl knows where a ring begins — and whether the carving is upright.', 'Two glyphs, sunwise from slot 3. Bookmoth has both readings; Hush has the order.', 'ASH in slot 3, EMBER in slot 4. Then four hands.'],
+        hints: ['The Seer knows where a ring begins — and whether the carving is upright.', 'Two glyphs, sunwise from slot 3. The Reader has both readings; the Listener has the order.', 'ASH in slot 3, EMBER in slot 4. Then four hands.'],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The lamp catches — a warm, steady, entirely forbidden light.',

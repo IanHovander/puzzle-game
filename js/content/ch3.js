@@ -99,10 +99,10 @@
         { id: 'ch3_grid', label: 'The corridors', col: 2, row: 2, kind: 'choice' },
         { id: 'ch3_laundry', label: 'The Laundry', col: 3, row: 2, when: (s) => !!s.flags.LINEN, secret: true },
         { id: 'ch3_bell4', label: 'A fourth bell', col: 3, row: 4, when: (s) => !!s.flags.WREN_SCARED, secret: true },
-        { id: 'ch3_w0', label: 'only Bookmoth knows', col: 4, row: 0, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_reader },
-        { id: 'ch3_w1', label: 'only Hush knows', col: 4, row: 1, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_listener },
-        { id: 'ch3_w2', label: 'only Owl knows', col: 4, row: 3, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_seer },
-        { id: 'ch3_w3', label: 'only Knot knows', col: 4, row: 4, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_binder },
+        { id: 'ch3_w0', label: 'only the Reader knows', col: 4, row: 0, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_reader },
+        { id: 'ch3_w1', label: 'only the Listener knows', col: 4, row: 1, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_listener },
+        { id: 'ch3_w2', label: 'only the Seer knows', col: 4, row: 3, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_seer },
+        { id: 'ch3_w3', label: 'only the Binder knows', col: 4, row: 4, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_binder },
         { id: 'ch3_thanks', label: 'Even the ones who lied', col: 4, row: 2 },
         { id: 'ch3_door', label: 'The Tower door', col: 5, row: 2, kind: 'choice' },
         { id: 'ch3_fight', label: 'The ward flares', col: 6, row: 0, secret: true },
@@ -124,7 +124,7 @@
             ? 'The Convocation voted to send Wren to the capital, and Vane\'s guard closed around the dais, and the Provost said *I will get the child back myself* — and she did. Nobody knows how, and nobody is asking. Vane has noticed. His soldiers are turning the school over, room by room, with a writ in one hand and a lantern in the other.'
             : 'The Convocation voted to keep Wren, and Lord Vane bowed to the vote and said nothing, and now his soldiers are turning the school over room by room, with a writ in one hand and a lantern in the other.',
           s.flags.WREN_HURT
-            ? 'Wren\'s arm is strapped across the chest in what is left of Knot\'s cloak. The stair took it, and Wren has stopped pretending it did not.'
+            ? 'Wren\'s arm is strapped across the chest in what is left of the Binder\'s cloak. The stair took it, and Wren has stopped pretending it did not.'
             : 'Boots on the stair. Boots in the Great Hall. The portraits in the long gallery have begun to mutter, the way they do when the school is afraid.',
           s.flags.VANE_ACCEPT
             ? { text: 'You told the Envoy you would bring him the boy. Nobody has mentioned it since. It sits in the pocket of the night like a coin.', cls: 'whisper' }
@@ -136,7 +136,7 @@
         art: 'ch3_gallery', mood: 'tense', fx: 'dust', sfx: 'open',
         title: 'The Gallery of the Masters',
         text: (s) => [
-          'Two hundred years of Provosts and Masters in oil, floor to ceiling, and every one of them talking under their breath. You cannot make out the words. Hush can, a little, and wishes not to.',
+          'Two hundred years of Provosts and Masters in oil, floor to ceiling, and every one of them talking under their breath. You cannot make out the words. The Listener can, a little, and wishes not to.',
           'Marrow is waiting between the frames with Wren, and with a face that has decided several things in a hurry.',
           { speaker: 'Marrow', text: 'The Bell Tower is warded; a Founders\' door and a threshold sigil. Vane\'s men cannot pass it and do not know that yet. Get Wren there before the third bell. I ring the bells tonight; I can give you twelve turns of the corridor clock, no more, or the timetable is noticed.' },
         ],
@@ -147,8 +147,8 @@
         title: 'The only map',
         text: (s) => [
           { speaker: 'Marrow', text: 'The corridors are dark. I have put out every lamp between here and the Tower myself. The only map of the patrols tonight is *sound*.' },
-          'She looks at Hush when she says it.',
-          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can sneak. I can *mostly* sneak. Hush, you\'re going to have to tell me where the boots are, because I can\'t run from them one-armed.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
+          'She looks at the Listener when she says it.',
+          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can sneak. I can *mostly* sneak. The Listener, you\'re going to have to tell me where the boots are, because I can\'t run from them one-armed.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
           { speaker: 'Marrow', text: 'Hearth. Attune them.' },
           'She touches the nearest frame — a woman with a thin gold chain — and the word beneath the paint shows through, for a moment, cold and green.',
         ],
@@ -157,7 +157,7 @@
       ch3_attune: {
         type: 'code', art: 'ch3_gallery', mood: 'tense', fx: 'dust',
         text: ['Under the varnish of the oldest portrait, a word, and beside it a mark that was not there this morning. Each of you: open your Companion and turn the page with it.'],
-        roles: 'Warden of the Hearth (keyboard): **Hush**. Voice (reads aloud): **Knot**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Listener**. Voice (reads aloud): **The Binder**.', sightSeconds: 90,
         next: 'ch3_corridors',
       },
       ch3_corridors: {
@@ -167,7 +167,7 @@
           'Marrow goes to ring the bells. The lamps are out. Two patrols walk the corridors between here and the Tower, and they walk the same rounds every twelve beats, because soldiers are soldiers.',
           { text: 'Each turn, Wren moves one room or waits. At the end of a turn, if a patrol stands in Wren\'s room — or in a room joined to it by an open passage — Wren is seen, and scrambles back to the last safe room. The count keeps running.', cls: 'small' },
           { text: 'The third bell rings at the end of turn twelve. Guards are never drawn ahead of time; after every turn the Hearth shows where both patrols stood, so arguments end with facts.', cls: 'small' },
-          s.flags.WREN_HURT ? { text: 'Wren\'s arm: the hidden doors are heavy, and one-handed, any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'Hush drives; Knot reads. Owl, Bookmoth — say what you see.', cls: 'small' },
+          s.flags.WREN_HURT ? { text: 'Wren\'s arm: the hidden doors are heavy, and one-handed, any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'The Listener drives; the Binder reads. The Seer, the Reader — say what you see.', cls: 'small' },
         ],
         next: 'ch3_grid', button: 'Into the dark',
       },
@@ -176,12 +176,12 @@
         type: 'puzzle', puzzle: 'grid', art: 'ch3_corridors', mood: 'dread', fx: 'dust', puzzleId: 'ch3_grid', par: [7, 10, 11],
         text: [
           'The Gallery at A1. The Tower door at E5. Between them: the west corridor, the porter\'s lodge, the cook\'s locked door, the east stair — and a great deal of dark.',
-          { text: 'Row 1 dead-ends at the cook\'s door. What Hush hears, Owl can place. What Owl sees, Bookmoth can read. What Knot knows about the people in these rooms is worth more than a map.', cls: 'whisper' },
+          { text: 'Row 1 dead-ends at the cook\'s door. What the Listener hears, the Seer can place. What the Seer sees, the Reader can read. What the Binder knows about the people in these rooms is worth more than a map.', cls: 'whisper' },
         ],
         config: gridConfig,
         hints: [
-          'The patrols repeat every twelve beats. Hush hears where they are, beat by beat; Owl knows where "where" is.',
-          'There is a room nobody searches. Owl sees its door; Knot knows who is inside — and Bookmoth can read what is carved over it.',
+          'The patrols repeat every twelve beats. The Listener hears where they are, beat by beat; the Seer knows where "where" is.',
+          'There is a room nobody searches. The Seer sees its door; the Binder knows who is inside — and the Reader can read what is carved over it.',
           'Into the Laundry by turn 6, out on turn 7; the east stair is clear on turns 9–11.',
           (s) => s.flags.WREN_HURT
             ? 'Turn 1 A2 · 2 A3 · 3 speak VEIL (the arm costs the turn) · 4 into the Laundry, B3 · 5 wait · 6 speak THORN (the turn) · 7 C3 · 8 D3 · 9 E3 · 10 E4 · 11 E5, the Tower. No slack.'
@@ -195,8 +195,8 @@
         solvedText: (s, r) => [
           `Turn ${r.turns}. The Tower door, iron-bound, older than the wall around it, and Wren against it with both hands flat, laughing without any sound.`,
           s.flags.WREN_SCARED
-            ? { speaker: 'Wren', text: 'The *fourth* bell. She rang a fourth bell. She\'s never done that. She\'s going to be in so much trouble, and it\'s going to be my fault, and — Hush. Hush, I could hear them. I could hear them the whole time.' }
-            : { speaker: 'Wren', text: 'Hush. You\'re *terrifying*. "Boots, left, wait, now." Like a — like a very small general.' },
+            ? { speaker: 'Wren', text: 'The *fourth* bell. She rang a fourth bell. She\'s never done that. She\'s going to be in so much trouble, and it\'s going to be my fault, and — The Listener. The Listener, I could hear them. I could hear them the whole time.' }
+            : { speaker: 'Wren', text: 'Listener. You\'re *terrifying*. "Boots, left, wait, now." Like a — like a very small general.' },
           s.flags.LINEN ? 'You answered Wren in the Laundry, one at a time, over the kettle. Nobody has said what.' : 'You did not go through the Laundry, and Wren did not get to ask.',
         ],
         next: (s) => s.flags.LINEN ? 'ch3_whispers' : 'ch3_whispers_late',
@@ -266,14 +266,14 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch3_towerdoor', mood: 'tense', fx: 'dust', puzzleId: 'ch3_fight', par: [2, 4],
         text: [
           'Over the Tower door, two shapes cut deep into the lintel by a Founder\'s hand, and beneath them a ring of two slots gone dull with soot. A threshold sigil: it does not open a door. It decides who may stand in front of one.',
-          { text: 'Two glyphs. Which two, in which slots, and which way up: Bookmoth, Owl, Hush, Knot. Then four hands, before the captain counts to anything.', cls: 'whisper' },
+          { text: 'Two glyphs. Which two, in which slots, and which way up: Reader, the Seer, the Listener, the Binder. Then four hands, before the captain counts to anything.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE THRESHOLD OF THE BELL TOWER', note: 'Two shapes are carved over the door:', html: G.inscription([{ shape: 'Flame', inv: false }, { shape: 'Spike', inv: false }], { showMark: false }),
           slots: 2, glyphs: glyphPalette(), answer: { 1: 'ASH', 2: 'THORN' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets. The captain takes a step.',
         }),
-        hints: ['Owl knows which end the lintel\'s mark is on, and where the ring begins. Bookmoth has both readings of both shapes.', 'Upright, left to right: fire, then go-through. Knot\'s first Law: sunwise from the mark.', 'ASH in slot 1, THORN in slot 2. Then four hands.'],
+        hints: ['The Seer knows which end the lintel\'s mark is on, and where the ring begins. The Reader has both readings of both shapes.', 'Upright, left to right: fire, then go-through. The Binder\'s first Law: sunwise from the mark.', 'ASH in slot 1, THORN in slot 2. Then four hands.'],
         onSolve: () => { Store.set('DOOR', 'FIGHT'); Store.note('You woke the threshold ward on the Tower door.'); },
         solvedText: [
           'The ward wakes. Not light — *heat*, a wall of it, the kind that stands off a winter. The lanterns on the stair gutter and go out together. The captain\'s hand goes to his face.',
@@ -287,12 +287,12 @@
       ch3_bluff: {
         art: 'ch3_towerdoor', mood: 'court', fx: 'dust',
         text: [
-          { speaker: 'Knot', text: 'Lord Vane\'s orders. He offered us Masterships before dawn for the boy, and we are bringing him — ourselves, to the Envoy\'s own door, as he asked. Do you want to be the one who took that from your master\'s hands?' },
+          { speaker: 'Binder', text: 'Lord Vane\'s orders. He offered us Masterships before dawn for the boy, and we are bringing him — ourselves, to the Envoy\'s own door, as he asked. Do you want to be the one who took that from your master\'s hands?' },
           'It is the offer, word for word. The captain heard his master make it; he has no way to know how you answered.',
           { speaker: 'The captain', text: '…Then the Envoy will see you at his door. With the boy.' },
           'He goes down the stair with his lanterns. Wren lets out a breath that has been held since the Great Hall.',
-          { speaker: 'Wren', text: 'You lied to a man with a *rope*. Knot. I didn\'t know you had it in you.' },
-          { speaker: 'Knot', text: 'Neither did I.' },
+          { speaker: 'Wren', text: 'You lied to a man with a *rope*. The Binder. I didn\'t know you had it in you.' },
+          { speaker: 'Binder', text: 'Neither did I.' },
         ],
         next: 'ch3_flow', button: 'The Tower',
       },

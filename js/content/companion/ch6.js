@@ -21,7 +21,7 @@
     3: 'O K B O (ALL) B K O (OK) B K (ALL) O B K (BK) O B (ALL) K O (OB) K (ALL)',
   };
   const parse = (str) => str.trim().split(/\s+/).filter(t => t && t !== '·').map(tok => tok === '(ALL)' ? { all: true, lanes: [0, 1, 2, 3] } : tok[0] === '(' ? { lanes: tok.slice(1, -1).split('').map(c => LANE[c]).sort() } : { lanes: [LANE[tok]] });
-  const CALL = ['BOOK', 'HUSH', 'OWL', 'KNOT'];
+  const CALL = ['READER', 'LISTENER', 'SEER', 'BINDER'];
   const call = (e) => e.all ? 'ALL' : e.lanes.map(l => CALL[l]).join(' + ');
   const round3Rows = () => parse(SCRIPTS[3]).map((e, i) => [String(i + 1), String(2 * i + 1), `<b>${call(e)}</b>`]);
   const wordsOf = (n) => parse(SCRIPTS[n]).map(call).join(' · ');
@@ -40,7 +40,7 @@
     <g fill="#fff" opacity=".9"><circle cx="180" cy="160" r="5"/><circle cx="112" cy="196" r="6"/><circle cx="148" cy="212" r="6"/><circle cx="212" cy="212" r="6"/><circle cx="248" cy="196" r="6"/><circle cx="180" cy="215" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M112,196 L98,224"/><path d="M148,212 L140,238"/><path d="M212,212 L220,238"/><path d="M248,196 L262,224"/><path d="M180,160 L180,180" opacity=".6"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,215 L180,190"/></g>
-    <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="88" y="192">Bookmoth</text><text x="120" y="222">Hush</text><text x="222" y="222">Owl</text><text x="256" y="192">Knot</text><text x="190" y="160">Marrow</text><text x="190" y="228" fill="#a482e6">Wren</text><text x="180" y="245" text-anchor="middle" opacity=".7">the lid · shadows, as they fall</text></g>
+    <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="88" y="192">Reader</text><text x="120" y="222">Listener</text><text x="222" y="222">Seer</text><text x="256" y="192">Binder</text><text x="190" y="160">Marrow</text><text x="190" y="228" fill="#a482e6">Wren</text><text x="180" y="245" text-anchor="middle" opacity=".7">the lid · shadows, as they fall</text></g>
   </svg>`;
   const stoneCarving = (mark) => G.inscription(STONE, { showMark: !!mark, mark: 'right', color: '#fff', markColor: '#a482e6' });
   const stoneInner = stoneCarving(true).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
@@ -96,11 +96,11 @@
       /* ================= READER ================= */
       if (roleId === 'reader') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the first, on the left. Three rounds; in the third the lights go out and Hush calls **BOOK** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the first, on the left. Three rounds; in the third the lights go out and the Listener calls **READER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'The prophecy stone — eight shapes, clean' });
         S.push({ t: 'p', text: 'Left to right as the Hall sees them over the fire: a **Flame**; a Flame, *inverted*; a **Crown**; a **Hook**; a **Spike**; a Flame, *inverted*; a Crown, *inverted*; a Hook, *inverted*.' });
         S.push({ t: 'html', html: G.inscription(STONE, { showMark: false, color: '#f2d27a' }) });
-        S.push({ t: 'p', text: 'Two readings. Which is true is not yours to say — it depends where the **mark** is, and only Under-Sight sees the foot of the stone. Here are both, so that when Owl calls it you can answer at once.' });
+        S.push({ t: 'p', text: 'Two readings. Which is true is not yours to say — it depends where the **mark** is, and only Under-Sight sees the foot of the stone. Here are both, so that when the Seer calls it you can answer at once.' });
         S.push({ t: 'table', head: ['', 'read left to right, upright', 'read right to left, every glyph inverted'], rows: [
           ['if the mark is on the…', '**left**', '**right** (turned)'],
           ['the glyphs', NAIVE.map(gl).join(' '), TURNED.map(gl).join(' ')],
@@ -130,7 +130,7 @@
         if (precracked) S.push({ t: 'fine', text: 'One bell is already cracked from the fall of the stair. You can hear it: Halvard\'s bell hums a quarter-tone flat. It still counts as rung when it is rung.' });
         S.push({ t: 'audio', label: 'Feel the tempo — 70, then 76, then 60', strip: '<div class="arrow-strip"><span class="step"><b>♥</b>70</span><span class="step"><b>♥</b>76</span><span class="step"><b>♥</b>60</span></div>', play: (A) => { CA.announce(0); CA.heartbeat(A, 70, 6); CA.later(() => { CA.announce(1); CA.heartbeat(A, 76, 6); }, 5600); CA.later(() => { CA.announce(2); CA.heartbeat(A, 60, 6); }, 10600); return 10600 + 6 * 1000 + 300; }, text: 'Six beats at each. Every second beat is a bell.' });
         S.push({ t: 'h', text: 'Round three — the script. You call it.' });
-        S.push({ t: 'p', text: 'Bell *n* falls on beat *2n − 1*. Call each bell **two bells ahead** — four beats, four seconds — in one word: **BOOK**, **OWL**, **KNOT**, or **ALL** (Bookmoth, Owl and Knot together). Before the count reaches 1, call the first two. Then, when the count says 1, call bell 3; when it says 3, call bell 4; and so on. Keep your voice on the beat and your eyes on this list.' });
+        S.push({ t: 'p', text: 'Bell *n* falls on beat *2n − 1*. Call each bell **two bells ahead** — four beats, four seconds — in one word: **READER**, **SEER**, **BINDER**, or **ALL** (Reader, Seer and Binder together). Before the count reaches 1, call the first two. Then, when the count says 1, call bell 3; when it says 3, call bell 4; and so on. Keep your voice on the beat and your eyes on this list.' });
         S.push(round3Block());
         S.push({ t: 'fine', text: 'If the table chose slow bells, the count runs at 48 to the minute instead — the list does not change.' });
         S.push({ t: 'reveal', label: 'Rounds one and two, written out', blocks: [
@@ -143,7 +143,7 @@
         S.push({ t: 'audio', label: 'The stone\'s hymn', strip: CA.strip(HYMN), play: (A) => CA.playSteps(A, HYMN), text: '**Up four, down six, up four, up one, down two, down three — then the rest.** COLD is the rest, and it comes last.' });
         S.push({ t: 'p', text: 'The Order\'s reading — ASH, COLD, CROWN, KNOT, THORN, COLD, EMBER, VEIL — has COLD **twice**, second and sixth: two rests *in the middle* of the tune, and none at the end. It cannot be this hymn. Only one ordering of the eight glyphs steps like this; test it on the row-player in your Book.' });
         S.push({ t: 'h', text: 'Heartbeats in the bell-chamber' });
-        S.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        S.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         S.push({ t: 'fine', text: 'The Provost\'s, fast as a bird\'s. Wren\'s: too quiet to catch. Six chapters. It has never once been anything else.' });
         P.wren.push({ t: 'h', text: 'Can you hear my heart?' });
         if (laundry === 'LOUD') P.wren.push({ t: 'p', text: 'In the laundry you said *yes, loud*. You have listened for it every room since, the way you would worry a sore tooth. There is nothing there. Wren is going to ask you again, out loud, in front of the others, and you will have to decide whether the kind answer is still the kind answer.' });
@@ -151,21 +151,21 @@
         else P.wren.push({ t: 'p', text: 'Wren asked you in the laundry and you never sealed an answer. Wren is going to ask you again, out loud, and the flat line on your page will still be flat.' });
         P.wren.push({ t: 'whisper', text: 'In the third round your bell is the voice. Wren will be standing beside you, close enough to hear — the one heart you cannot.' });
         P.speak.push({ t: 'h', text: 'Your voice — round three' });
-        P.speak.push({ t: 'p', text: 'Two bells ahead. One word. **BOOK · OWL · KNOT · ALL.**' });
+        P.speak.push({ t: 'p', text: 'Two bells ahead. One word. **READER · SEER · BINDER · ALL.**' });
         P.speak.push(round3Block());
       }
 
       /* ================= SEER ================= */
       if (roleId === 'seer') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the third. In the third round the lights go out; Hush calls **OWL** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the third. In the third round the lights go out; the Listener calls **SEER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'Under the bell-chamber' });
         S.push({ t: 'p', text: 'The fire is straight up the shaft, far above. Every shadow in the room falls *down and away* from it — the Provost\'s, all four of yours. One falls up, toward the shaft. You have drawn this five times tonight. It is not the lamp. It was never the lamp.' });
         S.push({ t: 'svg', cls: 'underlayer', svg: underChamber });
         S.push({ t: 'h', text: 'The foot of the stone' });
-        S.push({ t: 'p', text: 'When the fire drops, the Hearth will say: *Owl — the foot of the stone.* This is what is there. The **mark is on the RIGHT**: the prophecy was carved **turned**, and the Order has read it upright for four hundred years because the flame covered its foot from the night it was lit.' });
+        S.push({ t: 'p', text: 'When the fire drops, the Hearth will say: *the Seer — the foot of the stone.* This is what is there. The **mark is on the RIGHT**: the prophecy was carved **turned**, and the Order has read it upright for four hundred years because the flame covered its foot from the night it was lit.' });
         S.push({ t: 'svg', cls: 'underlayer', svg: underStone });
-        S.push({ t: 'p', text: 'Say it plainly: *read right to left, every glyph inverted.* Bookmoth has both readings ready. On the strip, slot 1 is the first glyph read — the shape at the **right-hand** end, inverted — and the eighth is the shape at the left-hand end, inverted.' });
+        S.push({ t: 'p', text: 'Say it plainly: *read right to left, every glyph inverted.* the Reader has both readings ready. On the strip, slot 1 is the first glyph read — the shape at the **right-hand** end, inverted — and the eighth is the shape at the left-hand end, inverted.' });
         S.push({ t: 'fine', text: 'No mark on any ring this chapter. The strip is a line; it runs 1 to 8 left to right.' });
         P.wren.push({ t: 'h', text: 'What do you see when you look at me?' });
         if (laundry === 'TELL') P.wren.push({ t: 'p', text: 'In the laundry you told Wren about the shadow. Wren laughed and said you were being poetic. You were not being poetic. Wren is going to ask you again, out loud, and this time there is a fire straight overhead and everyone can look down.' });
@@ -177,7 +177,7 @@
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the fourth, on the right. In the third round the lights go out; Hush calls **KNOT** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the fourth, on the right. In the third round the lights go out; the Listener calls **BINDER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'The 212 page' });
         S.push({ t: 'p', text: 'One page of the Book, one year, one hand. Read it as a page, not as four Laws.' });
         S.push({ t: 'html', html: `<div class="laws">
@@ -189,7 +189,7 @@
         S.push({ t: 'p', text: 'The same year the Vault was rebuilt and the statues re-set. The same year a Founders\' Law was **struck** and an Order\'s Law **written** to say the opposite — in the same ink, the same hand. A Law that is merely wrong is forgotten. A Law that is *inconvenient* is struck.' });
         S.push({ t: 'h', text: 'The Laws that read a stone' });
         S.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 10 · Founders' · Year 0</div><div class="txt">A turned line reverses and inverts; a lone turned glyph only inverts; every glyph keeps its place on the stone.</div></div><div class="law founders"><div class="era">Law 3 · Founders' · Year 0</div><div class="txt">Where two Laws disagree, the older binds.</div></div></div>` });
-        S.push({ t: 'p', text: 'So: if Owl calls the stone **turned**, the whole line reverses and every glyph inverts — and where the line shows COLD, Law 6 says leave the slot empty, but Law 0 is older than Law 6. The stone shows the shape. Place it.' });
+        S.push({ t: 'p', text: 'So: if the Seer calls the stone **turned**, the whole line reverses and every glyph inverts — and where the line shows COLD, Law 6 says leave the slot empty, but Law 0 is older than Law 6. The stone shows the shape. Place it.' });
         S.push({ t: 'h', text: 'Threads in the bell-chamber' });
         S.push({ t: 'list', items: [
           '**Marrow — Wren:** grey. The colour of someone who has already said goodbye. It has been grey since the study; tonight it is the only thread she has left.',
