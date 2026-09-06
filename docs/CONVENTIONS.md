@@ -106,7 +106,7 @@ All glyph SVG fragments come from `VigilGlyphs.inner('ASH')` (oriented glyph) or
 - **`wheel`** — click slots in order. `{ slots: [{ id, svg, label }], answer: [ids], layout: 'row', maxLen, submitText }` → `{ seq, tries }`. Use for the shelf (`layout: 'row'`).
 - **`dialseq`** — the Founders' Door. `{ dials: [{ id: 'A', label: 'A' }...], glyphs, answer: [{ dial: 'C', glyph: 'THORN' }, ...], maxTurns: 6 }` → `{ turns, tries }`.
 - **`seats`** — the vote. `{ seats: [{ id, label, sub, n, locked, lockedText }], max: 2, timer: 360, check(selected) => ({ ok, text, final }), center: 'the basin' }` → `{ selected, ok, tries }`.
-- **`grid`** — stealth. `{ cols: 5, rows: 5, cells: ['A1',...], edges: [['A1','A2'],...], doors: { 'A3|B3': { password: 'VEIL', prompt, wrongText } }, start, goal, safe: ['A1','B3'], patrols: [{ name, short, path: [cells for turns 1..12], alarmCell }], alarm: { cells: [...], turns: 3, text }, maxTurns: 12, restEvery, labels: { B3: 'Laundry' }, onSpotted(n), onTimeout() }` → `{ turns, spotted, route }`.
+- **`grid`** — stealth. `{ cols: 5, rows: 5, cells: ['A1',...], edges: [['A1','A2'],...], doors: { 'A3|B3': { password: 'VEIL', prompt, wrongText } }, start, goal, safe: ['A1','B3'], patrols: [{ name, short, path: [cells for turns 1..12], alarmCell }], alarm: { cells: [...], turns: 3, text }, maxTurns: 12, restEvery, labels: { B3: 'Laundry' }, onSpotted(n), onTimeout(), onCell(cell, turn) (fires when Wren enters a cell; use it for the Laundry whisper prompt) }` → `{ turns, spotted, route }`.
 - **`reaction`** — the Bells (lanes). `{ events: [{ t: ms, lanes: [i...], kind: 'single'|'brace'|'all' }], fallMs, windowMs, braceWindowMs, practice, title, target: 0.7, damage, noFail, laneNames, deadLanes }` → `{ hits, misses, total, ratio, passed }`. Build scripted rounds from the design's strings; alternate beats at the round's bpm; `VigilReaction.generateEvents` exists for practice only.
 - **`binding`** — the toggle chord. `{ joinMs: 1000, holdMs: 6000, releaseMs: 500, attempts: 3, deadLanes: [], mutedCues: [] }` → `{ success, attempts, releaseSpread }`.
 - **`answer`** — typed answers. `{ fields: [{ label, placeholder, len, plain }], accept: [[...accepted per field]] | (values, raw) => bool, wrongText }` → `{ values, raw, tries }`.
@@ -167,3 +167,7 @@ Every chapter must load every one of its scenes with zero console errors before 
 - **Finale token values**: `VigilLore.finaleValues(flags)` returns the value list for the finale token given cast flags (`WALK_UNLOCKED`, `VANE_ALLY`), or `null` when no token is needed. Both sides must use it.
 - **Mini-words**: a `code` scene with its own `code: 'LINEN'` shows that word with no cast; the Companion unlocks it via `miniWords` on the chapter.
 - **Hint attention**: widgets pulse the hint bell after two wrong tries; `par` on a puzzle scene also pulses it after N minutes.
+
+## 10. Chapter-local styling and helpers
+
+A chapter may inject its own CSS from its Hearth file (`document.head.appendChild(Object.assign(document.createElement('style'), { textContent: '.chN-foo {…}' }))`), namespaced with `.chN-`. Never edit the shared CSS or JS files. Chapter-specific helper functions live inside the chapter file's IIFE.

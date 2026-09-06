@@ -90,6 +90,7 @@
         turn++; wren = target; route.push(wren); history.push(wren);
         movesSinceRest = wait ? 0 : movesSinceRest + 1;
         Audio.sfx('step');
+        if (cfg.onCell && !wait) { try { cfg.onCell(wren, turn); } catch (e) { console.error(e); } }
         status.className = 'pz-status'; status.textContent = '';
         if (cfg.alarm && cfg.alarm.cells.includes(wren)) { alarmUntil = turn + (cfg.alarm.turns || 3); status.className = 'pz-status bad'; status.textContent = cfg.alarm.text || 'Someone raises a cry. The heavy boots come back.'; Audio.sfx('alarm'); }
         if (cfg.safe && cfg.safe.includes(wren)) lastSafe = wren;
