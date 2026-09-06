@@ -249,7 +249,7 @@
           const sealsSec = UI.el('div', { class: 'ch8-chapter' });
           sealsSec.appendChild(UI.el('h4', { text: 'Sealed — chosen in the dark' }));
           const seals = UI.el('div', { class: 'ch8-seals' });
-          R.forEach((r, i) => seals.appendChild(UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">the laundry, the stair, the fire.</span>` })));
+          R.forEach((r, i) => seals.appendChild(UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only the ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">the laundry, the stair, the fire.</span>` })));
           sealsSec.appendChild(seals);
           wrap.appendChild(sealsSec);
           box.appendChild(wrap);
@@ -272,7 +272,7 @@
           const s = api.state;
           const wrap = UI.el('div', { class: 'ch8-night' });
           const seals = UI.el('div', { class: 'ch8-seals' });
-          const cards = R.map((r, i) => { const c = UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">sealed</span>` }); seals.appendChild(c); return c; });
+          const cards = R.map((r, i) => { const c = UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only the ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">sealed</span>` }); seals.appendChild(c); return c; });
           wrap.appendChild(seals); box.appendChild(wrap);
           let n = 0; let btn;
           const open = () => {

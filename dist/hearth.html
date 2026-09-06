@@ -3077,7 +3077,7 @@ var qrcode = function() {
       visited: [],            // scene ids in order (for flowchart)
       hintsUsed: {},          // puzzleId -> level reached
       solved: {},             // puzzleId -> true
-      names: ['Bookmoth', 'Hush', 'Owl', 'Knot'], // nicknames by seat (Reader, Listener, Seer, Binder)
+      names: ['Reader', 'Listener', 'Seer', 'Binder'], // seat names, left to right
       keys: ['A', 'C', 'M', '/'],
       elapsedMs: 0,           // accumulated play time (excluding pauses)
       startedAt: null,        // wall-clock of first start
@@ -5629,7 +5629,7 @@ var qrcode = function() {
         const grid = UI.el('div', { class: 'palette-grid' });
         cfg.glyphs.forEach(g => {
           const used = !cfg.allowRepeat && map.includes(g.id);
-          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'Bookmoth reads the shapes; the palette names only the words.', onclick: () => {
+          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'The Reader reads the shapes; the palette names only the words.', onclick: () => {
             if (sel == null) { status.textContent = 'Choose a slot first.'; Audio.sfx('wrong'); return; }
             if (used) { const j = map.indexOf(g.id); map[j] = null; }
             map[sel] = g.id; Audio.sfx('click'); if (cfg.onPlace) cfg.onPlace(g.id, sel + 1);
@@ -6089,10 +6089,10 @@ var qrcode = function() {
   'use strict';
   const L = {};
   L.roles = [
-    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Bookmoth', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
-    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Hush',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
-    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Owl',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
-    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Knot',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
+    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Reader', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
+    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Listener',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
+    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Seer',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
+    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Binder',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
   ];
   L.roleById = (id) => L.roles.find(r => r.id === id);
   L.nick = (i) => L.roles[i].nick;
@@ -6192,37 +6192,41 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch0_start: {
         art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 18,
         text: [
-          { text: 'Four hundred years ago, four Wardens closed a wound in the world and left a fire behind to hold it shut.', cls: 'center' },
-          { text: 'The fire has never gone out. Schools were built around it; a border realm learned to sleep. The Hearth of Thornhallow is the oldest lit thing in the Marches of Cael.', cls: 'center' },
-          { text: 'Fourteen years ago, for one night, it did go out.', cls: 'center' },
-          { text: 'When it came back, a baby lay on the warm stones.', cls: 'center' },
+          { text: 'Four hundred years ago, four Wardens closed a wound in the world.', cls: 'center' },
+          { text: 'They left a fire to hold it shut.', cls: 'center' },
+          { text: 'The Hearth has never gone out. Except one night, fourteen years ago.', cls: 'center' },
+          { text: 'When it came back, a baby lay on the stones.', cls: 'center' },
+          { text: 'That child is Wren, now fourteen.', cls: 'center' },
         ],
         next: 'ch0_stone', button: 'Look up',
       },
       ch0_stone: {
         art: 'ch0_stone', mood: 'hearth', fx: 'embers',
         text: [
-          'Over the Hearth, cut into the stone by the Founders themselves, the prophecy. The flames lick at its foot; nobody has seen the bottom of it since the night it was lit.',
+          'The prophecy, cut in stone above the fire.',
+          'The Order\'s translation:',
           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
-          'So reads the Order\'s translation, and the Order has read it for four hundred years. Born of four: the four Founders\' bloodlines. The child from the stones was named Wren, and raised knowing.',
-          'Tonight is the Vigil. Tonight Wren is named before the nine Houses. And tonight, for the first time in fourteen years, the Hearth is flickering.',
+          'Tonight is the Vigil. Nine Houses will name Wren.',
+          'And the Hearth flickers. First time in fourteen years.',
         ],
         next: 'ch0_dorm', button: 'The night before',
       },
       /* ---------- dormitory & setup ---------- */
       ch0_dorm: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'step',
-        title: 'The fourth-years\' dormitory, an hour past curfew',
+        title: 'Past curfew',
         text: [
-          'Four beds, four trunks, one forbidden lamp. You are the fourth-years of Thornhallow, each sorted by your Sighting — Glyph, Ear, Eye, Thread — and each, in your own way, seeing more than you say.',
-          { text: 'Later tonight the bells of Thornhallow will ring. You will need your keys and each other. The Hearth will tell you before it happens.', cls: 'whisper' },
-          'First, the keys. Each of you has a seat and a key. When your lantern glows, press it.',
+          'Four fourth-years. A Sighting each: four ways of seeing.',
+          { text: 'Sit left to right: Reader, Listener, Seer, Binder.', cls: 'whisper' },
         ],
         next: 'ch0_keys', button: 'Claim the keys',
       },
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
-        text: ['Left to right: Bookmoth, Hush, Owl, Knot. Press your key when your lantern glows.'],
+        text: [
+          { text: 'One keyboard, one key each. Press yours when it glows.', cls: 'whisper' },
+          { text: 'Four hands means all four keys inside one second.', cls: 'whisper' },
+        ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
           const st = UI.el('div', { class: 'pz-status' });
@@ -6241,7 +6245,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const arm = () => { for (let i = 0; i < 4; i++) Input.setPadState(i, 'armed', i === step); st.className = 'pz-status'; st.textContent = step < 4 ? `${nick(step)} — your key.` : 'Now all four together, within one heartbeat.'; };
           const onPress = (idx) => {
             if (step < 4) {
-              if (idx !== step) { st.className = 'pz-status bad'; st.textContent = `That was ${nick(idx)}'s key. ${nick(step)}, yours.`; Audio.sfx('wrong'); return; }
+              if (idx !== step) { st.className = 'pz-status bad'; st.textContent = `That is the ${nick(idx)}'s key. ${nick(step)}, yours.`; Audio.sfx('wrong'); return; }
               Audio.sfx('key', idx); Input.setPadState(idx, 'good', true); step++; arm(); return;
             }
             // four hands
@@ -6250,7 +6254,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             if (set.length === 4) {
               const spread = Math.max(...set) - Math.min(...set);
               if (spread <= 1000) { Audio.sfx('magic'); st.className = 'pz-status good'; st.textContent = 'Four hands. The lanterns steady.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
-              else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count yourselves in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
+              else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
             }
             setTimeout(() => { const now = performance.now(); for (let i = 0; i < 4; i++) if (times[i] != null && now - times[i] > 1000) { times[i] = null; Input.setPadState(i, 'glow', false); } }, 1100);
           };
@@ -6259,83 +6263,87 @@ window.VigilMeta = { title: 'Hearthfall' };
       },
       ch0_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
-        text: ['A practice peal, so your hands know the shape of it. Nothing is at stake. When a light falls into your lane, press your key as it crosses the line. A purple light joined across all four lanes means everyone, together.'],
+        text: [
+          'Real bells later, on a timer. This costs nothing.',
+          { text: 'Press as your light crosses the line.', cls: 'whisper' },
+          { text: 'Purple means everyone.', cls: 'whisper' },
+        ],
         config: () => ({ practice: true, laneNames: L.nicks, fallMs: 2000, windowMs: 420, events: window.VigilReaction.generateEvents({ count: 7, seed: 5, mix: { single: 1 }, gapMs: 1500, startMs: 2500 }).concat([{ t: 14500, lanes: [0, 1, 2, 3], kind: 'all' }]) }),
-        solvedText: (s, r) => [`${r.hits} of ${r.total}. Good enough for a dormitory. The real bells come later, and you will be warned.`],
         next: 'ch0_wren',
       },
       /* ---------- Wren ---------- */
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          'The door bangs open and a fourteen-year-old comes through it sideways, the way Wren comes through every door.',
-          { speaker: 'Wren', text: 'You\'re all *awake*. Excellent. I have decided you need names, because "the fourth-years" sounds like a disease.' },
-          { speaker: 'Wren', text: 'You —' },
-          'Wren points at the Reader.',
-          { speaker: 'Wren', text: '— read everything and eat nothing. *Bookmoth.* You —' },
-          'The Listener.',
-          { speaker: 'Wren', text: '— hear a spider change its mind. *Hush.* You look at walls like they owe you money. *Owl.* And you —' },
-          'The Binder.',
-          { speaker: 'Wren', text: '— tie everyone to everyone and call it kindness. *Knot.* There. Done. You\'re welcome.' },
+          'The door bangs open.',
+          { speaker: 'Wren', text: 'You\'re awake. Good. I need four idiots and a lamp.' },
+          { speaker: 'Wren', text: 'Reader, you read everything and eat nothing.' },
+          { speaker: 'Wren', text: 'Listener, you hear spiders think.' },
+          { speaker: 'Wren', text: 'Seer, you stare at walls.' },
+          { speaker: 'Wren', text: 'Binder, you tie people together and call it kindness.' },
         ],
         next: 'ch0_dare', button: 'And you?',
       },
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          { speaker: 'Wren', text: 'Me? I\'m Wren. I\'m the one born of four, apparently, which is one more than most people manage. Tomorrow they say it in front of nine Houses and I have to stand still for it.' },
-          'Wren looks at the lamp on the sill — the old one, the one nobody lights, the one with a ring of four slots and two shapes carved above it.',
-          { speaker: 'Wren', text: 'Mum\'ll — the *Provost\'ll* — kill me if she finds it lit. So let\'s light it. The old way, with the ring. Carve my name in it first — go on. Everyone does, the night before something.' },
-          'Someone should type it. Four letters.',
+          { speaker: 'Wren', text: 'Me? The one born of four, apparently.' },
+          { speaker: 'Wren', text: 'Tomorrow nine Houses say so. I stand still.' },
+          { speaker: 'Wren', text: 'Nobody lights that lamp. Light it the old way.' },
+          { speaker: 'Wren', text: 'Carve my name first.' },
         ],
         next: 'ch0_carve', button: 'Carve it',
       },
       ch0_carve: {
         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
-        text: ['The lamp\'s brass is scratched with a hundred names. There is room for one more.'],
+        text: ['A hundred names in the brass.'],
         config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: 'Wren, arms folded: "My name. Mine. W-R-E-N."', submitText: 'Carve' }),
-        solvedText: ['The lamp flickers — a small blue tongue — and dies.', { speaker: 'Wren', text: 'Told you. Now do it properly. The old way needs all four of you, and your phones, and — hang on. Attune first. There\'s a word.' }],
+        solvedText: ['It flares blue, and dies.', { speaker: 'Wren', text: 'Told you. Now properly.' }],
         next: 'ch0_attune',
       },
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
-        text: ['Scratched into the sill beneath the lamp, worn smooth by four hundred years of thumbs, a word. Each of you: open your Companion, choose your seat if you have not, and turn the page with it.'],
-        roles: 'Warden of the Hearth (keyboard): **anyone**. Voice (reads aloud): **Bookmoth**.', sightSeconds: 90,
+        text: [
+          { text: 'Open your Companion. Take your seat. Type this word.', cls: 'whisper' },
+          { text: 'Every chapter has one.', cls: 'small' },
+        ],
+        roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,
         next: 'ch0_lamp',
       },
       /* ---------- the tutorial sigil ---------- */
       ch0_lamp: {
         type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
-          'The lamp: a ring of four slots, and above it two shapes cut into the brass — faded on the Hearth, but not on every page.',
-          { text: 'A sigil is glyphs placed in slots. Which glyphs, which slots, in what order, and by what rule: four questions, four Sightings. Say what you see.', cls: 'whisper' },
+          { text: 'A sigil is glyphs in slots.', cls: 'whisper' },
+          { text: 'Four questions: which glyphs, where it starts, what order, what rule.', cls: 'whisper' },
+          { text: 'One answer each. Say what you see.', cls: 'whisper' },
+          { text: 'Every puzzle has a Hint.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE DORMITORY LAMP', note: 'Two shapes are carved above the ring:', html: G.inscription([{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }], { showMark: false }),
-          slots: 4, glyphs: glyphPalette(), answer: { 3: 'ASH', 4: 'EMBER' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
+          slots: 4, glyphs: glyphPalette(), answer: { 3: 'ASH', 4: 'EMBER' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys, within a second',
           wrongText: 'The brass stays cold. The ring forgets.',
         }),
-        hints: ['Owl knows where a ring begins — and whether the carving is upright.', 'Two glyphs, sunwise from slot 3. Bookmoth has both readings; Hush has the order.', 'ASH in slot 3, EMBER in slot 4. Then four hands.'],
+        hints: ['The Seer knows where a ring begins — and whether the carving is upright.', 'Two glyphs, sunwise from slot 3. The Reader has both readings; the Listener has the order.', 'ASH in slot 3, EMBER in slot 4. Then four hands.'],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
-          'The lamp catches — a warm, steady, entirely forbidden light.',
-          { speaker: 'Wren', text: 'Ha. *Ha.* Four hundred years and it still works. Don\'t tell the Provost. Don\'t tell the Provost anything, actually, that\'s my general policy.' },
-          'Wren sits on the end of a bed, in the lamplight, and for a moment says nothing at all.',
+          'The lamp catches. Warm, steady, forbidden.',
+          { speaker: 'Wren', text: 'Four hundred years. Still works.' },
         ],
         next: 'ch0_name',
       },
       ch0_name: {
         type: 'choice', art: 'ch0_dorm', mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
-        text: [{ speaker: 'Wren', text: 'You need a name too. As a set. I\'ll be saying it a lot tomorrow — "where are the —" what?' }],
+        text: [{ speaker: 'Wren', text: 'You need a name. As a set.' }],
         options: [
-          { id: 'four', text: '"The Four." Plain. Old.', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: '"The Four." Very grand. I\'ll try to say it without laughing.' }] },
-          { id: 'idiots', text: '"The Idiots." Wren\'s word for us anyway.', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: '"The Idiots." Finally, some honesty in this school.' }] },
-          { id: 'vigil', text: '"The Vigil-in-waiting." We are, after all.', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: '"The Vigil-in-waiting." Mum — the Provost — will hate that. Perfect.' }] },
+          { id: 'four', text: '"The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand.' }] },
+          { id: 'idiots', text: '"The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
+          { id: 'vigil', text: '"The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'Mum — the Provost — will hate that.' }] },
         ],
       },
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
-        text: ['The lamp burns. Somewhere below, the Hearth flickers, and nobody in the dormitory sees it.', { text: 'After every chapter the Hearth shows the paths you walked, and the ones you did not.', cls: 'small' }],
+        text: ['Below, the Hearth flickers.', { text: 'After each chapter the Hearth shows every path, taken and not.', cls: 'small' }],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**.`,
         next: 'ch1_start', button: 'The Vigil',
@@ -6439,7 +6447,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           'Nine banners hang from the rafters, one for each House of the Marches, and beneath each banner sits a Master with the Sighting their House sent them here to keep.',
           'At the far end, the Hearth. It has burned for four hundred years without a keeper. Tonight it is doing something nobody in this hall has seen it do. It is *breathing*.',
           'You have been put at the back with the other fourth-years, where you can see everything and touch nothing. Wren waved at you on the way in. Wren is not supposed to wave.',
-          { text: 'Knot has the keys tonight. Hush reads the Hearth aloud.', cls: 'whisper' },
+          { text: 'The Binder has the keys tonight. The Listener reads the Hearth aloud.', cls: 'whisper' },
         ],
         next: 'ch1_dais', button: 'The presenting',
       },
@@ -6459,7 +6467,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           'The great doors open before anyone has asked them to. Cold comes in first, then the soldiers, then a man in a grey coat who walks as if the hall were his and he were being gracious about it.',
           'Lord Cassian Vane, the Crown\'s Envoy. He carries a writ with a seal the size of a saucer.',
           { speaker: 'Vane', text: 'Provost. Masters. His Majesty greets the Vigil and asks a small thing: the child, for safekeeping, tonight. The Crown has a warm room and a long road, and no wish to trouble a school.' },
-          'Marrow does not move. Vane lowers his voice — not enough. Hush hears it. Everyone hears it.',
+          'Marrow does not move. Vane lowers his voice — not enough. The Listener hears it. Everyone hears it.',
           { speaker: 'Vane', text: 'I have seen what is under the paint in this hall, Ilsabet.' },
         ],
         next: 'ch1_flicker', button: 'The Provost answers',
@@ -6479,7 +6487,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch1_attune: {
         type: 'code', art: 'ch1_hall', mood: 'tense', fx: 'embers',
         text: ['Cut into the lintel of the Masters\' door, worn smooth by four hundred years of Masters ducking under it: a word. Each of you, open your Companion and turn the page with it. Read your Sight. Say nothing yet.'],
-        roles: 'Warden of the Hearth (keyboard): **Knot**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Binder**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: 'ch1_vote',
       },
       /* ---------- the Convocation vote ---------- */
@@ -6519,8 +6527,8 @@ window.VigilMeta = { title: 'Hearthfall' };
           };
         },
         hints: [
-          'Two seats are bought — Owl can see the coin. Do not waste an approach on either.',
-          'Who follows whom? Knot\'s threads say who votes with whom; Hush\'s murmurs say who will listen — and who will not. Bookmoth has the names under the banners. One approach can be worth two votes.',
+          'Two seats are bought — The Seer can see the coin. Do not waste an approach on either.',
+          'Who follows whom? The Binder\'s threads say who votes with whom; the Listener\'s murmurs say who will listen — and who will not. The Reader has the names under the banners. One approach can be worth two votes.',
           'Approach Seat 1 (Sorrel) and Seat 7 (Oriel). Sorrel brings Quill with her; Oriel is undecided and can be persuaded; with Brack and the Chair that is five.',
         ],
         onSolve: (s, r) => {
@@ -6540,10 +6548,10 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch1_won: {
         art: 'ch1_dais', mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: [
-          'Five to four. Marrow lets out a breath so small that only Hush hears it.',
+          'Five to four. Marrow lets out a breath so small that only the Listener hears it.',
           { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, the Vigil thanks the Crown for its concern, and will see the Crown to a warm room and a long road in the morning.' },
           'Vane bows. It is a good bow. He has clearly done it to people he has later ruined.',
-          { speaker: 'Wren', text: 'Was that *you*? That was you. I saw Knot talking to Seat One. Knot never talks to anyone.' },
+          { speaker: 'Wren', text: 'Was that *you*? That was you. I saw the Binder talking to Seat One. The Binder never talks to anyone.' },
           'Then the two Masters you spoke to are at your elbows, one on each side, and neither of them is smiling any more.',
         ],
         next: 'ch1_prices', button: 'Their prices',
@@ -6595,7 +6603,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             ? 'The Provost will have the boy back from my men by morning. I know her; I have known her longer than you have been alive. When she does — bring him to me before dawn.'
             : 'Bring the boy to me before dawn.' },
           { speaker: 'Vane', text: 'He lives — I promise you that. And the Crown makes you Masters. All four of you, younger than any in that hall.' },
-          { speaker: 'Vane', text: 'You think I am the villain of this night. Ask your Owl what is under the paint.' },
+          { speaker: 'Vane', text: 'You think I am the villain of this night. Ask your Seer what is under the paint.' },
           'He waits.',
         ],
         prompt: 'The Envoy waits.',
@@ -6614,11 +6622,11 @@ window.VigilMeta = { title: 'Hearthfall' };
           const out = [];
           if (s.flags.VOTE_LOST) {
             out.push('Wren is still on the dais, between two soldiers, and has found a way to sit on the step that makes the soldiers look like furniture.');
-            out.push({ speaker: 'Wren', text: 'It\'s fine. It\'s *fine*. They\'ve got a warm room. I\'ve never had a warm room. Bookmoth, don\'t make that face.' });
+            out.push({ speaker: 'Wren', text: 'It\'s fine. It\'s *fine*. They\'ve got a warm room. I\'ve never had a warm room. The Reader, don\'t make that face.' });
             out.push('Wren is lying, and is fourteen, and is doing it for you.');
           } else {
             out.push('Wren finds you last, as the hall empties, and sits on the end of a bench with the particular exhaustion of someone who has stood still for an hour.');
-            out.push({ speaker: 'Wren', text: 'Seat Seven looked at me the whole time. Not unkindly. Like I was a sum she was doing. Owl, stop looking at the wall. What is *on* the wall?' });
+            out.push({ speaker: 'Wren', text: 'Seat Seven looked at me the whole time. Not unkindly. Like I was a sum she was doing. The Seer, stop looking at the wall. What is *on* the wall?' });
           }
           out.push('Marrow comes to you when the last Master has gone. She stands with her back to the Hearth, which flickers again — a short one, a cough — and she does not turn round.');
           out.push({ speaker: 'Provost Marrow', text: 'It has not done that in fourteen years. Beneath this school is the Cold Ember, which relights the Hearth if it gutters again. In the morning I would have sent —' });
@@ -6687,7 +6695,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         { id: 'ch2_start', label: "Marrow's errand", col: 0, row: 1 },
         { id: 'ch2_door', label: "The Founders' Door", col: 1, row: 1 },
         { id: 'ch2_niche_found', label: "Found Mere's niche?", col: 2, row: 0, kind: 'choice', when: (s) => Store.chose('CH2_NICHE', 'mere') },
-        { id: 'ch2_rubbing', label: 'Bookmoth took a rubbing', col: 3, row: 0, secret: true, when: (s) => !!s.flags.LETTER },
+        { id: 'ch2_rubbing', label: 'The Reader took a rubbing', col: 3, row: 0, secret: true, when: (s) => !!s.flags.LETTER },
         { id: 'ch2_ember', label: 'The Cold Ember, the bricked road', col: 2, row: 1 },
         { id: 'ch2_stairfall', label: 'The stair falls', col: 3, row: 1, kind: 'choice' },
         { id: 'ch2_grab_wren', label: 'Grabbed Wren — the Ember fell', col: 4, row: 0, secret: true, when: (s) => Store.chose('CH2_STAIR', 'wren') },
@@ -6742,7 +6750,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch2_attune: {
         type: 'code', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust',
         text: ['Cut into the lintel of the Founders\' Door, deep and unworn, a word — and beside it, a small mark the torchlight catches. Each of you: open your Companion and turn the page with both.'],
-        roles: 'Warden of the Hearth (keyboard): **Owl**. Voice (reads aloud): **Bookmoth**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Seer**. Voice (reads aloud): **The Reader**.', sightSeconds: 90,
         next: 'ch2_door',
       },
       /* ---------- the Founders' Door ---------- */
@@ -6763,14 +6771,14 @@ window.VigilMeta = { title: 'Hearthfall' };
           successText: 'The door remembers the count. Stone grinds on stone.',
         }),
         hints: [
-          'Two plinths are upside down — Owl knows which; Bookmoth\'s lexicon has both readings of every epitaph.',
-          'The statues lie about where they look — the older Law binds, and Owl can see the original sockets. Hush has the order the dials must turn in.',
+          'Two plinths are upside down — The Seer knows which; the Reader\'s lexicon has both readings of every epitaph.',
+          'The statues lie about where they look — the older Law binds, and the Seer can see the original sockets. The Listener has the order the dials must turn in.',
           'Four turns, in this order: dial **C** to THORN, then dial **A** to KNOT, then dial **D** to VEIL, then dial **B** to EMBER. Nothing else, and nothing first.',
         ],
         onSolve: (s, r) => { Store.note('You opened the Founders\' Door' + (r && r.tries > 1 ? ' on the ' + r.tries + (r.tries === 2 ? 'nd' : r.tries === 3 ? 'rd' : 'th') + ' count' : ' on the first count') + '.'); },
         solvedText: [
           'The door does not open so much as remember that it was never really shut. It swings inward on a breath of air four hundred years old, and the cold blue light beyond it fills the antechamber.',
-          'Four glyphs, four Founders, each on the dial they truly faced: **THORN, KNOT, VEIL, EMBER.** *A gate. Together. Hidden. Kept.* Bookmoth says it aloud, and nobody quite likes how it sounds.',
+          'Four glyphs, four Founders, each on the dial they truly faced: **THORN, KNOT, VEIL, EMBER.** *A gate. Together. Hidden. Kept.* the Reader says it aloud, and nobody quite likes how it sounds.',
         ],
         next: 'ch2_opened',
       },
@@ -6785,7 +6793,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           { id: 'ember', text: 'Take the Ember.', next: 'ch2_ember' },
           { id: 'niche', text: 'Look around before you take it.', sub: 'The antechamber, the plinths, the rebuilders\' work.', next: 'ch2_niche' },
         ],
-        hints: ['Owl — behind Mere.', 'Owl\'s under-layer shows a hollow behind one of the plinths. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look around before you take it*, then *Behind Mere*. Let Bookmoth read what is inside — twice.'],
+        hints: ['The Seer — behind Mere.', 'The Seer\'s under-layer shows a hollow behind one of the plinths. It is not on the way to the Ember, and nobody will make you look.', 'Choose *Look around before you take it*, then *Behind Mere*. Let the Reader read what is inside — twice.'],
       },
       /* ---------- Mere's niche (optional) ---------- */
       ch2_niche: {
@@ -6806,7 +6814,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             wrap.appendChild(UI.el('div', { class: 'pz-title', text: "MERE'S NICHE" }));
             wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the strip — three shapes, left to right' }));
             wrap.appendChild(UI.el('div', { html: G.inscription(STRIP, { showMark: false }) }));
-            wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('Bookmoth can read the shapes; only Owl can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
+            wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('The Reader can read the shapes; only the Seer can say which end the strip begins at. Read it both ways before you decide which one Mere meant.') }));
             wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the sheet — the older alphabet' }));
             wrap.appendChild(UI.el('div', { html: oldSheet() }));
             const status = UI.el('div', { class: 'pz-status' }); wrap.appendChild(status);
@@ -6816,14 +6824,14 @@ window.VigilMeta = { title: 'Hearthfall' };
             ]);
             if (!api.alive()) return;
             if (Store.get('LETTER')) {
-              status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into Bookmoth\'s sleeve.';
+              status.className = 'pz-status good'; status.textContent = 'The rubbing is folded into the Reader\'s sleeve.';
               api.button('Take the Ember', done, 'primary'); return;
             }
-            const rub = api.button('Take a rubbing (Bookmoth)', async () => {
-              Store.set('LETTER', true); Store.note('Bookmoth took a rubbing of Mere\'s sheet.');
+            const rub = api.button('Take a rubbing (The Reader)', async () => {
+              Store.set('LETTER', true); Store.note('The Reader took a rubbing of Mere\'s sheet.');
               api.audio.sfx('reveal'); rub.disabled = true;
-              status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into Bookmoth\'s sleeve, unread.';
-              await api.say([{ speaker: 'Bookmoth', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
+              status.className = 'pz-status good'; status.textContent = 'Charcoal, a page torn from somebody\'s notebook, and thirty seconds. The rubbing goes into the Reader\'s sleeve, unread.';
+              await api.say([{ speaker: 'Reader', text: 'I can\'t read it. Not yet. I\'m keeping it anyway.' }]);
             }, '');
             api.button('Leave the sheet. Take the Ember', done, 'primary');
           };
@@ -6840,7 +6848,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           wrap.appendChild(row); wrap.appendChild(status);
           api.button('Enough. Take the Ember', done, 'primary');
         }),
-        hints: ['Owl — behind Mere. Then: Bookmoth has both readings of the strip; Owl has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
+        hints: ['The Seer — behind Mere. Then: Reader has both readings of the strip; the Seer has the end it begins at.', 'Mark on the right means turned: read right to left, every glyph inverted. The Order\'s reading is the upright one.', 'Turned, the strip says KNOT · CROWN · THORN — *four · as one · went through.* And take the rubbing; you cannot read it tonight, but you may be able to later.'],
         next: 'ch2_ember',
       },
       /* ---------- the Cold Ember ---------- */
@@ -6849,8 +6857,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: (s) => [
           'The case lifts from the plinth with no ward, no click, no protest. It is lighter than it looks and colder than anything has a right to be; the hands that carry it go numb to the wrist.',
           'Inside the glass the blue flame leans, very slightly, toward whoever holds it.',
-          s.flags.LETTER ? 'Bookmoth keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'Owl looks back through the door at the antechamber one more time, and says nothing, and the moment passes.',
-          { speaker: 'Knot', text: 'Four statues. Four dials. Four of us. Does anyone else feel like a set?' },
+          s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it, as if it might get up and leave.' : 'The Seer looks back through the door at the antechamber one more time, and says nothing, and the moment passes.',
+          { speaker: 'Binder', text: 'Four statues. Four dials. Four of us. Does anyone else feel like a set?' },
         ],
         next: 'ch2_road', button: 'The archway',
       },
@@ -6886,7 +6894,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             after: [
               'The case comes over the gap into eight numb hands. Wren does not. Wren goes down with the step, and there is a sound from the dark that nobody at the table will forget — and then, worse, a small voice.',
               { speaker: 'Wren', text: 'I\'m fine. I\'m fine. It\'s only my arm. I landed on the — I\'m fine. Don\'t look like that. You got the box.' },
-              'It takes ten minutes and Knot\'s cloak, torn into a rope, to get Wren up. The arm is not fine. Wren does not mention it again, which is the worst part.',
+              'It takes ten minutes and the Binder\'s cloak, torn into a rope, to get Wren up. The arm is not fine. Wren does not mention it again, which is the worst part.',
             ] },
         ],
       },
@@ -7037,10 +7045,10 @@ window.VigilMeta = { title: 'Hearthfall' };
         { id: 'ch3_grid', label: 'The corridors', col: 2, row: 2, kind: 'choice' },
         { id: 'ch3_laundry', label: 'The Laundry', col: 3, row: 2, when: (s) => !!s.flags.LINEN, secret: true },
         { id: 'ch3_bell4', label: 'A fourth bell', col: 3, row: 4, when: (s) => !!s.flags.WREN_SCARED, secret: true },
-        { id: 'ch3_w0', label: 'only Bookmoth knows', col: 4, row: 0, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_reader },
-        { id: 'ch3_w1', label: 'only Hush knows', col: 4, row: 1, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_listener },
-        { id: 'ch3_w2', label: 'only Owl knows', col: 4, row: 3, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_seer },
-        { id: 'ch3_w3', label: 'only Knot knows', col: 4, row: 4, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_binder },
+        { id: 'ch3_w0', label: 'only the Reader knows', col: 4, row: 0, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_reader },
+        { id: 'ch3_w1', label: 'only the Listener knows', col: 4, row: 1, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_listener },
+        { id: 'ch3_w2', label: 'only the Seer knows', col: 4, row: 3, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_seer },
+        { id: 'ch3_w3', label: 'only the Binder knows', col: 4, row: 4, kind: 'end', secret: true, when: (s) => !!s.flags.WHISPER_binder },
         { id: 'ch3_thanks', label: 'Even the ones who lied', col: 4, row: 2 },
         { id: 'ch3_door', label: 'The Tower door', col: 5, row: 2, kind: 'choice' },
         { id: 'ch3_fight', label: 'The ward flares', col: 6, row: 0, secret: true },
@@ -7062,7 +7070,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             ? 'The Convocation voted to send Wren to the capital, and Vane\'s guard closed around the dais, and the Provost said *I will get the child back myself* — and she did. Nobody knows how, and nobody is asking. Vane has noticed. His soldiers are turning the school over, room by room, with a writ in one hand and a lantern in the other.'
             : 'The Convocation voted to keep Wren, and Lord Vane bowed to the vote and said nothing, and now his soldiers are turning the school over room by room, with a writ in one hand and a lantern in the other.',
           s.flags.WREN_HURT
-            ? 'Wren\'s arm is strapped across the chest in what is left of Knot\'s cloak. The stair took it, and Wren has stopped pretending it did not.'
+            ? 'Wren\'s arm is strapped across the chest in what is left of the Binder\'s cloak. The stair took it, and Wren has stopped pretending it did not.'
             : 'Boots on the stair. Boots in the Great Hall. The portraits in the long gallery have begun to mutter, the way they do when the school is afraid.',
           s.flags.VANE_ACCEPT
             ? { text: 'You told the Envoy you would bring him the boy. Nobody has mentioned it since. It sits in the pocket of the night like a coin.', cls: 'whisper' }
@@ -7074,7 +7082,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         art: 'ch3_gallery', mood: 'tense', fx: 'dust', sfx: 'open',
         title: 'The Gallery of the Masters',
         text: (s) => [
-          'Two hundred years of Provosts and Masters in oil, floor to ceiling, and every one of them talking under their breath. You cannot make out the words. Hush can, a little, and wishes not to.',
+          'Two hundred years of Provosts and Masters in oil, floor to ceiling, and every one of them talking under their breath. You cannot make out the words. The Listener can, a little, and wishes not to.',
           'Marrow is waiting between the frames with Wren, and with a face that has decided several things in a hurry.',
           { speaker: 'Marrow', text: 'The Bell Tower is warded; a Founders\' door and a threshold sigil. Vane\'s men cannot pass it and do not know that yet. Get Wren there before the third bell. I ring the bells tonight; I can give you twelve turns of the corridor clock, no more, or the timetable is noticed.' },
         ],
@@ -7085,8 +7093,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         title: 'The only map',
         text: (s) => [
           { speaker: 'Marrow', text: 'The corridors are dark. I have put out every lamp between here and the Tower myself. The only map of the patrols tonight is *sound*.' },
-          'She looks at Hush when she says it.',
-          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can sneak. I can *mostly* sneak. Hush, you\'re going to have to tell me where the boots are, because I can\'t run from them one-armed.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
+          'She looks at the Listener when she says it.',
+          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'I can sneak. I can *mostly* sneak. The Listener, you\'re going to have to tell me where the boots are, because I can\'t run from them one-armed.' : 'I like it. Sneaking. I\'ve been sneaking round this school for fourteen years and nobody\'s ever *asked* me to.' },
           { speaker: 'Marrow', text: 'Hearth. Attune them.' },
           'She touches the nearest frame — a woman with a thin gold chain — and the word beneath the paint shows through, for a moment, cold and green.',
         ],
@@ -7095,7 +7103,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch3_attune: {
         type: 'code', art: 'ch3_gallery', mood: 'tense', fx: 'dust',
         text: ['Under the varnish of the oldest portrait, a word, and beside it a mark that was not there this morning. Each of you: open your Companion and turn the page with it.'],
-        roles: 'Warden of the Hearth (keyboard): **Hush**. Voice (reads aloud): **Knot**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Listener**. Voice (reads aloud): **The Binder**.', sightSeconds: 90,
         next: 'ch3_corridors',
       },
       ch3_corridors: {
@@ -7105,7 +7113,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           'Marrow goes to ring the bells. The lamps are out. Two patrols walk the corridors between here and the Tower, and they walk the same rounds every twelve beats, because soldiers are soldiers.',
           { text: 'Each turn, Wren moves one room or waits. At the end of a turn, if a patrol stands in Wren\'s room — or in a room joined to it by an open passage — Wren is seen, and scrambles back to the last safe room. The count keeps running.', cls: 'small' },
           { text: 'The third bell rings at the end of turn twelve. Guards are never drawn ahead of time; after every turn the Hearth shows where both patrols stood, so arguments end with facts.', cls: 'small' },
-          s.flags.WREN_HURT ? { text: 'Wren\'s arm: the hidden doors are heavy, and one-handed, any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'Hush drives; Knot reads. Owl, Bookmoth — say what you see.', cls: 'small' },
+          s.flags.WREN_HURT ? { text: 'Wren\'s arm: the hidden doors are heavy, and one-handed, any hidden door will cost a turn to open before Wren can go through it.', cls: 'small' } : { text: 'The Listener drives; the Binder reads. The Seer, the Reader — say what you see.', cls: 'small' },
         ],
         next: 'ch3_grid', button: 'Into the dark',
       },
@@ -7114,12 +7122,12 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'grid', art: 'ch3_corridors', mood: 'dread', fx: 'dust', puzzleId: 'ch3_grid', par: [7, 10, 11],
         text: [
           'The Gallery at A1. The Tower door at E5. Between them: the west corridor, the porter\'s lodge, the cook\'s locked door, the east stair — and a great deal of dark.',
-          { text: 'Row 1 dead-ends at the cook\'s door. What Hush hears, Owl can place. What Owl sees, Bookmoth can read. What Knot knows about the people in these rooms is worth more than a map.', cls: 'whisper' },
+          { text: 'Row 1 dead-ends at the cook\'s door. What the Listener hears, the Seer can place. What the Seer sees, the Reader can read. What the Binder knows about the people in these rooms is worth more than a map.', cls: 'whisper' },
         ],
         config: gridConfig,
         hints: [
-          'The patrols repeat every twelve beats. Hush hears where they are, beat by beat; Owl knows where "where" is.',
-          'There is a room nobody searches. Owl sees its door; Knot knows who is inside — and Bookmoth can read what is carved over it.',
+          'The patrols repeat every twelve beats. The Listener hears where they are, beat by beat; the Seer knows where "where" is.',
+          'There is a room nobody searches. The Seer sees its door; the Binder knows who is inside — and the Reader can read what is carved over it.',
           'Into the Laundry by turn 6, out on turn 7; the east stair is clear on turns 9–11.',
           (s) => s.flags.WREN_HURT
             ? 'Turn 1 A2 · 2 A3 · 3 speak VEIL (the arm costs the turn) · 4 into the Laundry, B3 · 5 wait · 6 speak THORN (the turn) · 7 C3 · 8 D3 · 9 E3 · 10 E4 · 11 E5, the Tower. No slack.'
@@ -7133,8 +7141,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         solvedText: (s, r) => [
           `Turn ${r.turns}. The Tower door, iron-bound, older than the wall around it, and Wren against it with both hands flat, laughing without any sound.`,
           s.flags.WREN_SCARED
-            ? { speaker: 'Wren', text: 'The *fourth* bell. She rang a fourth bell. She\'s never done that. She\'s going to be in so much trouble, and it\'s going to be my fault, and — Hush. Hush, I could hear them. I could hear them the whole time.' }
-            : { speaker: 'Wren', text: 'Hush. You\'re *terrifying*. "Boots, left, wait, now." Like a — like a very small general.' },
+            ? { speaker: 'Wren', text: 'The *fourth* bell. She rang a fourth bell. She\'s never done that. She\'s going to be in so much trouble, and it\'s going to be my fault, and — The Listener. The Listener, I could hear them. I could hear them the whole time.' }
+            : { speaker: 'Wren', text: 'Listener. You\'re *terrifying*. "Boots, left, wait, now." Like a — like a very small general.' },
           s.flags.LINEN ? 'You answered Wren in the Laundry, one at a time, over the kettle. Nobody has said what.' : 'You did not go through the Laundry, and Wren did not get to ask.',
         ],
         next: (s) => s.flags.LINEN ? 'ch3_whispers' : 'ch3_whispers_late',
@@ -7204,14 +7212,14 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'ring', art: 'ch3_towerdoor', mood: 'tense', fx: 'dust', puzzleId: 'ch3_fight', par: [2, 4],
         text: [
           'Over the Tower door, two shapes cut deep into the lintel by a Founder\'s hand, and beneath them a ring of two slots gone dull with soot. A threshold sigil: it does not open a door. It decides who may stand in front of one.',
-          { text: 'Two glyphs. Which two, in which slots, and which way up: Bookmoth, Owl, Hush, Knot. Then four hands, before the captain counts to anything.', cls: 'whisper' },
+          { text: 'Two glyphs. Which two, in which slots, and which way up: Reader, the Seer, the Listener, the Binder. Then four hands, before the captain counts to anything.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE THRESHOLD OF THE BELL TOWER', note: 'Two shapes are carved over the door:', html: G.inscription([{ shape: 'Flame', inv: false }, { shape: 'Spike', inv: false }], { showMark: false }),
           slots: 2, glyphs: glyphPalette(), answer: { 1: 'ASH', 2: 'THORN' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets. The captain takes a step.',
         }),
-        hints: ['Owl knows which end the lintel\'s mark is on, and where the ring begins. Bookmoth has both readings of both shapes.', 'Upright, left to right: fire, then go-through. Knot\'s first Law: sunwise from the mark.', 'ASH in slot 1, THORN in slot 2. Then four hands.'],
+        hints: ['The Seer knows which end the lintel\'s mark is on, and where the ring begins. The Reader has both readings of both shapes.', 'Upright, left to right: fire, then go-through. The Binder\'s first Law: sunwise from the mark.', 'ASH in slot 1, THORN in slot 2. Then four hands.'],
         onSolve: () => { Store.set('DOOR', 'FIGHT'); Store.note('You woke the threshold ward on the Tower door.'); },
         solvedText: [
           'The ward wakes. Not light — *heat*, a wall of it, the kind that stands off a winter. The lanterns on the stair gutter and go out together. The captain\'s hand goes to his face.',
@@ -7225,12 +7233,12 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch3_bluff: {
         art: 'ch3_towerdoor', mood: 'court', fx: 'dust',
         text: [
-          { speaker: 'Knot', text: 'Lord Vane\'s orders. He offered us Masterships before dawn for the boy, and we are bringing him — ourselves, to the Envoy\'s own door, as he asked. Do you want to be the one who took that from your master\'s hands?' },
+          { speaker: 'Binder', text: 'Lord Vane\'s orders. He offered us Masterships before dawn for the boy, and we are bringing him — ourselves, to the Envoy\'s own door, as he asked. Do you want to be the one who took that from your master\'s hands?' },
           'It is the offer, word for word. The captain heard his master make it; he has no way to know how you answered.',
           { speaker: 'The captain', text: '…Then the Envoy will see you at his door. With the boy.' },
           'He goes down the stair with his lanterns. Wren lets out a breath that has been held since the Great Hall.',
-          { speaker: 'Wren', text: 'You lied to a man with a *rope*. Knot. I didn\'t know you had it in you.' },
-          { speaker: 'Knot', text: 'Neither did I.' },
+          { speaker: 'Wren', text: 'You lied to a man with a *rope*. The Binder. I didn\'t know you had it in you.' },
+          { speaker: 'Binder', text: 'Neither did I.' },
         ],
         next: 'ch3_flow', button: 'The Tower',
       },
@@ -7294,7 +7302,7 @@ window.VigilMeta = { title: 'Hearthfall' };
 
 </script>
 <script>/* js/content/ch4.js */
-/* Chapter IV — The Oath (the Provost's study). Pass-around Warden; Owl is the Voice. */
+/* Chapter IV — The Oath (the Provost's study). Pass-around Warden; the Seer is the Voice. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, UI = window.VigilUI, Store = window.VigilStore, Audio = window.VigilAudio, FX = window.VigilFX;
@@ -7383,10 +7391,10 @@ window.VigilMeta = { title: 'Hearthfall' };
     // chair (right, bottom)
     s += `<g transform="translate(790,330)"><rect x="-44" y="-96" width="88" height="96" rx="12" fill="#1c1418"/><rect x="-54" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="38" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="-36" y="-34" width="72" height="34" rx="6" fill="#2a1e24"/></g>`;
     // hotspots
-    s += hot('desk', 40, 190, 260, 150, 'the desk', 'Bookmoth', '#e0b04a', f.JOURNAL);
-    s += hot('tapestry', 320, 20, 300, 250, 'the tapestry', 'Owl', '#a482e6', f.TAPESTRY);
-    s += hot('bell', 650, 90, 230, 80, 'the bell on the mantel', 'Hush', '#4fb3bf', f.MEMORY);
-    s += hot('chair', 680, 220, 200, 130, 'the Provost\'s chair', 'Knot', '#d96b4a', f.GREY);
+    s += hot('desk', 40, 190, 260, 150, 'the desk', 'Reader', '#e0b04a', f.JOURNAL);
+    s += hot('tapestry', 320, 20, 300, 250, 'the tapestry', 'Seer', '#a482e6', f.TAPESTRY);
+    s += hot('bell', 650, 90, 230, 80, 'the bell on the mantel', 'Listener', '#4fb3bf', f.MEMORY);
+    s += hot('chair', 680, 220, 200, 130, 'the Provost\'s chair', 'Binder', '#d96b4a', f.GREY);
     return s + `</svg>`;
   }
 
@@ -7442,10 +7450,10 @@ window.VigilMeta = { title: 'Hearthfall' };
         { id: 'ch4_start', label: 'The Provost\'s study', col: 0, row: 2 },
         { id: 'ch4_attune', label: 'EMBER', col: 1, row: 2 },
         { id: 'ch4_shelf', label: 'The False Shelf', col: 2, row: 2 },
-        { id: 'ch4_s_journal', label: 'the journal — Bookmoth', col: 3, row: 0, secret: true, when: (s) => !!s.flags.JOURNAL },
-        { id: 'ch4_s_memory', label: 'the memory-bell — Hush', col: 3, row: 1, secret: true, when: (s) => !!s.flags.MEMORY },
-        { id: 'ch4_s_tapestry', label: 'under the paint — Owl', col: 3, row: 3, secret: true, when: (s) => !!s.flags.TAPESTRY },
-        { id: 'ch4_s_grey', label: 'the grey thread — Knot', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
+        { id: 'ch4_s_journal', label: 'the journal — The Reader', col: 3, row: 0, secret: true, when: (s) => !!s.flags.JOURNAL },
+        { id: 'ch4_s_memory', label: 'the memory-bell — The Listener', col: 3, row: 1, secret: true, when: (s) => !!s.flags.MEMORY },
+        { id: 'ch4_s_tapestry', label: 'under the paint — The Seer', col: 3, row: 3, secret: true, when: (s) => !!s.flags.TAPESTRY },
+        { id: 'ch4_s_grey', label: 'the grey thread — The Binder', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
         { id: 'ch4_s_rubbing', label: 'Mere\'s rubbing, read', col: 4, row: 0, secret: true, kind: 'end', when: (s) => !!s.flags.LETTER_READ },
         { id: 'ch4_s_note', label: 'a note under the cushion', col: 4, row: 4, secret: true, kind: 'end', when: (s) => !!(s.flags.ORIEL_NOTE || s.flags.MARROW_LETTER) },
         { id: 'ch4_swear', label: 'The Warden\'s Oath', col: 4, row: 2, kind: 'choice' },
@@ -7494,7 +7502,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           out.push('A bell rings twice, far below. Marrow closes her eyes for exactly one breath.');
           out.push({ speaker: 'Marrow', text: 'The Convocation. Ten minutes. Stay with them, Wren. Stay *put*, for once in your life.' });
           out.push('The door shuts behind her. The primer of the older alphabet lies open on the desk — which she did not close.');
-          out.push(f.WREN_SCARED ? { speaker: 'Wren', text: 'She left the primer.' } : { speaker: 'Wren', text: 'She left the primer *open*. She never leaves anything open. Bookmoth. *Bookmoth.*' });
+          out.push(f.WREN_SCARED ? { speaker: 'Wren', text: 'She left the primer.' } : { speaker: 'Wren', text: 'She left the primer *open*. She never leaves anything open. The Reader. *the Reader.*' });
           return out;
         },
         next: 'ch4_attune', button: 'The word',
@@ -7503,16 +7511,16 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'code', art: 'ch4_study', mood: 'tower', fx: 'dust',
         text: [
           'Cut into the mantel above the fire, where four hundred years of smoke have not quite hidden it: a word, and a mark beside it. Each of you — your Companion, the word, the mark.',
-          { text: 'This chapter the keyboard passes from hand to hand; the Hearth will call you by name. Owl reads aloud.', cls: 'whisper' },
+          { text: 'This chapter the keyboard passes from hand to hand; the Hearth will call you by name. The Seer reads aloud.', cls: 'whisper' },
         ],
-        roles: 'Warden of the Hearth (keyboard): **pass it round — the Hearth calls names**. Voice (reads aloud): **Owl**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **pass it round — the Hearth calls names**. Voice (reads aloud): **The Seer**.', sightSeconds: 90,
         next: 'ch4_shelf',
       },
       /* ---------- the False Shelf ---------- */
       ch4_shelf: {
         type: 'puzzle', puzzle: 'wheel', art: 'ch4_shelf', mood: 'tower', fx: 'dust', puzzleId: 'ch4_shelf', par: [3, 5],
         text: [
-          'Four shelves. The third is wrong — Owl said so before anyone touched it, and Wren says the Provost hides things there "the way she hides everything: badly, and in plain sight."',
+          'Four shelves. The third is wrong — The Seer said so before anyone touched it, and Wren says the Provost hides things there "the way she hides everything: badly, and in plain sight."',
           'Eight great books, spines out, each stamped with one shape. Pull four, in an order, and the shelf opens — or it does not.',
           { text: 'Say what you see. Which way does this shelf hang, and what did the Founders leave behind them?', cls: 'whisper' },
         ],
@@ -7524,8 +7532,8 @@ window.VigilMeta = { title: 'Hearthfall' };
           onWrong: (ids) => { const m = ids.join(',') === '5,6,3,8' ? 'The shelf sighs, and stays.' : 'The books slide back into their places. The shelf stays.'; UI.toast(m, 3200, 'bad'); return m; },
         }),
         hints: [
-          'The shelf is one turned line — Owl knows which way it hangs, and Knot\'s Book says what a turned line does to every glyph on it.',
-          'Which four glyphs did the Founders leave on their plinths in the Vault — Bookmoth\'s glossary keeps them — and in what order does the Hymn sing them? Hush has the phrase.',
+          'The shelf is one turned line — The Seer knows which way it hangs, and the Binder\'s Book says what a turned line does to every glyph on it.',
+          'Which four glyphs did the Founders leave on their plinths in the Vault — The Reader\'s glossary keeps them — and in what order does the Hymn sing them? The Listener has the phrase.',
           'Pull the books in positions 1, 3, 6 and 4, in that order. Read the way the shelf truly hangs, those are THORN, KNOT, VEIL, EMBER.',
         ],
         onSolve: () => { Store.note('You opened the false shelf in the Provost\'s study.'); },
@@ -7549,8 +7557,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'custom', art: 'ch4_study', artParams: (s) => ({ scraped: !!s.flags.TAPESTRY }), mood: 'tower', fx: 'dust',
         text: ['Ten minutes, less now. The keyboard goes to whoever\'s corner it is; everyone else says what they see.'],
         hints: [
-          'Each corner of the study belongs to one Sighting: the desk is Bookmoth\'s, the bell is Hush\'s, the tapestry is Owl\'s, the chair is Knot\'s. Nobody can find another\'s.',
-          'Bookmoth: the primer on your page reads the journal letter by letter. Hush: cup your ear to the bell. Owl: scrape until the paint gives, then say what the last hand holds. Knot: the thread\'s colour is the whole answer.',
+          'Each corner of the study belongs to one Sighting: the desk is the Reader\'s, the bell is the Listener\'s, the tapestry is the Seer\'s, the chair is the Binder\'s. Nobody can find another\'s.',
+          'The Reader: the primer on your page reads the journal letter by letter. The Listener: cup your ear to the bell. The Seer: scrape until the paint gives, then say what the last hand holds. The Binder: the thread\'s colour is the whole answer.',
           'The journal says FOURTEEN YEARS. IT LAUGHS AT MY JOKES. The bell keeps the Envoy\'s voice and the Provost\'s. The fourth hand on the tapestry holds a flame turned over. The Provost\'s thread to Wren is grey.',
         ],
         run: (box, api) => new Promise((resolve) => {
@@ -7587,23 +7595,23 @@ window.VigilMeta = { title: 'Hearthfall' };
               if (f.JOURNAL) { para(panel, ['The journal lies where it lay. The line is read.', { text: 'Fourteen years. It laughs at my jokes.', cls: 'letter' }]); back(); return; }
               para(panel, ['The primer of the older alphabet lies open. Under it, the Provost\'s journal, its ribbon marking a page written fourteen years ago. One line shows:']);
               panel.appendChild(UI.el('div', { html: runeBlock(['FOURTEEN YEARS.', 'IT LAUGHS AT MY JOKES.'], { height: 48 }) }));
-              para(panel, [{ text: 'The Hearth cannot read it. Bookmoth can. Say it aloud, letter by letter if you must; the Warden types what it says.', cls: 'whisper' }]);
-              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES/.test(v[0]), wrongText: 'That is not what it says. Bookmoth — letter by letter, and all of it: the second line too.', submitText: 'Read it', successText: 'Read.' }, api);
+              para(panel, [{ text: 'The Hearth cannot read it. The Reader can. Say it aloud, letter by letter if you must; the Warden types what it says.', cls: 'whisper' }]);
+              const r = await window.VigilAnswer.build(panel, { fields: [{ label: 'the line', placeholder: 'what the journal says', len: 60, plain: true }], accept: (v) => /LAUGHS|JOKES/.test(v[0]), wrongText: 'That is not what it says. The Reader — letter by letter, and all of it: the second line too.', submitText: 'Read it', successText: 'Read.' }, api);
               if (!api.alive()) return; void r;
-              Store.set('JOURNAL', true); Store.note('Bookmoth read the Provost\'s journal.');
+              Store.set('JOURNAL', true); Store.note('The Reader read the Provost\'s journal.');
               const out = [{ text: 'Fourteen years. It laughs at my jokes.', cls: 'letter' }];
               out.push(wren({ speaker: 'Wren', text: '"It." Huh. She writes *it*.' }, { speaker: 'Wren', text: 'It laughs.' }));
               out.push(wren('A pause, in which Wren decides to be flattered.', 'A pause.'), wren({ speaker: 'Wren', text: 'Well. I *am* funny.' }, { speaker: 'Wren', text: 'She wrote *it*.' }));
-              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s rubbing was read at last.'); out.push({ text: 'And in the primer\'s light the rubbing from Mere\'s niche comes clear on Bookmoth\'s page. It has waited four hundred years for a reader. Bookmoth — all of it, aloud.', cls: 'whisper' }); }
+              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s rubbing was read at last.'); out.push({ text: 'And in the primer\'s light the rubbing from Mere\'s niche comes clear on the Reader\'s page. It has waited four hundred years for a reader. The Reader — all of it, aloud.', cls: 'whisper' }); }
               para(panel, out); Audio.sfx('reveal'); back(); return;
             }
             if (id === 'bell') {
               head('THE MANTEL — HUSH\'S CORNER');
               if (f.MEMORY) { para(panel, ['The bell is quiet now. It has said what it remembers.']); back(); return; }
-              para(panel, ['A small bell, older than the mantel it sits on. A memory-bell: struck, it says back the last thing said near it — but only to an Ear. To the Hearth it hums, and that is all.', { text: 'Hush — cup your ear to your page. Then say what the bell remembers, word for word, before anyone touches the keys.', cls: 'whisper' }]);
-              await ask(panel, 'The bell keeps two voices. Whose?', [{ id: 'sorrel', text: 'Master Sorrel\'s, and Master Tarn\'s.' }, { id: 'vane', text: 'The Envoy\'s, and the Provost\'s.' }, { id: 'wren', text: 'Wren\'s, and the Provost\'s.' }], 'vane', 'The bell hums. Hush — listen again.');
+              para(panel, ['A small bell, older than the mantel it sits on. A memory-bell: struck, it says back the last thing said near it — but only to an Ear. To the Hearth it hums, and that is all.', { text: 'The Listener — cup your ear to your page. Then say what the bell remembers, word for word, before anyone touches the keys.', cls: 'whisper' }]);
+              await ask(panel, 'The bell keeps two voices. Whose?', [{ id: 'sorrel', text: 'Master Sorrel\'s, and Master Tarn\'s.' }, { id: 'vane', text: 'The Envoy\'s, and the Provost\'s.' }, { id: 'wren', text: 'Wren\'s, and the Provost\'s.' }], 'vane', 'The bell hums. The Listener — listen again.');
               if (!api.alive()) return;
-              Store.set('MEMORY', true); Store.note('Hush heard what the memory-bell kept.');
+              Store.set('MEMORY', true); Store.note('The Listener heard what the memory-bell kept.');
               para(panel, ['The bell goes quiet. Far below, the Hearth gutters and steadies, as if it had heard too.', wren({ speaker: 'Wren', text: 'She said that? *Through* her?' }, 'Wren has gone very still on the window seat.'), wren({ speaker: 'Wren', text: 'She never says things like that to my face. Only to Envoys.' }, { speaker: 'Wren', text: 'Through *it*. She said through it.' })]);
               Audio.sfx('chime'); back(); return;
             }
@@ -7611,25 +7619,25 @@ window.VigilMeta = { title: 'Hearthfall' };
               head('THE TAPESTRY — OWL\'S CORNER');
               api.flashArt('ch4_tapestry', { scraped: !!f.TAPESTRY });
               if (f.TAPESTRY) { para(panel, ['The paint is gone. Four figures walk into the flame; the fourth hand holds a flame turned over. It will not go back under.']); back(); return; }
-              para(panel, ['A hall, a fire, and one small figure walking into it alone: the Order\'s picture, woven — no. Painted. Painted *over* something. Owl has been saying so since the door.', { text: 'Scrape. Drag across the cloth, or press the button, until the paint gives. Then Owl says what the last hand holds.', cls: 'whisper' }]);
+              para(panel, ['A hall, a fire, and one small figure walking into it alone: the Order\'s picture, woven — no. Painted. Painted *over* something. The Seer has been saying so since the door.', { text: 'Scrape. Drag across the cloth, or press the button, until the paint gives. Then the Seer says what the last hand holds.', cls: 'whisper' }]);
               await scrape(panel); if (!api.alive()) return;
               api.flashArt('ch4_tapestry', { scraped: true });
-              await ask(panel, 'Four figures, walking into the flame. What does the fourth hand hold?', [{ id: 'child', text: 'A child, by the hand.' }, { id: 'crown', text: 'A crown.' }, { id: 'cold', text: 'A flame, turned over.' }], 'cold', 'Look again. Owl — say what you see, not what the Order painted.');
+              await ask(panel, 'Four figures, walking into the flame. What does the fourth hand hold?', [{ id: 'child', text: 'A child, by the hand.' }, { id: 'crown', text: 'A crown.' }, { id: 'cold', text: 'A flame, turned over.' }], 'cold', 'Look again. The Seer — say what you see, not what the Order painted.');
               if (!api.alive()) return;
-              Store.set('TAPESTRY', true); Store.note('Owl scraped the tapestry and found four.');
+              Store.set('TAPESTRY', true); Store.note('The Seer scraped the tapestry and found four.');
               para(panel, ['Four figures walking into the flame. No child. The fourth hand holds a flame turned over — the glyph that is never written, written.', { text: '"I have seen what is under the paint in this hall," the Envoy said. So he had.', cls: 'omen' }, wren({ speaker: 'Wren', text: 'Four. That\'s — there are four of them. Where\'s the one born of four? Where am I?' }, { speaker: 'Wren', text: 'There\'s no child in it.' })]);
               back(); return;
             }
             if (id === 'chair') {
               head('THE CHAIR — KNOT\'S CORNER');
               if (f.GREY) { para(panel, ['The chair, still warm. The thread is grey. It was grey before you looked.']); back(); return; }
-              para(panel, ['The Provost\'s chair, by the fire, still warm. Nothing in it; nothing on it. Knot — the threads: hers to the four of you, hers to the Convocation, hers to Wren.', { text: 'Knot says the colours. Then the Warden answers for the chair.', cls: 'whisper' }]);
-              await ask(panel, 'The thread from the Provost to Wren is —', [{ id: 'red', text: 'Red. An oath.' }, { id: 'gold', text: 'Gold. The Crown\'s.' }, { id: 'grey', text: 'Grey.' }], 'grey', 'Look again, Knot. The colour is the whole of it.');
+              para(panel, ['The Provost\'s chair, by the fire, still warm. Nothing in it; nothing on it. The Binder — the threads: hers to the four of you, hers to the Convocation, hers to Wren.', { text: 'The Binder says the colours. Then the Warden answers for the chair.', cls: 'whisper' }]);
+              await ask(panel, 'The thread from the Provost to Wren is —', [{ id: 'red', text: 'Red. An oath.' }, { id: 'gold', text: 'Gold. The Crown\'s.' }, { id: 'grey', text: 'Grey.' }], 'grey', 'Look again, the Binder. The colour is the whole of it.');
               if (!api.alive()) return;
-              Store.set('GREY', true); Store.note('Knot saw the grey thread.');
+              Store.set('GREY', true); Store.note('The Binder saw the grey thread.');
               const out = [{ text: 'Grey. The colour of someone who has already said goodbye.', cls: 'omen' }];
-              if (f.ORIEL) { Store.set('ORIEL_NOTE', true); Store.note('Oriel\'s note was found in the Provost\'s chair.'); out.push('Under the cushion, folded small: a note in Master Oriel\'s hand, left for whoever searched this chair. Knot has it. Knot — read it to them.'); }
-              else if (hasMarrowLetter(f)) { Store.set('MARROW_LETTER', true); Store.note('Marrow\'s unsent letter was found in her chair.'); out.push('Under the cushion, an unsent letter in the Provost\'s hand, addressed to the Convocation and never sent. Knot has it. Knot — read it to them.'); }
+              if (f.ORIEL) { Store.set('ORIEL_NOTE', true); Store.note('Oriel\'s note was found in the Provost\'s chair.'); out.push('Under the cushion, folded small: a note in Master Oriel\'s hand, left for whoever searched this chair. The Binder has it. The Binder — read it to them.'); }
+              else if (hasMarrowLetter(f)) { Store.set('MARROW_LETTER', true); Store.note('Marrow\'s unsent letter was found in her chair.'); out.push('Under the cushion, an unsent letter in the Provost\'s hand, addressed to the Convocation and never sent. The Binder has it. The Binder — read it to them.'); }
               else out.push('Under the cushion, nothing but the shape of her.');
               out.push(wren({ speaker: 'Wren', text: 'Grey\'s a colour. I\'ve seen grey. Grey\'s fine.' }, 'Wren does not ask what colour.'));
               if (!f.WREN_SCARED) out.push('Nobody answers.');
@@ -7646,9 +7654,9 @@ window.VigilMeta = { title: 'Hearthfall' };
           const f = s.flags, n = secretsFound(f), out = [];
           out.push(`The study kept four secrets. You found ${['none', 'one', 'two', 'three', 'all four'][n]}.`);
           out.push('The stair creaks. Marrow is back before her ten minutes, which means the Convocation went badly, or quickly, or both.');
-          if (f.TAPESTRY) out.push('She sees the tapestry. She stops in the doorway for a long moment.', { speaker: 'Marrow', text: 'So. Owl.' }, 'And nothing else.');
+          if (f.TAPESTRY) out.push('She sees the tapestry. She stops in the doorway for a long moment.', { speaker: 'Marrow', text: 'So. The Seer.' }, 'And nothing else.');
           if (f.JOURNAL) out.push('The journal is exactly where it was. She notices anyway; she notices everything. She does not mention it.');
-          out.push({ speaker: 'Marrow', text: 'The scroll. Bookmoth reads the glyphs, Owl the mark, Hush the order, Knot the Law. Then you swear, or you do not.' });
+          out.push({ speaker: 'Marrow', text: 'The scroll. The Reader reads the glyphs, the Seer the mark, the Listener the order, the Binder the Law. Then you swear, or you do not.' });
           out.push(wren({ speaker: 'Wren', text: 'For the record, I don\'t get a vote on the whatever-the-cost part. I checked.' }, 'Wren says nothing at all.'));
           return out;
         },
@@ -7664,7 +7672,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         ],
         prompt: 'Swear the Warden\'s Oath?',
         options: [
-          { id: 'swear', text: 'Swear it. Place the glyphs.', sub: 'Knot chooses the lock.', next: 'ch4_oath', set: { REFUSED_OATH: false } },
+          { id: 'swear', text: 'Swear it. Place the glyphs.', sub: 'The Binder chooses the lock.', next: 'ch4_oath', set: { REFUSED_OATH: false } },
           { id: 'refuse', text: 'Refuse to swear.', sub: 'No oath at all. Marrow will not ask twice.', cls: 'dark', next: 'ch4_refused', set: { OATH: 0, OATH_KNOT: false, REFUSED_OATH: true }, note: 'You refused the Warden\'s Oath.' },
         ],
       },
@@ -7672,7 +7680,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'ring', art: 'ch4_scroll', mood: 'court', fx: 'embers', puzzleId: 'ch4_oath', /* untimed and no auto-hint: the design's pacing table gives the oath no hint bell; the table argues as long as it needs */
         text: [
           'The scroll\'s ring: four slots. Above them, three glyphs worn nearly smooth, and a fourth space the scroll calls the lock.',
-          { text: 'Bookmoth places the first glyph. Hush the second. Owl the third. Knot places the lock — and Law 4 says what a lock is.', cls: 'whisper' },
+          { text: 'The Reader places the first glyph. The Listener the second. The Seer the third. The Binder places the lock — and Law 4 says what a lock is.', cls: 'whisper' },
         ],
         config: () => {
           const mine = {};   // slots filled so far (re-placing a slot does not move the keyboard on)
@@ -7680,22 +7688,22 @@ window.VigilMeta = { title: 'Hearthfall' };
             title: 'THE WARDEN\'S OATH — sworn to the Chair', note: 'Pass the keyboard by name. Four glyphs; the last placed is the lock.',
             html: G.inscription([{ shape: 'Spike', inv: false, worn: true }, { shape: 'Flame', inv: false, worn: true }, { shape: 'Spike', inv: true, worn: true }, { shape: 'Crown', inv: false, worn: true, hidden: true }], { showMark: false }).replace('SHIELD', 'LOCK'),
             slots: 4, glyphs: glyphPalette(), fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to swear it',
-            onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Hush', 'Owl', 'Knot'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
+            onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Listener', 'Seer', 'Binder'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
             check: (m) => {
               const three = m[4] === 'THORN' && m[1] === 'ASH' && m[2] === 'WELL';
               if (three && (m[3] === 'KNOT' || m[3] === 'EMBER')) return true;
-              if (three && m[3] === 'COLD') return 'The scroll will not take that lock. Knot — Law 4: which glyphs can lock an oath?';
-              if (three && !m[3]) return 'Three glyphs and no lock. An oath without a lock is a wish. Knot — Law 4.';
-              if (three) return 'The three are right. The lock is not: Knot — Law 4.';
+              if (three && m[3] === 'COLD') return 'The scroll will not take that lock. The Binder — Law 4: which glyphs can lock an oath?';
+              if (three && !m[3]) return 'Three glyphs and no lock. An oath without a lock is a wish. The Binder — Law 4.';
+              if (three) return 'The three are right. The lock is not: Binder — Law 4.';
               return false;
             },
             wrongText: 'Frost creeps over the ring. It resets. The scroll waits.',
           };
         },
         hints: [
-          'Owl — where is the mark on this ring? Bookmoth — three glyphs and a lock; which three?',
-          'Down one, up four, then the lock: Hush\'s order, placed sunwise from the mark at slot 4. Knot\'s Law 4 says which glyphs can be a lock — and what each of them costs.',
-          'THORN in slot 4, ASH in slot 1, WELL in slot 2. Slot 3 is the lock: KNOT or EMBER — both close the oath. Knot chooses which.',
+          'The Seer — where is the mark on this ring? The Reader — three glyphs and a lock; which three?',
+          'Down one, up four, then the lock: Listener\'s order, placed sunwise from the mark at slot 4. The Binder\'s Law 4 says which glyphs can be a lock — and what each of them costs.',
+          'THORN in slot 4, ASH in slot 1, WELL in slot 2. Slot 3 is the lock: KNOT or EMBER — both close the oath. The Binder chooses which.',
         ],
         onSolve: (s, r) => {
           const lock = r && r.map ? r.map[3] : 'KNOT';
@@ -7717,7 +7725,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             out.push('The ring closes under EMBER. The wax of the seal does not change. Marrow looks at the ring, and at the four of you, and sees an oath sworn.');
             out.push({ speaker: 'Marrow', text: 'Bound. Good. Then I need not carry it alone.' });
             out.push('She notices nothing, which is its own kind of grief.');
-            out.push(wren({ speaker: 'Wren', text: 'That one\'s EMBER. *What remains.* Knot, you\'re shaking. Is that a Binder thing?' }, 'Wren is watching Knot, not the ring.'));
+            out.push(wren({ speaker: 'Wren', text: 'That one\'s EMBER. *What remains.* the Binder, you\'re shaking. Is that a Binder thing?' }, 'Wren is watching the Binder, not the ring.'));
           }
           out.push({ speaker: 'Marrow', text: 'When the bells ring, hold them. Hold them whatever it costs. I will do the rest.' });
           out.push(f.WREN_SCARED ? 'Wren gets up off the window seat without being told, and goes to stand beside her.' : { speaker: 'Wren', text: 'She means me. "The rest." I\'m the rest.' });
@@ -7830,7 +7838,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch5_attune: {
         type: 'code', art: 'ch5_foundations', mood: 'dread', fx: 'dust',
         text: ['The word, and the mark beside it. Every phone. Read your Sight; say nothing until all four pages have turned.'],
-        roles: 'Warden of the Hearth (keyboard): **Bookmoth**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **The Reader**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: (s) => F(s).REFUSED_OATH ? 'ch5_door' : 'ch5_gates',
       },
       /* ---------- Mere's door (only if the oath was refused) ---------- */
@@ -7845,7 +7853,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           slots: 4, glyphs: glyphPalette(), answer: { 2: 'ASH', 3: 'THORN', 4: 'WELL' }, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
           wrongText: 'The wall stays a wall. The ring forgets.',
         }),
-        hints: ['Owl knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4; slot 1 empty. Then four hands.'],
+        hints: ['The Seer knows where this ring begins, and which end of the carving the mark is on.', 'Upright, left to right, and sunwise from slot 2: *fire · a gate · down*.', 'ASH at 2, THORN at 3, WELL at 4; slot 1 empty. Then four hands.'],
         onSolve: () => { Store.note('You came down by Mere\'s door, unasked.'); },
         solvedText: ['The wall opens on the stair one flight below. Marrow\'s lantern, ahead, does not slow down.', { speaker: 'Wren', text: '*Told* you they\'d find it.', cls: 'whisper' }, 'Marrow says nothing. She knew.'],
         next: 'ch5_gates',
@@ -7873,12 +7881,12 @@ window.VigilMeta = { title: 'Hearthfall' };
             const filled = Object.keys(m).filter(k => m[k]).length;
             if (m[1] === 'WELL' && m[5] === 'VEIL' && m[4] === 'EMBER' && filled === 3) return true;
             if (m[1] === 'CROWN' && m[2] === 'KNOT' && m[3] === 'THORN') return 'Frost — slow, patient, as if the gate had heard that reading before. It was carved for those coming UP. Read it the way it was cut.';
-            if (m[1] === 'WELL' && m[2] === 'VEIL' && m[3] === 'EMBER') return 'The right words, the wrong way round the ring. Two Laws disagree here, Knot. Which is older?';
+            if (m[1] === 'WELL' && m[2] === 'VEIL' && m[3] === 'EMBER') return 'The right words, the wrong way round the ring. Two Laws disagree here, the Binder. Which is older?';
             if (m[1] === 'WELL' && m[5] === 'VEIL' && m[4] === 'EMBER') return 'Nearly. The gate wants three glyphs and nothing else in the ring.';
             return 'Frost creeps over the ring. It resets.';
           },
         }),
-        hints: ['Which end is the mark on, Owl?', 'Turned means inverted, right to left — and the older Law says *widdershins* from the mark.', 'WELL at 1, VEIL at 5, EMBER at 4. Slots 2 and 3 empty. Then four hands.'],
+        hints: ['Which end is the mark on, the Seer?', 'Turned means inverted, right to left — and the older Law says *widdershins* from the mark.', 'WELL at 1, VEIL at 5, EMBER at 4. Slots 2 and 3 empty. Then four hands.'],
         onSolve: (s, r) => { Store.note('The Turned Gate: read turned, placed widdershins.' + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : '')); },
         solvedText: [
           'The gate does not open so much as forget it was ever shut. Mere\'s grammar: turned, and widdershins, and the older Law binds.',
@@ -7914,7 +7922,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [4, 7],
         text: (s) => [
           'Five shapes, five slots, and a scratch where the ring begins. The bells are silent on the Hearth. Somebody in the room can still count them.',
-          law0(s) ? { text: 'One slot may have to stay empty. Or not. Knot has two Laws about that, written two hundred years apart, and they do not agree.', cls: 'whisper' } : { text: 'One slot may have to stay empty. Knot has a Law about that. Ask what it says — and what it was written over.', cls: 'whisper' },
+          law0(s) ? { text: 'One slot may have to stay empty. Or not. The Binder has two Laws about that, written two hundred years apart, and they do not agree.', cls: 'whisper' } : { text: 'One slot may have to stay empty. The Binder has a Law about that. Ask what it says — and what it was written over.', cls: 'whisper' },
         ],
         config: (s) => ({
           title: 'THE SILENT GATE', note: 'Five shapes carved above the ring, left to right; five muted bells above them:', html: G.inscription(GATE2, { showMark: false }),
@@ -7923,14 +7931,14 @@ window.VigilMeta = { title: 'Hearthfall' };
           check: (m) => {
             const base = m[1] === 'WELL' && m[2] === 'ASH' && m[4] === 'CROWN' && m[5] === 'KNOT';
             if (base && !m[3]) return true;
-            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Frost, thick and sudden, over the third slot alone — the gate will not take that glyph from one Book. Knot: what does the Order say is done with it?'; }
+            if (base && m[3] === 'COLD') { if (law0(s)) return true; return 'Frost, thick and sudden, over the third slot alone — the gate will not take that glyph from one Book. The Binder: what does the Order say is done with it?'; }
             if (base) return 'Four of five sit right. The slot on the mark is the one the Order says is never written — what does the Book say to do with it?';
-            if (m[1] === 'CROWN' && m[2] === 'ASH' && m[4] === 'KNOT' && m[5] === 'WELL') return 'Read right, placed from the wrong slot. The gate begins where the mark is — Owl has it — and the bells say how far from it each glyph sits.';
+            if (m[1] === 'CROWN' && m[2] === 'ASH' && m[4] === 'KNOT' && m[5] === 'WELL') return 'Read right, placed from the wrong slot. The gate begins where the mark is — The Seer has it — and the bells say how far from it each glyph sits.';
             if (m[3] && m[3] !== 'COLD') return 'The slot on the mark takes one glyph only, and the Order says it takes none. Frost.';
             return 'Frost creeps over the ring. It resets.';
           },
         }),
-        hints: ['Hush counts the bells — one bell per shape, first to fifth. A bell\'s count is its slot, counted sunwise from the mark.', 'The first slot from the mark is the one that is never written — Knot\'s Law 6 says why. Owl has the mark.', (s) => law0(s) ? 'WELL at 1, ASH at 2, slot 3 empty — or COLD at 3, written by four hands — CROWN at 4, KNOT at 5.' : 'WELL at 1, ASH at 2, slot 3 empty, CROWN at 4, KNOT at 5. Then four hands.'],
+        hints: ['The Listener counts the bells — one bell per shape, first to fifth. A bell\'s count is its slot, counted sunwise from the mark.', 'The first slot from the mark is the one that is never written — The Binder\'s Law 6 says why. The Seer has the mark.', (s) => law0(s) ? 'WELL at 1, ASH at 2, slot 3 empty — or COLD at 3, written by four hands — CROWN at 4, KNOT at 5.' : 'WELL at 1, ASH at 2, slot 3 empty, CROWN at 4, KNOT at 5. Then four hands.'],
         onSolve: (s, r) => { const cold = r && r.map && r.map[3] === 'COLD'; Store.set('GATE2_COLD', !!cold); Store.note(cold ? 'The Silent Gate: you wrote COLD with four hands.' : 'The Silent Gate: you left the cold slot empty.'); },
         solvedText: (s, r) => r && r.map && r.map[3] === 'COLD' ? [
           'You wrote the glyph that is never written, with four hands on the cold slot — and the gate took it, the way a door takes a key that was cut for it.',
@@ -7950,7 +7958,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: [
           'The third gate is not a door. It is a count.',
           { speaker: 'Marrow', text: 'Mere\'s last ward. It asks each Sighting one question, and wants one number from the four of you. She built it so that no one person could answer it. She did not trust one person. Ever.' },
-          'Each phone will ask you for a **digit** — a job of forty-five seconds. When it is done, say your digit aloud in seat order, Bookmoth first, and the Warden types the four digits as one number.',
+          'Each phone will ask you for a **digit** — a job of forty-five seconds. When it is done, say your digit aloud in seat order, the Reader first, and the Warden types the four digits as one number.',
           { text: 'Every phone: open SPEAK and find *The Founders\' Count*. Do not press Start until the Hearth says START.', cls: 'whisper' },
         ],
         next: 'ch5_count_start', button: 'Everyone has the page — count us in',
@@ -7979,14 +7987,14 @@ window.VigilMeta = { title: 'Hearthfall' };
       },
       ch5_count: {
         type: 'puzzle', puzzle: 'answer', art: 'ch5_gate', artParams: { n: 2, cold: 0.6 }, mood: 'tense', fx: 'motes', puzzleId: 'ch5_count', par: [1.5, 4],
-        text: ['Four digits, one number. Seat order: Bookmoth, Hush, Owl, Knot. A wrong digit is nobody\'s fault and everybody\'s job.'],
+        text: ['Four digits, one number. Seat order: Reader, Listener, Seer, Binder. A wrong digit is nobody\'s fault and everybody\'s job.'],
         config: () => ({
-          title: 'THE FOUNDERS\' COUNT', note: 'Bookmoth · Hush · Owl · Knot — four digits, as one number.',
+          title: 'THE FOUNDERS\' COUNT', note: 'The Reader · the Listener · the Seer · the Binder — four digits, as one number.',
           fields: [{ label: 'the count', placeholder: '· · · ·', len: 4 }], submitText: 'Count',
           accept: (v) => v[0] === '3524',
           onWrong: (v) => { const w = v[0] || ''; if (w.length !== 4 || /\D/.test(w)) return 'Four digits, and only digits.'; let n = 0; for (let i = 0; i < 4; i++) if (w[i] === '3524'[i]) n++; return n === 0 ? 'The gate counts, and disagrees with all four of you.' : `The gate counts ${n === 1 ? 'one digit' : n + ' digits'} true, and does not say which.`; },
         }),
-        hints: ['Each phone yields one digit. Seat order: Bookmoth\'s first, then Hush, then Owl, then Knot. If one is doubted, that phone can count again.', 'Bookmoth counts glyphs that read EMBER — the Crown turned. Hush counts the *lower* bell\'s strikes. Owl counts hollow stones. Knot counts oaths whose lock is KNOT or EMBER — Law 12.', 'Three, five, two, four: **3524**.'],
+        hints: ['Each phone yields one digit. Seat order: Reader\'s first, then the Listener, then the Seer, then the Binder. If one is doubted, that phone can count again.', 'The Reader counts glyphs that read EMBER — the Crown turned. The Listener counts the *lower* bell\'s strikes. The Seer counts hollow stones. The Binder counts oaths whose lock is KNOT or EMBER — Law 12.', 'Three, five, two, four: **3524**.'],
         onSolve: (s, r) => { Store.note('The Founders\' Count: 3524' + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : '')); },
         solvedText: [
           'Three, five, two, four. The count closes, and the gate is simply not there any more.',
@@ -8026,7 +8034,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'ring', art: 'ch5_stair', artParams: { broken: false }, mood: 'tense', fx: 'ash', puzzleId: 'ch5_collapse', par: [1, 2],
         text: [
           'The quick sigil. Two slots cut into the newel, one hand — there is no time for four. Fire, and the absence of fire.',
-          { text: 'Knot has one thing to say before it is written. Let Knot say it. Then write.', cls: 'whisper' },
+          { text: 'The Binder has one thing to say before it is written. Let the Binder say it. Then write.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE COLLAPSE — ONE HAND', note: 'Two slots. The Warden places both. No ritual; there is no time.',
@@ -8190,7 +8198,7 @@ window.VigilMeta = { title: 'Hearthfall' };
   }
   /* event n (1-based) falls on beat 2n-1: t = LEAD + beatMs*(2n-1) */
   function roundEvents(script, bpm) { const beatMs = 60000 / bpm; return parseScript(script).map((e, i) => Object.assign({ t: Math.round(LEAD + beatMs * (2 * i + 1)) }, e)); }
-  const callWord = (e) => e.kind === 'all' ? 'ALL' : e.lanes.map(l => ['BOOK', 'HUSH', 'OWL', 'KNOT'][l]).join('+');
+  const callWord = (e) => e.kind === 'all' ? 'ALL' : e.lanes.map(l => ['READER', 'LISTENER', 'SEER', 'BINDER'][l]).join('+');
   const scriptWords = (script) => parseScript(script).map(callWord).join(' · ');
 
   const volunteerLane = (s) => { const v = s.flags.VOLUNTEER | 0; return v >= 1 && v <= 4 ? v - 1 : null; };
@@ -8262,10 +8270,10 @@ window.VigilMeta = { title: 'Hearthfall' };
   const REPLY = {
     listener: { LOUD: 'You said loud. In the laundry. I let you.', NO: 'You said no. You were the only one who didn\'t flinch.' },
     seer: { TELL: 'You told me in the laundry. I thought you were being poetic.', NOTHING: 'You looked at the wall. You\'re looking at it now.' },
-    reader: { TELL: '\'A small brave bird.\' Bookmoth. It isn\'t even in your alphabet.', DONTKNOW: 'You said you didn\'t know yet. Do you now?' },
+    reader: { TELL: '\'A small brave bird.\' The Reader. It isn\'t even in your alphabet.', DONTKNOW: 'You said you didn\'t know yet. Do you now?' },
     binder: { YES: 'You said yes. You see every thread in this room. Show me mine.', DONTKNOW: 'That was the kindest thing anyone said to me tonight.' },
   };
-  const FALLBACK = { listener: 'You never answered me in the laundry, Hush. You\'re answering now.', seer: 'You never answered me in the laundry, Owl. You\'re answering now.', reader: 'You never answered me in the laundry, Bookmoth. You\'re answering now.', binder: 'You never answered me in the laundry, Knot. You\'re answering now.' };
+  const FALLBACK = { listener: 'You never answered me in the laundry, the Listener. You\'re answering now.', seer: 'You never answered me in the laundry, the Seer. You\'re answering now.', reader: 'You never answered me in the laundry, the Reader. You\'re answering now.', binder: 'You never answered me in the laundry, the Binder. You\'re answering now.' };
   const TRUTH = { listener: 'NO', seer: 'TELL', reader: 'DONTKNOW', binder: 'DONTKNOW' };
   const wrenReply = (s, role) => { const v = W(s, role); return (REPLY[role][v]) || FALLBACK[role]; };
   const asked = (role, right, lead, wrongLead) => (s) => [
@@ -8357,7 +8365,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch6_attune: {
         type: 'code', art: 'ch6_lid', mood: 'dread', fx: 'ash', flame: 0.2,
         text: ['Cut into the rim of the lid, where the four ropes meet, a word worn nearly smooth by chalk and salt. Each of you: open your Companion and turn the page with it — and its mark.'],
-        roles: 'Warden of the Hearth (keyboard): **all four keys**. Voice (reads aloud): **Hush**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **all four keys**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: 'ch6_ready',
       },
       /* ---------- the ready screen ---------- */
@@ -8368,8 +8376,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: (s) => {
           const v = volunteerLane(s);
           const out = [
-            'Four lanes, left to right: Bookmoth, Hush, Owl, Knot. A light falls down your lane; press your key as it crosses the line. Lights joined across lanes are a chord — those hands together, within a breath. A purple chain across every lane means everyone.',
-            'Three rounds. Each round the pattern changes, and Hush will tell you how before it starts. Seven bells in ten hold the Cold; fewer than that cracks a bell — the night goes on either way.',
+            'Four lanes, left to right: Reader, Listener, Seer, Binder. A light falls down your lane; press your key as it crosses the line. Lights joined across lanes are a chord — those hands together, within a breath. A purple chain across every lane means everyone.',
+            'Three rounds. Each round the pattern changes, and the Listener will tell you how before it starts. Seven bells in ten hold the Cold; fewer than that cracks a bell — the night goes on either way.',
           ];
           if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first two rounds — ${nick(v)}'s Sight is up the Stair, holding a thread. ${nick(neighbourOf(v, [v]))}, take both keys: ${nick(v)}'s bells fall into your lane.`, cls: 'whisper' });
           out.push('First, a practice peal with these lanes. Nothing is at stake in it. Then the bells.');
@@ -8381,7 +8389,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE BELLS OF THORNHALLOW — READY' }));
           const grid = UI.el('div', { class: 'ch6-ready' });
           const rounds = UI.el('div', { class: 'ch6-rounds' });
-          [['Round one', '70 to the minute · 24 bells · one hand at a time'], ['Round two', '76 to the minute · 24 bells · chords: two, three, all four'], ['Round three', '60 to the minute · 24 bells · the lights go dark; Hush\'s bell is the voice']].forEach(([a, b]) => rounds.appendChild(UI.el('div', { class: 'ch6-round', html: `<b>${a}</b><span>${b}</span>` })));
+          [['Round one', '70 to the minute · 24 bells · one hand at a time'], ['Round two', '76 to the minute · 24 bells · chords: two, three, all four'], ['Round three', '60 to the minute · 24 bells · the lights go dark; the Listener\'s bell is the voice']].forEach(([a, b]) => rounds.appendChild(UI.el('div', { class: 'ch6-round', html: `<b>${a}</b><span>${b}</span>` })));
           grid.appendChild(rounds);
           const lanes = UI.el('div', { class: 'ch6-lanes' });
           for (let i = 0; i < 4; i++) lanes.appendChild(UI.el('div', { class: 'ch6-lane p' + i + (v === i ? ' silent' : ''), html: `${nick(i)}${v === i ? ' — silent, rounds 1–2' : ''}<span class="k">${window.VigilInput.keyLabel(i)}</span>` }));
@@ -8394,7 +8402,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           slow.appendChild(slowTxt); slow.appendChild(slowBtn); paint();
           grid.appendChild(slow);
           wrap.appendChild(grid);
-          wrap.appendChild(UI.el('p', { class: 'small', style: { marginTop: '12px' }, text: 'Hush: your Sight has the shape of every round, and the third round\'s whole script. Read it now; nobody else can.' }));
+          wrap.appendChild(UI.el('p', { class: 'small', style: { marginTop: '12px' }, text: 'The Listener: your Sight has the shape of every round, and the third round\'s whole script. Read it now; nobody else can.' }));
           box.appendChild(wrap);
           api.button('Practice peal', () => resolve('ch6_practice'), 'primary');
         }),
@@ -8407,7 +8415,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const bpm = tempo(s, PRACTICE.bpm); beatOverlay({ lead: LEAD, beatMs: 60000 / bpm, total: 16, numbers: false });
           return { practice: true, laneNames: L.nicks, events: roundEvents(PRACTICE.script, bpm), fallMs: 1800, windowMs: win(s, 350), braceWindowMs: win(s, 300), deadLanes: volunteerLane(s) != null ? [volunteerLane(s)] : [], pulse: false };
         },
-        solvedText: (s, r) => [`${r.hits} of ${r.total}. ${r.hits === r.total ? 'Clean. Marrow, at the lid, almost smiles.' : r.hits >= r.total * 0.7 ? 'That would hold. Do it again if you want; the Cold is patient tonight.' : 'The bells do not mind a bad practice. Ring it again if you like — nothing counted.'}`, { text: 'When you are ready, the first round. Hush has the shape of it.', cls: 'whisper' }],
+        solvedText: (s, r) => [`${r.hits} of ${r.total}. ${r.hits === r.total ? 'Clean. Marrow, at the lid, almost smiles.' : r.hits >= r.total * 0.7 ? 'That would hold. Do it again if you want; the Cold is patient tonight.' : 'The bells do not mind a bad practice. Ring it again if you like — nothing counted.'}`, { text: 'When you are ready, the first round. The Listener has the shape of it.', cls: 'whisper' }],
         next: 'ch6_round1', button: 'Ring the first round',
       },
       /* ---------- rounds ---------- */
@@ -8450,8 +8458,8 @@ window.VigilMeta = { title: 'Hearthfall' };
             out.push({ text: `${nick(v)}, your Sight comes back like blood into a numb hand. Open it. The rest of the chapter is yours again — and so is your bell.`, cls: 'whisper' });
           }
           out.push('Then Marrow does something to the lamps. There are no lamps. The chamber goes dark except for the coin of the Hearth far above, and the beat of the lid under your feet, which you can feel now more than hear.');
-          out.push({ speaker: 'Marrow', text: 'The Founders rang the last pattern blind. One of them called it; three of them rang. Hush — your bell is the voice. Nobody in this room can see a light fall. You can see the script. Call it.' });
-          out.push('The Hearth will count the beats aloud, one to forty-eight. Hush calls each bell two bells ahead — four beats, four seconds — in one word: **BOOK**, **OWL**, **KNOT**, or **ALL**. Bookmoth, Owl, Knot: press on the beat you were given. Sixty to the minute. The lights are gone. The line is still there.');
+          out.push({ speaker: 'Marrow', text: 'The Founders rang the last pattern blind. One of them called it; three of them rang. The Listener — your bell is the voice. Nobody in this room can see a light fall. You can see the script. Call it.' });
+          out.push('The Hearth will count the beats aloud, one to forty-eight. The Listener calls each bell two bells ahead — four beats, four seconds — in one word: **READER**, **SEER**, **BINDER**, or **ALL**. The Reader, the Seer, the Binder: press on the beat you were given. Sixty to the minute. The lights are gone. The line is still there.');
           return out;
         },
         next: 'ch6_round3', button: 'Ring it blind',
@@ -8459,11 +8467,11 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch6_round3: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', mood: 'dread', fx: 'void', flame: 0.15, puzzleId: 'ch6_round3', par: 3.5,
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); },
-        text: (s) => [`Twenty-four bells at sixty${s.flags.SLOW_BELLS ? ', eased' : ''}, on the odd beats: one, three, five. Hush calls; three hands ring. Nothing falls that you can see.`],
+        text: (s) => [`Twenty-four bells at sixty${s.flags.SLOW_BELLS ? ', eased' : ''}, on the odd beats: one, three, five. The Listener calls; three hands ring. Nothing falls that you can see.`],
         config: (s) => bellCfg(s, 3),
         hints: [
-          'Hush reads the list; the Hearth reads the count. A bell falls on every *odd* beat — one, three, five — so Hush calls the bell for beat five while the count says one.',
-          'Ring on the count, not on the call: when Hush says OWL, Owl presses on the next odd beat after the one that is sounding. ALL is Bookmoth, Owl and Knot together. Slow bells ease the count to forty-eight to the minute.',
+          'The Listener reads the list; the Hearth reads the count. A bell falls on every *odd* beat — one, three, five — so the Listener calls the bell for beat five while the count says one.',
+          'Ring on the count, not on the call: when the Listener says SEER, the Seer presses on the next odd beat after the one that is sounding. ALL is Reader, Seer and Binder together. Slow bells ease the count to forty-eight to the minute.',
           (s) => `The dark round, in order (one bell every odd beat from beat 1): ${scriptWords(ROUNDS[3].script)}.`,
         ],
         onSolve: roundSolve(3),
@@ -8495,13 +8503,13 @@ window.VigilMeta = { title: 'Hearthfall' };
           { speaker: 'Wren', text: 'Before I do — I asked you all something in the laundry. I\'ll ask again. Out loud, this time. Look at me when you answer.' },
           { text: 'Four questions, each for the one whose gift it is. The table may argue. The one asked must answer.', cls: 'whisper' },
         ],
-        next: 'ch6_ask_owl', button: 'Owl first',
+        next: 'ch6_ask_owl', button: 'Seer first',
       },
       ch6_ask_owl: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_OWL',
-        text: [{ speaker: 'Wren', text: 'Owl. You see under things. Which way does my shadow fall?' }],
-        prompt: 'Owl answers.',
-        hints: ['Owl\'s page. Every chapter.', 'The under-layer of the dormitory, the vault, the study, this chamber: four shadows fall one way from every fire. One does not.', 'TOWARD THE FIRE.'],
+        text: [{ speaker: 'Wren', text: 'Seer. You see under things. Which way does my shadow fall?' }],
+        prompt: 'The Seer answers.',
+        hints: ['The Seer\'s page. Every chapter.', 'The under-layer of the dormitory, the vault, the study, this chamber: four shadows fall one way from every fire. One does not.', 'TOWARD THE FIRE.'],
         options: [
           askOpt('away', 'Away from the fire. Like everyone\'s.', 'seer', false, 'ch6_ask_hush', '', 'Wren glances at the coin of light overhead, and then at the floor by Wren\'s feet, and says nothing about it.'),
           askOpt('toward', 'Toward the fire.', 'seer', true, 'ch6_ask_hush', 'Wren nods once, as if a sum had come out.', ''),
@@ -8510,9 +8518,9 @@ window.VigilMeta = { title: 'Hearthfall' };
       },
       ch6_ask_hush: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_HUSH',
-        text: [{ speaker: 'Wren', text: 'Hush. You hear every heart in a room. Can you hear mine?' }],
-        prompt: 'Hush answers.',
-        hints: ['Hush\'s page. The heartbeats, every chapter.', 'Five names in the dormitory, nine Masters in the Hall, everyone on the Stair — one line on every page has always been flat.', 'NONE.'],
+        text: [{ speaker: 'Wren', text: 'Listener. You hear every heart in a room. Can you hear mine?' }],
+        prompt: 'The Listener answers.',
+        hints: ['The Listener\'s page. The heartbeats, every chapter.', 'Five names in the dormitory, nine Masters in the Hall, everyone on the Stair — one line on every page has always been flat.', 'NONE.'],
         options: [
           askOpt('loud', 'Loud.', 'listener', false, 'ch6_ask_bookmoth', '', 'Wren smiles at that, which is worse than if Wren had not.'),
           askOpt('faint', 'Faint. Far off.', 'listener', false, 'ch6_ask_bookmoth', '', 'Wren tilts a head, listening for it too, and does not find it either.'),
@@ -8521,9 +8529,9 @@ window.VigilMeta = { title: 'Hearthfall' };
       },
       ch6_ask_bookmoth: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_BOOKMOTH',
-        text: [{ speaker: 'Wren', text: 'Bookmoth. You read the old tongue now. What does my name mean?' }],
-        prompt: 'Bookmoth answers.',
-        hints: ['Bookmoth\'s page. The glossary, since the study.', 'The Vigil roll spells it WRENN in the older alphabet — and the lexicon\'s gloss for COLD already says the same word.', 'A HOLLOW — the space inside a bell.'],
+        text: [{ speaker: 'Wren', text: 'Reader. You read the old tongue now. What does my name mean?' }],
+        prompt: 'The Reader answers.',
+        hints: ['The Reader\'s page. The glossary, since the study.', 'The Vigil roll spells it WRENN in the older alphabet — and the lexicon\'s gloss for COLD already says the same word.', 'A HOLLOW — the space inside a bell.'],
         options: [
           askOpt('bird', 'A small bird. A brave one.', 'reader', false, 'ch6_ask_knot', '', 'Wren waits a moment longer, in case there is more, and there is not.'),
           askOpt('hollow', 'A hollow. The space inside a bell — the part that rings.', 'reader', true, 'ch6_ask_knot', 'Wren looks up at the four bells, and at the dark inside each of them, and back.', ''),
@@ -8532,9 +8540,9 @@ window.VigilMeta = { title: 'Hearthfall' };
       },
       ch6_ask_knot: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_KNOT',
-        text: [{ speaker: 'Wren', text: 'Knot. You see the threads. Do I have one?' }],
-        prompt: 'Knot answers.',
-        hints: ['Knot\'s page. Wren\'s entry, every chapter.', '"No thread found. Not unbound — the knot itself." It has said that since the dormitory.', 'NONE.'],
+        text: [{ speaker: 'Wren', text: 'Binder. You see the threads. Do I have one?' }],
+        prompt: 'The Binder answers.',
+        hints: ['The Binder\'s page. Wren\'s entry, every chapter.', '"No thread found. Not unbound — the knot itself." It has said that since the dormitory.', 'NONE.'],
         options: [
           askOpt('red', 'Red. An oath — to us.', 'binder', false, 'ch6_iknow', '', 'Wren holds out an arm, as if a thread might be seen on it, and the arm is only an arm.'),
           askOpt('grey', 'Grey. Grief.', 'binder', false, 'ch6_iknow', '', 'Wren looks past you at the Provost when you say grey, and does not argue.'),
@@ -8563,9 +8571,9 @@ window.VigilMeta = { title: 'Hearthfall' };
         enter: () => { Store.note('Marrow confessed what came out of the fire.'); },
         text: [
           'Nobody says anything for a while. The Hearth, far above, gutters — and for a moment the shaft is full of a light that comes from below, blue, and the underside of the prophecy stone is lit from an angle nobody has ever lit it from.',
-          { text: 'The fire has never been this low. Owl — the foot of the stone.', cls: 'big' },
+          { text: 'The fire has never been this low. The Seer — the foot of the stone.', cls: 'big' },
           'Eight shapes, cut deep, in a line. The Order has read them from the Hall side, over the fire, for four hundred years, and the fire has hidden the foot of the stone every one of those years — the foot, where a carver puts the mark.',
-          { text: 'Bookmoth has the shapes. Owl has the foot. Hush has the tune. Knot has the Law. Lay it on the strip the way it was carved.', cls: 'whisper' },
+          { text: 'The Reader has the shapes. The Seer has the foot. The Listener has the tune. The Binder has the Law. Lay it on the strip the way it was carved.', cls: 'whisper' },
         ],
         next: 'ch6_strip', button: 'Read it',
       },
@@ -8582,16 +8590,16 @@ window.VigilMeta = { title: 'Hearthfall' };
           check: (m) => {
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (got.every((g, i) => g === TURNED[i])) return true;
-            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. Hush — does the tune agree with that? Owl — which end is the mark on?';
-            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also inverts every glyph. Bookmoth: every shape reads as its other word.';
+            if (got.every((g, i) => g === NAIVE[i])) return 'Read upright, it says what the Order has said for four hundred years. The strip stays cold. The Listener — does the tune agree with that? The Seer — which end is the mark on?';
+            if (got.every((g, i) => g === NAIVE.slice().reverse()[i])) return 'Right to left — but a turned line also inverts every glyph. The Reader: every shape reads as its other word.';
             if (got.every((g, i) => g === TURNED.slice().reverse()[i])) return 'Every glyph inverted — but a turned line is read from its mark, right to left. Slot 1 is the shape farthest from the mark.';
             if (got.some(g => !g)) return 'Eight shapes, eight slots. COLD is a glyph too, whatever the Order says; the stone shows the shape.';
             return 'The stone does not answer. Frost feathers across the strip and it clears.';
           },
         }),
         hints: [
-          'Owl — the foot of the stone.',
-          'Turned: right to left, every glyph flips — and a glyph keeps its place on the stone (Knot, Law 10). Hush — where is the rest?',
+          'The Seer — the foot of the stone.',
+          'Turned: right to left, every glyph flips — and a glyph keeps its place on the stone (The Binder, Law 10). The Listener — where is the rest?',
           'Slot 1 KNOT, slot 2 CROWN, slot 3 ASH, slot 4 WELL, slot 5 VEIL, slot 6 EMBER, slot 7 ASH, slot 8 COLD. Then four hands.',
         ],
         onSolve: (s) => {
@@ -8619,7 +8627,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch6_open: {
         art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.14,
         text: (s) => [
-          { text: 'Knot, your Book turns a page by itself: *Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.* Law 0 is written again, and it is older than Law 6.', cls: 'whisper' },
+          { text: 'Binder, your Book turns a page by itself: *Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.* Law 0 is written again, and it is older than Law 6.', cls: 'whisper' },
           { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
           'Wren has been very quiet. Wren looks at the four of you, and at the lid, and at the shaft full of white light going orange again, and grins — the sideways one, the one from the dormitory door.',
           { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
@@ -8711,10 +8719,10 @@ window.VigilMeta = { title: 'Hearthfall' };
         { id: 'ch7_argue1', label: 'Marrow bars the Walk', col: 1, row: 4, kind: 'choice', secret: true },
         { id: 'ch7_dec_vane', label: 'Wren given to Vane', col: 2, row: 0, kind: 'end', secret: true },
         { id: 'ch7_tokens', label: 'Four sealed words', col: 2, row: 2 },
-        { id: 'ch7_p0', label: 'only Bookmoth knows', col: 3, row: 0, kind: 'end', secret: true },
-        { id: 'ch7_p1', label: 'only Hush knows', col: 3, row: 1, kind: 'end', secret: true },
-        { id: 'ch7_p2', label: 'only Owl knows', col: 3, row: 3, kind: 'end', secret: true },
-        { id: 'ch7_p3', label: 'only Knot knows', col: 3, row: 4, kind: 'end', secret: true },
+        { id: 'ch7_p0', label: 'only the Reader knows', col: 3, row: 0, kind: 'end', secret: true },
+        { id: 'ch7_p1', label: 'only the Listener knows', col: 3, row: 1, kind: 'end', secret: true },
+        { id: 'ch7_p2', label: 'only the Seer knows', col: 3, row: 3, kind: 'end', secret: true },
+        { id: 'ch7_p3', label: 'only the Binder knows', col: 3, row: 4, kind: 'end', secret: true },
         { id: 'ch7_bargains_done', label: 'Bargains, in the room', col: 3, row: 2, kind: 'choice', secret: true, when: (s) => accepted(s).length + kept(s).length + broken(s).length > 0 },
         { id: 'ch7_sigil', label: 'The Great Sigil', col: 4, row: 2 },
         { id: 'ch7_cold', label: 'Cold Hearth', col: 4, row: 4, kind: 'end', secret: true, when: (s) => (s.flags.COLD_HEARTH_ATTEMPTS | 0) > 0 },
@@ -8776,7 +8784,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           Store.save();
         },
         text: ['Cut into the rim of the floor-ring, the seventh word. Each of you: turn the page with it, and read. Say nothing yet — there will be time to say everything.'],
-        roles: 'Warden of the Hearth (keyboard): **passed around by name**, then all four keys. Voice (reads aloud): **Knot**.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **passed around by name**, then all four keys. Voice (reads aloud): **The Binder**.', sightSeconds: 90,
         next: 'ch7_decision',
       },
 
@@ -8796,14 +8804,14 @@ window.VigilMeta = { title: 'Hearthfall' };
           { id: 'vane', text: 'GIVE WREN TO VANE.', sub: 'The Crown keeps the child. Nobody walks.', cls: 'dark', next: 'ch7_dec_vane', set: { DECISION: 'VANE' }, note: 'You gave Wren to the Envoy.', if: (s) => !s.flags.VANE_ALLY },
           { id: 'refuse', text: 'REFUSE. Nobody walks.', sub: 'Not Wren, not any of you. Let the fire go out and see.', next: 'ch7_dec_refuse', set: { DECISION: 'REFUSE' }, note: 'You refused to send anyone.' },
           { id: 'fourfold', text: 'THE FOURFOLD WALK.', sub: 'Four who love what they close. The road the Founders took.', cls: 'bright', next: (s) => oathKnot(s) ? 'ch7_argue1' : 'ch7_dec_fourfold', set: { DECISION: 'FOURFOLD' }, note: 'You chose the Fourfold Walk.', if: (s) => !!s.flags.WALK_UNLOCKED },
-          { id: 'wall', text: 'SHOW VANE THE WALL.', sub: 'Owl scraped the tapestry. Turn it to him.', next: 'ch7_wall', if: (s) => !!s.flags.TAPESTRY && !s.flags.VANE_ALLY },
+          { id: 'wall', text: 'SHOW VANE THE WALL.', sub: 'The Seer scraped the tapestry. Turn it to him.', next: 'ch7_wall', if: (s) => !!s.flags.TAPESTRY && !s.flags.VANE_ALLY },
         ],
       },
       ch7_wall: {
         art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06, sfx: 'reveal',
         enter: (s) => { s.flags.VANE_ALLY = true; s.flags.VANE_STOOD_DOWN = true; Store.save(); },
         text: [
-          'Owl says what is under the paint, in the same words as in the study, and the Hearth turns the tapestry to the chamber\'s edge: four figures, no child, the fourth hand writing a flame the wrong way up.',
+          'The Seer says what is under the paint, in the same words as in the study, and the Hearth turns the tapestry to the chamber\'s edge: four figures, no child, the fourth hand writing a flame the wrong way up.',
           'Vane looks at it for a long time.',
           { speaker: 'Vane', text: 'Twenty-two years. I told them, Ilsabet. I stood in your Hall with the paint under my nails and told them, and they sent me to the capital to learn manners.' },
           { speaker: 'Vane', text: 'Nobody scraped the paint. Not one of them. Not once.' },
@@ -8823,7 +8831,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         ],
         prompt: 'Cite a clue.',
         options: [
-          { id: 'stone', text: 'The prophecy stone is carved turned — Owl saw the mark at its foot, on the right. Read that way, it says four.', next: 'ch7_argue_yield', after: ['Marrow closes her eyes.', { speaker: 'Marrow', text: 'The foot of the stone. Four hundred years of fire in front of it, and one Seer with the fire low enough to look.' }] },
+          { id: 'stone', text: 'The prophecy stone is carved turned — The Seer saw the mark at its foot, on the right. Read that way, it says four.', next: 'ch7_argue_yield', after: ['Marrow closes her eyes.', { speaker: 'Marrow', text: 'The foot of the stone. Four hundred years of fire in front of it, and one Seer with the fire low enough to look.' }] },
           { id: 'vane', text: 'Vane says four went in. He saw the paint.', next: 'ch7_argue2', after: [{ speaker: 'Marrow', text: 'Vane has said many things in my Hall. An oath does not bend to an Envoy. Again.' }] },
           { id: 'feel', text: 'Because it\'s Wren, and we\'re not doing it.', next: 'ch7_argue2', after: [{ speaker: 'Marrow', text: 'I know. I have known for fourteen years. That is not a reading. Again.' }] },
         ],
@@ -8833,7 +8841,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: [{ speaker: 'Marrow', text: 'You have read more of this school tonight than most Masters read in a life. Use it. One thing.' }],
         prompt: 'Cite a clue.',
         options: [
-          { id: 'law0', text: 'Law 0 — "COLD is written by four hands" — struck in 212, the same year and the same hand as Law 6. Knot read the page.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The same hand. Yes. They could not afford four Masters, so they made it grammar.' }] },
+          { id: 'law0', text: 'Law 0 — "COLD is written by four hands" — struck in 212, the same year and the same hand as Law 6. The Binder read the page.', next: 'ch7_argue_yield', after: [{ speaker: 'Marrow', text: 'The same hand. Yes. They could not afford four Masters, so they made it grammar.' }] },
           { id: 'mere', text: 'Mere\'s rubbing: "I offered to go alone and was refused. One was never asked." The Founder who kept the fire wrote it herself.', next: 'ch7_argue_yield', if: (s) => !!(s.flags.LETTER_READ || s.flags.LETTER), after: [{ speaker: 'Marrow', text: 'Mere. Who kept the fire, *after*. I have that sheet in my study. I have had it for twenty years.' }] },
           { id: 'break', text: 'Then we break the oath.', next: 'ch7_argue3', cls: 'dark', after: [{ speaker: 'Marrow', text: 'KNOT cannot be unbound. You do not get to be brave by forgetting what you signed. One more. The last one, and then I decide for you.' }] },
         ],
@@ -8995,7 +9003,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const sh = shieldCount(s);
           const out = [
             'The floor-ring: eight sockets in a circle, the whole grammar of the night at once. Around the walls, two inscriptions in two halves — one on the west wall, one on the east.',
-            'Carved on the rim, in the Founders\' hand, a Law the fire cannot read. Knot can; it is on the Binder\'s page, and on Bookmoth\'s.',
+            'Carved on the rim, in the Founders\' hand, a Law the fire cannot read. The Binder can; it is on the Binder\'s page, and on the Reader\'s.',
           ];
           if (sh.west || sh.east) out.push(`${sh.west && sh.east ? 'Two soldiers stand' : 'A soldier stands'} against the wall${sh.west && sh.east ? 's' : ''}, shield up, and a glyph is behind ${sh.west && sh.east ? 'each' : 'it'}. A shield hides a carving; it does not change it.`);
           else if (s.flags.VANE_ALLY) out.push('Vane\'s soldiers face the stair. Nothing stands against the walls.');
@@ -9009,13 +9017,13 @@ window.VigilMeta = { title: 'Hearthfall' };
         enter: (s) => ensureClock(s),
         text: [
           'Eight slots, sunwise. Two walls, two marks, seven Laws and one that was struck. Nobody at this table can do another\'s job.',
-          { text: 'Bookmoth reads. Owl calls the marks. Hush holds the Hymn and its rest. Knot reconciles the Laws aloud — all of them, at once.', cls: 'whisper' },
+          { text: 'The Reader reads. The Seer calls the marks. The Listener holds the Hymn and its rest. The Binder reconciles the Laws aloud — all of them, at once.', cls: 'whisper' },
         ],
         config: (s) => {
           const sh = shieldCount(s);
           const west = WEST.map((it, i) => Object.assign({}, it, { hidden: sh.west && i === 1 }));
           const east = EAST.map((it, i) => Object.assign({}, it, { hidden: sh.east && i === 1 }));
-          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim, in the Founders' hand: a Law — Knot has it</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
+          const html = `<div class="ch7-walls"><div class="ch7-wall"><div class="ch7-wall-name">West wall</div>${G.inscription(west, { showMark: false })}</div><div class="ch7-wall"><div class="ch7-wall-name">East wall</div>${G.inscription(east, { showMark: false })}</div></div><div class="ch7-rim">on the rim, in the Founders' hand: a Law — The Binder has it</div><div class="ch7-caller" id="ch7-caller">${nick(0)}, the first glyph.</div>`;
           let placed = 0;
           return {
             title: 'THE GREAT SIGIL', html, slots: 8, glyphs: glyphPalette(), allowEmpty: true, fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat. The Hymn plays.',
@@ -9032,8 +9040,8 @@ window.VigilMeta = { title: 'Hearthfall' };
           };
         },
         hints: [
-          'The east wall is turned; the west is not; each has its own mark — Owl has both. Bookmoth has both readings of each wall.',
-          (s) => 'Turned means widdershins from its mark — Owl says which mark, Hush says which reading climbs. Knot\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: the Chair\'s glyph at the first mark.' : '.'),
+          'The east wall is turned; the west is not; each has its own mark — The Seer has both. The Reader has both readings of each wall.',
+          (s) => 'Turned means widdershins from its mark — The Seer says which mark, the Listener says which reading climbs. The Binder\'s Laws say what the empty slot is' + (oathKnot(s) ? ' — and, because you swore under KNOT, where the ring begins: the Chair\'s glyph at the first mark.' : '.'),
           (s) => oathKnot(s)
             ? 'CROWN in slot 1, WELL in 2, ASH in 3, THORN in 4, KNOT in 5, VEIL in 6, EMBER in 7, and slot 8 left empty (or COLD, by four hands). Then four hands.'
             : 'THORN in slot 1, KNOT in 2, VEIL in 3, EMBER in 4, slot 5 left empty (or COLD, by four hands), CROWN in 6, WELL in 7, ASH in 8. Then four hands.',
@@ -9055,8 +9063,8 @@ window.VigilMeta = { title: 'Hearthfall' };
           const k = kept(s), cracked = s.flags.BELLS_CRACKED | 0;
           const out = ['Press once to sound your note; it holds. All four within a heartbeat. The fire climbs only while all four sound. When the Hymn reaches its rest, let go — together, within half a second — and the Hearth gives no count. Count yourselves in aloud.'];
           if (k.length) out.push(`${nickOf(k[0])}'s key is bound to the Envoy. Three notes; hold it eight seconds; one note missing.`);
-          if (cracked) out.push(`${cracked} cracked bell${cracked > 1 ? 's' : ''}: ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light. Press on Hush's count.`);
-          out.push({ text: 'Each failure costs thirty seconds of midnight. Hush has the count.', cls: 'whisper' });
+          if (cracked) out.push(`${cracked} cracked bell${cracked > 1 ? 's' : ''}: ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light. Press on the Listener's count.`);
+          out.push({ text: 'Each failure costs thirty seconds of midnight. The Listener has the count.', cls: 'whisper' });
           return out;
         },
         config: (s) => {
@@ -9072,7 +9080,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           };
         },
         hints: [
-          'Hush has the count on the Listener\'s page: press on "four"; release on "one — two — three — off".',
+          'The Listener has the count on the Listener\'s page: press on "four"; release on "one — two — three — off".',
           'Say it aloud, all four, before anyone moves: "one, two, three, OFF" — and let go on OFF. The release must land within half a second.',
           'If it fails a third time the Hearth counts for you and the night goes on. Nothing ends here except the clock.',
         ],
@@ -9137,7 +9145,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: [
           'The eighth word. Every phone, now — it is the last time tonight anyone will ask you to look down.',
         ],
-        roles: 'Bookmoth first, then Hush, then Owl, then Knot. When your phone has gone dark, put it face down on the table.',
+        roles: 'The Reader first, then the Listener, then the Seer, then the Binder. When your phone has gone dark, put it face down on the table.',
         button: 'Every phone is dark',
         next: 'ch7_fourhands',
       },
@@ -9182,8 +9190,8 @@ window.VigilMeta = { title: 'Hearthfall' };
             out.push({ text: `Walked into the Cold: ${UI.list(w)}. Stayed: no one. Wren waited on the stones.`, cls: 'big' });
             out.push('The Hearth roars white. For a moment nobody in the chamber can see anything at all, and Vane\'s soldiers, who have seen fire, put their arms over their faces like children.');
             out.push('Then four people come out of the white, one after another, grey-eyed and ordinary, blinking like people who have woken somewhere warm.');
-            out.push('Bookmoth looks at the wall and sees shapes. Hush hears a room, the way rooms sound. Owl looks at the floor and it is just a floor. Knot looks at Marrow and does not know what she is feeling, and has to ask.');
-            out.push('Wren is sitting on the warm stones. Wren has been crying, which Wren will deny. And — Hush would tell you, if Hush could still hear it — there is a heartbeat.');
+            out.push('The Reader looks at the wall and sees shapes. The Listener hears a room, the way rooms sound. The Seer looks at the floor and it is just a floor. The Binder looks at Marrow and does not know what she is feeling, and has to ask.');
+            out.push('Wren is sitting on the warm stones. Wren has been crying, which Wren will deny. And — The Listener would tell you, if the Listener could still hear it — there is a heartbeat.');
             out.push({ speaker: 'Wren', text: 'You *idiots*. You absolute — I had a *speech*.' });
             out.push('Marrow sits down on the floor beside the child she named, and says nothing, because she has been allowed to say nothing for the first time in fourteen years.');
             out.push('Vane\'s report to the Crown, written that morning on the chamber\'s edge, says the Cold is closed and there is nothing beneath Thornhallow to harness. It is the first true thing he has ever sent them.');
@@ -9194,10 +9202,10 @@ window.VigilMeta = { title: 'Hearthfall' };
             out.push(`The flame goes white, narrower than the wall shows it. ${UI.list(w)} step through. ${UI.list(st)} hold the keys and the fire and watch ${w.length === 1 ? 'a friend' : 'their friends'} go.`);
             out.push('The Cold closes. Not all the way; enough. The walkers come out grey-eyed and free of every gift they had, and the stayers keep their Sightings for life — the new Masters of a school that finally knows what it is standing on.');
             out.push('Wren lives. Wren stands up off the stones and makes a joke that does not quite land, because the room is not ready for it yet.');
-            out.push('Hush — if Hush stayed — listens, and hears the room, and every heart in it. Except one. That is the one visible difference, and it is not visible at all.');
+            out.push('The Listener — if the Listener stayed — listens, and hears the room, and every heart in it. Except one. That is the one visible difference, and it is not visible at all.');
             out.push({ speaker: 'Wren', text: 'Half a walk. Story of my life. Come on. Somebody help Mum up.' });
           } else if (E === 2) {
-            out.push({ text: 'Walked into the Cold: Wren. Stayed: Bookmoth, Hush, Owl and Knot.', cls: 'big' });
+            out.push({ text: 'Walked into the Cold: Wren. Stayed: Reader, Listener, Seer and Binder.', cls: 'big' });
             out.push({ speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry — since before the laundry. I just wanted to hear what you\'d say.' });
             out.push('Wren steps into the empty slot, and the fire takes the shape of a door, and Wren goes through it without looking back, because looking back is what you do when you expect to be stopped.');
             out.push('The Hearth catches. Four hundred years of fire, and it will burn four hundred more.');
@@ -9205,7 +9213,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             out.push('Marrow stands alone at the fire with a grey thread that nobody can cut, and the Binder does not tell her it is there.');
             out.push({ text: 'On the flowchart, one step from where you stood, a node stays grey: "They went in together."', cls: 'whisper' });
           } else if (E === 3) {
-            out.push({ text: 'Walked into the Cold: the Provost. Stayed: Bookmoth, Hush, Owl and Knot — and Wren.', cls: 'big' });
+            out.push({ text: 'Walked into the Cold: the Provost. Stayed: Reader, Listener, Seer and Binder — and Wren.', cls: 'big' });
             if (s.flags.DECISION === 'FOURFOLD') out.push(`The Walk was chosen and, when the sigil closed, ${w.length ? `only ${UI.list(w)} would have gone` : 'nobody would have gone'}. The fire does not close on good intentions.`);
             out.push({ speaker: 'Marrow', text: 'Then I go. I should have gone fourteen years ago, and I told myself a story instead. Move.' });
             out.push('She takes off the Chair\'s seal and gives it to Wren, and does not say goodbye, because she has already said it, in grey, every day for fourteen years.');
@@ -9359,7 +9367,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         enter: (s) => { dress(s, ['ch8_white', 'ch8_stones', 'ch8_stones', 'ch8_flicker', 'ch8_cage'], ['triumph', 'wonder', 'sorrow', 'sorrow', 'dread'], ['motes', 'embers', 'embers', 'ash', 'ash']); Game.flame([1, 0.65, 1, 0.3, 0.15][ending(s)]); if (Game.clock && Game.clock.running()) Game.clock.stop(); Store.set('EPILOGUE_ENDING', ENDING_NAMES[ending(s)]); },
         text: (s) => {
           const e = ending(s);
-          const voice = { text: 'The Voice, for what is left of the night: all four of you, a paragraph each, sunwise from Bookmoth. The keyboard: whoever is nearest.', cls: 'small' };
+          const voice = { text: 'The Voice, for what is left of the night: all four of you, a paragraph each, sunwise from the Reader. The keyboard: whoever is nearest.', cls: 'small' };
           if (e === 0) return [
             { text: `Walked into the fire: **${UI.list(walkers(s))}**.`, cls: 'center' },
             { text: 'Stayed on the stones: **nobody**.', cls: 'center' },
@@ -9403,17 +9411,17 @@ window.VigilMeta = { title: 'Hearthfall' };
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
           'White. Not the white of snow — the white of a forge, of a thing too hot to have a colour. The Hearth of Thornhallow roars, and for the first time in four hundred years it is not holding anything shut. It is simply a fire.',
-          'You come out of it the way the Founders came out: grey-eyed and ordinary. Bookmoth looks at the stone and sees shapes. Hush hears a room. Owl sees a floor. Knot sees four friends and nothing between them but air.',
+          'You come out of it the way the Founders came out: grey-eyed and ordinary. The Reader looks at the stone and sees shapes. The Listener hears a room. The Seer sees a floor. The Binder sees four friends and nothing between them but air.',
           'Wren is waiting on the stones.',
           { speaker: 'Wren', text: 'You took your *time*.' },
-          'There is a pulse in Wren\'s throat. You can see it from here. Hush, who will never hear anything like it again, does not need to.',
+          'There is a pulse in Wren\'s throat. You can see it from here. The Listener, who will never hear anything like it again, does not need to.',
         ],
         next: 'ch8_report', button: 'Dawn',
       },
       ch8_report: {
         art: 'ch8_stones', mood: 'wonder', fx: 'embers', flame: 1,
         text: [
-          'The Provost sits down on the bottom step of the Long Stair, which she has never done, and stays there a long time. Wren sits down next to her. Neither says anything. Knot, who cannot see threads any more, does not need to.',
+          'The Provost sits down on the bottom step of the Long Stair, which she has never done, and stays there a long time. Wren sits down next to her. Neither says anything. The Binder, who cannot see threads any more, does not need to.',
           'Lord Cassian Vane writes his report to the Crown by the light of a fire that no longer needs him. It says the Cold is closed. It says there is nothing under Thornhallow to harness. It is the first true thing he has ever sent them.',
           'Master Tarn goes home. Nobody stops him. The nine Houses find, in the morning, that the school beneath them is still there, and that it is warm.',
         ],
@@ -9423,12 +9431,12 @@ window.VigilMeta = { title: 'Hearthfall' };
         title: 'Years later', art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
         text: [
           'Four unremarkable people, in a house that is too small for all of them, every winter.',
-          'They argue about what the ring looked like. Bookmoth says the mark was at the top. Owl says there were two marks and Bookmoth is remembering the lamp. Hush says the whole thing went up one, up three, and is told, every year, that nobody else could ever hear that.',
-          'Bookmoth keeps a letter in the drawer by the bed. It is one line of glyphs. Bookmoth cannot read it, and will not have it translated.',
-          'Hush says the house is too quiet, and means the opposite.',
-          'Knot ties the others to each other, and calls it kindness, and it holds.',
+          'They argue about what the ring looked like. The Reader says the mark was at the top. The Seer says there were two marks and the Reader is remembering the lamp. The Listener says the whole thing went up one, up three, and is told, every year, that nobody else could ever hear that.',
+          'The Reader keeps a letter in the drawer by the bed. It is one line of glyphs. The Reader cannot read it, and will not have it translated.',
+          'The Listener says the house is too quiet, and means the opposite.',
+          'The Binder ties the others to each other, and calls it kindness, and it holds.',
           'They would do it again. They say so, every winter, at the point in the evening when it becomes true.',
-          'Wren visits. Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that Hush cannot hear, and does not need to.',
+          'Wren visits. Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that the Listener cannot hear, and does not need to.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -9440,7 +9448,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free, and stand blinking at a room they cannot see under any more.`,
           `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. There is a school above you that knows now what it is built on, and it will need Masters who can read the wall. Those are the Masters.`,
           'Wren lives. Wren stands on the stones and laughs and hugs everyone, walkers and stayers alike, and holds on slightly too long.',
-          'There is no pulse in Wren\'s throat. It is the one visible difference, and only Hush would ever have known.',
+          'There is no pulse in Wren\'s throat. It is the one visible difference, and only the Listener would ever have known.',
           { speaker: 'Wren', text: 'Half of you can\'t see me properly any more. Good. I looked *terrible*.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -9450,8 +9458,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: [
           { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry.' },
           'Wren walks into the Hearth the way Wren walks through doors. It closes behind. Four hundred years of fire, again, from a spark.',
-          'In the morning a mason carves a fifth name over the Hearth, beneath the four Founders. He has to ask how to spell it. Nobody in the room can tell him, in the older alphabet, and Bookmoth does not offer.',
-          'The Provost stands at the fire with a thread nobody can see but Knot. It is grey. It has been grey for fourteen years.',
+          'In the morning a mason carves a fifth name over the Hearth, beneath the four Founders. He has to ask how to spell it. Nobody in the room can tell him, in the older alphabet, and the Reader does not offer.',
+          'The Provost stands at the fire with a thread nobody can see but the Binder. It is grey. It has been grey for fourteen years.',
           'On the chart of the night, one step from where you stood, there is a box you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -9459,7 +9467,7 @@ window.VigilMeta = { title: 'Hearthfall' };
       ch8_e3: {
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
-          'She does not say goodbye to Wren. She has been saying it for fourteen years; Knot has seen the colour of it. She puts her hand on the fire as if it were a door, and it is.',
+          'She does not say goodbye to Wren. She has been saying it for fourteen years; the Binder has seen the colour of it. She puts her hand on the fire as if it were a door, and it is.',
           'The seal holds. Thin — the kind of hold that needs watching — but it holds.',
           'Wren lives. No pulse. Wren does not seem to mind, and stands a long time where the Provost stood, and then makes a joke about it that nobody laughs at, and then one that everybody does.',
           { text: 'Years later.', cls: 'big' },
@@ -9499,7 +9507,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const sealsSec = UI.el('div', { class: 'ch8-chapter' });
           sealsSec.appendChild(UI.el('h4', { text: 'Sealed — chosen in the dark' }));
           const seals = UI.el('div', { class: 'ch8-seals' });
-          R.forEach((r, i) => seals.appendChild(UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">the laundry, the stair, the fire.</span>` })));
+          R.forEach((r, i) => seals.appendChild(UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only the ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">the laundry, the stair, the fire.</span>` })));
           sealsSec.appendChild(seals);
           wrap.appendChild(sealsSec);
           box.appendChild(wrap);
@@ -9522,7 +9530,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const s = api.state;
           const wrap = UI.el('div', { class: 'ch8-night' });
           const seals = UI.el('div', { class: 'ch8-seals' });
-          const cards = R.map((r, i) => { const c = UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">sealed</span>` }); seals.appendChild(c); return c; });
+          const cards = R.map((r, i) => { const c = UI.el('div', { class: 'ch8-seal p' + i, html: `<span class="ch8-who">only the ${UI.esc(r.nick)} knows</span><span class="ch8-wax"></span><span class="ch8-line">sealed</span>` }); seals.appendChild(c); return c; });
           wrap.appendChild(seals); box.appendChild(wrap);
           let n = 0; let btn;
           const open = () => {
@@ -9623,7 +9631,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: (s) => [
           ending(s) === 0 ? 'The last word. In the dormitory it was a dare. Write it.' : 'The last word, for the phones. In the dormitory it was a dare; the fire never got to see it written properly. Write it now, and look at your own page — nobody else\'s.',
         ],
-        roles: 'Warden of the Hearth (keyboard): **whoever is nearest**. Voice: **all four of you** — a paragraph each, sunwise from Bookmoth.', sightSeconds: 90,
+        roles: 'Warden of the Hearth (keyboard): **whoever is nearest**. Voice: **all four of you** — a paragraph each, sunwise from the Reader.', sightSeconds: 90,
         codeSub: 'Each phone shows its last page. Read yours. Say nothing.',
         enter: () => { Store.set('WREN_SHOWN', true); },
         next: 'ch8_flow', button: 'Every phone has gone dark',
@@ -9685,7 +9693,7 @@ window.VigilMeta = { title: 'Hearthfall' };
     Lore.roles.forEach((r, i) => {
       const lab = UI.el('label', { class: 'p' + i });
       lab.appendChild(UI.el('span', { text: r.name }));
-      lab.appendChild(UI.el('span', { class: 'seat-nick', text: '"' + r.nick + '"' }));
+      lab.appendChild(UI.el('span', { class: 'seat-nick', text: r.gift }));
       lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.gift }));
       lab.appendChild(UI.el('span', { class: 'seat-key', html: `key <b>${UI.esc(Store.state.keys[i] === ' ' ? 'SPACE' : Store.state.keys[i])}</b>` }));
       seats.appendChild(lab);

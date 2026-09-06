@@ -786,10 +786,10 @@ html:has(body.companion) { overflow: auto; height: auto; }
   'use strict';
   const L = {};
   L.roles = [
-    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Bookmoth', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
-    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Hush',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
-    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Owl',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
-    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Knot',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
+    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Reader', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
+    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Listener',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
+    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Seer',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
+    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Binder',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
   ];
   L.roleById = (id) => L.roles.find(r => r.id === id);
   L.nick = (i) => L.roles[i].nick;
@@ -1105,6 +1105,42 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw;
   const C = window.CompanionContent;
 
+  /* Two frames of the same carving: upright, then turned, with the mark moving. One picture for "read two ways". */
+  const flipStrip = () => {
+    const frame = (x, label, mark) => `<g transform="translate(${x},6)">
+      <rect x="0" y="0" width="150" height="86" rx="8" fill="rgba(0,0,0,.3)" stroke="rgba(255,255,255,.15)"/>
+      <g transform="translate(${mark === 'left' ? 46 : 40},44) scale(0.85)" style="color:#f2d27a">${G.shapeInner('Flame', false)}</g>
+      <g transform="translate(${mark === 'left' ? 104 : 110},44) scale(0.85)" style="color:#f2d27a">${G.shapeInner('Crown', true)}</g>
+      <circle cx="${mark === 'left' ? 16 : 134}" cy="44" r="6" fill="#a482e6"/>
+      <path d="M${mark === 'left' ? '30,44 L22,40 L22,48' : '120,44 L128,40 L128,48'} Z" fill="#a482e6"/>
+      <text x="75" y="80" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">${label}</text>
+    </g>`;
+    return `<svg viewBox="0 0 320 100">${frame(4, 'mark left · upright', 'left')}${frame(166, 'mark right · turned', 'right')}</svg>`;
+  };
+  /* The Listener's interval, drawn: two rungs of the ladder and the climb between them. */
+  const ladder3 = () => `<svg viewBox="0 0 200 96" style="width:170px;height:82px">
+    ${[0, 1, 2, 3, 4].map(i => `<line x1="30" y1="${84 - i * 16}" x2="86" y2="${84 - i * 16}" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`).join('')}
+    <circle cx="58" cy="84" r="7" fill="#4fb3bf"/><circle cx="58" cy="36" r="7" fill="#4fb3bf"/>
+    <path d="M110,84 L110,36" stroke="#4fb3bf" stroke-width="2"/><path d="M110,30 l-5,10 l10,0 Z" fill="#4fb3bf"/>
+    <text x="132" y="46" fill="#4fb3bf" font-size="18" font-family="Cinzel,serif">+3</text>
+    <text x="58" y="16" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="9" font-family="Cinzel,serif">second note</text>
+  </svg>`;
+  /* The Binder's Law, drawn: a ring, a scratch, and the count running clockwise from it. */
+  const lawRing = () => `<svg viewBox="0 0 150 150" style="width:130px;height:130px">
+    <circle cx="75" cy="75" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+    ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 135) * Math.PI / 180, x = 75 + Math.cos(a) * 46, y = 75 + Math.sin(a) * 46;
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${i === 0 ? 'rgba(164,130,230,.25)' : 'none'}" stroke="${i === 0 ? '#a482e6' : 'rgba(255,255,255,.4)'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
+    <path d="M96,18 a60,60 0 0 1 34,40" fill="none" stroke="#a482e6" stroke-width="2"/><path d="M130,58 l-8,-3 l1,9 Z" fill="#a482e6"/>
+    <text x="40" y="24" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">the mark</text>
+    <text x="75" y="142" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="Cinzel,serif">sunwise = clockwise</text>
+  </svg>`;
+  /* A thread, drawn three ways: whole, broken, absent. */
+  const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
+    kind === 'whole' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/>'
+    : kind === 'broken' ? '<path d="M4,8 C16,3 24,12 36,9" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/><path d="M56,9 C68,6 76,11 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/>'
+    : '<path d="M6,2 L2,2 L2,14 L6,14 M84,2 L88,2 L88,14 L84,14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>'
+  }</svg>`;
+
   const carving = (showMark) => G.inscription([{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }], { showMark, mark: 'left', color: '#fff', markColor: '#a482e6' });
 
   // Seer under-layer of the dormitory: four shadows away from the lamp, Wren's toward it.
@@ -1123,7 +1159,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       <path d="M120,100 L80,88"/><path d="M160,70 L124,52"/><path d="M170,140 L134,138"/><path d="M210,110 L178,96"/>
     </g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L276,150"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="112" y="118">Bookmoth</text><text x="150" y="60">Hush</text><text x="158" y="158">Owl</text><text x="202" y="128">Knot</text><text x="230" y="168" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="112" y="118">Reader</text><text x="150" y="60">Listener</text><text x="158" y="158">Seer</text><text x="202" y="128">Binder</text><text x="230" y="168" fill="#a482e6">Wren</text></g>
     <text x="180" y="210" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
   </svg>`;
 
@@ -1147,43 +1183,54 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       P.speak.push({ t: 'fine', text: 'Nothing to speak yet. The Hearth will tell you when.' });
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The carving above the lamp' });
-        P.sight.push({ t: 'p', text: 'Two shapes, clean on your page where the Hearth shows them worn: a **Flame**, upright; a **Crown**, inverted.' });
+        P.sight.push({ t: 'p', text: 'Two shapes. Clean on your page, worn on the Hearth.' });
         P.sight.push({ t: 'html', html: carving(false) });
-        P.sight.push({ t: 'p', text: 'A line is read one of two ways, and you cannot tell which from the shapes alone — that is Under-Sight, not yours.' });
-        P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark on the left)', `${G.svg('ASH', { size: 30, color: '#f2d27a' })} ASH, ${G.svg('EMBER', { size: 30, color: '#f2d27a' })} EMBER — <em>fire, keep</em>`], ['turned (mark on the right)', `${G.svg('CROWN', { size: 30, color: '#f2d27a' })} CROWN, ${G.svg('COLD', { size: 30, color: '#f2d27a' })} COLD — <em>one, cold</em>`]] });
+        P.sight.push({ t: 'p', text: 'A line reads one of two ways. The shapes will not tell you which.' });
+        P.sight.push({ t: 'html', html: flipStrip() });
+        P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark on the left)', `${G.svg('ASH', { size: 40, color: '#f2d27a' })} ASH, ${G.svg('EMBER', { size: 40, color: '#f2d27a' })} EMBER — <em>fire, keep</em>`], ['turned (mark on the right)', `${G.svg('CROWN', { size: 40, color: '#f2d27a' })} CROWN, ${G.svg('COLD', { size: 40, color: '#f2d27a' })} COLD — <em>one, cold</em>`]] });
+        P.sight.push({ t: 'p', text: 'Read both rows aloud. Someone else knows which one is true.' });
         P.sight.push({ t: 'fine', text: 'The full lexicon is in your **Book**.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
-        P.wren.push({ t: 'p', text: 'Every fourth-year\'s name is chalked on the dormitory door in the Vigil\'s script. Wren\'s, underneath, is in the **older alphabet** — the one you have not learned yet. You have walked past it every day for a year and never wondered why.' });
+        P.wren.push({ t: 'p', text: 'Every fourth-year\'s name is chalked on the dormitory door. Wren\'s is chalked twice. The second time in an older alphabet. You cannot read it. You have walked past it for a year.' });
       }
       if (roleId === 'listener') {
-        P.sight.push({ t: 'h', text: 'The lamp\'s phrase' });
-        P.sight.push({ t: 'p', text: 'Two notes, when the ring is touched. You do not hear the glyphs\' names — the lamp is tuned to its own room — only the **step** between them.' });
-        P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note steps **up three** from the first. Your Ladder is in the **Book**: of the two glyphs Bookmoth reads, only one order climbs three.' });
+        P.sight.push({ t: 'h', text: 'The lamp\'s two notes' });
+        P.sight.push({ t: 'html', html: ladder3() });
+        P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note steps **up three** from the first. Of the Reader\'s two glyphs, only one order climbs three.' });
+        P.sight.push({ t: 'fine', text: 'Your Ladder is in the **Book**.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the room' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.sight.push({ t: 'fine', text: 'Wren: too quiet to catch. It has always been too quiet to catch. You have decided this is a fault in your gift.' });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'fine', text: 'Wren\'s is too quiet to catch. It always has been.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
-        P.wren.push({ t: 'p', text: 'You can hear the Provost\'s heart from two floors down when she is angry. You can hear Knot\'s when Knot is lying, which is never. You have never once heard Wren\'s, and you have never once said so.' });
+        P.wren.push({ t: 'p', text: 'You can hear the Provost\'s heart two floors down. You have never once heard Wren\'s. You decided the fault was yours. You have never said it aloud.' });
       }
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the lamp' });
-        P.sight.push({ t: 'p', text: 'The carving\'s **mark** is on the **left**: the line is upright, read left to right, nothing inverted. The ring\'s scratch — where a sigil begins — is at **slot 3**. Slots run sunwise (clockwise) from the top.' });
+        P.sight.push({ t: 'p', text: 'The mark is on the **left**. The line is upright. Nothing is turned.' });
+        P.sight.push({ t: 'p', text: 'The ring begins at **slot 3**. Slots run sunwise — clockwise — from the top.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underLamp });
         P.sight.push({ t: 'h', text: 'Under the dormitory' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
+        P.sight.push({ t: 'fine', text: 'Every shadow falls away from the lamp. Wren\'s falls toward it.' });
         P.sight.push({ t: 'fine', text: 'Your Ring Page is in the **Book**.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
-        P.wren.push({ t: 'p', text: 'You decided, months ago, that it was a trick of the lamp. You are looking at it now. It is not the lamp.' });
+        P.wren.push({ t: 'p', text: 'You decided months ago it was a trick of the light. You are looking at it now. It is not the light. It never was.' });
       }
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Law 1' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 1 · Founders' · Year 0</div><div class="txt">A sigil is read sunwise from the mark.</div></div></div>` });
-        P.sight.push({ t: 'p', text: 'Sunwise is clockwise. The mark is a scratch on the ring; Owl can see it. Place the first glyph *on* the mark and the rest after it, clockwise.' });
+        P.sight.push({ t: 'html', html: lawRing() });
+        P.sight.push({ t: 'p', text: 'Sunwise is clockwise. The mark is a scratch the Seer can see.' });
+        P.sight.push({ t: 'p', text: 'First glyph on the mark. The rest follow it clockwise.' });
         P.sight.push({ t: 'h', text: 'Threads in the room' });
-        P.sight.push({ t: 'list', items: ['**Bookmoth — Hush:** a red thread, old, well-knotted. Friends since the sorting.', '**Owl — Knot:** the practice thread you tied last week, for the exam. It would not hold. It has never not held before.', '**Wren:** *No thread found.* Not unbound — you know unbound; unbound is a loose end. This is the other thing. The knot itself.'] });
-        P.sight.push({ t: 'fine', text: 'The Book of Laws is in your **Book** — including the one on the 212 page that has been struck through.' });
+        P.sight.push({ t: 'html', html: '<ul class="blk-list">'
+          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> an old red thread, well knotted.</li>'
+          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> last week\'s practice thread would not hold.</li>'
+          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> no thread at all. Not unbound — you know unbound. Something else.</li>'
+          + '</ul>' });
+        P.sight.push({ t: 'fine', text: 'Your **Book** holds the Laws, including one struck through.' });
         P.wren.push({ t: 'h', text: 'The struck Law' });
-        P.wren.push({ t: 'p', text: 'You have read the 212 page a dozen times. Three Order\'s Laws written that year, and one Founders\' Law struck through in the same hand: *COLD is written by four hands.* Nobody has ever explained to you why a Law is struck instead of simply forgotten.' });
+        P.wren.push({ t: 'p', text: 'You have read the 212 page a dozen times. One Founders\' Law is struck through: *COLD is written by four hands.* Nobody has told you why a Law gets struck.' });
       }
       return P;
     },
@@ -1263,7 +1310,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     const four = [[110, 285], [150, 292], [200, 292], [240, 285]];
     four.forEach(([x, y], i) => { s += `<circle cx="${x}" cy="${y}" r="5" fill="#fff"/><path d="M${x},${y} l${(x - 180) * 0.12},20" stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"/>`; });
     s += `<circle cx="300" cy="90" r="5" fill="#fff"/><path d="M300,90 L246,64" stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"/>`;
-    s += `<g fill="#fff" font-size="8" ${F}><text x="94" y="279">Bookmoth</text><text x="141" y="313">Hush</text><text x="192" y="313">Owl</text><text x="232" y="279">Knot</text><text x="306" y="84" fill="#a482e6">Wren</text></g>`;
+    s += `<g fill="#fff" font-size="8" ${F}><text x="94" y="279">Reader</text><text x="141" y="313">Listener</text><text x="192" y="313">Seer</text><text x="232" y="279">Binder</text><text x="306" y="84" fill="#a482e6">Wren</text></g>`;
     s += `<text x="180" y="326" text-anchor="middle" fill="#fff" font-size="8" ${F} opacity=".7">shadows, as they fall</text>`;
     return s + '</svg>';
   })();
@@ -1297,7 +1344,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     const rows = [];
     HOUSES.forEach(h => rows.push([h.n === 9 ? 'The Provost (the Chair)' : `Seat ${h.n} · ${h.house}`, 'normal']));
     rows.push(['The Envoy, Lord Vane', 'fast']);
-    rows.push(['Bookmoth', 'normal'], ['Hush', 'normal'], ['Owl', 'normal'], ['Knot', 'normal']);
+    rows.push(['Reader', 'normal'], ['Listener', 'normal'], ['Seer', 'normal'], ['Binder', 'normal']);
     rows.push(['Wren', 'flat']);
     return `<div class="heartbeats">${rows.map(([n, k]) => `<div class="hb"><span>${n}${k === 'fast' ? ' <small>(fast)</small>' : k === 'flat' ? ' <small>(too quiet to catch)</small>' : ''}</span>${D.trace(k)}</div>`).join('')}</div>`;
   };
@@ -1345,7 +1392,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'fine', text: 'The word over the Masters\' door is upright, mark on the left. Nothing to turn tonight.' });
         P.wren.push({ t: 'h', text: 'The shadows, again' });
         P.wren.push({ t: 'p', text: 'You have stopped calling it a trick of the lamp. In the Great Hall there is no lamp; there is the Hearth, and forty torches, and Wren\'s shadow falls toward the Hearth through all of them.' });
-        P.wren.push({ t: 'p', text: '"Ask your Owl what is under the paint," the Envoy said. He was not looking at you when he said it. He was looking at the tapestry. He is Eye-Sighted; you would swear it. And he has *seen* what is under it.' });
+        P.wren.push({ t: 'p', text: '"Ask your Seer what is under the paint," the Envoy said. He was not looking at you when he said it. He was looking at the tapestry. He is Eye-Sighted; you would swear it. And he has *seen* what is under it.' });
       }
 
       if (roleId === 'binder') {
@@ -1445,7 +1492,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     <circle cx="300" cy="150" r="6" fill="${V}"/>
     <path d="M300,150 L340,148" stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"/>
     <path d="M300,150 C295,140 285,134 281,128" stroke="${V}" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>
-    <g fill="#fff" font-size="9" ${F}><text x="28" y="212">Bookmoth</text><text x="60" y="166">Hush</text><text x="88" y="212">Owl</text><text x="118" y="158">Knot</text><text x="292" y="176" fill="${V}">Wren</text><text x="281" y="106" text-anchor="middle" fill="${SEA}">the Ember</text></g>
+    <g fill="#fff" font-size="9" ${F}><text x="28" y="212">Reader</text><text x="60" y="166">Listener</text><text x="88" y="212">Seer</text><text x="118" y="158">Binder</text><text x="292" y="176" fill="${V}">Wren</text><text x="281" y="106" text-anchor="middle" fill="${SEA}">the Ember</text></g>
     <text x="180" y="222" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">four shadows fall away from the cold light. One reaches for it.</text>
   </svg>`;
 
@@ -1459,13 +1506,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       /* ================= READER ================= */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The four epitaphs' });
-        P.sight.push({ t: 'p', text: 'One shape on each plinth, clean on your page where the Hearth shows them worn. Left to right as the statues stand: **Mere, Halvard, Rook, Idony.** A single carved glyph has only two readings — upright, or *turned* (inverted). Which of these plinths are turned is Under-Sight, not yours: **Owl knows which plinths are upside down.**' });
+        P.sight.push({ t: 'p', text: 'One shape on each plinth, clean on your page where the Hearth shows them worn. Left to right as the statues stand: **Mere, Halvard, Rook, Idony.** A single carved glyph has only two readings — upright, or *turned* (inverted). Which of these plinths are turned is Under-Sight, not yours: **The Seer knows which plinths are upside down.**' });
         P.sight.push({ t: 'html', html: G.inscription(EPITAPHS.map(e => ({ shape: e.shape, inv: false, label: e.name.toUpperCase() })), { showMark: false, color: '#fff' }) });
         P.sight.push({ t: 'table', head: ['Statue', 'Shape', 'Upright reads', 'Turned reads'], rows: EPITAPHS.map(e => { const up = G.read(e.shape, false), tr = G.invert(up); return [`<b>${e.name}</b>`, `${G.shapeSvg(e.shape, false, { size: 34, color: '#fff' })} ${e.shape}`, `${gl(up)}<br><em>${G.GLYPHS[up].gloss}</em>`, `${gl(tr)}<br><em>${G.GLYPHS[tr].gloss}</em>`]; }) });
-        P.sight.push({ t: 'fine', text: 'Read them all upright and you get CROWN, THORN, KNOT, KNOT — two Founders with the same glyph, which the Founders would not have done. Say both readings aloud; let Owl say which is carved turned.' });
+        P.sight.push({ t: 'fine', text: 'Read them all upright and you get CROWN, THORN, KNOT, KNOT — two Founders with the same glyph, which the Founders would not have done. Say both readings aloud; let the Seer say which is carved turned.' });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'The strip in the niche' });
-        P.sight.push({ t: 'p', text: 'Somewhere in the antechamber, where the rebuilders did not look, there is a hollow with a stone strip of three shapes in it — if the table finds it. Owl knows where; you know what it says. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only Owl can see which end it is.' });
+        P.sight.push({ t: 'p', text: 'Somewhere in the antechamber, where the rebuilders did not look, there is a hollow with a stone strip of three shapes in it — if the table finds it. The Seer knows where; you know what it says. Left to right: a **Spike, inverted**; a **Crown, inverted**; a **Hook, inverted**. A line of three has a beginning; only the Seer can see which end it is.' });
         P.sight.push({ t: 'html', html: G.inscription(STRIP, { showMark: false, color: '#fff' }) });
         P.sight.push({ t: 'table', head: ['If the strip is…', 'it reads'], rows: [
           ['upright (mark on the left) — left to right, as carved', `${gl('WELL')}, ${gl('EMBER')}, ${gl('VEIL')}<br><em>went down · kept · alone</em> — the Order\'s version: <em>one went down alone and kept it.</em>`],
@@ -1486,11 +1533,11 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: "The Founders' phrase" });
         P.sight.push({ t: 'p', text: 'When the dials are touched the door hums the Founders\' phrase — four notes, tuned to this room, so the Hearth\'s speakers give away nothing but the **steps** between them. You hear those. Nobody else does.' });
-        P.sight.push({ t: 'audio', label: 'The door\'s phrase — four notes', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Four glyphs, three steps. Bookmoth can name the four glyphs on the plinths; of every order they could be turned in, only one climbs like this. That order is the order the dials must be turned in — Knot\'s Law says so.' });
+        P.sight.push({ t: 'audio', label: 'The door\'s phrase — four notes', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Four glyphs, three steps. The Reader can name the four glyphs on the plinths; of every order they could be turned in, only one climbs like this. That order is the order the dials must be turned in — The Binder\'s Law says so.' });
         P.sight.push({ t: 'fine', text: 'Your **Ladder** is in the Book: ASH 0 · THORN 1 · KNOT 2 · EMBER 3 · WELL 4 · VEIL 5 · CROWN 6 · COLD is a rest. Use the **row-player** there: tap four glyphs in an order and it shows the steps; compare them with the arrows above until they match.' });
-        P.sight.push({ t: 'p', text: 'One thing you *cannot* hear: which dial was turned. A dial touched on the Hearth sounds through the Hearth, and everyone at the table hears the same thing. Your gift is the order. Owl\'s is the place.' });
+        P.sight.push({ t: 'p', text: 'One thing you *cannot* hear: which dial was turned. A dial touched on the Hearth sounds through the Hearth, and everyone at the table hears the same thing. Your gift is the order. The Seer\'s is the place.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the vault' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'The Ember: nothing. It is a stone in a box; you did not expect a heart. Wren: ' + (lost ? 'should be on the dais under guard, two floors up and out of any range you have. And yet there are footsteps on the stair behind you — light, quick, familiar — and no heart walking with them. Too quiet to catch.' : 'promised to stay put. And yet there are footsteps on the stair behind you — light, quick, familiar — and no heart walking with them. Too quiet to catch.') });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'p', text: 'You have heard those footsteps every day for a year. You could pick them out of a crowded Hall. It has never once occurred to you, until this stair, that you have only ever heard the feet.' });
@@ -1506,9 +1553,9 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           '**Turned plinths** (mark on the right — the Reader must invert the glyph): **Mere, Rook.** Halvard\'s and Idony\'s marks are on the left: upright.',
           '**A niche** behind Mere\'s plinth, knee height, where the rebuilders did not look. The Hearth will not point at it. You can.',
         ] });
-        P.sight.push({ t: 'fine', text: 'Bookmoth reads the shapes; Hush has the order; Knot has the Law that says which of two disagreeing rules is the one that binds. Say what you see.' });
+        P.sight.push({ t: 'fine', text: 'The Reader reads the shapes; the Listener has the order; the Binder has the Law that says which of two disagreeing rules is the one that binds. Say what you see.' });
         P.sight.push({ t: 'h', text: 'The strip in the niche' });
-        P.sight.push({ t: 'p', text: 'Three shapes on a stone strip. Its **mark is on the right**: the strip is turned — read right to left, every glyph inverted. Bookmoth has both readings; only you can say which is the one Mere cut.' });
+        P.sight.push({ t: 'p', text: 'Three shapes on a stone strip. Its **mark is on the right**: the strip is turned — read right to left, every glyph inverted. The Reader has both readings; only you can say which is the one Mere cut.' });
         P.sight.push({ t: 'html', html: G.inscription(STRIP, { showMark: true, mark: 'right', color: '#fff', markColor: V }) });
         P.sight.push({ t: 'h', text: 'Under the stair' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underVault });
@@ -1522,8 +1569,8 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'The Laws of the door' });
         P.sight.push({ t: 'html', html: laws([2, 9, 3]) });
-        P.sight.push({ t: 'p', text: 'Law 9 was written in **212** — the year the vault was rebuilt and the statues re-set. It says a Founder faces *the dial before them*. Law 2, four hundred years older, says each Founder\'s glyph sits on the dial *they face* — and the Founders faced the sockets their plinths were cut for, which Owl can see. The two Laws agree only if the statues never moved. They moved.' });
-        P.sight.push({ t: 'p', text: '**Law 3: the older binds.** The sockets, not the rebuild. Then Law 2\'s second half: turn the dials **in the Hymn\'s order** — Hush has the phrase — and know that the door *counts every turn*. A wrong turn is not undone by a right one after it; the door forgets the whole count and you begin again.' });
+        P.sight.push({ t: 'p', text: 'Law 9 was written in **212** — the year the vault was rebuilt and the statues re-set. It says a Founder faces *the dial before them*. Law 2, four hundred years older, says each Founder\'s glyph sits on the dial *they face* — and the Founders faced the sockets their plinths were cut for, which the Seer can see. The two Laws agree only if the statues never moved. They moved.' });
+        P.sight.push({ t: 'p', text: '**Law 3: the older binds.** The sockets, not the rebuild. Then Law 2\'s second half: turn the dials **in the Hymn\'s order** — The Listener has the phrase — and know that the door *counts every turn*. A wrong turn is not undone by a right one after it; the door forgets the whole count and you begin again.' });
         P.sight.push({ t: 'fine', text: 'The 212 page of your Book now holds an Order\'s Law written that year beside a Founders\' Law struck through in the same hand. The vault was rebuilt in 212, and a road behind it was bricked up in 212. You have not been told what else happened in 212.' });
         P.sight.push({ t: 'h', text: 'Threads in the vault' });
         P.sight.push({ t: 'list', items: [
@@ -1609,7 +1656,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     <g fill="#fff" opacity=".9"><circle cx="90" cy="110" r="6"/><circle cx="130" cy="96" r="6"/><circle cx="150" cy="128" r="6"/><circle cx="190" cy="106" r="6"/><circle cx="250" cy="112" r="5"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,110 L52,110"/><path d="M130,96 L96,92"/><path d="M150,128 L116,132"/><path d="M190,106 L154,104"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,112 L300,112"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="78" y="128">Bookmoth</text><text x="120" y="86">Hush</text><text x="140" y="146">Owl</text><text x="180" y="124">Knot</text><text x="238" y="130" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="78" y="128">Reader</text><text x="120" y="86">Listener</text><text x="140" y="146">Seer</text><text x="180" y="124">Binder</text><text x="238" y="130" fill="#a482e6">Wren</text></g>
     <text x="180" y="214" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall — the portraits have none</text>
   </svg>`;
 
@@ -1674,7 +1721,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'p', text: '**The second lintel** — the Laundry\'s back door. A **Spike**.' });
         P.sight.push({ t: 'html', html: G.inscription([{ shape: 'Spike', inv: false }], { showMark: false }) });
         P.sight.push({ t: 'table', head: ['If the mark is…', 'the word is'], rows: [['on the left (upright)', `${G.svg('THORN', { size: 30, color: '#f2d27a' })} THORN — <em>a gate; to go through</em>`], ['on the right (turned)', `${G.svg('WELL', { size: 30, color: '#f2d27a' })} WELL — <em>down; from</em>`]] });
-        P.sight.push({ t: 'fine', text: 'A lone glyph with its mark on the right simply inverts; there is nothing to read backwards. **Owl knows which end the mark is on.** Speak the wrong word and the wall stays a wall — nothing worse.' });
+        P.sight.push({ t: 'fine', text: 'A lone glyph with its mark on the right simply inverts; there is nothing to read backwards. **The Seer knows which end the mark is on.** Speak the wrong word and the wall stays a wall — nothing worse.' });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'Over the Tower door' });
         P.sight.push({ t: 'p', text: 'Two shapes, deep-cut, a Founder\'s hand: a **Flame**, then a **Spike**. A threshold, not a lock.' });
@@ -1690,7 +1737,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       /* ================= LISTENER ================= */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Two patrols, by landmark' });
-        P.sight.push({ t: 'p', text: 'The lamps are out, and the Hearth draws no guards. You hear them. Two rounds, each **twelve beats** long, each repeating exactly; one beat is one turn on the Hearth. You hear *where* they are by what their boots pass — not by room letters. Owl knows where the landmarks are.' });
+        P.sight.push({ t: 'p', text: 'The lamps are out, and the Hearth draws no guards. You hear them. Two rounds, each **twelve beats** long, each repeating exactly; one beat is one turn on the Hearth. You hear *where* they are by what their boots pass — not by room letters. The Seer knows where the landmarks are.' });
         P.sight.push({ t: 'audio', label: 'Light steps — Patrol A', strip: `<div class="fine">quick, soft, a lantern swinging; ${LOOP_A.length} beats then round again</div>`, play: (A) => playSteps(A, true), text: 'On the beat before the first turn they are at **west corridor south**.' });
         P.sight.push(loopTable(LOOP_A));
         P.sight.push({ t: 'audio', label: 'Heavy boots — Patrol B', strip: `<div class="fine">slow, iron-shod, two of them; they stand a long time at the tower stair-foot</div>`, play: (A) => playSteps(A, false), text: 'On the beat before the first turn they are at the **east cross**.' });
@@ -1702,27 +1749,27 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'h', text: 'The portraits' });
         P.sight.push({ t: 'audio', label: 'Two hundred years of Masters, muttering', strip: `<div class="fine">…four went down… four went down… four went down…</div>`, play: playPortraits, text: 'They all say the same thing, over and over, in different voices. Nobody else can make out the words. **"…four went down…"** You have not decided what it means and you are not going to decide tonight.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the Gallery' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['Bess, in the Laundry', 'normal'], ['Hob, at the lodge', 'fast'], ['Vane\'s captain', 'normal'], ['Bookmoth', 'normal'], ['Owl', 'normal'], ['Knot', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['Bess, in the Laundry', 'normal'], ['Hob, at the lodge', 'fast'], ['Vane\'s captain', 'normal'], ['Reader', 'normal'], ['Seer', 'normal'], ['Binder', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Hob\'s is quick and greedy. The Provost\'s is slower than it was in the Hall. Wren: too quiet to catch. Still.' });
         P.wren.push({ t: 'h', text: 'What the frames say' });
         P.wren.push({ t: 'whisper', text: '…four went down… four went down… four went down…' });
-        P.wren.push({ t: 'p', text: hurt ? 'Wren, one arm strapped up in a sling of Knot\'s cloak, walked past the frames whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Wren, one arm strapped up in a sling of the Binder\'s cloak, walked past the frames whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' : 'Wren walked past the frames tonight whispering *shut up, shut up, shut up* at them, cheerfully, the way you would at a dog. They did not.' });
         P.wren.push({ t: 'p', text: 'In the dark, with the lamps out, you will be able to hear every heart in these corridors. Every guard\'s. Bess\'s. Hob\'s. Not the one walking next to you.' });
       }
 
       /* ================= SEER ================= */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the corridors' });
-        P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. Hush hears the patrols by **landmark**. Only you can put the two together. Beneath the plaster: two hidden doors the Hearth does not draw, and a spyhole.' });
+        P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. The Listener hears the patrols by **landmark**. Only you can put the two together. Beneath the plaster: two hidden doors the Hearth does not draw, and a spyhole.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
         P.sight.push({ t: 'list', items: [
           '**The Laundry (B3)** has two hidden doors: one from the west corridor by the **linen chute (A3)**, one out through its back wall to the **damp wall (C3)**. Neither is drawn on the Hearth; each needs its word spoken.',
-          '**The west door\'s lintel** (A3→B3): its mark is on the **right**. **The Laundry\'s back door** (B3→C3): its mark is on the **left**. Bookmoth reads the shapes.',
+          '**The west door\'s lintel** (A3→B3): its mark is on the **right**. **The Laundry\'s back door** (B3→C3): its mark is on the **left**. The Reader reads the shapes.',
           '**Hob\'s spyhole** in the porter\'s lodge (C5) looks into the boot-room (B5), the drying-rack corridor (C4) and the corridor past the lodge (D5). Step into any of those and Hob sees.',
           'Sight passes only along open passages. A hidden door blocks it; so does a wall.',
         ] });
         P.sight.push({ t: 'h', text: 'Landmarks by room' });
-        P.sight.push({ t: 'table', head: ['Hush hears…', 'which is'], rows: [['west stair-foot', 'A5'], ['boot-room', 'B5'], ['porter\'s lodge', 'C5'], ['drying-rack', 'C4'], ['damp wall — the Laundry\'s back', 'C3'], ['west corridor south', 'A4'], ['linen chute', 'A3'], ['tower stair-foot', 'E4'], ['east cross', 'E3'], ['east corridor', 'E2'], ['cook\'s door', 'E1 (the door itself is D1, locked)']] });
+        P.sight.push({ t: 'table', head: ['The Listener hears…', 'which is'], rows: [['west stair-foot', 'A5'], ['boot-room', 'B5'], ['porter\'s lodge', 'C5'], ['drying-rack', 'C4'], ['damp wall — the Laundry\'s back', 'C3'], ['west corridor south', 'A4'], ['linen chute', 'A3'], ['tower stair-foot', 'E4'], ['east cross', 'E3'], ['east corridor', 'E2'], ['cook\'s door', 'E1 (the door itself is D1, locked)']] });
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'Under the Tower door' });
         P.sight.push({ t: 'p', text: 'A threshold sigil of **two slots**. The lintel\'s mark is on the **left** — upright, left to right. The ring\'s scratch is at **slot 1**.' });
@@ -1741,7 +1788,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'h', text: 'Threads in the corridors' });
         P.sight.push({ t: 'p', text: 'Three people live between the Gallery and the Tower tonight, and each of them is tied to something. The Hearth cannot see the thread. You can.' });
         P.sight.push({ t: 'list', items: [
-          '**Bess, in the Laundry.** A **red** thread, old and thick, to the Provost — an oath, thirty years kept. The Laundry is Bess\'s and nobody else\'s; it has *never* been searched, by soldiers or Masters or anyone. Wren could sit on a tub in there until morning and be safe. Owl can find its doors.',
+          '**Bess, in the Laundry.** A **red** thread, old and thick, to the Provost — an oath, thirty years kept. The Laundry is Bess\'s and nobody else\'s; it has *never* been searched, by soldiers or Masters or anyone. Wren could sit on a tub in there until morning and be safe. The Seer can find its doors.',
           '**Hob, the porter, in his lodge.** A **gold** thread, new and bright, to the Envoy. Crown coin. Hob has a spyhole and a loud voice, and he is being paid to use both.',
           '**The cook, behind the locked door.** No thread at all. Asleep, or pretending. The door stays locked either way; row 1 goes nowhere.',
           '**The two patrols.** Gold threads, thin ones, to Vane\'s captain. They walk their rounds and would not know Wren from a laundry basket in the dark — unless they stand in the same room, or see straight down an open passage.',
@@ -1751,7 +1798,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'divider' });
         P.sight.push({ t: 'h', text: 'The Laws that bind tonight' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 1 · Founders' · Year 0</div><div class="txt">A sigil is read sunwise from the mark.</div></div><div class="law founders"><div class="era">Law 3 · Founders' · Year 0</div><div class="txt">Where two Laws disagree, the older binds.</div></div></div>` });
-        P.sight.push({ t: 'p', text: 'The Tower door\'s threshold is a sigil like any other: Owl calls the mark, Bookmoth the glyphs, Hush the order, and it is placed **sunwise from the mark**. No newer Law touches it. There is no Law about the Laundry; there is only Bess.' });
+        P.sight.push({ t: 'p', text: 'The Tower door\'s threshold is a sigil like any other: Seer calls the mark, the Reader the glyphs, the Listener the order, and it is placed **sunwise from the mark**. No newer Law touches it. There is no Law about the Laundry; there is only Bess.' });
         P.sight.push({ t: 'fine', text: 'The full Book of Laws is in your **Book**, in the order learned and by year.' });
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
         P.wren.push({ t: 'p', text: 'Every thread in the Gallery tonight, you read at a glance: Bess, Hob, the captain, the two hundred dead in oil (none — paint has no threads). There is one you have not let yourself look at: the one from the Provost to Wren. You know what colour a mother\'s thread is. You have decided not to find out what colour this one is. Not tonight.' });
@@ -1765,16 +1812,16 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.speak.push({ t: 'fine', text: L.houseRule });
       } else {
         const Q = {
-          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean laundry sheet, does not look at you while asking it. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"Bookmoth. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
+          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean laundry sheet, does not look at you while asking it. *"The Reader. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"The Reader. You read everything. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
             opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know yet."** ~~(the truth)~~']],
             after: { TELL: 'Wren grins, delighted, and says it twice under the breath. *A small brave bird.* You made that up. It sounded true, which is not the same thing.', DONTKNOW: 'Wren nods, not disappointed. *"Yet. Good. Tell me when."* You will, you think. You are not sure when.' } },
-          listener: { prompt: hurt ? 'Wren, sitting on a tub with the bad arm held close, asks it to the arm rather than to you. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"Hush. You say you hear everyone\'s heart. Can you hear mine?"*',
+          listener: { prompt: hurt ? 'Wren, sitting on a tub with the bad arm held close, asks it to the arm rather than to you. *"The Listener. You say you hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"The Listener. You say you hear everyone\'s heart. Can you hear mine?"*',
             opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No."** ~~(the truth)~~']],
             after: { LOUD: 'Wren looks pleased, and then looks at you a moment too long, and then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The kettle covers whatever comes next.' } },
-          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Owl. You look at me strangely sometimes. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"Owl. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',
+          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"The Seer. You look at me strangely sometimes. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"The Seer. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',
             opts: [['TELL', 'Tell Wren about **the shadow**: it falls toward the fire. Every fire. ~~(the truth)~~'], ['NOTHING', '**Say nothing.** Look at the wall.']],
-            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, after a while: *"That\'s very poetic, Owl."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
-          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"Knot. Honestly. Do you think I\'m really the one? Because the one should be able to walk down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"Knot. Honestly. Do you think I\'m really the one?"*',
+            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, after a while: *"That\'s very poetic, the Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
+          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"The Binder. Honestly. Do you think I\'m really the one? Because the one should be able to walk down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"The Binder. Honestly. Do you think I\'m really the one?"*',
             opts: [['YES', '**"Yes."**'], ['DONTKNOW', '**"I don\'t know."** ~~(the truth)~~']],
             after: { YES: 'Wren nods like someone receiving a verdict they expected. *"Right. Yes. Good to have it from a Binder."* You said yes because it was kind. You are not sure it was kind.', DONTKNOW: 'Wren is quiet for a moment. *"Nobody\'s ever said that to me. Everyone always knows."* And then, almost too low to hear: *"Thanks."*' } },
         }[roleId];
@@ -1876,7 +1923,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     <g fill="#fff" opacity=".9"><circle cx="70" cy="90" r="6"/><circle cx="110" cy="150" r="6"/><circle cx="160" cy="120" r="6"/><circle cx="200" cy="160" r="6"/><circle cx="260" cy="90" r="6"/><circle cx="240" cy="150" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,90 L36,84"/><path d="M110,150 L76,152"/><path d="M160,120 L126,116"/><path d="M200,160 L166,164"/><path d="M260,90 L228,82"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L278,146"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="60" y="108">Bookmoth</text><text x="100" y="168">Hush</text><text x="150" y="138">Owl</text><text x="190" y="178">Knot</text><text x="248" y="80">the Provost</text><text x="230" y="168" fill="#a482e6">Wren</text><text x="300" y="158" text-anchor="middle">the fire</text><text x="65" y="118" opacity=".7">the desk</text><text x="180" y="20" text-anchor="middle" opacity=".7">the tapestry</text></g>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="60" y="108">Reader</text><text x="100" y="168">Listener</text><text x="150" y="138">Seer</text><text x="190" y="178">Binder</text><text x="248" y="80">the Provost</text><text x="230" y="168" fill="#a482e6">Wren</text><text x="300" y="158" text-anchor="middle">the fire</text><text x="65" y="118" opacity=".7">the desk</text><text x="180" y="20" text-anchor="middle" opacity=".7">the tapestry</text></g>
     <text x="180" y="194" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall — the Provost's away, like yours</text>
   </svg>`;
 
@@ -1911,21 +1958,21 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           P.sight.push({ t: 'fine', text: 'There was a sheet in the older alphabet in Mere\'s niche, below the Vault. Nobody took a rubbing. The primer would have read it.' });
         }
         P.sight.push({ t: 'h', text: 'The shelf, and the scroll (page 5 of 5)' });
-        P.sight.push({ t: 'p', text: '**The Founders\' four glyphs**, from the plinths in the Vault — a set, not an order. The order is Hush\'s:' });
+        P.sight.push({ t: 'p', text: '**The Founders\' four glyphs**, from the plinths in the Vault — a set, not an order. The order is the Listener\'s:' });
         P.sight.push({ t: 'glyphs', items: founders4.map(([who, g]) => ({ svg: G.svg(g, { size: 44, color: '#f2d27a' }), label: `${who} — **${g}**` })) });
         P.sight.push({ t: 'p', text: '**The third shelf**, eight spines, as the shapes stand. Read *upright*, left to right, they say:' });
         P.sight.push({ t: 'table', head: ['book', 'shape', 'reads upright'], rows: shelfShapes.map(([sh, inv], i) => [String(i + 1), G.shapeSvg(sh, inv, { size: 34, color: '#f2d27a' }), `<b>${G.read(sh, inv)}</b>`]) });
-        P.sight.push({ t: 'fine', text: 'Whether the line is upright is Owl\'s to say. If it is turned, your Book says what that does: read right to left, every glyph inverted — and every book keeps its place.' });
+        P.sight.push({ t: 'fine', text: 'Whether the line is upright is the Seer\'s to say. If it is turned, your Book says what that does: read right to left, every glyph inverted — and every book keeps its place.' });
         P.sight.push({ t: 'p', text: '**The Oath scroll.** Three glyphs and a lock, clean on your page where the Hearth shows them worn:' });
         P.sight.push({ t: 'html', html: oathInscription('#f2d27a') });
-        P.sight.push({ t: 'p', text: `${G.svg('THORN', { size: 30, color: '#f2d27a' })} THORN, ${G.svg('ASH', { size: 30, color: '#f2d27a' })} ASH, ${G.svg('WELL', { size: 30, color: '#f2d27a' })} WELL — *a gate; fire; down* — and a lock, which is not written because the swearer writes it. Where the ring begins is Owl\'s; the order is Hush\'s; what may lock an oath is Knot\'s.` });
+        P.sight.push({ t: 'p', text: `${G.svg('THORN', { size: 30, color: '#f2d27a' })} THORN, ${G.svg('ASH', { size: 30, color: '#f2d27a' })} ASH, ${G.svg('WELL', { size: 30, color: '#f2d27a' })} WELL — *a gate; fire; down* — and a lock, which is not written because the swearer writes it. Where the ring begins is the Seer\'s; the order is the Listener\'s; what may lock an oath is the Binder\'s.` });
 
         P.wren.push({ t: 'h', text: 'The name' });
         P.wren.push({ t: 'p', text: 'You ciphered it yourself, in the Provost\'s study, with her primer. **WRENN.** Not a bird. The hollow of a bell — the space inside it that makes the sound.' });
         const a = ctx.answer('ch3', 'whisper');
         P.wren.push({ t: 'p', text: a === 'TELL' ? 'In the laundry you told Wren it meant *a small brave bird*. It was kind. It is not in any alphabet.' : a === 'DONTKNOW' ? 'In the laundry you said you did not know yet. You know now.' : 'Whatever you said in the laundry, you know now.' });
         P.wren.push({ t: 'p', text: scared ? 'Wren has not asked you again tonight. Wren has not asked anyone anything since the fourth bell.' : 'It is a good name for a bell. You do not yet know why it makes you want to sit down.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **Bookmoth**, the keyboard is yours: the journal on the desk, and the first glyph of the oath.' });
+        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Reader**, the keyboard is yours: the journal on the desk, and the first glyph of the oath.' });
       }
 
       /* ================= LISTENER ================= */
@@ -1938,16 +1985,16 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'fine', text: 'Say it word for word. Then say whose. *Through it.* Nobody at the table will like that sentence; say it anyway.' });
         P.sight.push({ t: 'h', text: 'The Founders\' phrase, again (page 2 of 4)' });
         P.sight.push({ t: 'audio', label: 'The Hymn\'s opening, as the Founders left it', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Over the four glyphs the Founders left on their plinths there is only one order that climbs like this. Your row-player is in the Book if you want to test it.' });
-        P.sight.push({ t: 'p', text: 'The shelf itself plays nothing. Eight books; what you have is the phrase, and Bookmoth has the four.' });
+        P.sight.push({ t: 'p', text: 'The shelf itself plays nothing. Eight books; what you have is the phrase, and the Reader has the four.' });
         P.sight.push({ t: 'h', text: 'The Oath\'s phrase (page 3 of 4)' });
-        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]), text: '**Down one, up four — then the lock.** The lock is not a note; it is a glyph someone chooses. Three notes, three of Bookmoth\'s glyphs; the order is yours, from wherever Owl says the ring begins.' });
+        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]), text: '**Down one, up four — then the lock.** The lock is not a note; it is a glyph someone chooses. Three notes, three of the Reader\'s glyphs; the order is yours, from wherever the Seer says the ring begins.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the study (page 4 of 4)' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: f.SURRENDERED ? 'The Provost\'s: fast, and staying fast, even after the door closed. Wren\'s: too quiet to catch. Still.' : 'The Provost\'s: slow. Slower than a heart should be on a night like this — the slowness of a thing decided. Wren\'s: too quiet to catch. Still.' });
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
-        P.wren.push({ t: 'p', text: scared ? 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and your own voice asking Owl for the primer. Wren has not spoken since the fourth bell — but you remember the laundry, and the bell there, and you have started to wonder whether any bell has ever kept Wren\'s voice.' : 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and — from a minute ago — your own voice asking Owl for the primer. It did not give you Wren\'s joke about the lamp. It keeps every voice in the room but one.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **Hush**, the keyboard is yours: the bell on the mantel, and the second glyph of the oath.' });
+        P.wren.push({ t: 'p', text: scared ? 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and your own voice asking the Seer for the primer. Wren has not spoken since the fourth bell — but you remember the laundry, and the bell there, and you have started to wonder whether any bell has ever kept Wren\'s voice.' : 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and — from a minute ago — your own voice asking the Seer for the primer. It did not give you Wren\'s joke about the lamp. It keeps every voice in the room but one.' });
+        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Listener**, the keyboard is yours: the bell on the mantel, and the second glyph of the oath.' });
       }
 
       /* ================= SEER ================= */
@@ -1955,7 +2002,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'h', text: 'Under the shelf (page 1 of 4)' });
         P.sight.push({ t: 'p', text: 'The third shelf was re-hung upside down — the whole board, all eight books, in one go. One turned line: the **mark is on the right**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underShelf });
-        P.sight.push({ t: 'fine', text: 'A turned line: Bookmoth reads it right to left with every glyph inverted, and Knot\'s Book has the Law that says so. Every book keeps its *place* on the shelf — the book you pull is the book in that position, whatever it now reads.' });
+        P.sight.push({ t: 'fine', text: 'A turned line: Reader reads it right to left with every glyph inverted, and the Binder\'s Book has the Law that says so. Every book keeps its *place* on the shelf — the book you pull is the book in that position, whatever it now reads.' });
         P.sight.push({ t: 'h', text: 'Under the paint (page 2 of 4)' });
         P.sight.push({ t: 'p', text: 'The tapestry. Under the Order\'s picture — the hall, the fire, the one small figure — this:' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underTapestry });
@@ -1970,14 +2017,14 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.wren.push({ t: 'h', text: 'The boy who scraped the paint' });
         P.wren.push({ t: 'p', text: 'Twenty-two years ago a Warden with your Sight scraped this same paint, in the Hall, saw four, and was sent away for it. He is the Envoy now. You have been told all night not to trust him. You have his eyes.' });
         P.wren.push({ t: 'p', text: scared ? 'Wren has not looked at the tapestry once. Wren has not looked at anything since the fourth bell.' : 'Wren keeps glancing at the tapestry and then at you, as if you might have moved it.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **Owl**, the keyboard is yours: the tapestry, and the third glyph of the oath. You are also the Voice: read the Hearth aloud.' });
+        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Seer**, the keyboard is yours: the tapestry, and the third glyph of the oath. You are also the Voice: read the Hearth aloud.' });
       }
 
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Laws for the study (page 1 of 3)' });
         P.sight.push({ t: 'html', html: lawHtml([law(10), law(4), law(3)]) });
-        P.sight.push({ t: 'p', text: '**Law 10, for the shelf.** If Owl says the line is turned: reverse it and invert every glyph — but every glyph *keeps its place*. Pull the book by where it stands, not by what it says.' });
+        P.sight.push({ t: 'p', text: '**Law 10, for the shelf.** If the Seer says the line is turned: reverse it and invert every glyph — but every glyph *keeps its place*. Pull the book by where it stands, not by what it says.' });
         P.sight.push({ t: 'p', text: '**Law 4, for the oath.** The last glyph is the lock, and only two glyphs can be one. **KNOT** cannot be unbound. **EMBER** can be remembered and reconsidered. *The one you swear to cannot tell the difference.* This one is yours to argue, and the table should hear you argue it.' });
         P.sight.push({ t: 'h', text: 'Threads in the study (page 2 of 3)' });
         P.sight.push({ t: 'list', items: [
@@ -1990,7 +2037,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         if (f.ORIEL) {
           P.sight.push({ t: 'h', text: 'Under the cushion — Oriel\'s note (page 3 of 3)' });
           P.sight.push({ t: 'letter', text: '"I scraped the paint myself, as a girl, in the Hall, with a bread-knife, and put it back before Matins. Four. Vane saw it too, twenty years after me; that is why he was sent away and I was not — I never said. You asked me to tell you what you find below. Here is what I found first. — Oriel."' });
-          P.sight.push({ t: 'p', text: 'Law 0 was struck in 212 for being wrong. A Law struck for being wrong is un-struck by being right. Owl\'s tapestry, Bookmoth\'s rubbing, or this note — any one of them restores it. From the next chapter your Book will show it **restored**.' });
+          P.sight.push({ t: 'p', text: 'Law 0 was struck in 212 for being wrong. A Law struck for being wrong is un-struck by being right. The Seer\'s tapestry, the Reader\'s rubbing, or this note — any one of them restores it. From the next chapter your Book will show it **restored**.' });
         } else if (marrowLetter) {
           P.sight.push({ t: 'h', text: 'Under the cushion — an unsent letter (page 3 of 3)' });
           P.sight.push({ t: 'letter', text: '"To the Convocation. I have chaired you for nineteen years and lied to you for fourteen — not in what I said; in what I did not. There is another way. I have never said the other way aloud, because saying it costs four of us what sending one costs none of us. I will send this when I am braver. — I. Marrow."' });
@@ -2004,7 +2051,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.wren.push({ t: 'p', text: 'You will tie this oath. Tie it under **KNOT** and it cannot be untied — not by you, not by the Provost, not by whatever happens at midnight. Tie it under **EMBER** and it can be reconsidered later, if there turns out to be a later.' });
         P.wren.push({ t: 'p', text: 'The one you swear to cannot tell the difference. Neither can Wren. You can.' });
         P.wren.push({ t: 'p', text: scared ? 'Wren has not looked at you since the fourth bell. You have looked for a thread anyway. There is still nothing to find.' : 'Wren asked you in the laundry whether you thought Wren was really the one. You have looked for a thread every hour since. There is still nothing to find.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **Knot**, the keyboard is yours: the Provost\'s chair, and the lock of the oath.' });
+        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Binder**, the keyboard is yours: the Provost\'s chair, and the lock of the oath.' });
       }
       return P;
     },
@@ -2073,7 +2120,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     <g fill="#fff" opacity=".9"><circle cx="90" cy="120" r="6"/><circle cx="120" cy="105" r="6"/><circle cx="150" cy="125" r="6"/><circle cx="175" cy="108" r="6"/><circle cx="110" cy="140" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,120 L124,132"/><path d="M120,105 L154,113"/><path d="M150,125 L184,133"/><path d="M175,108 L208,114"/></g>
     <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M110,140 L72,130"/></g>
-    <g fill="#fff" font-size="9" ${F}><text x="82" y="112">Bookmoth</text><text x="112" y="97">Hush</text><text x="142" y="118">Owl</text><text x="167" y="100">Knot</text><text x="100" y="158" fill="${VIOLET}">Wren</text></g>
+    <g fill="#fff" font-size="9" ${F}><text x="82" y="112">Reader</text><text x="112" y="97">Listener</text><text x="142" y="118">Seer</text><text x="167" y="100">Binder</text><text x="100" y="158" fill="${VIOLET}">Wren</text></g>
     <text x="180" y="30" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">shadows on the ledge, as they fall</text>
   </svg>`;
 
@@ -2121,7 +2168,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       const mat = MATERIAL[roleId];
       const idle = () => {
         UI.clear(box);
-        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: String(prev) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit. Say it aloud when the Hearth asks — in seat order, Bookmoth first. Never show the phone.' })); }
+        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: String(prev) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); }
         else box.appendChild(UI.el('p', { class: 'fine', text: 'The Hearth will count 3, 2, 1, START. On START, press Start. You have forty-five seconds to find one digit.' }));
         box.appendChild(UI.el('button', { class: 'btn primary big-btn', text: prev != null ? 'Count again' : 'Start', onclick: start }));
       };
@@ -2140,7 +2187,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         for (let d = 0; d <= 9; d++) grid.appendChild(UI.el('div', { class: 'pk', text: String(d), onclick: () => { ctl.cancel(); api.state.done[key] = d; api.save(); api.audio.sfx('seal'); render(d); } }));
         box.appendChild(grid);
       };
-      const render = (d) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: String(d) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. Say it aloud when the Hearth asks — in seat order, Bookmoth first. Never show the phone.' })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
+      const render = (d) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: String(d) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
       idle();
     } };
   }
@@ -2178,7 +2225,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         let p = 1;
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — three shapes' });
-          P.sight.push({ t: 'p', text: 'Over a ring of four slots, if the Hearth shows a door: a **Flame**, a **Spike**, a **Spike inverted**. Which way the line is read is Owl\'s to say.' });
+          P.sight.push({ t: 'p', text: 'Over a ring of four slots, if the Hearth shows a door: a **Flame**, a **Spike**, a **Spike inverted**. Which way the line is read is the Seer\'s to say.' });
           P.sight.push({ t: 'html', html: insc(DOOR) });
           P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left)', `${gl('ASH')} ASH · ${gl('THORN')} THORN · ${gl('WELL')} WELL — <em>fire · a gate · down</em>`], ['turned (mark right)', `${gl('THORN')} THORN · ${gl('WELL')} WELL · ${gl('COLD')} COLD — <em>a gate · down · cold</em>`]] });
         }
@@ -2186,16 +2233,16 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'p', text: 'Clean on your page where the Hearth shows them worn: a **Crown**, a **Hook**, a **Spike**, all standing upright, left to right.' });
         P.sight.push({ t: 'html', html: insc(GATE1) });
         P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left), left to right', `${gl('CROWN')} CROWN · ${gl('KNOT')} KNOT · ${gl('THORN')} THORN — <em>one · bound · a gate</em>`], ['turned (mark right), right to left, every glyph inverted', `${gl('WELL')} WELL · ${gl('VEIL')} VEIL · ${gl('EMBER')} EMBER — <em>down · hidden · kept</em>`]] });
-        P.sight.push({ t: 'fine', text: 'A glyph never changes its place on the stone — only its reading. Which end the mark is on is Under-Sight, not yours. Where a turned line is *placed* on a ring is Knot\'s Law.' });
+        P.sight.push({ t: 'fine', text: 'A glyph never changes its place on the stone — only its reading. Which end the mark is on is Under-Sight, not yours. Where a turned line is *placed* on a ring is the Binder\'s Law.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — five shapes' });
         P.sight.push({ t: 'p', text: 'Five shapes as they physically stand, left to right: a **Crown**, a **Flame**, a **Flame inverted**, a **Hook**, a **Spike inverted**.' });
         P.sight.push({ t: 'html', html: insc(GATE2) });
         P.sight.push({ t: 'table', head: ['If the line is…', 'it reads'], rows: [['upright (mark left)', `${gl('CROWN')} CROWN · ${gl('ASH')} ASH · ${gl('COLD')} COLD · ${gl('KNOT')} KNOT · ${gl('WELL')} WELL — <em>one · fire · cold · bound · down</em>`], ['turned (mark right)', `${gl('THORN')} THORN · ${gl('VEIL')} VEIL · ${gl('ASH')} ASH · ${gl('COLD')} COLD · ${gl('EMBER')} EMBER — <em>a gate · hidden · fire · cold · kept</em>`]] });
-        P.sight.push({ t: 'fine', text: 'Either way, one of the five is **COLD** — the glyph the Order says is never written. The Book of Laws is Knot\'s; the bells\' counts are Hush\'s; the mark is Owl\'s.' });
+        P.sight.push({ t: 'fine', text: 'Either way, one of the five is **COLD** — the glyph the Order says is never written. The Book of Laws is the Binder\'s; the bells\' counts are the Listener\'s; the mark is the Seer\'s.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Founders\' Count' });
         P.sight.push({ t: 'p', text: 'The third gate asks you for a **digit**: nine worn glyphs, and a question. It is on your **SPEAK** page. Do not start it until the Hearth says START.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
-        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones, and says without turning: "You went quiet in the study, Bookmoth. You read something with my name in it." A pause. "You don\'t have to say. I just — I wanted you to know I noticed you being kind."' });
+        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones, and says without turning: "You went quiet in the study, the Reader. You read something with my name in it." A pause. "You don\'t have to say. I just — I wanted you to know I noticed you being kind."' });
         if (f.WREN_HURT) P.wren.push({ t: 'p', text: 'Wren\'s strapped arm is between you. Wren has not mentioned it since the Vault, and has laughed twice on the stair, both times at the wrong moment.' });
         P.wren.push({ t: 'fine', text: 'The glossary in your Book still says what it said in the study. You have not told anyone. You are not sure what there is to tell.' });
       }
@@ -2205,13 +2252,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         let p = 1;
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — the phrase' });
-          P.sight.push({ t: 'audio', label: 'The door, three notes', strip: CA.strip([1, 3]), play: (A) => CA.playSteps(A, [1, 3]), text: 'Up one, then up three. Of the glyphs Bookmoth reads, only one order climbs that way.' });
+          P.sight.push({ t: 'audio', label: 'The door, three notes', strip: CA.strip([1, 3]), play: (A) => CA.playSteps(A, [1, 3]), text: 'Up one, then up three. Of the glyphs the Reader reads, only one order climbs that way.' });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Turned Gate — the phrase' });
         P.sight.push({ t: 'audio', label: 'The gate, three notes', strip: CA.strip([1, -2]), play: (A) => CA.playSteps(A, [1, -2]), text: '**Up one, then down two.** Your Ladder is in the **Book**.' });
-        P.sight.push({ t: 'p', text: 'Say this before anyone touches the ring: if Bookmoth reads the carving *upright* — CROWN, KNOT, THORN — those three fit this phrase in **no order at all**. CROWN is step 6, KNOT step 2, THORN step 1; nothing there goes up one and down two. Only the *turned* reading fits, and it fits exactly one way.' });
+        P.sight.push({ t: 'p', text: 'Say this before anyone touches the ring: if the Reader reads the carving *upright* — CROWN, KNOT, THORN — those three fit this phrase in **no order at all**. CROWN is step 6, KNOT step 2, THORN step 1; nothing there goes up one and down two. Only the *turned* reading fits, and it fits exactly one way.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — five muted bells' });
-        P.sight.push({ t: 'p', text: 'One bell hangs above each of the five shapes, first to fifth, left to right. The Hearth cannot hear them. You can: each bell taps a **count**. A bell\'s count is its glyph\'s slot, counted **sunwise from the mark** — and the mark is Owl\'s.' });
+        P.sight.push({ t: 'p', text: 'One bell hangs above each of the five shapes, first to fifth, left to right. The Hearth cannot hear them. You can: each bell taps a **count**. A bell\'s count is its glyph\'s slot, counted **sunwise from the mark** — and the mark is the Seer\'s.' });
         const counts = [2, 5, 1, 3, 4];
         P.sight.push({ t: 'custom', render: (el, cx) => {
           const wrap = UI.el('div', { class: 'blk-audio' });
@@ -2230,7 +2277,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Founders\' Count' });
         P.sight.push({ t: 'p', text: 'The third gate asks you for a **digit**: a peal of two bells, and a question. It is on your **SPEAK** page. Do not start it until the Hearth says START.' });
         P.sight.push({ t: 'h', text: 'Heartbeats on the stair' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Provost Marrow</span>${D.trace('normal')}</div><div class="hb"><span>the soldiers, above</span>${D.trace('fast')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Provost Marrow</span>${D.trace('normal')}</div><div class="hb"><span>the soldiers, above</span>${D.trace('fast')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Marrow\'s is the slowest you have ever heard it — the beat of someone who has decided. Wren: too quiet to catch. The stair is quiet enough now that you would hear it, if there were anything to hear.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'p', text: 'Boots above, in step, twelve pairs. Water below, moving very slowly. Marrow, once, drawing a breath as if to say something to Wren, and not saying it. And beside you on the ledge, where Wren is standing, the thing you have been calling a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
@@ -2247,9 +2294,9 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underDoor });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'Under the Turned Gate' });
-        P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the RIGHT**. It was cut for those coming *up* the stair: the line is **turned** — Bookmoth reads it right to left with every glyph inverted. The ring\'s scratch is at **slot 1** of five.' });
+        P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the RIGHT**. It was cut for those coming *up* the stair: the line is **turned** — The Reader reads it right to left with every glyph inverted. The ring\'s scratch is at **slot 1** of five.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underGate1 });
-        P.sight.push({ t: 'fine', text: 'Where a *turned* line is placed around a ring — sunwise or the other way — is not yours to see. Knot has two Laws about it. Ask.' });
+        P.sight.push({ t: 'fine', text: 'Where a *turned* line is placed around a ring — sunwise or the other way — is not yours to see. The Binder has two Laws about it. Ask.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'Under the Silent Gate' });
         P.sight.push({ t: 'p', text: 'The carving\'s **mark is on the LEFT**: upright, left to right. The ring\'s scratch is at **slot 3** of five — the sigil begins there, in the middle of the ring, and goes sunwise.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underGate2 });
@@ -2269,12 +2316,12 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         if (refused) {
           P.sight.push(pg(p++, npages), { t: 'h', text: 'Mere\'s door — one Law' });
           P.sight.push({ t: 'html', html: lawHtml([law(1)]) });
-          P.sight.push({ t: 'p', text: 'Sunwise from the mark, three glyphs. Owl has the mark; Bookmoth the words; Hush the order. Nothing here disagrees with anything.' });
+          P.sight.push({ t: 'p', text: 'Sunwise from the mark, three glyphs. The Seer has the mark; the Reader the words; the Listener the order. Nothing here disagrees with anything.' });
         }
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Turned Gate — two Laws that disagree' });
         P.sight.push({ t: 'html', html: lawHtml([law(5), law(11), law(3)]) });
         P.sight.push({ t: 'p', text: 'Read them by year. Law 11 is the Order\'s, written in 212: *every* inscription sunwise. Law 5 is the Founders\': a **turned** inscription is placed **widdershins** — anticlockwise — from its mark. Law 3 says which wins. This is the first time tonight two Laws have truly disagreed. It will not be the last.' });
-        P.sight.push({ t: 'fine', text: 'So: if Owl says the carving is turned, place its first glyph *on* the mark and the rest going the other way round the ring. If Owl says upright, sunwise as ever.' });
+        P.sight.push({ t: 'fine', text: 'So: if the Seer says the carving is turned, place its first glyph *on* the mark and the rest going the other way round the ring. If the Seer says upright, sunwise as ever.' });
         P.sight.push(pg(p++, npages), { t: 'h', text: 'The Silent Gate — the glyph that is never written' });
         P.sight.push({ t: 'html', html: lawHtml([law(6)]) });
         P.sight.push({ t: 'p', text: 'Order\'s, 212 — the same year as Law 11, the same year the Vault was rebuilt, the same year Law 0 was struck. Where the carving shows COLD, the Order leaves that slot **empty**.' });
@@ -2342,7 +2389,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     3: 'O K B O (ALL) B K O (OK) B K (ALL) O B K (BK) O B (ALL) K O (OB) K (ALL)',
   };
   const parse = (str) => str.trim().split(/\s+/).filter(t => t && t !== '·').map(tok => tok === '(ALL)' ? { all: true, lanes: [0, 1, 2, 3] } : tok[0] === '(' ? { lanes: tok.slice(1, -1).split('').map(c => LANE[c]).sort() } : { lanes: [LANE[tok]] });
-  const CALL = ['BOOK', 'HUSH', 'OWL', 'KNOT'];
+  const CALL = ['READER', 'LISTENER', 'SEER', 'BINDER'];
   const call = (e) => e.all ? 'ALL' : e.lanes.map(l => CALL[l]).join(' + ');
   const round3Rows = () => parse(SCRIPTS[3]).map((e, i) => [String(i + 1), String(2 * i + 1), `<b>${call(e)}</b>`]);
   const wordsOf = (n) => parse(SCRIPTS[n]).map(call).join(' · ');
@@ -2361,7 +2408,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     <g fill="#fff" opacity=".9"><circle cx="180" cy="160" r="5"/><circle cx="112" cy="196" r="6"/><circle cx="148" cy="212" r="6"/><circle cx="212" cy="212" r="6"/><circle cx="248" cy="196" r="6"/><circle cx="180" cy="215" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M112,196 L98,224"/><path d="M148,212 L140,238"/><path d="M212,212 L220,238"/><path d="M248,196 L262,224"/><path d="M180,160 L180,180" opacity=".6"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,215 L180,190"/></g>
-    <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="88" y="192">Bookmoth</text><text x="120" y="222">Hush</text><text x="222" y="222">Owl</text><text x="256" y="192">Knot</text><text x="190" y="160">Marrow</text><text x="190" y="228" fill="#a482e6">Wren</text><text x="180" y="245" text-anchor="middle" opacity=".7">the lid · shadows, as they fall</text></g>
+    <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="88" y="192">Reader</text><text x="120" y="222">Listener</text><text x="222" y="222">Seer</text><text x="256" y="192">Binder</text><text x="190" y="160">Marrow</text><text x="190" y="228" fill="#a482e6">Wren</text><text x="180" y="245" text-anchor="middle" opacity=".7">the lid · shadows, as they fall</text></g>
   </svg>`;
   const stoneCarving = (mark) => G.inscription(STONE, { showMark: !!mark, mark: 'right', color: '#fff', markColor: '#a482e6' });
   const stoneInner = stoneCarving(true).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
@@ -2417,11 +2464,11 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       /* ================= READER ================= */
       if (roleId === 'reader') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the first, on the left. Three rounds; in the third the lights go out and Hush calls **BOOK** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the first, on the left. Three rounds; in the third the lights go out and the Listener calls **READER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'The prophecy stone — eight shapes, clean' });
         S.push({ t: 'p', text: 'Left to right as the Hall sees them over the fire: a **Flame**; a Flame, *inverted*; a **Crown**; a **Hook**; a **Spike**; a Flame, *inverted*; a Crown, *inverted*; a Hook, *inverted*.' });
         S.push({ t: 'html', html: G.inscription(STONE, { showMark: false, color: '#f2d27a' }) });
-        S.push({ t: 'p', text: 'Two readings. Which is true is not yours to say — it depends where the **mark** is, and only Under-Sight sees the foot of the stone. Here are both, so that when Owl calls it you can answer at once.' });
+        S.push({ t: 'p', text: 'Two readings. Which is true is not yours to say — it depends where the **mark** is, and only Under-Sight sees the foot of the stone. Here are both, so that when the Seer calls it you can answer at once.' });
         S.push({ t: 'table', head: ['', 'read left to right, upright', 'read right to left, every glyph inverted'], rows: [
           ['if the mark is on the…', '**left**', '**right** (turned)'],
           ['the glyphs', NAIVE.map(gl).join(' '), TURNED.map(gl).join(' ')],
@@ -2451,7 +2498,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         if (precracked) S.push({ t: 'fine', text: 'One bell is already cracked from the fall of the stair. You can hear it: Halvard\'s bell hums a quarter-tone flat. It still counts as rung when it is rung.' });
         S.push({ t: 'audio', label: 'Feel the tempo — 70, then 76, then 60', strip: '<div class="arrow-strip"><span class="step"><b>♥</b>70</span><span class="step"><b>♥</b>76</span><span class="step"><b>♥</b>60</span></div>', play: (A) => { CA.announce(0); CA.heartbeat(A, 70, 6); CA.later(() => { CA.announce(1); CA.heartbeat(A, 76, 6); }, 5600); CA.later(() => { CA.announce(2); CA.heartbeat(A, 60, 6); }, 10600); return 10600 + 6 * 1000 + 300; }, text: 'Six beats at each. Every second beat is a bell.' });
         S.push({ t: 'h', text: 'Round three — the script. You call it.' });
-        S.push({ t: 'p', text: 'Bell *n* falls on beat *2n − 1*. Call each bell **two bells ahead** — four beats, four seconds — in one word: **BOOK**, **OWL**, **KNOT**, or **ALL** (Bookmoth, Owl and Knot together). Before the count reaches 1, call the first two. Then, when the count says 1, call bell 3; when it says 3, call bell 4; and so on. Keep your voice on the beat and your eyes on this list.' });
+        S.push({ t: 'p', text: 'Bell *n* falls on beat *2n − 1*. Call each bell **two bells ahead** — four beats, four seconds — in one word: **READER**, **SEER**, **BINDER**, or **ALL** (Reader, Seer and Binder together). Before the count reaches 1, call the first two. Then, when the count says 1, call bell 3; when it says 3, call bell 4; and so on. Keep your voice on the beat and your eyes on this list.' });
         S.push(round3Block());
         S.push({ t: 'fine', text: 'If the table chose slow bells, the count runs at 48 to the minute instead — the list does not change.' });
         S.push({ t: 'reveal', label: 'Rounds one and two, written out', blocks: [
@@ -2464,7 +2511,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         S.push({ t: 'audio', label: 'The stone\'s hymn', strip: CA.strip(HYMN), play: (A) => CA.playSteps(A, HYMN), text: '**Up four, down six, up four, up one, down two, down three — then the rest.** COLD is the rest, and it comes last.' });
         S.push({ t: 'p', text: 'The Order\'s reading — ASH, COLD, CROWN, KNOT, THORN, COLD, EMBER, VEIL — has COLD **twice**, second and sixth: two rests *in the middle* of the tune, and none at the end. It cannot be this hymn. Only one ordering of the eight glyphs steps like this; test it on the row-player in your Book.' });
         S.push({ t: 'h', text: 'Heartbeats in the bell-chamber' });
-        S.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Bookmoth', 'Hush', 'Owl', 'Knot'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        S.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         S.push({ t: 'fine', text: 'The Provost\'s, fast as a bird\'s. Wren\'s: too quiet to catch. Six chapters. It has never once been anything else.' });
         P.wren.push({ t: 'h', text: 'Can you hear my heart?' });
         if (laundry === 'LOUD') P.wren.push({ t: 'p', text: 'In the laundry you said *yes, loud*. You have listened for it every room since, the way you would worry a sore tooth. There is nothing there. Wren is going to ask you again, out loud, in front of the others, and you will have to decide whether the kind answer is still the kind answer.' });
@@ -2472,21 +2519,21 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         else P.wren.push({ t: 'p', text: 'Wren asked you in the laundry and you never sealed an answer. Wren is going to ask you again, out loud, and the flat line on your page will still be flat.' });
         P.wren.push({ t: 'whisper', text: 'In the third round your bell is the voice. Wren will be standing beside you, close enough to hear — the one heart you cannot.' });
         P.speak.push({ t: 'h', text: 'Your voice — round three' });
-        P.speak.push({ t: 'p', text: 'Two bells ahead. One word. **BOOK · OWL · KNOT · ALL.**' });
+        P.speak.push({ t: 'p', text: 'Two bells ahead. One word. **READER · SEER · BINDER · ALL.**' });
         P.speak.push(round3Block());
       }
 
       /* ================= SEER ================= */
       if (roleId === 'seer') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the third. In the third round the lights go out; Hush calls **OWL** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the third. In the third round the lights go out; the Listener calls **SEER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'Under the bell-chamber' });
         S.push({ t: 'p', text: 'The fire is straight up the shaft, far above. Every shadow in the room falls *down and away* from it — the Provost\'s, all four of yours. One falls up, toward the shaft. You have drawn this five times tonight. It is not the lamp. It was never the lamp.' });
         S.push({ t: 'svg', cls: 'underlayer', svg: underChamber });
         S.push({ t: 'h', text: 'The foot of the stone' });
-        S.push({ t: 'p', text: 'When the fire drops, the Hearth will say: *Owl — the foot of the stone.* This is what is there. The **mark is on the RIGHT**: the prophecy was carved **turned**, and the Order has read it upright for four hundred years because the flame covered its foot from the night it was lit.' });
+        S.push({ t: 'p', text: 'When the fire drops, the Hearth will say: *the Seer — the foot of the stone.* This is what is there. The **mark is on the RIGHT**: the prophecy was carved **turned**, and the Order has read it upright for four hundred years because the flame covered its foot from the night it was lit.' });
         S.push({ t: 'svg', cls: 'underlayer', svg: underStone });
-        S.push({ t: 'p', text: 'Say it plainly: *read right to left, every glyph inverted.* Bookmoth has both readings ready. On the strip, slot 1 is the first glyph read — the shape at the **right-hand** end, inverted — and the eighth is the shape at the left-hand end, inverted.' });
+        S.push({ t: 'p', text: 'Say it plainly: *read right to left, every glyph inverted.* the Reader has both readings ready. On the strip, slot 1 is the first glyph read — the shape at the **right-hand** end, inverted — and the eighth is the shape at the left-hand end, inverted.' });
         S.push({ t: 'fine', text: 'No mark on any ring this chapter. The strip is a line; it runs 1 to 8 left to right.' });
         P.wren.push({ t: 'h', text: 'What do you see when you look at me?' });
         if (laundry === 'TELL') P.wren.push({ t: 'p', text: 'In the laundry you told Wren about the shadow. Wren laughed and said you were being poetic. You were not being poetic. Wren is going to ask you again, out loud, and this time there is a fire straight overhead and everyone can look down.' });
@@ -2498,7 +2545,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
         S.push({ t: 'h', text: 'The Bells' });
-        S.push({ t: 'p', text: 'Your lane is the fourth, on the right. In the third round the lights go out; Hush calls **KNOT** for you. Press on the beat, not on the word.' });
+        S.push({ t: 'p', text: 'Your lane is the fourth, on the right. In the third round the lights go out; the Listener calls **BINDER** for you. Press on the beat, not on the word.' });
         S.push({ t: 'h', text: 'The 212 page' });
         S.push({ t: 'p', text: 'One page of the Book, one year, one hand. Read it as a page, not as four Laws.' });
         S.push({ t: 'html', html: `<div class="laws">
@@ -2510,7 +2557,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         S.push({ t: 'p', text: 'The same year the Vault was rebuilt and the statues re-set. The same year a Founders\' Law was **struck** and an Order\'s Law **written** to say the opposite — in the same ink, the same hand. A Law that is merely wrong is forgotten. A Law that is *inconvenient* is struck.' });
         S.push({ t: 'h', text: 'The Laws that read a stone' });
         S.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 10 · Founders' · Year 0</div><div class="txt">A turned line reverses and inverts; a lone turned glyph only inverts; every glyph keeps its place on the stone.</div></div><div class="law founders"><div class="era">Law 3 · Founders' · Year 0</div><div class="txt">Where two Laws disagree, the older binds.</div></div></div>` });
-        S.push({ t: 'p', text: 'So: if Owl calls the stone **turned**, the whole line reverses and every glyph inverts — and where the line shows COLD, Law 6 says leave the slot empty, but Law 0 is older than Law 6. The stone shows the shape. Place it.' });
+        S.push({ t: 'p', text: 'So: if the Seer calls the stone **turned**, the whole line reverses and every glyph inverts — and where the line shows COLD, Law 6 says leave the slot empty, but Law 0 is older than Law 6. The stone shows the shape. Place it.' });
         S.push({ t: 'h', text: 'Threads in the bell-chamber' });
         S.push({ t: 'list', items: [
           '**Marrow — Wren:** grey. The colour of someone who has already said goodbye. It has been grey since the study; tonight it is the only thread she has left.',
@@ -2612,7 +2659,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     // the spark at centre
     s += `<circle cx="180" cy="150" r="4" fill="#fff"/><circle cx="180" cy="150" r="9" fill="none" stroke="#fff" opacity=".5"/>`;
     // the four: shadows away from the spark; Wren's toward it
-    const four = [[120, 205, 'Bookmoth'], [150, 212, 'Hush'], [210, 212, 'Owl'], [240, 205, 'Knot']];
+    const four = [[120, 205, 'Reader'], [150, 212, 'Listener'], [210, 212, 'Seer'], [240, 205, 'Binder']];
     s += `<g fill="#fff">${four.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}<circle cx="180" cy="110" r="5" fill="${V}"/></g>`;
     s += `<g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round">${four.map(([x, y]) => { const dx = x - 180, dy = y - 150, n = Math.hypot(dx, dy); return `<path d="M${x},${y} L${(x + dx / n * 22).toFixed(1)},${(y + dy / n * 22).toFixed(1)}"/>`; }).join('')}</g>`;
     s += `<g stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,110 L180,138"/></g>`;
@@ -2698,8 +2745,8 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         const tbl = (items, hiddenIdx, label) => { const up = reading(items, 'left', hiddenIdx), tn = reading(items, 'right', hiddenIdx); return { t: 'table', head: [`If the ${label} wall is…`, 'it reads'], rows: [['upright (mark on the left)', row(up) + ` — <em>${gloss(up)}</em>`], ['turned (mark on the right)', row(tn) + ` — <em>${gloss(tn)}</em>`]] }; };
         const shapesText = (items, hiddenIdx) => items.map((it, i) => i === hiddenIdx ? 'a soldier\'s shield' : it.shape + (it.inv ? '-inverted' : '')).join(', ');
         P.sight.push({ t: 'h', text: 'Two walls' });
-        P.sight.push({ t: 'p', text: 'Clean on your page: what the fire shows worn, you see cut. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — Owl\'s — not yours.' });
-        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'p', text: 'A soldier stands against ' + (sh.west >= 0 && sh.east >= 0 ? 'each wall' : sh.west >= 0 ? 'the west wall' : 'the east wall') + ', shield up. Glyph-Sight reads stone, not steel: the carving behind it is blank on your page too. The Law on the rim, and Hush\'s Hymn, say what it must be.' });
+        P.sight.push({ t: 'p', text: 'Clean on your page: what the fire shows worn, you see cut. Two inscriptions in two halves, one on each wall. Which is upright and which is turned is Under-Sight — The Seer\'s — not yours.' });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'p', text: 'A soldier stands against ' + (sh.west >= 0 && sh.east >= 0 ? 'each wall' : sh.west >= 0 ? 'the west wall' : 'the east wall') + ', shield up. Glyph-Sight reads stone, not steel: the carving behind it is blank on your page too. The Law on the rim, and the Listener\'s Hymn, say what it must be.' });
         P.sight.push({ t: 'p', text: `**West wall**, shapes left to right: ${shapesText(WEST, sh.west)}.` });
         P.sight.push({ t: 'html', html: wall(WEST, 'left', false, sh.west) });
         P.sight.push(tbl(WEST, sh.west, 'west'));
@@ -2715,13 +2762,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'h', text: 'The Founders\' Hymn, whole' });
         P.sight.push({ t: 'p', text: 'Every room tonight sang a piece of it. This is all of it: seven steps and the rest. The rest is where COLD sits — the eighth glyph, the one that is never written.' });
         P.sight.push({ t: 'audio', label: 'The Hymn, eight glyphs in wall order', strip: CA.strip([1, 3, -2, -3, 4, 2, 'rest']), play: (A) => CA.playSteps(A, [1, 3, -2, -3, 4, 2, 'rest']), text: '**Up one, up three, down two, down three, up four, up two, then the rest.** Over the eight glyphs only one order climbs like that — the Ladder is in your Book. The first four are the west wall in order; the last four are the east wall in order; the rest is last.' });
-        P.sight.push({ t: 'fine', text: 'Use the row-player in your **Book** to test any order Bookmoth reads against this contour, by ear or by the arrows.' });
+        P.sight.push({ t: 'fine', text: 'Use the row-player in your **Book** to test any order the Reader reads against this contour, by ear or by the arrows.' });
         P.sight.push({ t: 'h', text: 'The Binding count' });
         P.sight.push({ t: 'p', text: 'The Hearth gives no count. You do. Say it aloud, and the others move on your word.' });
         P.sight.push({ t: 'list', items: ['**To sound:** "one — two — three — FOUR." Everyone presses on **four**. All four notes within one heartbeat.', '**Hold.** Say nothing while the fire climbs (about six seconds; eight if a key is bound). The Hearth chimes when it has climbed.', '**To release:** "one — two — three — OFF." Everyone presses again on **off**. Within half a second of each other.', cracked ? `**${cracked} cracked bell${cracked > 1 ? 's' : ''}:** ${cracked > 1 ? 'those lanes have' : 'that lane has'} no light on the Hearth. They press on your count and nothing else.` : '**No bells cracked.** Every lane has its light; call the count anyway.'] });
         P.sight.push({ t: 'audio', label: 'Practise the count (60 to the minute)', strip: '<div class="arrow-strip"><span class="step"><b>1</b>one</span><span class="step"><b>2</b>two</span><span class="step"><b>3</b>three</span><span class="step"><b>●</b>FOUR / OFF</span></div>', play: (A) => CA.heartbeat(A, 60, 4), text: 'Four beats, a second apart. Say the count on the beats.' });
         P.sight.push({ t: 'h', text: 'Heartbeats in the chamber' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['Bookmoth', 'fast'], ['Hush', 'fast'], ['Owl', 'fast'], ['Knot', 'fast'], ['Provost Marrow', 'normal'], ['Lord Vane', 'fast'], ['Master Tarn', 'normal'], ['the guards', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.sight.push({ t: 'html', html: `<div class="heartbeats">${[['Reader', 'fast'], ['Listener', 'fast'], ['Seer', 'fast'], ['Binder', 'fast'], ['Provost Marrow', 'normal'], ['Lord Vane', 'fast'], ['Master Tarn', 'normal'], ['the guards', 'normal']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.sight.push({ t: 'fine', text: 'Wren: too quiet to catch. You stopped calling it a fault in the laundry.' });
       }
       if (roleId === 'seer') {
@@ -2729,13 +2776,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'p', text: 'The floor-ring has **two** marks, carved by two hands facing each other. The **west wall\'s** mark is at **slot 1**; the **east wall\'s** mark is at **slot 8**. The east half of the ring — slots 5 to 8 — is **turned**. Sunwise is clockwise.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: twoMarks() });
         P.sight.push({ t: 'h', text: 'The walls' });
-        P.sight.push({ t: 'p', text: 'West wall: mark on the **left** — upright, read left to right. East wall: mark on the **right** — carved turned. Bookmoth has both readings of each; the Binder\'s Laws say where a turned line goes.' });
+        P.sight.push({ t: 'p', text: 'West wall: mark on the **left** — upright, read left to right. East wall: mark on the **right** — carved turned. The Reader has both readings of each; the Binder\'s Laws say where a turned line goes.' });
         const sh = shields(ctx);
         P.sight.push({ t: 'html', html: `<div class="underlayer" style="padding:8px;border-radius:8px"><div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center">west — mark left</div>${wall(WEST, 'left', true, sh.west)}<div style="color:#fff;font-family:Cinzel,serif;font-size:11px;text-align:center;margin-top:8px">east — mark right</div>${wall(EAST, 'right', true, sh.east)}</div>` });
-        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'fine', text: 'A soldier\'s shield covers a carving. Under-Sight sees through paint, not steel: the mark is yours to call; the glyph behind the shield is Bookmoth\'s to reason out.' });
+        if (sh.west >= 0 || sh.east >= 0) P.sight.push({ t: 'fine', text: 'A soldier\'s shield covers a carving. Under-Sight sees through paint, not steel: the mark is yours to call; the glyph behind the shield is the Reader\'s to reason out.' });
         P.sight.push({ t: 'h', text: 'Under the bell-chamber' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underChamber() });
-        P.sight.push({ t: 'fine', text: 'The empty socket is not empty. Something is cut in its floor, in the older alphabet, that Bookmoth can read. You do not need to say so yet.' });
+        P.sight.push({ t: 'fine', text: 'The empty socket is not empty. Something is cut in its floor, in the older alphabet, that the Reader can read. You do not need to say so yet.' });
       }
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Every Law at once' });
@@ -2755,7 +2802,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           '**Vane:** two threads. Red — an oath, old, to the child. Gold — to the capital. He is pulled both ways and stands still.' + (ally ? ' Tonight the gold one went slack.' : ''),
           '**Master Tarn:** gold, bright, and only gold.',
           '**Marrow — Wren:** grey. The colour of someone who has already said goodbye. It has been grey since before the Vigil.',
-          '**Bookmoth, Hush, Owl, Knot:** four red threads to one place. Not to Wren. To each other.',
+          '**Reader, Listener, Seer, Binder:** four red threads to one place. Not to Wren. To each other.',
           '**Wren:** *No thread found.* Not unbound; the knot itself.',
         ] });
         P.sight.push({ t: 'fine', text: 'The full Book of Laws, by year, is in your **Book**.' });
@@ -2861,7 +2908,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="200"/><path d="M150,150 L150,110 A30,30 0 0 1 210,110 L210,150 Z"/></g>` +
         `<g stroke="#fff" fill="none" stroke-width="1.5"><path d="M180,146 C168,132 172,120 180,110 C188,120 192,132 180,146 Z"/><path d="M180,146 L180,128"/></g>` +
         `<text x="180" y="168" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
-        fig(70, 70, 'Bookmoth', [38, 44]) + fig(70, 170, 'Hush', [38, 196]) + fig(290, 70, 'Owl', [322, 44]) + fig(290, 170, 'Knot', [322, 196]) +
+        fig(70, 70, 'Reader', [38, 44]) + fig(70, 170, 'Listener', [38, 196]) + fig(290, 70, 'Seer', [322, 44]) + fig(290, 170, 'Binder', [322, 196]) +
         fig(180, 44, 'Wren', [180, 14], '#a482e6') +
         `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">five shadows, all falling away from the fire. The right way, at last.</text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
@@ -2931,10 +2978,10 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   }
 
   const SEALING_LINE = {
-    reader: 'Bookmoth. Eat something. And read the name on the door tomorrow — you\'ll be able to. That was always going to be the price of learning it.',
-    listener: 'Hush. It was never a fault in you. Nothing was there. You listened anyway. That\'s the whole of what you are.',
-    seer: 'Owl. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
-    binder: 'Knot. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
+    reader: 'The Reader. Eat something. And read the name on the door tomorrow — you\'ll be able to. That was always going to be the price of learning it.',
+    listener: 'The Listener. It was never a fault in you. Nothing was there. You listened anyway. That\'s the whole of what you are.',
+    seer: 'The Seer. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
+    binder: 'The Binder. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
   };
   const oathSworn = (ctx) => { try { const u = ctx.state.unlocked && ctx.state.unlocked.ch5; if (!u || !u.flags || u.flags.OATH == null) return null; return +u.flags.OATH > 0; } catch (e) { return null; } };
   const KEEPER_LINE = {
@@ -2944,7 +2991,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     binder: 'The oath you swore tonight was to a Chair. Swear the next one to a person. Wren will need at least one of you to have done that.',
   };
   const STAY_LINE = {
-    reader: 'The wall still reads. You will teach the next Bookmoth what the shapes say, and never tell them which of the shapes you cannot look at.',
+    reader: 'The wall still reads. You will teach the next the Reader what the shapes say, and never tell them which of the shapes you cannot look at.',
     listener: 'Every heart in the room, still. All but one, still. You will listen for it every day and it will never be there, and it will not be a fault.',
     seer: 'Every shadow in the room, still. Four fall away from the fire. One falls toward it. It always will.',
     binder: 'Every thread in the room, still. Between you and the ones who walked: red, and thin, and held.',
@@ -3077,7 +3124,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
-  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.nick} · ${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
+  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
   const chapterOrder = () => Lore.chapters.map(c => c.id);
   const maxUnlockedN = () => Math.max(-1, ...Object.keys(st.unlocked).map(id => Lore.chapter(id).n));
 
@@ -3098,7 +3145,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
     const grid = UI.el('div', { class: 'role-grid' });
     Lore.roles.forEach((r, i) => {
       grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { switchRole(r.id); save(); Audio.sfx('chime'); showName(); } }, [
-        UI.el('span', { class: 'rname', text: `${r.name} — "${r.nick}"` }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
+        UI.el('span', { class: 'rname', text: r.name }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
       ]));
     });
     p.appendChild(grid); main.appendChild(p);
