@@ -1,0 +1,13 @@
+{ "start": "ch2_ember", "flags": "SORREL", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"expect": "numb to the wrist"}, {"clickText": "The archway"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "bricked shut"}, {"clickText": "Up"},
+  {"wait": 800}, {"key": "Space"}, {"shot": "ch2_stairfall_sorrel"}, {"click": ".btn.choice >> nth=1"},
+  {"wait": 900}, {"key": "Space"}, {"expect": "only my arm"}, {"assert": "VigilStore.state.flags.WREN_HURT === true"}, {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"shot": "ch2_top_sorrel"},
+  {"expect": "Convocation"}, {"expect": "They have come for it"}, {"expect": "does not finish it now"},
+  {"assert": "VigilStore.state.flags.EMBER_LOST === true"},
+  {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow_sorrel"},
+  {"expect": "the Ember went to the Convocation"}, {"expect": "Wren's arm is broken"},
+  {"eval": "({EMBER_LOST: VigilStore.state.flags.EMBER_LOST, WREN_HURT: VigilStore.state.flags.WREN_HURT, stair: VigilStore.state.choices.CH2_STAIR})"}
+] }

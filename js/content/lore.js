@@ -48,8 +48,9 @@
   L.laws = [
     { n: 0,  era: 'F', year: 0,   struck: true, text: 'COLD is written by four hands.', note: 'struck by the Convocation, 212. See Law 6.', learned: 'ch0' },
     { n: 1,  era: 'F', year: 0,   text: 'A sigil is read sunwise from the mark.', learned: 'ch0' },
-    { n: 2,  era: 'F', year: 0,   text: 'Each Founder\'s glyph sits on the dial they face; turn the dials in the Hymn\'s order. The door counts your turns and forgets a wrong count.', learned: 'ch2' },
+    { n: 2,  era: 'F', year: 0,   text: 'The door hears one count. One word to each dial, in the order the line climbs, and then it is called.', learned: 'ch2' },
     { n: 3,  era: 'F', year: 0,   text: 'Where two Laws disagree, the older binds.', learned: 'ch2' },
+    { n: 13, era: 'F', year: 0,   text: 'A Founder faces the hole their plinth was cut for.', learned: 'ch2' },
     { n: 9,  era: 'O', year: 212, text: 'A Founder faces the dial before them.', learned: 'ch2' },
     { n: 10, era: 'F', year: 0,   text: 'A turned line reverses and inverts; a lone turned glyph only inverts; every glyph keeps its place on the stone.', learned: 'ch4' },
     { n: 4,  era: 'O', year: 340, text: 'An oath\'s last glyph is its lock. KNOT cannot be unbound. EMBER can be remembered and reconsidered. The one you swear to cannot tell the difference.', learned: 'ch4' },

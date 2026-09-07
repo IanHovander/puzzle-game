@@ -146,14 +146,12 @@
       ch1_vote: {
         type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
         text: [
-          'An hour. Nine Masters. Four of you, and the floor of the hall to cross.',
-          'The board shows banners and numbers, and no names. You do not need nine names. You need two numbers.',
-          { text: 'Each of you says your one thing out loud, before anybody crosses the floor.', cls: 'whisper' },
+          { text: 'The board shows numbers, not names. Say your one thing out loud before anybody crosses the floor.', cls: 'whisper' },
           { text: 'Reader — who is already pledged.', cls: 'whisper' },
           { text: 'Listener — who is still talking about it.', cls: 'whisper' },
           { text: 'Seer — who cannot be moved by anybody.', cls: 'whisper' },
           { text: 'Binder — who is sworn to whom.', cls: 'whisper' },
-          { text: 'Then go to two Masters and call the vote. It is called once.', cls: 'whisper' },
+          { text: 'Then ask two, and call the vote. It is called once.', cls: 'whisper' },
         ],
         config: () => {
           /* The bell is narrative (design §5 Ch1): at 6:00 the Provost stalls the count and the last hint tier fires.

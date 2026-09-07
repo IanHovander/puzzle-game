@@ -1,0 +1,10 @@
+{ "start": "ch2_stairfall", "flags": "ORIEL", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"expect": "promised to stay put"}, {"click": ".btn.choice >> nth=0"},
+  {"wait": 900}, {"key": "Space"}, {"expect": "the dark takes it"}, {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"shot": "ch2_top_oriel"},
+  {"expect": "Master Oriel"}, {"expect": "everything you found below"}, {"expect": "Then we do without it"},
+  {"expectNot": "Convocation"},
+  {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "at the bottom of the stair"},
+  {"eval": "({ORIEL: VigilStore.state.flags.ORIEL, stair: VigilStore.state.choices.CH2_STAIR, EMBER_LOST: VigilStore.state.flags.EMBER_LOST})"}
+] }

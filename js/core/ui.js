@@ -64,7 +64,10 @@
     const avail = maxH - chrome - 2;
     container.appendChild(ghost);
     let size = base;
-    const floor = Math.max(14, Math.round(base * 0.64));
+    // The floor is a readability floor, not a fitting one. This is read aloud from a laptop or a TV
+    // several feet away, so type below about 17px is not small, it is gone. A scene that will not fit
+    // above the floor is too long, and scan-fit reports it as an overflow so it gets cut instead.
+    const floor = Math.max(17, Math.round(base * 0.8));
     while (container.scrollHeight > avail && size > floor) {
       size -= 1;
       container.style.fontSize = size + 'px';

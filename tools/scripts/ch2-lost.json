@@ -1,0 +1,23 @@
+{ "start": "ch2_start", "flags": "VOTE_LOST", "steps": [
+  {"key": "Space"}, {"shot": "ch2_start_lost"}, {"expect": "The vote is lost"}, {"expect": "get the child back myself"}, {"clickText": "Down"},
+  {"wait": 600}, {"key": "Space"}, {"clickText": "The bottom"},
+  {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "KNOT"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400},
+  {"click": ".dialseq .dial-face >> nth=2"}, {"click": ".palette-grid .glyph:has-text(\"THORN\")"},
+  {"click": ".dialseq .dial-face >> nth=0"}, {"click": ".palette-grid .glyph:has-text(\"KNOT\")"},
+  {"click": ".dialseq .dial-face >> nth=3"}, {"click": ".palette-grid .glyph:has-text(\"VEIL\")"},
+  {"click": ".dialseq .dial-face >> nth=1"}, {"click": ".palette-grid .glyph:has-text(\"EMBER\")"},
+  {"clickText": "Try the door"}, {"wait": 300}, {"wait": 1200}, {"key": "Space"}, {"wait": 400}, {"clickText": "Into the vault"},
+  {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=0"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "The vault is very quiet"}, {"clickText": "The archway"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "Up"},
+  {"wait": 900}, {"key": "Space"}, {"expect": "under guard twenty minutes ago"}, {"shot": "ch2_stairfall_lost"},
+  {"wait": 33000}, {"key": "Space"}, {"wait": 600}, {"expect": "the dark takes it"},
+  {"assert": "VigilStore.state.choices.CH2_STAIR === 'wren'"},
+  {"assert": "VigilStore.state.flags.CH2_STAIR_timedout === true"},
+  {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"shot": "ch2_top_lost"}, {"expect": "Vane's captain"}, {"expect": "You promised nobody anything"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "went unlooked-at"}, {"expect": "Wren is unhurt"},
+  {"eval": "({stair: VigilStore.state.choices.CH2_STAIR, timedout: VigilStore.state.flags.CH2_STAIR_timedout, EMBER_LOST: VigilStore.state.flags.EMBER_LOST, niche: VigilStore.state.choices.CH2_NICHE || null})"}
+] }

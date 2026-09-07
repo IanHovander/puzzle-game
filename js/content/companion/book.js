@@ -73,7 +73,9 @@
       blocks.push({ t: 'fine', text: 'Shapes: **Flame** = ASH / COLD · **Spike** = THORN / WELL · **Hook** = KNOT / VEIL · **Crown** = CROWN / EMBER.' });
       blocks.push({ t: 'h', text: 'Glossary' });
       const gl = [['WREN', n >= 4 ? 'the Vigil roll spells it WRENN in the older alphabet: *the hollow of a bell; the space that rings*' : 'the child\'s name. Written on the dormitory door in the older alphabet, which you have not learned.']];
-      if (n >= 2) gl.push(['THE FOUNDERS\' GLYPHS', 'Halvard — THORN · Idony — KNOT · Rook — VEIL · Mere — EMBER (from the plinths in the Vault)']);
+      // Plinth order, not the order the vault door wants, and not before the door is behind them:
+      // this entry used to name the door's own answer sequence from the scene before the puzzle.
+      if (n >= 3) gl.push(['THE FOUNDERS\' GLYPHS', 'plinth 1 \u2014 EMBER \u00b7 plinth 2 \u2014 THORN \u00b7 plinth 3 \u2014 VEIL \u00b7 plinth 4 \u2014 KNOT (from the vault door)']);
       blocks.push({ t: 'list', items: gl.map(([k, v]) => `**${k}** — ${v}`) });
       blocks.push({ t: 'h', text: 'The Older Alphabet' });
       blocks.push(n >= 4 ? { t: 'p', text: 'Learned from the Provost\'s primer (Chapter IV). A simple substitution: each old letter is the modern letter shown beside it on the primer page.' } : { t: 'fine', text: '*Locked — "You have not learned it yet."*' });
