@@ -130,7 +130,7 @@
       },
       ch1_attune: {
         type: 'code', art: 'ch1_hall', mood: 'tense', fx: 'embers',
-        text: ['Cut into the lintel of the Masters\' door, worn smooth by four hundred years of Masters ducking under it: a word. Each of you, open your Companion and turn the page with it. Read your Sight. Say nothing yet.'],
+        text: ['Cut into the lintel of the Masters\' door, worn smooth by four hundred years of Masters ducking under it: a word. Each of you, open your Companion and turn the page with it. Read what it gives you. Say nothing yet.'],
         roles: 'Warden of the Hearth (keyboard): **The Binder**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: 'ch1_vote',
       },

@@ -77,7 +77,7 @@
       },
       ch5_attune: {
         type: 'code', art: 'ch5_foundations', mood: 'dread', fx: 'dust',
-        text: ['The word, and the mark beside it. Every phone. Read your Sight; say nothing until all four pages have turned.'],
+        text: ['The word, and the mark beside it. Every phone. Read your own page; say nothing until all four have turned.'],
         roles: 'Warden of the Hearth (keyboard): **The Reader**. Voice (reads aloud): **The Listener**.', sightSeconds: 90,
         next: (s) => F(s).REFUSED_OATH ? 'ch5_door' : 'ch5_gates',
       },

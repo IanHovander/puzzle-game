@@ -226,7 +226,7 @@
     const box = UI.el('div', { class: 'attune' }, [
       UI.el('div', { class: 'attune-label', text: scene.codeLabel || (cast ? 'Word of attunement, and the mark beside it — on every phone' : 'Word of attunement — enter it on every phone') }),
       UI.el('div', { class: 'attune-word', html: UI.esc(code) + (cast ? `<span class="attune-cast">·${UI.esc(cast)}</span>` : '') }),
-      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Read your Sight. Say nothing. When all four phones have turned the page, continue.') }),
+      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Each of you gets a different page — read yours, and only yours. Say nothing until all four of you have looked up.') }),
     ]);
     if (scene.roles) box.appendChild(UI.el('div', { class: 'attune-roles', html: UI.rich(typeof scene.roles === 'function' ? scene.roles(Store.state) : scene.roles) }));
     dom.actions.appendChild(box);
