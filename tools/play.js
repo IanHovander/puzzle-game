@@ -1,5 +1,5 @@
 /* Scripted click-through: node tools/play.js script.json [--shots dir]
-   script.json: { "start": "ch0_start", "flags": "A,B", "set": "K=v", "mobile": false, "steps": [ ... ] }
+   script.json: { "start": "ch0_start", "flags": "A,B", "set": "K=v", "viewport": {"width":1280,"height":720}, "steps": [ ... ] }
    steps: {"click": "selector"} | {"clickText": "Button text"} | {"type": ["selector","text"]} | {"keys": "ACM/"} (press each key, 60ms apart)
           | {"key": "Space"} | {"wait": ms} | {"waitFor": "selector"} | {"shot": "name"} | {"expect": "text"} | {"expectNot": "text"} | {"assert": "js (truthy)"} | {"eval": "js"} | {"slots": [[3,"ASH"],[4,"EMBER"]]} (ring placement)
           | {"companion": true} switches to a phone context on companion.html; {"unlock": ["KINDLE", "cast"]} ; {"role": "reader"} ; {"tab": "sight"} */
@@ -19,7 +19,8 @@ const path = require('path'), fs = require('fs');
   const HEARTH = process.env.PLAY_HEARTH || 'index.html', COMPANION = process.env.PLAY_COMPANION || 'companion.html';
   const autoDialog = { prompt: script.dialogText || 'VEIL', confirm: true };
   const mkContext = async (opts) => { const c = await browser.newContext(opts); await c.addInitScript((d) => { window.__autoDialog = d; }, autoDialog); return c; };
-  let page = await (await mkContext({ viewport: { width: 1440, height: 860 } })).newPage(); hook(page, 'hearth');
+  const vp = script.viewport || { width: 1440, height: 860 };
+  let page = await (await mkContext({ viewport: vp })).newPage(); hook(page, 'hearth');
   let url = `http://localhost:${port}/${HEARTH}?scene=${encodeURIComponent(script.start)}`;
   if (script.flags) url += '&flags=' + script.flags; if (script.set) url += '&set=' + script.set;
   await page.goto(url); await page.waitForTimeout(1200);

@@ -391,7 +391,7 @@
         text: (s) => [
           { text: 'Sit with it.', cls: 'big' },
           ending(s) === 0 ? { text: 'Four friends, a small house, a fire that is only a fire.', cls: 'center' } : ending(s) === 2 ? { text: 'They went in together. One step away. The fire will show you the way back to CROWN, if you want it.', cls: 'center' } : { text: 'The fire will show you the way back to any hour of the night, if you want it.', cls: 'center' },
-          { text: 'Thank you for playing Hearthfall.', cls: 'small center' },
+          { text: 'Thank you for playing What the Fire Keeps.', cls: 'small center' },
         ],
         button: 'Begin again',
         render: (actions, api) => {

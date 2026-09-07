@@ -1,4 +1,4 @@
-# HEARTHFALL — Implementer conventions
+# WHAT THE FIRE KEEPS — Implementer conventions
 
 Read `docs/DESIGN.md` (spoilers) for the story and puzzle specs. This file is the *contract* for writing content: file layout, the scene API, widget configs, flags, tokens, casts, Companion blocks, art, audio, and how to test. Everything is vanilla JS, classic `<script>` tags, no build step, no modules. Everything must work from GitHub Pages or `python3 -m http.server`.
 

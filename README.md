@@ -1,4 +1,4 @@
-# HEARTHFALL
+# WHAT THE FIRE KEEPS
 
 *Four fourth-year Wardens of Thornhallow, each with a different way of seeing, must get their friend Wren — the prophesied "one born of four" — through one night of politics, wards and bells to the Cold beneath their school, and decide, when the Hearth goes cold, who really has to walk in.*
 

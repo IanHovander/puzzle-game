@@ -162,3 +162,12 @@
 .glyph.name-only .gname { font-family: var(--display); font-size: 13px; letter-spacing: .12em; color: var(--gold-2); }
 .glyph.name-only.used .gname { color: var(--ink-dim); }
 .palette-grid { display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px; }
+
+/* Laptop screens: the whole puzzle has to be reachable without scrolling the panel. */
+@media (max-height: 820px) {
+  #widget { padding: 12px 18px; }
+  .wheel { width: min(38vh, 420px); height: min(38vh, 420px); }
+  .glyph { width: 72px; height: 86px; }
+  .glyph svg { width: 46px; height: 46px; }
+  .glyph.name-only { width: 84px; height: 48px; }
+}

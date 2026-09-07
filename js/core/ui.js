@@ -33,25 +33,70 @@
   /* Typewriter: reveals paragraphs one after another; click/space to fast-forward. Returns promise. */
   let skipRequested = false;
   UI.requestSkip = () => { skipRequested = true; };
+  /* Build one paragraph. `st` carries speaker continuity: a run of lines from the same
+     person is named once, and the rule down the left side carries the rest. */
+  function buildPara(para, st) {
+    const isObj = typeof para === 'object';
+    const text = isObj ? para.text : para;
+    const speaker = isObj ? para.speaker : null;
+    const same = !!(speaker && speaker === st.speaker);
+    const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
+    const p = UI.el('p', { class: cls });
+    if (same && st.el) st.el.classList.add('joined');
+    if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+    const span = UI.el('span', { class: 'tw' });
+    p.appendChild(span);
+    st.speaker = speaker || null; st.el = p;
+    return { p, span, html: UI.rich(text) };
+  }
+
+  /* Shrink a box's type until the finished text fits inside it, so nothing has to be
+     scrolled to be read. `ghost` holds the text that is about to be typed. */
+  UI.fitBox = function (container, ghost) {
+    const cs = getComputedStyle(container);
+    const maxH = parseFloat(cs.maxHeight);
+    if (!isFinite(maxH) || maxH <= 0) return;
+    container.style.fontSize = '';
+    container.classList.remove('tight');
+    const base = parseFloat(getComputedStyle(container).fontSize);
+    if (!base) return;
+    const chrome = parseFloat(cs.borderTopWidth || 0) + parseFloat(cs.borderBottomWidth || 0);
+    const avail = maxH - chrome - 2;
+    container.appendChild(ghost);
+    let size = base;
+    const floor = Math.max(14, Math.round(base * 0.64));
+    while (container.scrollHeight > avail && size > floor) {
+      size -= 1;
+      container.style.fontSize = size + 'px';
+      container.classList.toggle('tight', size <= base * 0.88);
+    }
+    // What the box had to do to fit, for the layout check in tools/scan-fit.js.
+    UI.lastFit = { base, size, over: Math.max(0, container.scrollHeight - avail) };
+    ghost.remove();
+  };
+
   UI.typewrite = async function (container, paragraphs, opts) {
     opts = opts || {};
-    const speed = opts.speed || 14; // ms per char
+    const speed = opts.speed || 9; // ms per char
     skipRequested = false;
-    let lastSpeaker = null, lastEl = null;
+    // Continuity survives across calls into the same box: a choice's reply keeps Wren's rule going.
+    const prev = container.__tw;
+    const st = (prev && prev.el && prev.el.parentNode === container)
+      ? { speaker: prev.speaker, el: prev.el } : { speaker: null, el: null };
+
+    // Size the box for the finished text before a single character of it appears.
+    if (opts.fit !== false) {
+      const gst = { speaker: st.speaker, el: null };
+      const ghost = UI.el('div', { class: 'tw-ghost' });
+      for (const para of paragraphs) { const b = buildPara(para, gst); b.span.innerHTML = b.html; ghost.appendChild(b.p); }
+      UI.fitBox(container, ghost);
+    }
+
     for (const para of paragraphs) {
-      const isObj = typeof para === 'object';
-      const text = isObj ? para.text : para;
-      const speaker = isObj ? para.speaker : null;
-      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
-      const same = speaker && speaker === lastSpeaker;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
-      const p = UI.el('p', { class: cls });
-      if (same && lastEl) lastEl.classList.add('joined');
-      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
-      lastSpeaker = speaker || null; lastEl = p;
-      const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
+      const b = buildPara(para, st);
+      const p = b.p, span = b.span, html = b.html;
       container.appendChild(p);
-      const html = UI.rich(text);
+      container.__tw = { speaker: st.speaker, el: st.el };
       // reveal by characters of the plain text while keeping markup: simple approach, progressively slice HTML at tag-safe points
       if (skipRequested || opts.instant) { span.innerHTML = html; continue; }
       let i = 0; const parts = html.split(/(<[^>]+>)/g); let out = '';
@@ -60,12 +105,12 @@
         for (const ch of part) {
           out += ch; i++;
           if (skipRequested) break;
-          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 8 : ch === ',' ? 3 : 1)); }
+          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 6 : ch === ',' ? 2.5 : 1)); }
         }
         if (skipRequested) break;
       }
       span.innerHTML = html;
-      if (!skipRequested) await UI.sleep(opts.paraPause || 260);
+      if (!skipRequested) await UI.sleep(opts.paraPause || 180);
       container.scrollTop = container.scrollHeight;
     }
     skipRequested = false;

@@ -24,7 +24,7 @@
     scenes: {
       /* ---------- cold open ---------- */
       ch0_start: {
-        art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 18,
+        art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 13,
         text: [
           { text: 'Four hundred years ago, four people closed a wound in the world.', cls: 'center' },
           { text: 'They left a fire on top of it, to hold it shut.', cls: 'center' },
@@ -211,6 +211,7 @@
           { id: 'four', text: '"The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand.' }] },
           { id: 'idiots', text: '"The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
           { id: 'vigil', text: '"The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'Mum — the Provost — will hate that.' }] },
+          { id: 'own', text: 'Something of our own.', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
         ],
       },
       ch0_flow: {

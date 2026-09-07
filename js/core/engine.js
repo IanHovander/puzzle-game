@@ -152,10 +152,17 @@
     const holder = UI.el('div', { class: 'choices' });
     if (scene.prompt) dom.actions.appendChild(UI.el('div', { class: 'prompt', html: UI.rich(scene.prompt) }));
     dom.actions.appendChild(holder);
-    const pick = (o, how) => {
+    const pick = async (o, how) => {
       if (!api.alive()) return;
       if (ctl) ctl.cancel();
       Array.from(holder.children).forEach(b => b.disabled = true);
+      // An option may ask the table for words of its own.
+      if (o.ask) {
+        const typed = await UI.ask(o.ask.prompt, o.ask.value || '', { plain: true, ok: o.ask.ok || 'That one', cancel: 'Back', maxlength: o.ask.maxlength || 28 });
+        const v = (typed || '').trim();
+        if (!v) { Array.from(holder.children).forEach(b => b.disabled = false); return; }
+        Store.set(o.ask.set, v);
+      }
       if (scene.choice) Store.choose(scene.choice, o.id);
       if (o.set) for (const k in o.set) Store.set(k, typeof o.set[k] === 'function' ? o.set[k](Store.state) : o.set[k]);
       if (o.note) Store.note(typeof o.note === 'function' ? o.note(Store.state) : o.note);
@@ -341,7 +348,7 @@
     box.appendChild(row);
     const row2 = UI.el('div', { class: 'row' });
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
-    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a Hearthfall save.'); } } }));
+    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
     const m = UI.modal(box, { title: 'The Hearth' });
   };
@@ -361,6 +368,13 @@
     if (url) {
       try { const q = qrcode(0, 'M'); q.addData(url); q.make(); box.appendChild(UI.el('div', { class: 'qr', html: q.createSvgTag({ cellSize: 6, margin: 2 }) })); } catch (e) {}
       box.appendChild(UI.el('p', { class: 'qr-url', text: url }));
+      const row = UI.el('div', { class: 'row', style: { justifyContent: 'center' } });
+      row.appendChild(UI.el('button', { class: 'btn small', text: 'Copy the link', onclick: (e) => {
+        const done = () => { e.target.textContent = 'Copied'; setTimeout(() => { e.target.textContent = 'Copy the link'; }, 1600); };
+        try { navigator.clipboard.writeText(url).then(done, () => {}); } catch (x) {}
+      } }));
+      box.appendChild(row);
+      if (/claude\.ai/.test(url)) box.appendChild(UI.el('p', { class: 'fine', style: { marginTop: '10px' }, html: UI.rich('If a phone opens the Claude app instead of the page, that phone has the app installed and is grabbing the link. Copy the link above and paste it into the phone\'s browser, or open it once in the app and choose *Open in browser*.') }));
     } else {
       box.appendChild(UI.el('p', { html: 'This page was opened from a file, so phones cannot reach it. Host the folder (for example <code>python3 -m http.server 8080</code>) and open <code>http://YOUR-LAN-IP:8080/</code> on this screen and <code>.../companion.html</code> on phones. GitHub Pages also works.' }));
     }

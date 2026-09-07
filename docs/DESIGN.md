@@ -1,13 +1,13 @@
-<!-- ⚠️ SPOILERS: This document contains the complete story, every puzzle solution, and all endings of HEARTHFALL.
+<!-- ⚠️ SPOILERS: This document contains the complete story, every puzzle solution, and all endings of WHAT THE FIRE KEEPS.
      If you intend to PLAY the game, do not read past this line. See docs/HOST.md for a spoiler-free setup guide. -->
 
-# HEARTHFALL — Master Design Document (Revision 2)
+# WHAT THE FIRE KEEPS — Master Design Document (Revision 2)
 
 *Revised against three critiques (mystery, puzzle integrity, feasibility). Every change is folded into the body; Appendix A lists the few critiques rejected or modified, with reasons; Appendix B is the flag register implementers need. Numbers in this document (routes, vote uniqueness, Hymn-contour uniqueness, ring rotation, shelf positions) were checked by brute force during revision.*
 
 ## 1. Title, logline, tone, art, sound
 
-**Title:** HEARTHFALL
+**Title:** WHAT THE FIRE KEEPS
 
 **Logline:** Four fourth-year Wardens of Thornhallow, each with a different way of seeing, must smuggle their friend Wren — the prophesied "one born of four" — through one night of politics, wards and bells to the Cold beneath their school, and decide, when the Hearth goes cold, who really has to walk in.
 

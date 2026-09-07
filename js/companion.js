@@ -31,7 +31,7 @@
   if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
-  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
+  function setHeader() { const r = role(); roleEl.textContent = r ? r.nick : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
   const chapterOrder = () => Lore.chapters.map(c => c.id);
   const maxUnlockedN = () => Math.max(-1, ...Object.keys(st.unlocked).map(id => Lore.chapter(id).n));
 
@@ -74,6 +74,13 @@
   function showHome() {
     setHeader(); UI.clear(main);
     const r = role();
+    // Who you are, first thing on the page: the rest of the night hangs off it.
+    const who = UI.el('div', { class: 'cpanel who p' + r.idx });
+    who.appendChild(UI.el('h2', { text: r.nick }));
+    who.appendChild(UI.el('p', { class: 'fine', html: UI.rich(r.blurb) }));
+    who.appendChild(UI.el('p', { class: 'fine rule', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
+    main.appendChild(who);
+
     const u = UI.el('div', { class: 'cpanel' });
     u.appendChild(UI.el('h2', { text: 'Word of attunement' }));
     u.appendChild(UI.el('p', { class: 'fine', text: 'When the Hearth shows a word, enter it here. If a mark stands beside the word, enter the mark too.' }));
@@ -122,10 +129,6 @@
       list.appendChild(b);
     });
     l.appendChild(list); main.appendChild(l);
-    const h = UI.el('div', { class: 'cpanel' });
-    h.appendChild(UI.el('p', { class: 'fine', html: `<span class="tag">${UI.esc(r.nick)}</span> ${UI.rich(r.blurb)}` }));
-    h.appendChild(UI.el('p', { class: 'fine', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
-    main.appendChild(h);
   }
 
   const TABS = [['sight', 'Sight'], ['wren', 'Wren'], ['speak', 'Speak'], ['book', 'Book']];

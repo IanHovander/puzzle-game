@@ -1,4 +1,4 @@
-# Hosting a night of HEARTHFALL — spoiler-free guide
+# Hosting a night of WHAT THE FIRE KEEPS — spoiler-free guide
 
 This page contains no story spoilers. It tells you what to set up, what to expect, and what to do if something goes wrong.
 

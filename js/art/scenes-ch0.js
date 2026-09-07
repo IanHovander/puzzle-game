@@ -59,8 +59,12 @@
     `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
     `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
     `<circle cx="0" cy="-170" r="14" fill="#ffd27a" opacity=".5"><animate attributeName="opacity" values=".5;.2;.55;.25;.5" dur="2s" repeatCount="indefinite"/></circle>` +
-    `<g transform="translate(-60,-290) scale(1.6)" style="color:#7a6a4a" opacity=".7">${window.VigilGlyphs.shapeInner('Flame', false)}</g>` +
-    `<g transform="translate(60,-290) scale(1.6)" style="color:#7a6a4a" opacity=".7">${window.VigilGlyphs.shapeInner('Crown', true)}</g>` +
+    // Two marks are cut here, but four hundred years have taken them: the Hearth shows the
+    // wear, not the shapes. Only the Reader's page has them clean.
+    `${[-60, 60].map((x, i) => `<g transform="translate(${x},-290)" opacity=".5">` +
+      `<circle cx="0" cy="0" r="21" fill="none" stroke="#6a5a3c" stroke-width="2" stroke-dasharray="${i ? '5 7' : '8 6'}"/>` +
+      `<path d="${i ? 'M-10 7 L-1 -8 M3 9 L8 -5 M-9 -6 L7 -2' : 'M-8 9 L6 -7 M-2 10 L-6 -8 M-10 0 L9 4'}" fill="none" stroke="#6a5a3c" stroke-width="3" stroke-linecap="round" opacity=".6"/>` +
+      `</g>`).join('')}` +
     `</g>` +
     P.fog(600, 300, '#241d33', 0.3)
   ));
