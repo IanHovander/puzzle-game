@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0b0a10">
-<title>Companion — Hearthfall</title>
+<title>Companion — What the Fire Keeps</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&display=swap">
 <style>
 /* Shared theme: The Fourth Vigil */
@@ -155,8 +155,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 #capp { min-height: 100vh; display: flex; flex-direction: column; }
 #chead .iconbtn { padding: 10px 12px; }
 #chead { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: rgba(11,10,16,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
-#chead .brand { font-family: var(--display); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
-#chead .crole { flex: 1; font-family: var(--display); font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+#chead .brand { font-family: var(--display); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+#chead .crole { flex: 1; font-family: var(--display); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; text-align: right; white-space: nowrap; }
 #cmain { flex: 1; padding: 16px 16px 60px; max-width: 640px; margin: 0 auto; width: 100%; }
 .cpanel { background: var(--panel-solid); border: 1px solid var(--line); border-radius: 12px; padding: 18px 18px; margin-bottom: 14px; animation: fadeUp .35s ease both; }
 .cpanel h2 { margin: 0 0 8px; font-size: 20px; color: var(--gold); }
@@ -171,7 +171,15 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .role-card.p0 .rname { color: var(--p1);} .role-card.p1 .rname { color: var(--p2);} .role-card.p2 .rname { color: var(--p3);} .role-card.p3 .rname { color: var(--p4);}
 .role-card .rgift { font-size: 15px; color: var(--ink-dim); font-style: italic; }
 .crole.p0 { color: var(--p1);} .crole.p1 { color: var(--p2);} .crole.p2 { color: var(--p3);} .crole.p3 { color: var(--p4);}
+/* Who you are, at the top of the home page. */
+.cpanel.who { border-left-width: 3px; }
+.cpanel.who h2 { font-family: var(--display); letter-spacing: 0.1em; text-transform: uppercase; font-size: 17px; }
+.cpanel.who.p0 { border-left-color: var(--p1);} .cpanel.who.p1 { border-left-color: var(--p2);} .cpanel.who.p2 { border-left-color: var(--p3);} .cpanel.who.p3 { border-left-color: var(--p4);}
+.cpanel.who.p0 h2 { color: var(--p1);} .cpanel.who.p1 h2 { color: var(--p2);} .cpanel.who.p2 h2 { color: var(--p3);} .cpanel.who.p3 h2 { color: var(--p4);}
+.cpanel.who .rule { margin-top: 8px; opacity: .75; }
 .unlock { display: flex; gap: 8px; }
+.unlock .field { min-width: 0; }
+.unlock .btn { flex: 0 0 auto; }
 .unlock .field { font-size: 22px; }
 .chap-list { display: flex; flex-direction: column; gap: 8px; }
 .chap-btn { text-align: left; display: flex; justify-content: space-between; align-items: center; text-transform: none; font-family: var(--serif); font-size: 18px; letter-spacing: 0; }
@@ -226,7 +234,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .hold-btn { width: 100%; font-size: 18px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
 
 /* v2: tabs, mark field, audio blocks */
-.unlock .field.mark { flex: 0 0 96px; letter-spacing: .2em; }
+.unlock .field.mark { flex: 0 0 84px; font-size: 18px; letter-spacing: .12em; padding-left: 8px; padding-right: 8px; }
 .ctabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
 .ctab { font-family: var(--display); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; padding: 10px 4px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: var(--ink-dim); cursor: pointer; }
 .ctab.on { border-color: var(--gold); color: var(--gold-2); background: rgba(212,169,78,0.12); }
@@ -276,7 +284,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 <body class="companion">
 <div id="capp">
   <header id="chead">
-    <div class="brand">Hearthfall</div>
+    <div class="brand">What the Fire Keeps</div>
     <div id="crole" class="crole"></div>
     <button id="cmenu" class="iconbtn" title="Menu">☰ Menu</button>
   </header>
@@ -318,25 +326,70 @@ html:has(body.companion) { overflow: auto; height: auto; }
   /* Typewriter: reveals paragraphs one after another; click/space to fast-forward. Returns promise. */
   let skipRequested = false;
   UI.requestSkip = () => { skipRequested = true; };
+  /* Build one paragraph. `st` carries speaker continuity: a run of lines from the same
+     person is named once, and the rule down the left side carries the rest. */
+  function buildPara(para, st) {
+    const isObj = typeof para === 'object';
+    const text = isObj ? para.text : para;
+    const speaker = isObj ? para.speaker : null;
+    const same = !!(speaker && speaker === st.speaker);
+    const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
+    const p = UI.el('p', { class: cls });
+    if (same && st.el) st.el.classList.add('joined');
+    if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+    const span = UI.el('span', { class: 'tw' });
+    p.appendChild(span);
+    st.speaker = speaker || null; st.el = p;
+    return { p, span, html: UI.rich(text) };
+  }
+
+  /* Shrink a box's type until the finished text fits inside it, so nothing has to be
+     scrolled to be read. `ghost` holds the text that is about to be typed. */
+  UI.fitBox = function (container, ghost) {
+    const cs = getComputedStyle(container);
+    const maxH = parseFloat(cs.maxHeight);
+    if (!isFinite(maxH) || maxH <= 0) return;
+    container.style.fontSize = '';
+    container.classList.remove('tight');
+    const base = parseFloat(getComputedStyle(container).fontSize);
+    if (!base) return;
+    const chrome = parseFloat(cs.borderTopWidth || 0) + parseFloat(cs.borderBottomWidth || 0);
+    const avail = maxH - chrome - 2;
+    container.appendChild(ghost);
+    let size = base;
+    const floor = Math.max(14, Math.round(base * 0.64));
+    while (container.scrollHeight > avail && size > floor) {
+      size -= 1;
+      container.style.fontSize = size + 'px';
+      container.classList.toggle('tight', size <= base * 0.88);
+    }
+    // What the box had to do to fit, for the layout check in tools/scan-fit.js.
+    UI.lastFit = { base, size, over: Math.max(0, container.scrollHeight - avail) };
+    ghost.remove();
+  };
+
   UI.typewrite = async function (container, paragraphs, opts) {
     opts = opts || {};
-    const speed = opts.speed || 14; // ms per char
+    const speed = opts.speed || 9; // ms per char
     skipRequested = false;
-    let lastSpeaker = null, lastEl = null;
+    // Continuity survives across calls into the same box: a choice's reply keeps Wren's rule going.
+    const prev = container.__tw;
+    const st = (prev && prev.el && prev.el.parentNode === container)
+      ? { speaker: prev.speaker, el: prev.el } : { speaker: null, el: null };
+
+    // Size the box for the finished text before a single character of it appears.
+    if (opts.fit !== false) {
+      const gst = { speaker: st.speaker, el: null };
+      const ghost = UI.el('div', { class: 'tw-ghost' });
+      for (const para of paragraphs) { const b = buildPara(para, gst); b.span.innerHTML = b.html; ghost.appendChild(b.p); }
+      UI.fitBox(container, ghost);
+    }
+
     for (const para of paragraphs) {
-      const isObj = typeof para === 'object';
-      const text = isObj ? para.text : para;
-      const speaker = isObj ? para.speaker : null;
-      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
-      const same = speaker && speaker === lastSpeaker;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
-      const p = UI.el('p', { class: cls });
-      if (same && lastEl) lastEl.classList.add('joined');
-      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
-      lastSpeaker = speaker || null; lastEl = p;
-      const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
+      const b = buildPara(para, st);
+      const p = b.p, span = b.span, html = b.html;
       container.appendChild(p);
-      const html = UI.rich(text);
+      container.__tw = { speaker: st.speaker, el: st.el };
       // reveal by characters of the plain text while keeping markup: simple approach, progressively slice HTML at tag-safe points
       if (skipRequested || opts.instant) { span.innerHTML = html; continue; }
       let i = 0; const parts = html.split(/(<[^>]+>)/g); let out = '';
@@ -345,12 +398,12 @@ html:has(body.companion) { overflow: auto; height: auto; }
         for (const ch of part) {
           out += ch; i++;
           if (skipRequested) break;
-          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 8 : ch === ',' ? 3 : 1)); }
+          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 6 : ch === ',' ? 2.5 : 1)); }
         }
         if (skipRequested) break;
       }
       span.innerHTML = html;
-      if (!skipRequested) await UI.sleep(opts.paraPause || 260);
+      if (!skipRequested) await UI.sleep(opts.paraPause || 180);
       container.scrollTop = container.scrollHeight;
     }
     skipRequested = false;
@@ -3159,7 +3212,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
-  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
+  function setHeader() { const r = role(); roleEl.textContent = r ? r.nick : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
   const chapterOrder = () => Lore.chapters.map(c => c.id);
   const maxUnlockedN = () => Math.max(-1, ...Object.keys(st.unlocked).map(id => Lore.chapter(id).n));
 
@@ -3202,6 +3255,13 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
   function showHome() {
     setHeader(); UI.clear(main);
     const r = role();
+    // Who you are, first thing on the page: the rest of the night hangs off it.
+    const who = UI.el('div', { class: 'cpanel who p' + r.idx });
+    who.appendChild(UI.el('h2', { text: r.nick }));
+    who.appendChild(UI.el('p', { class: 'fine', html: UI.rich(r.blurb) }));
+    who.appendChild(UI.el('p', { class: 'fine rule', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
+    main.appendChild(who);
+
     const u = UI.el('div', { class: 'cpanel' });
     u.appendChild(UI.el('h2', { text: 'Word of attunement' }));
     u.appendChild(UI.el('p', { class: 'fine', text: 'When the Hearth shows a word, enter it here. If a mark stands beside the word, enter the mark too.' }));
@@ -3250,10 +3310,6 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
       list.appendChild(b);
     });
     l.appendChild(list); main.appendChild(l);
-    const h = UI.el('div', { class: 'cpanel' });
-    h.appendChild(UI.el('p', { class: 'fine', html: `<span class="tag">${UI.esc(r.nick)}</span> ${UI.rich(r.blurb)}` }));
-    h.appendChild(UI.el('p', { class: 'fine', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
-    main.appendChild(h);
   }
 
   const TABS = [['sight', 'Sight'], ['wren', 'Wren'], ['speak', 'Speak'], ['book', 'Book']];

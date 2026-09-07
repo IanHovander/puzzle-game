@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hearthfall</title>
+<title>What the Fire Keeps</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IM+Fell+English:ital@0;1&display=swap">
 <style>
 /* Shared theme: The Fourth Vigil */
@@ -168,9 +168,15 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 
 /* main panel */
 #panel { position: relative; z-index: 5; display: grid; grid-template-columns: minmax(340px, 560px) 1fr; gap: 20px; padding: 10px 28px 26px; height: 100%; min-height: 0; align-items: end; }
-#text { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px 28px; max-height: calc(100vh - 120px); overflow-y: auto; backdrop-filter: blur(8px); box-shadow: var(--shadow); font-size: 21px; cursor: default; scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.4) transparent; }
+#text { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px 28px; max-height: calc(100vh - 96px); overflow-y: auto; backdrop-filter: blur(8px); box-shadow: var(--shadow); font-size: 21px; cursor: default; scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.4) transparent; }
 #text.narrow { font-size: 18px; max-height: 44vh; }
 #text .para { margin: 0 0 14px; animation: fadeUp .4s ease both; }
+/* When a long scene has been shrunk to fit the box, close the gaps to match. */
+#text.tight { padding: 16px 22px; }
+#text.tight .para { margin-bottom: 9px; }
+#text.tight .scene-title { margin-bottom: 8px; font-size: 19px; }
+#text.tight .speech.joined { padding-bottom: 8px; }
+#text .tw-ghost { }
 #text .para:last-child { margin-bottom: 0; }
 #text .speech { padding-left: 14px; border-left: 2px solid var(--line); }
 #text .speech.joined { margin-bottom: 0; padding-bottom: 12px; }
@@ -441,9 +447,17 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 .glyph.name-only.used .gname { color: var(--ink-dim); }
 .palette-grid { display: flex; flex-wrap: wrap; gap: 8px; max-width: 420px; }
 
+/* Laptop screens: the whole puzzle has to be reachable without scrolling the panel. */
+@media (max-height: 820px) {
+  #widget { padding: 12px 18px; }
+  .wheel { width: min(38vh, 420px); height: min(38vh, 420px); }
+  .glyph { width: 72px; height: 86px; }
+  .glyph svg { width: 46px; height: 46px; }
+  .glyph.name-only { width: 84px; height: 48px; }
+}
+
 </style>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%230b0a10' stroke='%23d4a94e' stroke-width='6'/><path d='M50 18 L58 42 L82 42 L62 56 L70 80 L50 66 L30 80 L38 56 L18 42 L42 42 Z' fill='%23d4a94e'/></svg>">
-<script>window.COMPANION_URL = "https://claude.ai/code/artifact/8f607ee5-620a-40fc-9d95-77d95baaac51";</script>
 </head>
 <body>
 <div id="app">
@@ -452,15 +466,15 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
   <div id="vignette"></div>
 
   <div id="title">
-    <h1>Hearthfall</h1>
-    <div class="tagline">One born of four shall walk into the Cold.</div>
+    <h1>What the Fire Keeps</h1>
+    <div class="tagline">A night in four hands.</div>
     <div class="card">
       <div id="title-body"></div>
     </div>
   </div>
 
   <div id="bar" class="hidden">
-    <span class="brand">Hearthfall</span>
+    <span class="brand">What the Fire Keeps</span>
     <span class="sep">·</span>
     <span id="chapter"></span>
     <span class="spacer"></span>
@@ -3256,25 +3270,70 @@ var qrcode = function() {
   /* Typewriter: reveals paragraphs one after another; click/space to fast-forward. Returns promise. */
   let skipRequested = false;
   UI.requestSkip = () => { skipRequested = true; };
+  /* Build one paragraph. `st` carries speaker continuity: a run of lines from the same
+     person is named once, and the rule down the left side carries the rest. */
+  function buildPara(para, st) {
+    const isObj = typeof para === 'object';
+    const text = isObj ? para.text : para;
+    const speaker = isObj ? para.speaker : null;
+    const same = !!(speaker && speaker === st.speaker);
+    const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
+    const p = UI.el('p', { class: cls });
+    if (same && st.el) st.el.classList.add('joined');
+    if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+    const span = UI.el('span', { class: 'tw' });
+    p.appendChild(span);
+    st.speaker = speaker || null; st.el = p;
+    return { p, span, html: UI.rich(text) };
+  }
+
+  /* Shrink a box's type until the finished text fits inside it, so nothing has to be
+     scrolled to be read. `ghost` holds the text that is about to be typed. */
+  UI.fitBox = function (container, ghost) {
+    const cs = getComputedStyle(container);
+    const maxH = parseFloat(cs.maxHeight);
+    if (!isFinite(maxH) || maxH <= 0) return;
+    container.style.fontSize = '';
+    container.classList.remove('tight');
+    const base = parseFloat(getComputedStyle(container).fontSize);
+    if (!base) return;
+    const chrome = parseFloat(cs.borderTopWidth || 0) + parseFloat(cs.borderBottomWidth || 0);
+    const avail = maxH - chrome - 2;
+    container.appendChild(ghost);
+    let size = base;
+    const floor = Math.max(14, Math.round(base * 0.64));
+    while (container.scrollHeight > avail && size > floor) {
+      size -= 1;
+      container.style.fontSize = size + 'px';
+      container.classList.toggle('tight', size <= base * 0.88);
+    }
+    // What the box had to do to fit, for the layout check in tools/scan-fit.js.
+    UI.lastFit = { base, size, over: Math.max(0, container.scrollHeight - avail) };
+    ghost.remove();
+  };
+
   UI.typewrite = async function (container, paragraphs, opts) {
     opts = opts || {};
-    const speed = opts.speed || 14; // ms per char
+    const speed = opts.speed || 9; // ms per char
     skipRequested = false;
-    let lastSpeaker = null, lastEl = null;
+    // Continuity survives across calls into the same box: a choice's reply keeps Wren's rule going.
+    const prev = container.__tw;
+    const st = (prev && prev.el && prev.el.parentNode === container)
+      ? { speaker: prev.speaker, el: prev.el } : { speaker: null, el: null };
+
+    // Size the box for the finished text before a single character of it appears.
+    if (opts.fit !== false) {
+      const gst = { speaker: st.speaker, el: null };
+      const ghost = UI.el('div', { class: 'tw-ghost' });
+      for (const para of paragraphs) { const b = buildPara(para, gst); b.span.innerHTML = b.html; ghost.appendChild(b.p); }
+      UI.fitBox(container, ghost);
+    }
+
     for (const para of paragraphs) {
-      const isObj = typeof para === 'object';
-      const text = isObj ? para.text : para;
-      const speaker = isObj ? para.speaker : null;
-      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
-      const same = speaker && speaker === lastSpeaker;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
-      const p = UI.el('p', { class: cls });
-      if (same && lastEl) lastEl.classList.add('joined');
-      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
-      lastSpeaker = speaker || null; lastEl = p;
-      const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
+      const b = buildPara(para, st);
+      const p = b.p, span = b.span, html = b.html;
       container.appendChild(p);
-      const html = UI.rich(text);
+      container.__tw = { speaker: st.speaker, el: st.el };
       // reveal by characters of the plain text while keeping markup: simple approach, progressively slice HTML at tag-safe points
       if (skipRequested || opts.instant) { span.innerHTML = html; continue; }
       let i = 0; const parts = html.split(/(<[^>]+>)/g); let out = '';
@@ -3283,12 +3342,12 @@ var qrcode = function() {
         for (const ch of part) {
           out += ch; i++;
           if (skipRequested) break;
-          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 8 : ch === ',' ? 3 : 1)); }
+          if (i % 2 === 0) { span.innerHTML = out; if (window.VigilAudio && i % 6 === 0) window.VigilAudio.sfx('type'); await UI.sleep(speed * (ch === '.' || ch === '—' ? 6 : ch === ',' ? 2.5 : 1)); }
         }
         if (skipRequested) break;
       }
       span.innerHTML = html;
-      if (!skipRequested) await UI.sleep(opts.paraPause || 260);
+      if (!skipRequested) await UI.sleep(opts.paraPause || 180);
       container.scrollTop = container.scrollHeight;
     }
     skipRequested = false;
@@ -3621,10 +3680,17 @@ var qrcode = function() {
     const holder = UI.el('div', { class: 'choices' });
     if (scene.prompt) dom.actions.appendChild(UI.el('div', { class: 'prompt', html: UI.rich(scene.prompt) }));
     dom.actions.appendChild(holder);
-    const pick = (o, how) => {
+    const pick = async (o, how) => {
       if (!api.alive()) return;
       if (ctl) ctl.cancel();
       Array.from(holder.children).forEach(b => b.disabled = true);
+      // An option may ask the table for words of its own.
+      if (o.ask) {
+        const typed = await UI.ask(o.ask.prompt, o.ask.value || '', { plain: true, ok: o.ask.ok || 'That one', cancel: 'Back', maxlength: o.ask.maxlength || 28 });
+        const v = (typed || '').trim();
+        if (!v) { Array.from(holder.children).forEach(b => b.disabled = false); return; }
+        Store.set(o.ask.set, v);
+      }
       if (scene.choice) Store.choose(scene.choice, o.id);
       if (o.set) for (const k in o.set) Store.set(k, typeof o.set[k] === 'function' ? o.set[k](Store.state) : o.set[k]);
       if (o.note) Store.note(typeof o.note === 'function' ? o.note(Store.state) : o.note);
@@ -3810,7 +3876,7 @@ var qrcode = function() {
     box.appendChild(row);
     const row2 = UI.el('div', { class: 'row' });
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
-    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a Hearthfall save.'); } } }));
+    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
     const m = UI.modal(box, { title: 'The Hearth' });
   };
@@ -3830,6 +3896,13 @@ var qrcode = function() {
     if (url) {
       try { const q = qrcode(0, 'M'); q.addData(url); q.make(); box.appendChild(UI.el('div', { class: 'qr', html: q.createSvgTag({ cellSize: 6, margin: 2 }) })); } catch (e) {}
       box.appendChild(UI.el('p', { class: 'qr-url', text: url }));
+      const row = UI.el('div', { class: 'row', style: { justifyContent: 'center' } });
+      row.appendChild(UI.el('button', { class: 'btn small', text: 'Copy the link', onclick: (e) => {
+        const done = () => { e.target.textContent = 'Copied'; setTimeout(() => { e.target.textContent = 'Copy the link'; }, 1600); };
+        try { navigator.clipboard.writeText(url).then(done, () => {}); } catch (x) {}
+      } }));
+      box.appendChild(row);
+      if (/claude\.ai/.test(url)) box.appendChild(UI.el('p', { class: 'fine', style: { marginTop: '10px' }, html: UI.rich('If a phone opens the Claude app instead of the page, that phone has the app installed and is grabbing the link. Copy the link above and paste it into the phone\'s browser, or open it once in the app and choose *Open in browser*.') }));
     } else {
       box.appendChild(UI.el('p', { html: 'This page was opened from a file, so phones cannot reach it. Host the folder (for example <code>python3 -m http.server 8080</code>) and open <code>http://YOUR-LAN-IP:8080/</code> on this screen and <code>.../companion.html</code> on phones. GitHub Pages also works.' }));
     }
@@ -4019,8 +4092,12 @@ var qrcode = function() {
     `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
     `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
     `<circle cx="0" cy="-170" r="14" fill="#ffd27a" opacity=".5"><animate attributeName="opacity" values=".5;.2;.55;.25;.5" dur="2s" repeatCount="indefinite"/></circle>` +
-    `<g transform="translate(-60,-290) scale(1.6)" style="color:#7a6a4a" opacity=".7">${window.VigilGlyphs.shapeInner('Flame', false)}</g>` +
-    `<g transform="translate(60,-290) scale(1.6)" style="color:#7a6a4a" opacity=".7">${window.VigilGlyphs.shapeInner('Crown', true)}</g>` +
+    // Two marks are cut here, but four hundred years have taken them: the Hearth shows the
+    // wear, not the shapes. Only the Reader's page has them clean.
+    `${[-60, 60].map((x, i) => `<g transform="translate(${x},-290)" opacity=".5">` +
+      `<circle cx="0" cy="0" r="21" fill="none" stroke="#6a5a3c" stroke-width="2" stroke-dasharray="${i ? '5 7' : '8 6'}"/>` +
+      `<path d="${i ? 'M-10 7 L-1 -8 M3 9 L8 -5 M-9 -6 L7 -2' : 'M-8 9 L6 -7 M-2 10 L-6 -8 M-10 0 L9 4'}" fill="none" stroke="#6a5a3c" stroke-width="3" stroke-linecap="round" opacity=".6"/>` +
+      `</g>`).join('')}` +
     `</g>` +
     P.fog(600, 300, '#241d33', 0.3)
   ));
@@ -6188,7 +6265,7 @@ var qrcode = function() {
 </script>
 <script>/* js/content/chapters.js */
 /* Hearth content registry. Chapter files (ch0.js … ch8.js) register themselves with Game.addChapter. */
-window.VigilMeta = { title: 'Hearthfall' };
+window.VigilMeta = { title: 'What the Fire Keeps' };
 
 </script>
 <script>/* js/content/ch0.js */
@@ -6218,7 +6295,7 @@ window.VigilMeta = { title: 'Hearthfall' };
     scenes: {
       /* ---------- cold open ---------- */
       ch0_start: {
-        art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 18,
+        art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 13,
         text: [
           { text: 'Four hundred years ago, four people closed a wound in the world.', cls: 'center' },
           { text: 'They left a fire on top of it, to hold it shut.', cls: 'center' },
@@ -6405,6 +6482,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           { id: 'four', text: '"The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand.' }] },
           { id: 'idiots', text: '"The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
           { id: 'vigil', text: '"The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'Mum — the Provost — will hate that.' }] },
+          { id: 'own', text: 'Something of our own.', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
         ],
       },
       ch0_flow: {
@@ -9720,7 +9798,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: (s) => [
           { text: 'Sit with it.', cls: 'big' },
           ending(s) === 0 ? { text: 'Four friends, a small house, a fire that is only a fire.', cls: 'center' } : ending(s) === 2 ? { text: 'They went in together. One step away. The fire will show you the way back to CROWN, if you want it.', cls: 'center' } : { text: 'The fire will show you the way back to any hour of the night, if you want it.', cls: 'center' },
-          { text: 'Thank you for playing Hearthfall.', cls: 'small center' },
+          { text: 'Thank you for playing What the Fire Keeps.', cls: 'small center' },
         ],
         button: 'Begin again',
         render: (actions, api) => {
