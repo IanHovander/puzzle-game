@@ -99,11 +99,15 @@
      through. Both of those buy the chapter a turn on the near side: a wrong word costs a breath, and so
      does shouldering a heavy door with one arm. */
   function mkDoor(password, prompt, wrong) {
-    const o = { password, prompt, _rev: false };
+    const o = { password, prompt, _rev: false, _wrong: 0 };
     Object.defineProperty(o, 'revealed', { enumerable: true, get: () => o._rev, set: (v) => { o._rev = !!v; if (v) doorOpened(); } });
     Object.defineProperty(o, 'wrongText', { enumerable: true, get: () => {
       // grid.js sets the status to bad and then reads this; the deferred turn wipes the status, so write it again.
-      setTimeout(() => spendTurn(wrong + ' A turn goes with it, and the rounds walk on.'), 0);
+      // The seam remembers across a bell, exactly as `revealed` does, so the field cannot be walked through.
+      o._wrong++;
+      const turns = o._wrong > 1 ? 2 : 1;
+      const tail = turns === 2 ? ' Two turns go with it — this seam has heard you guess before.' : ' A turn goes with it, and the rounds walk on.';
+      setTimeout(() => { const r = spendTurn(wrong + tail); if (turns === 2 && r && !r.ended) spendTurn(wrong + tail); }, 0);
       return wrong;
     } });
     return o;
@@ -138,7 +142,7 @@
   const gridConfig = (s) => ({
     title: 'THE CORRIDORS — THE GALLERY TO THE TOWER',
     note: 'The Provost, at the bell-rope: *Twelve turns. A turn is one room, or a wait. A patrol that ends a turn in Wren\'s room, or one doorway from it, has seen Wren. Wren runs all the way back to the gallery, and the count runs on. '
-      + (s.flags.WREN_HURT ? 'A hidden door costs a turn: a wrong word, or a one-handed shove.*' : 'A wrong word at a hidden door costs a turn.*'),
+      + (s.flags.WREN_HURT ? 'A hidden door costs a turn: a wrong word, or a one-handed shove. A seam you have already guessed at costs two.*' : 'A wrong word at a hidden door costs a turn, and a seam you have already guessed at costs two.*'),
     cols: 5, rows: 5, cells: CELLS, edges: EDGES,
     doors: {
       'A3|B3': mkDoor(WORDS['A3|B3'], 'A seam in the west wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
@@ -159,7 +163,19 @@
       return `The third bell, and Wren is not at the door. Far above, the Provost rings ${['a fourth', 'a fifth', 'a sixth'][Math.min(n, 2)] || 'another'}. Both rounds begin again from the top.`;
     },
     successText: 'The Tower door. Wren flattens against it, grinning, out of breath.',
-    onSpotted: () => { Store.inc('CH3_SPOTTED'); },   // cumulative: a restart does not wipe the count
+    /* Cumulative: a restart does not wipe the count. The turn matters more than the count — without it,
+       being thrown back to the gallery on turn 4 still leaves exactly the eight turns the direct line needs,
+       so "push east, and when you are thrown back walk the same road again" won with no phones at all.
+       Deferred, because this runs inside grid.js's move(). */
+    onSpotted: () => {
+      Store.inc('CH3_SPOTTED');
+      // Keep grid.js's own line about who saw Wren and where: the deferred turn would otherwise wipe it.
+      setTimeout(() => {
+        const st = document.querySelector('#widget .grid-pz .pz-status');
+        const seenLine = st ? st.textContent.trim() : '';
+        spendTurn((seenLine ? seenLine + ' ' : '') + 'Back in the gallery, breathing hard. The rounds did not wait for it.');
+      }, 0);
+    },
     onTimeout: () => {
       if (!Store.state.flags.WREN_SCARED) { Store.set('WREN_SCARED', true); Store.inc('WREN_TRUST', -1); Store.note('The third bell rang with Wren still in the corridors.'); }
       Store.inc('CH3_BELLS');
@@ -274,7 +290,7 @@
           s.flags.VOTE_LOST
             ? 'The nine voted Wren away. The Provost went and took the child back before midnight.'
             : 'The nine voted to keep Wren. Lord Vane bowed to the vote, and then put soldiers through the school.',
-          'Room by room, writ in one hand and lantern in the other. In the long gallery something is muttering behind the varnish. The Listener catches four words: *four went down.*',
+          'Room by room, writ in one hand and lantern in the other. In the long gallery the portraits have begun to mutter, the way they do when the school is afraid. The Listener catches three words of it: *four went down.*',
           s.flags.WREN_HURT
             ? 'Wren waits between two frames with the Provost, one arm strapped up in what is left of the Binder\'s cloak.'
             : 'Wren waits between two frames with the Provost, and looks like somebody enjoying this far too much.',

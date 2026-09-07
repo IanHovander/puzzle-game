@@ -240,7 +240,7 @@
             + '<li>' + thread('coin') + ' <strong>Both patrols.</strong> The captain’s men, and nothing more than that.</li>'
             + '</ul>' });
           P.sight.push({ t: 'p', text: '**His gold buys four rooms: B5, C5, D5 and C4.** Wren in one of them and he shouts. The sentry leaves its round and stands at the foot of the Tower stair, that turn and three after it.' });
-          P.sight.push({ t: 'fine', text: 'Nobody looks into the laundry. **Wren could sit on a tub in there until morning.** Say both, before anybody moves.' });
+          P.sight.push({ t: 'fine', text: 'Say it before anybody moves. A room he has not bought is a room nobody is paid to watch.' });
           P.sight.push({ t: 'fine', text: 'You cannot see a seam, a shape, or a beat. Ask for all three.' });
         } else {
           P.sight.push({ t: 'h', text: 'Where a sigil begins' });
