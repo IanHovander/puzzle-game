@@ -1,7 +1,10 @@
-/* Layout check: does every scene's text fit its box without scrolling?
+/* Layout check: does every scene fit on screen without scrolling?
    node tools/scan-fit.js [ch0 ch1] [--w 1280 --h 720]
-   Jumps to each scene with ?scene=, then reports the type size the box settled on
-   and anything still overflowing at the smallest size it is allowed to use. */
+   Jumps to each scene with ?scene=, then reports two things:
+     - the text box (#text), which shrinks its own type to fit: the size it settled on, and any
+       overflow left at the smallest size it is allowed to use
+     - the puzzle panel (#widget), which does NOT shrink: a puzzle whose ring, palette and commit
+       button do not fit is scrolled, and players miss the half below the fold. */
 let chromium; try { ({ chromium } = require('playwright-core')); } catch (e) { ({ chromium } = require('/tmp/claude-0/-home-user-puzzle-game/6c53366b-c261-5c1b-b535-5225f4be0786/scratchpad/node_modules/playwright-core')); }
 const { spawn } = require('child_process');
 const path = require('path'), fs = require('fs'), vm = require('vm');
@@ -36,17 +39,33 @@ function scenesOf(chIds) {
   for (const id of ids) {
     await page.goto(`http://localhost:${port}/index.html?scene=${encodeURIComponent(id)}`, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(420);
+    // The text box sizes itself before a character is typed, so it can be measured at once.
     const r = await page.evaluate(() => {
       const UI = window.VigilUI, el = document.getElementById('text');
       if (!UI || !UI.lastFit || !el) return null;
       return Object.assign({}, UI.lastFit, { scroll: el.scrollHeight > el.clientHeight + 1 });
     });
+    // The puzzle panel is only built once the typewriter finishes, so skip it and wait for the widget.
+    await page.keyboard.press('Space');
+    const wid = await page.evaluate(() => new Promise(res => {
+      const t0 = Date.now(); // eslint-disable-line
+      const tick = () => {
+        const w = document.getElementById('widget');
+        const built = w && !w.classList.contains('hidden') && w.children.length && w.scrollHeight > 40;
+        if (built) return res({ over: Math.max(0, w.scrollHeight - w.clientHeight), h: w.scrollHeight, c: w.clientHeight });
+        if (Date.now() - t0 > 6000) return res(null); // eslint-disable-line
+        setTimeout(tick, 120);
+      };
+      tick();
+    }));
+    if (wid && wid.over > 1) bad.push(`${id}: puzzle panel scrolls, ${wid.over}px below the fold`);
     if (!r) continue;
-    if (r.over > 0 || r.scroll) bad.push(`${id}: still ${r.over}px over at ${r.size}px${r.scroll ? ' (scrolls)' : ''}`);
-    else if (r.size < r.base) shrunk.push(`${id}: ${r.base}px -> ${r.size}px`);
+    if (r.over > 0 || r.scroll) bad.push(`${id}: text still ${r.over}px over at ${r.size}px${r.scroll ? ' (scrolls)' : ''}`);
+    else if (r.size && r.size < r.base) shrunk.push(`${id}: ${r.base}px -> ${r.size}px`);
   }
   console.log(`viewport ${W}x${H} — ${ids.length} scenes`);
   console.log(shrunk.length ? 'shrunk to fit:\n  ' + shrunk.join('\n  ') : 'shrunk to fit: none');
   console.log(bad.length ? 'STILL OVERFLOWING:\n  ' + bad.join('\n  ') : 'overflowing: none');
+  console.log('(the puzzle panel does not shrink itself: anything listed above as "puzzle panel scrolls" is a real cut, not a CSS tweak)');
   await browser.close(); srv.kill(); process.exit(bad.length ? 1 : 0);
 })().catch(e => { console.error('SCAN FAILED', e); process.exit(2); });

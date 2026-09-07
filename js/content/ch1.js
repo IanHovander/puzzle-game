@@ -13,7 +13,7 @@
     .ch1-rule b { color: var(--gold-2); }
     body[data-chapter="ch1"] .seat { font-size: 11px; }
     body[data-chapter="ch1"] .table-area { margin-top: 26px; width: min(380px, 50vh); height: min(380px, 50vh); }
-    @media (max-height: 820px) { body[data-chapter="ch1"] .table-area { margin-top: 12px; width: min(300px, 42vh); height: min(300px, 42vh); } }
+    @media (max-height: 820px) { body[data-chapter="ch1"] .table-area { margin-top: 8px; width: min(276px, 39vh); height: min(276px, 39vh); } }
   ` }));
 
   /* ---------- the nine seats ----------
