@@ -72,7 +72,8 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
 /* small bar buttons (both screens) and the utility class that hides a block */
-.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: all .15s; }
+.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: color .15s, border-color .15s; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex: 0 0 auto; line-height: 1; }
+.iconbtn svg { flex: 0 0 auto; width: 15px; height: 15px; display: block; }
 .iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
 .iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
 .hidden { display: none !important; }
@@ -321,12 +322,18 @@ html:has(body.companion) { overflow: auto; height: auto; }
     opts = opts || {};
     const speed = opts.speed || 14; // ms per char
     skipRequested = false;
+    let lastSpeaker = null, lastEl = null;
     for (const para of paragraphs) {
       const isObj = typeof para === 'object';
       const text = isObj ? para.text : para;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (isObj && para.speaker ? ' speech' : '');
+      const speaker = isObj ? para.speaker : null;
+      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
+      const same = speaker && speaker === lastSpeaker;
+      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
       const p = UI.el('p', { class: cls });
-      if (isObj && para.speaker) p.appendChild(UI.el('span', { class: 'speaker', text: para.speaker }));
+      if (same && lastEl) lastEl.classList.add('joined');
+      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+      lastSpeaker = speaker || null; lastEl = p;
       const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
       container.appendChild(p);
       const html = UI.rich(text);
@@ -1198,20 +1205,20 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
 
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The lamp\u2019s collar' });
-        P.sight.push({ t: 'p', text: 'Two shapes are cut into the brass band around the lamp\u2019s neck. The Hearth shows them worn to nothing. On your page they are clean.' });
+        P.sight.push({ t: 'p', text: 'Two shapes are cut into the brass band around the lamp\u2019s collar. The Hearth shows them worn to nothing. On your page they are clean.' });
         P.sight.push({ t: 'html', html: collar() });
         P.sight.push({ t: 'p', text: 'The band is a circle. It has no left end and no right end, so nothing about it says which shape was cut first.' });
-        P.sight.push({ t: 'p', text: 'You can still read them, and that is your whole gift. It is one rule: **a shape standing up says one word; the same shape upside down says the opposite word.**' });
+        P.sight.push({ t: 'p', text: 'You can still read them, and that is your whole gift. The rule is simple: **a shape standing up says one word; the same shape upside down says the opposite word.**' });
         P.sight.push({ t: 'table', head: ['cut into the band', 'it says'], rows: [
           [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })} upside down`, '<b>EMBER</b> \u2014 <em>what remains; to keep; to close</em>'],
           [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} standing up`, '<b>ASH</b> \u2014 <em>fire; the Hearth; warmth</em>'],
         ] });
-        P.sight.push({ t: 'fine', text: 'Turn either one over and it says its opposite: the crown standing up would read **CROWN**; the flame upside down would read **COLD**. They are not the other way up. Not tonight.' });
+        P.sight.push({ t: 'fine', text: 'Turn either one over and it says its opposite: the crown standing up would read **CROWN**; the flame upside down would read **COLD**. Neither shape is turned that way tonight. The table above is what the lamp actually says.' });
         P.sight.push({ t: 'p', text: 'So the lamp has two words: **EMBER** and **ASH**. Say them both, out loud, now.' });
-        P.sight.push({ t: 'p', text: 'Which one the sigil starts with, the brass cannot tell you \u2014 a circle has no beginning. Somebody at this table can *hear* which.' });
+        P.sight.push({ t: 'p', text: 'The brass cannot tell you which of them comes first \u2014 a circle has no beginning. Somebody at this table can *hear* which one does.' });
         P.sight.push({ t: 'fine', text: 'Every shape and both of its words live in your **Book**, all night. There is nothing to write down.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
-        P.wren.push({ t: 'p', text: 'Every fourth-year\u2019s name is chalked on the dormitory door. Wren\u2019s is there twice: once in our letters, and once in letters you have never seen before, in the same hand. You decided, a year ago, that somebody was being funny. You have never asked who.' });
+        P.wren.push({ t: 'p', text: 'Every fourth-year\u2019s name is chalked on the dormitory door. Wren\u2019s is there twice. Once in our letters. Once in letters you have never seen before \u2014 and the handwriting is the same. You decided, a year ago, that somebody was being funny. You have never asked who.' });
       }
 
       if (roleId === 'listener') {
@@ -1220,7 +1227,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note is **three steps above** the first. It climbs.' });
         P.sight.push({ t: 'html', html: ladder3() });
         P.sight.push({ t: 'p', text: '**Two notes. Two words.** That is everything this lamp has to say. There is no third word and no fourth.' });
-        P.sight.push({ t: 'p', text: 'Words in the old tongue sit on a ladder, each on its own rung \u2014 your **Book** has the whole of it. When the Reader says the two words, look up their rungs. One order climbs three; the other falls three. The lamp climbs.' });
+        P.sight.push({ t: 'p', text: 'Words in the old tongue sit on a ladder, each on its own rung \u2014 your **Book** has the whole ladder. When the Reader says the two words, look up their rungs. One order climbs three; the other falls three. The lamp climbs.' });
         P.sight.push({ t: 'fine', text: 'You never hear a word\u2019s name. Every room is tuned differently, so a single note means nothing on its own \u2014 you only ever hear how far the tune steps. You will need the Reader.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -1229,8 +1236,8 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the lamp\u2019s foot' });
-        P.sight.push({ t: 'p', text: 'Four sockets are set around the foot, with four hundred years of polish on top of them. Under the polish there are **two** cuts, and both were made before this brass was ever cleaned once.' });
-        P.sight.push({ t: 'p', text: 'A long, deliberate **scratch** under the socket the Hearth numbers **3** \u2014 the one at the bottom. A small **notch** under socket **1**, at the top.' });
+        P.sight.push({ t: 'p', text: 'Four sockets are set around the foot, with four hundred years of polish on top of them. Under the polish there are **two** cuts, and both were made before the polish ever went on.' });
+        P.sight.push({ t: 'p', text: 'A long, deliberate **scratch** under socket **3**, the one at the bottom. A small **notch** under socket **1**, at the top. The numbers are the ones the Hearth shows.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
         P.sight.push({ t: 'fine', text: 'Somebody meant both of those. Which one matters is not yours to know \u2014 that is the Binder\u2019s half of the job. Just say what is cut, and where.' });
         P.sight.push({ t: 'fine', text: 'Your Ring Page is in the **Book**.' });
@@ -1244,10 +1251,10 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'p', text: 'You are the only person at this table who was ever taught this, and it is four lines long.' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders"><div class="era">Law 1 \u00b7 Founders\u2019 \u00b7 Year 0</div><div class="txt">A sigil is read sunwise from the mark.</div></div></div>` });
         P.sight.push({ t: 'list', items: [
-          'A ring carries **cuts** \u2014 a scratch, a notch, a chip in the glaze. You cannot see them; somebody here can. **A sigil begins at the scratch. A notch is only the maker\u2019s mark: it says somebody made this, and nothing else.**',
+          'A ring carries **cuts**: a scratch, a notch, a chip in the glaze. You cannot see them. Somebody here can. **A sigil begins at the scratch \u2014 that is the mark. A notch is only a maker\u2019s signature: it says somebody made this, and nothing else.**',
           'The **first** word goes **in** the marked slot. Not after it, not before it. In it.',
           'Every word after that goes into the next slot **sunwise** \u2014 clockwise, the way the numbers count up.',
-          'A sigil is its words and nothing else. **One slot per word, and every slot the words do not reach stays empty.** A spare glyph is not decoration; it is a different sigil, and the brass can tell.',
+          'A sigil is its words and nothing else. **One slot per word. Any slot the words do not reach stays empty.** A spare shape is not decoration; it is a different sigil, and the brass can tell.',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
         P.sight.push({ t: 'fine', text: 'You do not know this lamp\u2019s words and you cannot see what is cut into it. Ask for both. That is what the other three are for.' });
@@ -1257,7 +1264,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> last week\u2019s practice thread still will not hold.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'You have seen unbound people. This is not that \u2014 there is nothing there to see. You decided it was a blind spot in your own gift. You have never told anyone your gift has a blind spot.' });
+        P.wren.push({ t: 'p', text: 'You have seen unbound people. Wren is not unbound. There is nothing there at all. You decided it was a blind spot in your own gift. You have never told anyone your gift has a blind spot.' });
       }
 
       return P;

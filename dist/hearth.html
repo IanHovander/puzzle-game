@@ -70,7 +70,8 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
 /* small bar buttons (both screens) and the utility class that hides a block */
-.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: all .15s; }
+.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: color .15s, border-color .15s; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex: 0 0 auto; line-height: 1; }
+.iconbtn svg { flex: 0 0 auto; width: 15px; height: 15px; display: block; }
 .iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
 .iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
 .hidden { display: none !important; }
@@ -160,7 +161,9 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 #bar { position: relative; z-index: 10; display: flex; align-items: center; gap: 16px; padding: 0 18px; background: linear-gradient(180deg, rgba(0,0,0,0.88), rgba(0,0,0,0.78)); font-family: var(--display); font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
 #bar .brand { color: var(--gold); font-weight: 600; }
 #bar .sep { opacity: 0.35; }
-#bar .spacer { flex: 1; }
+#bar .spacer { flex: 1 1 auto; min-width: 0; }
+#bar { white-space: nowrap; overflow: hidden; }
+#bar #chapter { overflow: hidden; text-overflow: ellipsis; }
 #timer { font-variant-numeric: tabular-nums; color: var(--ink); }
 
 /* main panel */
@@ -170,6 +173,9 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 #text .para { margin: 0 0 14px; animation: fadeUp .4s ease both; }
 #text .para:last-child { margin-bottom: 0; }
 #text .speech { padding-left: 14px; border-left: 2px solid var(--line); }
+#text .speech.joined { margin-bottom: 0; padding-bottom: 12px; }
+#text .speech.cont { margin-top: 0; }
+#text .speech.cont .tw { display: block; }
 #text .speaker { display: block; font-family: var(--display); font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 2px; }
 #text .scene-title { margin: 0 0 12px; font-size: 22px; color: var(--gold); }
 #text .whisper { color: var(--sea); font-style: italic; }
@@ -460,11 +466,11 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
     <span class="spacer"></span>
     <span id="flame" title="The Hearth's light"><span class="flame-bar"><div style="width:100%"></div></span></span>
     <span id="timer">00:00</span>
-    <button id="hint" class="iconbtn hidden" title="Ask the Vigil for a hint">✦ Hint</button>
-    <button id="mapbtn" class="iconbtn" title="The Map of the Night">✧ Map</button>
-    <button id="qr" class="iconbtn" title="Companion QR code">▦ Phones</button>
-    <button id="mute" class="iconbtn" title="Sound">🔊 Sound</button>
-    <button id="menu" class="iconbtn" title="Menu">☰</button>
+    <button id="hint" class="iconbtn hidden" title="Ask for a hint"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 3l1.8 4.9L18.7 9l-4.9 1.8L12 15.7l-1.8-4.9L5.3 9l4.9-1.1z" fill="currentColor"/></svg><span>Hint</span></button>
+    <button id="mapbtn" class="iconbtn" title="The Map of the Night"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 6.5l6-2.5 6 2.5 6-2.5v13L15 19.5 9 17 3 19.5z"/><path d="M9 4v13M15 6.5v13"/></g></svg><span>Map</span></button>
+    <button id="qr" class="iconbtn" title="Companion QR code"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></g></svg><span>Phones</span></button>
+    <button id="mute" class="iconbtn" title="Sound is on"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M15.5 9a4 4 0 010 6" stroke-linecap="round"/><path d="M18 6.5a7.5 7.5 0 010 11" stroke-linecap="round"/></g></svg><span>Sound</span></button>
+    <button id="menu" class="iconbtn" title="Menu"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></g></svg><span>Menu</span></button>
   </div>
 
   <div id="panel" class="hidden">
@@ -3254,12 +3260,18 @@ var qrcode = function() {
     opts = opts || {};
     const speed = opts.speed || 14; // ms per char
     skipRequested = false;
+    let lastSpeaker = null, lastEl = null;
     for (const para of paragraphs) {
       const isObj = typeof para === 'object';
       const text = isObj ? para.text : para;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (isObj && para.speaker ? ' speech' : '');
+      const speaker = isObj ? para.speaker : null;
+      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
+      const same = speaker && speaker === lastSpeaker;
+      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
       const p = UI.el('p', { class: cls });
-      if (isObj && para.speaker) p.appendChild(UI.el('span', { class: 'speaker', text: para.speaker }));
+      if (same && lastEl) lastEl.classList.add('joined');
+      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+      lastSpeaker = speaker || null; lastEl = p;
       const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
       container.appendChild(p);
       const html = UI.rich(text);
@@ -3478,7 +3490,8 @@ var qrcode = function() {
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
+    const SOUND_ON = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5" stroke-linecap="round"/></g></svg>`, SOUND_OFF = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M15.5 9a4 4 0 010 6" stroke-linecap="round"/><path d="M18 6.5a7.5 7.5 0 010 11" stroke-linecap="round"/></g></svg>`;
+    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.innerHTML = (m ? SOUND_OFF : SOUND_ON) + '<span>' + (m ? 'Muted' : 'Sound') + '</span>'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
     dom.mute.addEventListener('click', () => { Audio.init(); Audio.toggleMute(); muteLabel(); });
     muteLabel();
     dom.menu.addEventListener('click', () => Game.showMenu());
@@ -6191,19 +6204,16 @@ window.VigilMeta = { title: 'Hearthfall' };
     mood: 'hearth', fx: 'embers', art: 'ch0_hearthfire', flame: 1,
     flow: {
       nodes: [
-        { id: 'ch0_start', label: 'Four hundred years of fire', col: 0, row: 2 },
-        { id: 'ch0_dorm', label: 'The dormitory', col: 1, row: 2 },
-        { id: 'ch0_lamp', label: 'The lamp, the old way', col: 2, row: 2, kind: 'choice' },
-        { id: 'ch0_name', label: 'What Wren calls you', col: 3, row: 2, kind: 'choice' },
-        { id: 'ch1_start', label: 'The Vigil', col: 4, row: 2, secret: true },
-        { id: 'ch0_x1', label: 'the Convocation', col: 4, row: 0, secret: true },
-        { id: 'ch0_x2', label: 'the Envoy', col: 4, row: 1, secret: true },
-        { id: 'ch0_x3', label: 'the Vault', col: 4, row: 3, secret: true },
-        { id: 'ch0_x4', label: 'the Gallery', col: 4, row: 4, secret: true },
-        { id: 'ch0_x5', label: 'the Stair', col: 5, row: 1, secret: true },
-        { id: 'ch0_x6', label: 'the Bells', col: 5, row: 3, secret: true },
+        { id: 'ch0_start', label: 'Four hundred years of fire', col: 0, row: 0 },
+        { id: 'ch0_dorm', label: 'The dormitory, past curfew', col: 1, row: 0 },
+        { id: 'ch0_practice', label: 'The four keys', col: 2, row: 0 },
+        { id: 'ch0_dare', label: "Wren's dare", col: 3, row: 0 },
+        { id: 'ch0_carve', label: 'A name in the brass', col: 4, row: 0 },
+        { id: 'ch0_lamp', label: 'The lamp, lit the old way', col: 5, row: 0 },
+        { id: 'ch0_name', label: 'What Wren calls you', col: 6, row: 0, kind: 'choice' },
+        { id: 'ch1_start', label: 'Tomorrow', col: 7, row: 0 },
       ],
-      edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start'], ['ch0_name', 'ch0_x1'], ['ch0_name', 'ch0_x2'], ['ch0_name', 'ch0_x3'], ['ch0_name', 'ch0_x4'], ['ch0_x2', 'ch0_x5'], ['ch0_x3', 'ch0_x6']],
+      edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_practice'], ['ch0_practice', 'ch0_dare'], ['ch0_dare', 'ch0_carve'], ['ch0_carve', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start']],
     },
     scenes: {
       /* ---------- cold open ---------- */
@@ -6225,10 +6235,10 @@ window.VigilMeta = { title: 'Hearthfall' };
           'Above the fire, cut into the stone, one sentence in a language nobody has spoken for four hundred years.',
           'Every child here learns the school\'s translation. Every grown-up here argues about it.',
           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
+          'You cannot walk into weather. The Cold is a place, and nobody will tell you where.',
           { text: 'You will be shown this sentence again, when it matters. Nothing tonight needs writing down.', cls: 'small' },
-          'That sentence says cold twice. The first one is the weather. The second one is the wound the fire was built on, and nobody will tell you any more than that.',
           'Nobody agrees what the rest of it means. Everybody agrees who it is about.',
-          { text: 'What it means is tomorrow\'s argument, and the masters come in the morning to have it. Tonight is only the night before.', cls: 'small' },
+          { text: 'The masters come in the morning to argue about it. Tonight is only the night before.', cls: 'small' },
           'And tonight, for the first time in fourteen years, the Hearth is flickering.',
         ],
         next: 'ch0_dorm', button: 'The night before',
@@ -6241,7 +6251,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           'Four of you, awake past curfew, in a room with four beds and one round window.',
           'On the sill stands a brass lamp older than any record the school keeps. Nobody has ever got it to light. Everybody has tried.',
           'You have known each other since you were seven. Each of you sees one thing the other three cannot.',
-          { text: 'Sit left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. That is your seat for the whole night.', cls: 'whisper' },
+          { text: 'Sit in this order, left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Those are your seats for the whole night.', cls: 'whisper' },
         ],
         next: 'ch0_keys', button: 'Claim the keys',
       },
@@ -6257,7 +6267,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           const pads = UI.el('div', {});
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
           wrap.appendChild(pads); wrap.appendChild(st);
-          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key will not answer — change keys', onclick: async () => {
+          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key is not working — change keys', onclick: async () => {
             const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
             if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1);
             if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
@@ -6283,7 +6293,7 @@ window.VigilMeta = { title: 'Hearthfall' };
             const set = times.filter(x => x != null);
             if (set.length === 4) {
               const spread = Math.max(...set) - Math.min(...set);
-              if (spread <= 1000) { Audio.sfx('magic'); st.className = 'pz-status good'; st.textContent = 'Four hands. The lanterns steady.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
+              if (spread <= 1000) { Audio.sfx('magic'); st.className = 'pz-status good'; st.textContent = 'Four hands. The room holds still.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
               else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
             }
             setTimeout(() => { const now = performance.now(); for (let i = 0; i < 4; i++) if (times[i] != null && now - times[i] > 1000) { times[i] = null; Input.setPadState(i, 'glow', false); } }, 1100);
@@ -6307,7 +6317,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         text: [
           'The door bangs open.',
           { speaker: 'Wren', text: 'You\'re awake. Good. I need four idiots and a lamp.' },
-          { speaker: 'Wren', text: 'Reader — you read anything anyone ever carved, however worn. And you eat nothing.' },
+          { speaker: 'Wren', text: 'Reader — you read everything and eat nothing. Any carving, however worn.' },
           { speaker: 'Wren', text: 'Listener — you can hear a spider think, two floors down.' },
           { speaker: 'Wren', text: 'Seer — you see under things. Under paint. Under four hundred years of polish.' },
           { speaker: 'Wren', text: 'Binder — you know every rule in the book, and who is tied to who.' },
@@ -6335,7 +6345,7 @@ window.VigilMeta = { title: 'Hearthfall' };
           { speaker: 'Wren', text: 'Reader — there are two shapes cut round the lamp\'s collar. You\'re the only one here who can read them.' },
           { speaker: 'Wren', text: 'Listener — it hums. It\'s hummed since before we were born.' },
           { speaker: 'Wren', text: 'Seer — there\'s something cut under the brass that nobody has ever seen. You will.' },
-          { speaker: 'Wren', text: 'Binder — you know the rule about rings. That one.' },
+          { speaker: 'Wren', text: 'Binder — you know the rule about rings. The one nobody else was taught.' },
           { speaker: 'Wren', text: 'Nobody has all four. That\'s the whole trick of it.' },
         ],
         next: 'ch0_attune',
@@ -6344,7 +6354,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
         text: [
           { text: 'Open the Companion on your phone. Take your seat. Type this word.', cls: 'whisper' },
-          { text: 'Everything your phone shows you, it keeps — in the **Book** tab, all night. You will never have to remember it.', cls: 'small' },
+          { text: 'Your phone keeps everything it shows you — in the **Book** tab, all night. You will never have to remember it.', cls: 'small' },
         ],
         roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,
         next: 'ch0_lamp',
@@ -6354,7 +6364,7 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
           { text: 'A sigil is words in slots. This ring has four slots.', cls: 'whisper' },
-          { text: 'The Reader has the words. The Listener has the order. The Seer has the marks. The Binder has the rule. Nobody has two.', cls: 'whisper' },
+          { text: 'The Reader has the words. The Listener has the order. The Seer has the cuts. The Binder has the rule. Nobody has two.', cls: 'whisper' },
           { text: 'Say what you see. Never show your phone.', cls: 'whisper' },
           { text: 'Stuck? The fire keeps a Hint.', cls: 'small' },
         ],
@@ -6369,14 +6379,14 @@ window.VigilMeta = { title: 'Hearthfall' };
         }),
         hints: [
           'Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder.',
-          'Two words, and the lamp\'s hum climbs three steps between them; the Ladder in the Listener\'s Book turns that into an order. And there is more than one cut under that brass — the Binder knows which kind a sigil begins at.',
+          'Two words, and the hum climbs three steps between them. The Ladder in the Listener\'s Book turns that climb into an order. And there is more than one cut under the brass — the Binder knows which kind starts a sigil.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The brass takes the words. The lamp catches — warm, steady, and against about a dozen school rules.',
           { speaker: 'Wren', text: 'Four hundred years. Still works.' },
-          'Four hundred years, and it needed all four of you: one to read it, one to put it in order, one to find the marks, one to know the rule.',
+          'Four hundred years, and it needed all four of you: one to read it, one to put it in order, one to find the cuts, one to know the rule.',
           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
           'And in that light, each of you sees the thing about Wren that you have never said out loud.',
           { text: 'Open the tab marked **Wren**. One line each, out loud, in seat order: Reader, Listener, Seer, Binder.', cls: 'whisper' },
@@ -6401,8 +6411,8 @@ window.VigilMeta = { title: 'Hearthfall' };
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
         text: [
           'Below, in the great hall, the Hearth flickers again.',
-          'The school has a word for what each of you just did. They call it a Sighting. One way of seeing, one to a person, and nobody gets to choose which.',
-          'Tomorrow you will stand at the back of a hall full of grown-ups who each have a Sighting of their own, while they decide about Wren.',
+          'The school has a word for what each of you just did. A Sighting. One way of seeing, one to a person, and nobody chooses which one they get.',
+          'Tomorrow you will stand at the back of a hall while grown-ups decide about Wren. Every one of them has a Sighting of their own.',
           { text: 'After each chapter the Hearth shows you every path — the ones you walked, and the ones you did not.', cls: 'small' },
         ],
         flowTitle: 'Prologue — the paths you walked',

@@ -41,10 +41,10 @@
           'Above the fire, cut into the stone, one sentence in a language nobody has spoken for four hundred years.',
           'Every child here learns the school\'s translation. Every grown-up here argues about it.',
           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
+          'You cannot walk into weather. The Cold is a place, and nobody will tell you where.',
           { text: 'You will be shown this sentence again, when it matters. Nothing tonight needs writing down.', cls: 'small' },
-          'That sentence says cold twice. The first one is the weather. The second one is the wound the fire was built on, and nobody will tell you any more than that.',
           'Nobody agrees what the rest of it means. Everybody agrees who it is about.',
-          { text: 'What it means is tomorrow\'s argument, and the masters come in the morning to have it. Tonight is only the night before.', cls: 'small' },
+          { text: 'The masters come in the morning to argue about it. Tonight is only the night before.', cls: 'small' },
           'And tonight, for the first time in fourteen years, the Hearth is flickering.',
         ],
         next: 'ch0_dorm', button: 'The night before',
@@ -57,7 +57,7 @@
           'Four of you, awake past curfew, in a room with four beds and one round window.',
           'On the sill stands a brass lamp older than any record the school keeps. Nobody has ever got it to light. Everybody has tried.',
           'You have known each other since you were seven. Each of you sees one thing the other three cannot.',
-          { text: 'Sit left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. That is your seat for the whole night.', cls: 'whisper' },
+          { text: 'Sit in this order, left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Those are your seats for the whole night.', cls: 'whisper' },
         ],
         next: 'ch0_keys', button: 'Claim the keys',
       },
@@ -73,7 +73,7 @@
           const pads = UI.el('div', {});
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
           wrap.appendChild(pads); wrap.appendChild(st);
-          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key will not answer — change keys', onclick: async () => {
+          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key is not working — change keys', onclick: async () => {
             const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
             if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1);
             if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
@@ -99,7 +99,7 @@
             const set = times.filter(x => x != null);
             if (set.length === 4) {
               const spread = Math.max(...set) - Math.min(...set);
-              if (spread <= 1000) { Audio.sfx('magic'); st.className = 'pz-status good'; st.textContent = 'Four hands. The lanterns steady.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
+              if (spread <= 1000) { Audio.sfx('magic'); st.className = 'pz-status good'; st.textContent = 'Four hands. The room holds still.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
               else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
             }
             setTimeout(() => { const now = performance.now(); for (let i = 0; i < 4; i++) if (times[i] != null && now - times[i] > 1000) { times[i] = null; Input.setPadState(i, 'glow', false); } }, 1100);
@@ -123,7 +123,7 @@
         text: [
           'The door bangs open.',
           { speaker: 'Wren', text: 'You\'re awake. Good. I need four idiots and a lamp.' },
-          { speaker: 'Wren', text: 'Reader — you read anything anyone ever carved, however worn. And you eat nothing.' },
+          { speaker: 'Wren', text: 'Reader — you read everything and eat nothing. Any carving, however worn.' },
           { speaker: 'Wren', text: 'Listener — you can hear a spider think, two floors down.' },
           { speaker: 'Wren', text: 'Seer — you see under things. Under paint. Under four hundred years of polish.' },
           { speaker: 'Wren', text: 'Binder — you know every rule in the book, and who is tied to who.' },
@@ -151,7 +151,7 @@
           { speaker: 'Wren', text: 'Reader — there are two shapes cut round the lamp\'s collar. You\'re the only one here who can read them.' },
           { speaker: 'Wren', text: 'Listener — it hums. It\'s hummed since before we were born.' },
           { speaker: 'Wren', text: 'Seer — there\'s something cut under the brass that nobody has ever seen. You will.' },
-          { speaker: 'Wren', text: 'Binder — you know the rule about rings. That one.' },
+          { speaker: 'Wren', text: 'Binder — you know the rule about rings. The one nobody else was taught.' },
           { speaker: 'Wren', text: 'Nobody has all four. That\'s the whole trick of it.' },
         ],
         next: 'ch0_attune',
@@ -160,7 +160,7 @@
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
         text: [
           { text: 'Open the Companion on your phone. Take your seat. Type this word.', cls: 'whisper' },
-          { text: 'Everything your phone shows you, it keeps — in the **Book** tab, all night. You will never have to remember it.', cls: 'small' },
+          { text: 'Your phone keeps everything it shows you — in the **Book** tab, all night. You will never have to remember it.', cls: 'small' },
         ],
         roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,
         next: 'ch0_lamp',
@@ -170,7 +170,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
           { text: 'A sigil is words in slots. This ring has four slots.', cls: 'whisper' },
-          { text: 'The Reader has the words. The Listener has the order. The Seer has the marks. The Binder has the rule. Nobody has two.', cls: 'whisper' },
+          { text: 'The Reader has the words. The Listener has the order. The Seer has the cuts. The Binder has the rule. Nobody has two.', cls: 'whisper' },
           { text: 'Say what you see. Never show your phone.', cls: 'whisper' },
           { text: 'Stuck? The fire keeps a Hint.', cls: 'small' },
         ],
@@ -185,14 +185,14 @@
         }),
         hints: [
           'Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder.',
-          'Two words, and the lamp\'s hum climbs three steps between them; the Ladder in the Listener\'s Book turns that into an order. And there is more than one cut under that brass — the Binder knows which kind a sigil begins at.',
+          'Two words, and the hum climbs three steps between them. The Ladder in the Listener\'s Book turns that climb into an order. And there is more than one cut under the brass — the Binder knows which kind starts a sigil.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The brass takes the words. The lamp catches — warm, steady, and against about a dozen school rules.',
           { speaker: 'Wren', text: 'Four hundred years. Still works.' },
-          'Four hundred years, and it needed all four of you: one to read it, one to put it in order, one to find the marks, one to know the rule.',
+          'Four hundred years, and it needed all four of you: one to read it, one to put it in order, one to find the cuts, one to know the rule.',
           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
           'And in that light, each of you sees the thing about Wren that you have never said out loud.',
           { text: 'Open the tab marked **Wren**. One line each, out loud, in seat order: Reader, Listener, Seer, Binder.', cls: 'whisper' },
@@ -217,8 +217,8 @@
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
         text: [
           'Below, in the great hall, the Hearth flickers again.',
-          'The school has a word for what each of you just did. They call it a Sighting. One way of seeing, one to a person, and nobody gets to choose which.',
-          'Tomorrow you will stand at the back of a hall full of grown-ups who each have a Sighting of their own, while they decide about Wren.',
+          'The school has a word for what each of you just did. A Sighting. One way of seeing, one to a person, and nobody chooses which one they get.',
+          'Tomorrow you will stand at the back of a hall while grown-ups decide about Wren. Every one of them has a Sighting of their own.',
           { text: 'After each chapter the Hearth shows you every path — the ones you walked, and the ones you did not.', cls: 'small' },
         ],
         flowTitle: 'Prologue — the paths you walked',
