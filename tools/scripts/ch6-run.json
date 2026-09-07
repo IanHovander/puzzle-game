@@ -1,0 +1,7 @@
+{ "start": "ch6_start", "set": "VOLUNTEER=0,PRECRACKED=false,STAIR=RUN",
+  "_what": "The third opening branch: Chapter V ended with the table running, so somebody is on the Stair behind them. One line, and it must not also claim a cracked bell.",
+  "steps": [
+  {"key": "Space"}, {"shot": "r_start"}, {"expect": "boots on the Stair"}, {"expectNot": "One bell is wrong already"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 0"},
+  {"clickText": "The Provost"}, {"wait": 800}, {"key": "Space"}, {"expect": "Hands on your keys"}
+] }

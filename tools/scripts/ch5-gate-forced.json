@@ -1,15 +1,13 @@
 {
  "start": "ch5_gate1",
  "set": "OATH=1,DOOR=BLUFF",
+ "_what": "Four frosts at the first gate: the gate stops answering, the Provost breaks it, and the stair is charged for the frosts and for the breaking.",
  "steps": [
   {
    "key": "Space"
   },
   {
    "wait": 400
-  },
-  {
-   "expect": "Two frosts and the gate stops answering"
   },
   {
    "slots": [
@@ -34,26 +32,20 @@
    "wait": 500
   },
   {
-   "expect": "Frost creeps over the ring"
-  },
-  {
    "wait": 1400
-  },
-  {
-   "assert": "VigilStore.state.flags.GATE1_FROST === 1"
   },
   {
    "slots": [
     [
      1,
-     "WELL"
-    ],
-    [
-     3,
      "EMBER"
     ],
     [
-     5,
+     3,
+     "WELL"
+    ],
+    [
+     4,
      "VEIL"
     ]
    ]
@@ -62,22 +54,31 @@
    "clickText": "Close the sigil"
   },
   {
-   "wait": 1200
+   "wait": 500
   },
   {
-   "keys": "acm/"
+   "wait": 1400
   },
   {
-   "wait": 1800
+   "wait": 1500
   },
   {
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 600
   },
   {
-   "expect": "forget it was ever shut"
+   "shot": "gate1_forced"
+  },
+  {
+   "expect": "four hundred years old"
+  },
+  {
+   "expect": "a flight closer"
+  },
+  {
+   "assert": "VigilStore.state.flags.GATE1_FROST === 2"
   },
   {
    "clickText": "On down"
@@ -193,6 +194,9 @@
    "key": "Space"
   },
   {
+   "expect": "cost you time"
+  },
+  {
    "clickText": "Ready"
   },
   {
@@ -205,13 +209,10 @@
    "wait": 300
   },
   {
-   "expect": "40 heartbeats"
+   "expect": "25 heartbeats"
   },
   {
-   "expect": "cost you 5"
-  },
-  {
-   "assert": "VigilStore.state.flags.GATE1_FROST === 1 && (VigilStore.state.flags.GATE2_FROST | 0) === 0"
+   "expect": "cost you 20"
   },
   {
    "click": ".btn.choice >> nth=2"

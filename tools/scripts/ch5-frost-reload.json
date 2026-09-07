@@ -1,15 +1,13 @@
 {
  "start": "ch5_gate1",
  "set": "OATH=1,DOOR=BLUFF",
+ "_what": "The frost ledger is a flag, not a variable: two frosts, a page reload (the Resume and paste-a-save paths both call location.reload), and the stair still charges for them.",
  "steps": [
   {
    "key": "Space"
   },
   {
    "wait": 400
-  },
-  {
-   "expect": "Two frosts and the gate stops answering"
   },
   {
    "slots": [
@@ -34,10 +32,19 @@
    "wait": 500
   },
   {
-   "expect": "Frost creeps over the ring"
+   "wait": 1400
   },
   {
-   "wait": 1400
+   "assert": "VigilStore.state.flags.GATE1_FROST === 1"
+  },
+  {
+   "eval": "(setTimeout(function(){location.reload();},50), 'reloading')"
+  },
+  {
+   "wait": 3500
+  },
+  {
+   "waitFor": ".wheel"
   },
   {
    "assert": "VigilStore.state.flags.GATE1_FROST === 1"
@@ -209,9 +216,6 @@
   },
   {
    "expect": "cost you 5"
-  },
-  {
-   "assert": "VigilStore.state.flags.GATE1_FROST === 1 && (VigilStore.state.flags.GATE2_FROST | 0) === 0"
   },
   {
    "click": ".btn.choice >> nth=2"

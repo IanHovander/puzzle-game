@@ -44,21 +44,21 @@
    "wait": 400
   },
   {
-   "expect": "how far its shape sits from the mark"
+   "expect": "says which slot its word takes"
   },
   {
    "slots": [
     [
-     2,
+     1,
+     "WELL"
+    ],
+    [
+     3,
      "EMBER"
     ],
     [
-     4,
-     "VEIL"
-    ],
-    [
      5,
-     "WELL"
+     "VEIL"
     ]
    ]
   },
@@ -111,19 +111,23 @@
    "slots": [
     [
      1,
-     "WELL"
-    ],
-    [
-     2,
-     "ASH"
-    ],
-    [
-     4,
      "CROWN"
     ],
     [
-     5,
+     2,
      "KNOT"
+    ],
+    [
+     3,
+     "WELL"
+    ],
+    [
+     4,
+     "ASH"
+    ],
+    [
+     5,
+     "COLD"
     ]
    ]
   },
@@ -146,7 +150,7 @@
    "wait": 400
   },
   {
-   "expect": "opens anyway"
+   "expect": "the gate took it"
   },
   {
    "clickText": "The third gate"
@@ -181,7 +185,7 @@
   {
    "type": [
     "#widget input.field",
-    "3524"
+    "3534"
    ]
   },
   {
@@ -320,7 +324,7 @@
    "expect": "Seer holds the stair"
   },
   {
-   "assert": "VigilStore.state.flags.STAIR === 'HOLD' && VigilStore.state.flags.VOLUNTEER === 3 && VigilStore.state.flags.SOLDIERS === false && VigilStore.state.flags.GATE2_COLD === false && VigilStore.state.flags.COUNT_FORCED == null"
+   "assert": "VigilStore.state.flags.STAIR === 'HOLD' && VigilStore.state.flags.VOLUNTEER === 3 && VigilStore.state.flags.SOLDIERS === false && VigilStore.state.flags.GATE2_COLD === true && VigilStore.state.flags.COUNT_FORCED == null && VigilStore.state.flags.GATE1_FROST === 0 && VigilStore.state.flags.GATE2_FROST === 0"
   },
   {
    "log": true

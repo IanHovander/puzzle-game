@@ -4,6 +4,15 @@
   const A = window.VigilArt, P = A.P, W = A.W, H = A.H;
   const Gl = () => window.VigilGlyphs;
   const STONE = [['Flame', false], ['Flame', true], ['Crown', false], ['Hook', false], ['Spike', false], ['Flame', true], ['Crown', true], ['Hook', true]];
+  /* The fire has stood over the foot of the stone for four hundred years and has burned four of the eight
+     cuts away. Those four are drawn as scorch, never as a shape: what was cut there is the Reader's page
+     and the Hearth must show the wear, not the answer. */
+  const BURNT = [0, 2, 4, 6];
+  function scorch(sc) {
+    return `<g transform="scale(${sc})"><ellipse rx="17" ry="18" fill="#0d0a0c" opacity=".9"/>`
+      + `<ellipse cx="-4" cy="-3" rx="11" ry="9" fill="#000" opacity=".65"/><ellipse cx="5" cy="5" rx="9" ry="7" fill="#000" opacity=".55"/>`
+      + `<path d="M-13,10 L-4,-2 L3,7 L12,-8" fill="none" stroke="#4a3f44" stroke-width="1.6"/></g>`;
+  }
   const COLD = '#4fb3bf';
 
   /* a Founders' bell hanging from a beam */
@@ -45,7 +54,10 @@
     s += `<circle cx="${cx}" cy="${cy}" r="${r * 0.6}" fill="#ff9a3c" opacity=".08"><animate attributeName="opacity" values=".08;.14;.07;.12;.08" dur="2.4s" repeatCount="indefinite"/></circle>`;
     return s + '</g>';
   }
-  const cracked = (i) => { try { return i < (window.VigilStore.state.flags.BELLS_CRACKED | 0); } catch (e) { return false; } };
+  /* How many bells hang wounded. The backdrop is drawn before a scene's enter() runs, so on the first frame
+     of the chamber BELLS_CRACKED may not have been seeded yet from a stair that came down: read the cause
+     as well as the count, or the prose says a bell is cracked and the picture shows four whole ones. */
+  const cracked = (i) => { try { const f = window.VigilStore.state.flags; return i < Math.max(f.BELLS_CRACKED | 0, (f.PRECRACKED || f.STAIR === 'COLLAPSE') ? 1 : 0); } catch (e) { return false; } };
 
   /* 1. the bell-chamber: four bells on a beam over the lid; the shaft above */
   A.define('ch6_chamber', () => P.wrap(
@@ -72,7 +84,7 @@
     s += `<circle cx="${cx}" cy="${cy}" r="150" fill="#ff9a3c" opacity=".12"><animate attributeName="opacity" values=".12;.2;.1;.17;.12" dur="2.3s" repeatCount="indefinite"/></circle>`;
     // the stone's underside, foreshortened, above the coin
     s += `<rect x="${cx - 190}" y="${cy - 118}" width="380" height="64" rx="4" fill="#1c1619" stroke="#2f2528" stroke-width="3"/>`;
-    s += STONE.map(([sh, inv], i) => `<g transform="translate(${cx - 164 + i * 47},${cy - 86}) scale(0.85)" style="color:#5a4d4a" opacity=".85">${Gl().shapeInner(sh, inv)}</g>`).join('');
+    s += STONE.map(([sh, inv], i) => `<g transform="translate(${cx - 164 + i * 47},${cy - 86})" style="color:#5a4d4a" opacity=".85">${BURNT.indexOf(i) >= 0 ? scorch(0.85) : `<g transform="scale(0.85)">${Gl().shapeInner(sh, inv)}</g>`}</g>`).join('');
     // the fire: a low orange bed with a blue tongue
     s += `<ellipse cx="${cx}" cy="${cy + 40}" rx="120" ry="26" fill="#3a1c0c"/>`;
     s += A.fire ? A.fire(cx, cy + 44, 0.42, false) : '';
@@ -114,7 +126,13 @@
     // the slab, foreshortened from below (wider at the bottom)
     s += `<path d="M300,120 L1300,120 L1380,540 L220,540 Z" fill="#1c1619" stroke="#33282b" stroke-width="5"/>`;
     s += `<path d="M330,150 L1270,150 L1335,515 L265,515 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>`;
-    s += STONE.map(([sh, inv], i) => `<g transform="translate(${400 + i * 114},330) scale(2.6)" style="color:#8a7a70" opacity=".92">${Gl().shapeInner(sh, inv)}</g>`).join('');
+    let burn = 0;
+    s += STONE.map(([sh, inv], i) => {
+      const x = 400 + i * 114;
+      if (BURNT.indexOf(i) < 0) return `<g transform="translate(${x},330) scale(2.6)" style="color:#8a7a70" opacity=".92">${Gl().shapeInner(sh, inv)}</g>`;
+      burn++;
+      return `<g transform="translate(${x},330)">${scorch(2.6)}</g><text x="${x}" y="452" text-anchor="middle" fill="#6b5a4a" font-size="20" font-family="Cinzel,serif">burn ${burn}</text>`;
+    }).join('');
     // the foot: bare, lit from below in cold light
     s += `<rect x="220" y="540" width="1160" height="26" fill="#23191c"/>`;
     s += `<rect x="220" y="540" width="1160" height="26" fill="${COLD}" opacity=".18"><animate attributeName="opacity" values=".18;.3;.14;.26;.18" dur="2.4s" repeatCount="indefinite"/></rect>`;

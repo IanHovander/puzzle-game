@@ -1,0 +1,10 @@
+{ "start": "ch6_start", "set": "VOLUNTEER=0,STAIR=COLLAPSE,WHISPER_listener=NO,WHISPER_seer=TELL,WHISPER_reader=DONTKNOW,WHISPER_binder=DONTKNOW",
+  "_what": "Chapter V's stair came down and ch5's onSolve never ran, so PRECRACKED has to be seeded here BEFORE the count is taken. The prose, the flag and the backdrop must agree that one bell is already cracked.",
+  "steps": [
+  {"key": "Space"}, {"shot": "c_start"}, {"expect": "went tang instead of tong"},
+  {"assert": "window.VigilStore.state.flags.PRECRACKED === true"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1"},
+  {"assert": "document.querySelector('.art-layer svg') && document.querySelector('.art-layer').innerHTML.indexOf('stroke=\"#06050a\"') > -1"},
+  {"eval": "({ PRECRACKED: window.VigilStore.state.flags.PRECRACKED, CRACKED: window.VigilStore.state.flags.BELLS_CRACKED })"},
+  {"clickText": "The Provost"}, {"wait": 800}, {"key": "Space"}, {"expect": "Hands on your keys"}
+] }

@@ -1,7 +1,9 @@
 /* Companion — Chapter V: The Long Stair (ASH). One rule, two gates, one fact each, and no page holds
    another's: the Reader has what each shape says, both ways; the Listener has the bell over each shape
-   and its count; the Seer has which end each carving is marked at and every cut on each ring; the Binder
-   has which cut starts a sigil, which way round the count runs, and the word that is not written. */
+   and the slot its count names; the Seer has which end each carving is marked at and the three cuts in
+   each ring; the Binder has which kind of cut a sigil begins at HERE (not the scratch the room was
+   taught in the Prologue and Chapter IV -- these doors predate that Law), which way the count runs,
+   and whether the word nobody writes is written or left out. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -76,6 +78,7 @@
       s += `<text x="${(cx + Math.cos(a) * (R + 24)).toFixed(1)}" y="${(cy + Math.sin(a) * (R + 24) + 4).toFixed(1)}" text-anchor="middle" fill="${cut ? VIOLET : '#fff'}" font-size="10" ${F} stroke="none">${i + 1}</text>`;
       if (cut === 'scratch') s += `<path d="M${(x - 8).toFixed(1)},${(y + 1).toFixed(1)} l16,-4" stroke="${VIOLET}" stroke-width="2.4" stroke-linecap="round"/>`;
       if (cut === 'notch') s += `<path d="M${(x - 3).toFixed(1)},${(y + 3).toFixed(1)} l3,-5 l3,5" stroke="${VIOLET}" stroke-width="2" stroke-linecap="round"/>`;
+      if (cut === 'chip') s += `<path d="M${(x - 4).toFixed(1)},${(y - 4).toFixed(1)} l5,2 l-1,5 l-4,-3 z" stroke="${VIOLET}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>`;
     }
     return s + '</g>';
   }
@@ -92,10 +95,10 @@
     <text x="265" y="26" text-anchor="middle" fill="#fff" font-size="10" ${F}>the silent gate</text>
     ${markedStrip(95, 40, 3, 'right')}
     ${markedStrip(265, 40, 5, 'left')}
-    ${ringCuts(95, 165, 52, 5, { 4: 'scratch', 2: 'notch' })}
-    ${ringCuts(265, 165, 52, 5, { 3: 'scratch', 5: 'notch' })}
-    <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>a scratch at 4, a notch at 2</text>
-    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>a scratch at 3, a notch at 5</text>
+    ${ringCuts(95, 165, 52, 5, { 4: 'scratch', 2: 'notch', 5: 'chip' })}
+    ${ringCuts(265, 165, 52, 5, { 3: 'scratch', 5: 'notch', 2: 'chip' })}
+    <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 4, notch 2, chip 5</text>
+    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 3, notch 5, chip 2</text>
     <text x="180" y="286" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">where each ring is cut, and which end is marked</text>
   </svg>`;
 
@@ -149,7 +152,7 @@
   // Nine stones, two hollow.
   const stonesSvg = `<svg viewBox="0 0 360 250">
     <rect width="360" height="250" fill="#000"/>
-    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 50 + Math.floor(i / 3) * 75; const hollow = i === 2 || i === 7; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 50 + Math.floor(i / 3) * 75; const hollow = i === 2 || i === 5 || i === 7; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
       return `<g transform="translate(${x},${y})"><path d="M${-rx},0 C${-rx},-${ry} ${-rx * 0.4},-${ry + 6} 0,-${ry} C${rx * 0.5},-${ry + 4} ${rx},-${ry * 0.6} ${rx},0 C${rx},${ry} ${rx * 0.3},${ry + 4} 0,${ry} C${-rx * 0.6},${ry + 2} ${-rx},${ry * 0.5} ${-rx},0 Z" fill="none" stroke="#fff" stroke-width="1.4"/>${hollow ? `<path d="M${-rx * 0.55},2 C${-rx * 0.5},-${ry * 0.5} ${-rx * 0.1},-${ry * 0.6} ${rx * 0.2},-${ry * 0.35} C${rx * 0.55},-${ry * 0.1} ${rx * 0.5},${ry * 0.5} ${rx * 0.1},${ry * 0.55} C${-rx * 0.3},${ry * 0.6} ${-rx * 0.55},${ry * 0.3} ${-rx * 0.55},2 Z" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".8"/>` : `${[0, 1, 2].map(k => `<path d="M${-rx * 0.6 + k * 12},${-ry * 0.5 + k * 8} l${rx * 0.9},${ry * 0.15}" stroke="#fff" stroke-width=".8" opacity=".35"/>`).join('')}`}<text y="${ry + 14}" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".6">${i + 1}</text></g>`; }).join('')}
     <text x="180" y="244" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>solid stone hatches; a hollow shows its cavity</text>
   </svg>`;
@@ -172,7 +175,13 @@
   const gl = (n, c) => G.svg(n, { size: 26, color: c || GOLD });
   const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)} <b>${o.lock}</b></td></tr>`).join('')}</table>`;
 
-  /* ---------- the Founders' Count task ---------- */
+  /* ---------- the Founders' Count task ----------
+     Reader 3 (of nine worn shapes, three read EMBER) · Listener 5 (the lower bell of the peal) ·
+     Seer 3 (of nine stones, three are hollow) · Binder 4 (of five oaths, four are locked KNOT or
+     EMBER) -> 3534. The digits are deliberately NOT a permutation of one run: at 3,5,2,4 the set
+     was {2,3,4,5}, so any three roles could hand the fourth its digit by elimination and the
+     Hearth's four-digit ward fell to three phones. 3534 repeats a digit and skips one, so no
+     subset of three completes it, and the ward hears three answers only. */
   const MATERIAL = {
     reader: { q: 'Nine worn shapes on the newel, all standing as they were cut. **How many read EMBER?**', html: nineSvg },
     listener: { q: 'A peal of two bells, one higher, one lower. **How many times does the *lower* bell strike?** Play it as often as you need.', html: null },
@@ -246,28 +255,30 @@
         P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. On your page they are clean.' });
         P.sight.push({ t: 'p', text: '**A shape says one word standing as it was cut, and the opposite word the other way up.** A carving marked at its left-hand end says the words as they stand. Marked at its right, every shape says its other word.' });
         P.sight.push({ t: 'html', html: readerLintels() });
+        P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that.' });
         P.sight.push({ t: 'fine', text: 'A spare shape in the ring is not decoration. It is a different sigil, and the gate can tell.' });
         P.sight.push({ t: 'fine', text: 'Which end each carving is marked at is not on this page, and neither is where the words go. Say both words for every shape, in the order they are cut.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
         P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones. "You went quiet in the study. You read something with my name in it." A pause. "You don’t have to say."' });
         P.wren.push({ t: 'p', text: f.WREN_HURT
           ? 'Wren has not mentioned the strapped arm since the Vault, and has laughed twice on the stair, both times wrongly.'
-          : 'The glossary in your Book still says what it said in the study. You decided a year ago that it was a copying error. You never looked up who copied it.' });
+          : 'The Vigil roll in your Book still spells her name *Wrenn*, in the old letters. You decided, a year ago, that it was a spelling mistake. You have never asked her.' });
       }
 
       /* ===== LISTENER ===== */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Eight bells, and what they count' });
         P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. The Hearth cannot hear them. You can.' });
-        P.sight.push({ t: 'p', text: '**A bell’s count is how far its shape sits from the mark**, counting the mark slot as one.' });
+        P.sight.push({ t: 'p', text: '**A bell’s count says which slot its word takes.** Count round the ring from wherever a sigil begins, and that slot is one.' });
         P.sight.push({ t: 'audio', label: 'The first gate — three bells', strip: tallyRow(COUNTS1, -1), button: '♪ Cup your ear',
           play: (A) => playCounts(A, COUNTS1, -1), text: '**Three, one, five**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'audio', label: 'The silent gate — five bells', strip: tallyRow(COUNTS2, cracked), button: '♪ Cup your ear',
           play: (A) => playCounts(A, COUNTS2, cracked), text: cracked >= 0
             ? 'The second bell is **cracked** and gives nothing. The five counts are one each of 1 to 5. The missing one is whichever the other four do not say.'
             : '**Two, five, one, three, four**, over the shapes in the order they are cut.' });
+        P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far. The words are the Reader’s, the mark the Seer’s.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far. The words are the Reader’s, and where a sigil begins is the Binder’s.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
         P.wren.push({ t: 'p', text: 'Boots above, in step. Water below, moving slowly. And beside you, where Wren is standing, the thing you have called a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
@@ -277,11 +288,11 @@
       /* ===== SEER ===== */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the two gates' });
-        P.sight.push({ t: 'p', text: '**The first gate’s carving is marked at its right-hand end.** Its ring carries two cuts: a long scratch at **slot 4**, and a small notch at **slot 2**.' });
-        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Its ring carries two cuts as well: a scratch at **slot 3**, and a notch at **slot 5**.' });
+        P.sight.push({ t: 'p', text: '**The first gate’s carving is marked at its right-hand end.** Its ring carries three cuts: a long scratch at **slot 4**, a notch at **slot 2**, a chip in the glaze at **slot 5**.' });
+        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Three cuts again: a scratch at **slot 3**, a notch at **slot 5**, a chip at **slot 2**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: gateMarks });
         P.sight.push({ t: 'fine', text: 'Counted from anywhere else on the ring, the right words in the right order still fail.' });
-        P.sight.push({ t: 'fine', text: 'Somebody meant both of those cuts. Which one matters, and what a marked end obliges, are not yours. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Somebody meant those cuts. Which one a sigil begins at, and what a marked end obliges, are not yours. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underLedge });
         P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows falling away from it, the way shadows do, and Wren’s falling toward it. In the dormitory you blamed the lamp. There is no lamp here.' });
@@ -290,13 +301,14 @@
       /* ===== BINDER ===== */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Which cut, and which way round' });
-        P.sight.push({ t: 'p', text: '**A sigil begins at a scratch.** A notch is a maker’s signature. It starts nothing.' });
+        P.sight.push({ t: 'p', text: 'Above ground a sigil begins at a scratch. Everyone at this table has heard you say so twice tonight.' });
+        P.sight.push({ t: 'p', text: '**These two doors are older than that Law, and they do not keep it.** On the first gate the sigil begins at the **chip**. On the second it begins at the **notch**. A scratch on a Founders’ door is only where the mason rested the tool.' });
         P.sight.push({ t: 'p', text: 'Two Laws disagree about which way a carving runs round the ring. The newer says every one runs the way the numbers count up. The older says a carving marked at its right-hand end runs the other way. **The older binds.**' });
         P.sight.push({ t: 'html', html: lawClash() });
         P.sight.push({ t: 'p', text: law0
-          ? '**Where a carving shows COLD, the newer Law leaves that slot empty. The older Law, back in your Book, writes it — by four hands.**'
-          : '**Where a carving shows COLD, the newer Law leaves that slot empty.**' });
-        P.sight.push({ t: 'fine', text: 'Every frost costs the stair five heartbeats. Say your rule before the Warden closes the ring.' });
+          ? '**Where a carving shows COLD, the older Law writes it into its slot — and the older Law is back in your Book. Say so: the slot is not left empty.**'
+          : '**Where a carving shows COLD, the newer Law leaves that slot empty. Say so: nothing goes in it.**' });
+        P.sight.push({ t: 'fine', text: 'Two frosts and a gate stops answering, and the Provost must break it. Say your rule before the Warden closes the ring — and say it even when it sounds wrong.' });
         P.sight.push({ t: 'fine', text: 'Both Laws are dated in your **Book**. You cannot read a shape and you cannot find a cut. Ask for both.' });
         P.wren.push({ t: 'h', text: 'Still no thread' });
         P.wren.push({ t: 'list', items: [
