@@ -194,7 +194,8 @@
     reveal:  () => { [0, 3, 7, 10, 14, 19].forEach((iv, i) => setTimeout(() => bell(NOTE(55 + iv), 0.14, 4), i * 160)); },
     unlock:  () => { noise(0.25, 0.4, 900, 'bandpass'); setTimeout(() => { tone(600, 0.15, 0.1, 'square'); bell(NOTE(79), 0.1, 1.5); }, 180); },
     step:    () => { noise(0.08, 0.15, 250, 'lowpass'); },
-    magic:   () => { for (let i = 0; i < 6; i++) setTimeout(() => bell(NOTE(76 + Math.floor(Math.random() * 12)), 0.06, 1.2), i * 70); },
+    /* a shimmer, not a chord: random within a major pentatonic so it sparkles instead of clashing */
+    magic:   () => { const sc = [0, 2, 4, 7, 9, 12, 14, 16]; for (let i = 0; i < 6; i++) setTimeout(() => bell(NOTE(76 + sc[Math.floor(Math.random() * sc.length)]), 0.06, 1.2), i * 70); },
     seal:    () => { tone(110, 2.5, 0.35, 'sine', 55); [0, 7, 12].forEach((iv, i) => setTimeout(() => bell(NOTE(52 + iv), 0.25, 5), i * 400)); },
   };
   Audio.sfx = function (name, arg) { if (!ctx || muted) return; const f = SFX[name]; if (f) try { f(arg); } catch (e) {} };

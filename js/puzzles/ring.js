@@ -111,7 +111,7 @@
         const set = times.filter(x => x != null);
         if (set.length === 4) {
           const spread = Math.max(...set) - Math.min(...set);
-          if (spread <= (windowMs || 1000)) { st.className = 'pz-status good'; st.textContent = 'Four hands.'; Audio.sfx('magic'); Input.deactivate(); setTimeout(() => { box.remove(); resolve(true); }, 600); }
+          if (spread <= (windowMs || 1000)) { st.className = 'pz-status good'; st.textContent = 'Four hands.'; Audio.sfx('success'); Input.deactivate(); setTimeout(() => { box.remove(); resolve(true); }, 600); }
           else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Again — count yourselves in.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'good', false); } }
         }
       });
