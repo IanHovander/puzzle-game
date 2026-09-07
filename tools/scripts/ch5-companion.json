@@ -1,23 +1,24 @@
 { "start": "ch5_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_reader_sight"},
   {"expect": "two gates"}, {"expect": "worn to nothing"}, {"expect": "standing as it was cut"}, {"expect": "not on this page"},
+  {"expect": "THORN"}, {"expect": "WELL"}, {"assert": "(function(){var t=document.body.innerText.replace(/\\s+/g,' ');return t.indexOf('the first gate CROWN EMBER KNOT VEIL THORN WELL')>=0 && t.indexOf('the silent gate CROWN EMBER ASH COLD COLD ASH KNOT VEIL WELL THORN')>=0;})()"},
   {"tab": "Wren"}, {"expect": "On the ledge"},
   {"tab": "Speak"}, {"shot": "c5_reader_speak"}, {"expect": "Founders"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_reader_count"}, {"expect": "How many read EMBER"}, {"click": ".pick-grid .pk:has-text(\"3\")"}, {"wait": 300}, {"expect": "Sealed"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "DYND"}, {"tab": "Book"}, {"expect": "Lexicon"},
 
   {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_listener_sight"},
-  {"expect": "Eight bells"}, {"expect": "how far its shape sits from the mark"}, {"expect": "Three, one, four"}, {"expect": "Two, five, one, three, four"}, {"expectNot": "cracked"},
+  {"expect": "Eight bells"}, {"expect": "how far its shape sits from the mark"}, {"expect": "Three, one, five"}, {"expect": "Two, five, one, three, four"}, {"expectNot": "cracked"},
   {"tab": "Speak"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_listener_count"}, {"expect": "lower"}, {"clickText": "show the peal"}, {"wait": 200}, {"expect": "low"}, {"click": ".pick-grid .pk:has-text(\"5\")"}, {"wait": 300}, {"expect": "Sealed"},
   {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "WUYX"}, {"expect": "HOLD THE THREAD"}, {"shot": "c5_listener_thread"},
   {"tab": "Wren"}, {"expect": "not stopped hearing it"},
 
   {"companion": true}, {"role": "Seer", "name": "Cy"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_seer_sight"},
-  {"expect": "marked at its right-hand end"}, {"expect": "slot 4"}, {"expect": "slot 2"}, {"expect": "slot 3"}, {"expectNot": "sunwise"},
+  {"expect": "marked at its right-hand end"}, {"expect": "slot 4"}, {"expect": "slot 2"}, {"expect": "slot 3"}, {"expect": "slot 5"}, {"expectNot": "sunwise"},
   {"tab": "Speak"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_seer_count"}, {"expect": "hollow"}, {"click": ".pick-grid .pk:has-text(\"2\")"}, {"wait": 300}, {"expect": "Sealed"}, {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "958U"},
   {"tab": "Wren"}, {"expect": "shadow"},
 
   {"companion": true}, {"role": "Binder", "name": "Dee"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_binder_sight"},
-  {"expect": "begins at a scratch"}, {"expect": "the older binds"}, {"expect": "leaves that slot empty"}, {"expectNot": "Law 5"}, {"expectNot": "widdershins"},
+  {"expect": "begins at a scratch"}, {"expect": "the older binds"}, {"expect": "leaves that slot empty"}, {"expect": "costs the stair five heartbeats"}, {"expectNot": "refused and the ring frosts"}, {"expectNot": "Law 5"}, {"expectNot": "widdershins"},
   {"tab": "Speak"}, {"clickText": "collapse the stair"}, {"wait": 300}, {"expect": "says never"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_binder_count"}, {"expect": "How many bind"}, {"click": ".pick-grid .pk:has-text(\"4\")"}, {"wait": 300}, {"expect": "Sealed"}, {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "Q3UT"},
   {"tab": "Book"}, {"shot": "c5_binder_book"}, {"expect": "Law 12"}, {"tab": "Wren"}, {"expect": "Still no thread"}
 ] }

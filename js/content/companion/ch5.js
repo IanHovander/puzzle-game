@@ -1,6 +1,6 @@
 /* Companion — Chapter V: The Long Stair (ASH). One rule, two gates, one fact each, and no page holds
    another's: the Reader has what each shape says, both ways; the Listener has the bell over each shape
-   and its count; the Seer has which end each carving is marked and every cut on each ring; the Binder
+   and its count; the Seer has which end each carving is marked at and every cut on each ring; the Binder
    has which cut starts a sigil, which way round the count runs, and the word that is not written. */
 (function () {
   'use strict';
@@ -14,7 +14,7 @@
      only reports them. Marked ends and ring cuts are the Seer's and live on that page alone. */
   const GATE1 = [{ shape: 'Crown', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: false }];
   const GATE2 = [{ shape: 'Crown', inv: false }, { shape: 'Flame', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: true }];
-  const COUNTS1 = [3, 1, 4];
+  const COUNTS1 = [3, 1, 5];
   const COUNTS2 = [2, 5, 1, 3, 4];
   const CRACKED = 1;                 // EMBER_LOST: the second bell of the silent gate
 
@@ -93,9 +93,9 @@
     ${markedStrip(95, 40, 3, 'right')}
     ${markedStrip(265, 40, 5, 'left')}
     ${ringCuts(95, 165, 52, 5, { 4: 'scratch', 2: 'notch' })}
-    ${ringCuts(265, 165, 52, 5, { 3: 'scratch' })}
+    ${ringCuts(265, 165, 52, 5, { 3: 'scratch', 5: 'notch' })}
     <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>a scratch at 4, a notch at 2</text>
-    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>a scratch at 3</text>
+    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>a scratch at 3, a notch at 5</text>
     <text x="180" y="286" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">where each ring is cut, and which end is marked</text>
   </svg>`;
 
@@ -115,9 +115,9 @@
       return s;
     };
     return `<svg viewBox="0 0 300 214" width="100%" style="max-width:300px;display:block;margin:0 auto">`
-      + plate(6, 'Year 0', 'marked at the right: the other way round', false)
+      + plate(6, 'Year 0', 'carving marked at its right: the other way round', false)
       + plate(46, 'Year 212', 'every line runs the way the numbers count up', true)
-      + ring(90, -1, 'marked at the right') + ring(215, 1, 'marked at the left')
+      + ring(90, -1, 'carving marked at its right') + ring(215, 1, 'carving marked at its left')
       + `<text x="150" y="210" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="9" ${F}>where two Laws disagree, the older binds</text></svg>`;
   };
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:70px;height:14px;vertical-align:middle">${
@@ -244,10 +244,10 @@
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What is cut on Mere’s two gates' });
         P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. On your page they are clean.' });
-        P.sight.push({ t: 'p', text: '**A shape says one word standing as it was cut, and the opposite word the other way up.** A line marked at its left-hand end says the words as they stand. Marked at its right, every shape says its other word.' });
+        P.sight.push({ t: 'p', text: '**A shape says one word standing as it was cut, and the opposite word the other way up.** A carving marked at its left-hand end says the words as they stand. Marked at its right, every shape says its other word.' });
         P.sight.push({ t: 'html', html: readerLintels() });
         P.sight.push({ t: 'fine', text: 'A spare shape in the ring is not decoration. It is a different sigil, and the gate can tell.' });
-        P.sight.push({ t: 'fine', text: 'Which end each line is marked at is not on this page, and neither is where the words go. Say both words for every shape, in the order they are cut.' });
+        P.sight.push({ t: 'fine', text: 'Which end each carving is marked at is not on this page, and neither is where the words go. Say both words for every shape, in the order they are cut.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
         P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones. "You went quiet in the study. You read something with my name in it." A pause. "You don’t have to say."' });
         P.wren.push({ t: 'p', text: f.WREN_HURT
@@ -261,7 +261,7 @@
         P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. The Hearth cannot hear them. You can.' });
         P.sight.push({ t: 'p', text: '**A bell’s count is how far its shape sits from the mark**, counting the mark slot as one.' });
         P.sight.push({ t: 'audio', label: 'The first gate — three bells', strip: tallyRow(COUNTS1, -1), button: '♪ Cup your ear',
-          play: (A) => playCounts(A, COUNTS1, -1), text: '**Three, one, four**, over the shapes in the order they are cut.' });
+          play: (A) => playCounts(A, COUNTS1, -1), text: '**Three, one, five**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'audio', label: 'The silent gate — five bells', strip: tallyRow(COUNTS2, cracked), button: '♪ Cup your ear',
           play: (A) => playCounts(A, COUNTS2, cracked), text: cracked >= 0
             ? 'The second bell is **cracked** and gives nothing. The five counts are one each of 1 to 5. The missing one is whichever the other four do not say.'
@@ -278,7 +278,7 @@
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the two gates' });
         P.sight.push({ t: 'p', text: '**The first gate’s carving is marked at its right-hand end.** Its ring carries two cuts: a long scratch at **slot 4**, and a small notch at **slot 2**.' });
-        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Its ring carries one cut, a scratch at **slot 3**.' });
+        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Its ring carries two cuts as well: a scratch at **slot 3**, and a notch at **slot 5**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: gateMarks });
         P.sight.push({ t: 'fine', text: 'Counted from anywhere else on the ring, the right words in the right order still fail.' });
         P.sight.push({ t: 'fine', text: 'Somebody meant both of those cuts. Which one matters, and what a marked end obliges, are not yours. Say what is cut, and where.' });
@@ -291,12 +291,12 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Which cut, and which way round' });
         P.sight.push({ t: 'p', text: '**A sigil begins at a scratch.** A notch is a maker’s signature. It starts nothing.' });
-        P.sight.push({ t: 'p', text: 'Two Laws disagree about which way a line runs from its mark. The newer says every line runs the way the numbers count up. The older says a line marked at its right-hand end runs the other way. **The older binds.**' });
+        P.sight.push({ t: 'p', text: 'Two Laws disagree about which way a carving runs round the ring. The newer says every one runs the way the numbers count up. The older says a carving marked at its right-hand end runs the other way. **The older binds.**' });
         P.sight.push({ t: 'html', html: lawClash() });
         P.sight.push({ t: 'p', text: law0
           ? '**Where a carving shows COLD, the newer Law leaves that slot empty. The older Law, back in your Book, writes it — by four hands.**'
           : '**Where a carving shows COLD, the newer Law leaves that slot empty.**' });
-        P.sight.push({ t: 'fine', text: 'Written by fewer than four hands, that word is refused and the ring frosts.' });
+        P.sight.push({ t: 'fine', text: 'Every frost costs the stair five heartbeats. Say your rule before the Warden closes the ring.' });
         P.sight.push({ t: 'fine', text: 'Both Laws are dated in your **Book**. You cannot read a shape and you cannot find a cut. Ask for both.' });
         P.wren.push({ t: 'h', text: 'Still no thread' });
         P.wren.push({ t: 'list', items: [

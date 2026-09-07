@@ -4,11 +4,11 @@
   {"tab": "Wren"}, {"expect": "strapped arm"},
 
   {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_listener_sight"},
-  {"expect": "Three, one, four"}, {"expect": "cracked"}, {"expect": "one each of 1 to 5"}, {"expectNot": "Two, five, one, three, four"},
+  {"expect": "Three, one, five"}, {"expect": "cracked"}, {"expect": "one each of 1 to 5"}, {"expectNot": "Two, five, one, three, four"},
   {"tab": "Speak"}, {"clickText": "Start"}, {"wait": 400}, {"expect": "lower"}, {"click": ".pick-grid .pk:has-text(\"5\")"}, {"wait": 300}, {"expect": "Sealed"},
 
   {"companion": true}, {"role": "Seer", "name": "Cy"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_seer_sight"},
-  {"expect": "marked at its right-hand end"}, {"expect": "marked at its left-hand end"}, {"expectNot": "sunwise"},
+  {"expect": "marked at its right-hand end"}, {"expect": "marked at its left-hand end"}, {"expect": "a notch at slot 5"}, {"expectNot": "sunwise"},
 
   {"companion": true}, {"role": "Binder", "name": "Dee"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_binder_sight"},
   {"expect": "the older binds"}, {"expect": "by four hands"}, {"expect": "back in your Book"},

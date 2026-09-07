@@ -1,0 +1,17 @@
+{ "start": "ch4_secrets", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"expect": "shuts for the night"}, {"expect": "0 found"},
+  {"click": ".ch4-hot[data-id=\"tapestry\"]"}, {"wait": 400},
+  {"type": ["#widget input.field >> nth=0", "five"]}, {"type": ["#widget input.field >> nth=1", "first"]}, {"clickText": "Say what is under it"}, {"wait": 600}, {"expect": "the count and the figure"},
+  {"type": ["#widget input.field >> nth=0", "four"]}, {"type": ["#widget input.field >> nth=1", "second"]}, {"clickText": "Say what is under it"}, {"wait": 900}, {"expect": "The paint stays"}, {"shot": "ch4_tapestry_shut"}, {"clickText": "Back to the room"},
+  {"wait": 400}, {"expect": "0 found"},
+  {"click": ".ch4-hot[data-id=\"tapestry\"]"}, {"wait": 400}, {"expect": "The paint stays"},
+  {"assert": "document.querySelectorAll('#widget input.field').length === 0"}, {"clickText": "Back to the room"},
+  {"wait": 400},
+  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400},
+  {"type": ["#widget input.field >> nth=0", "red"]}, {"type": ["#widget input.field >> nth=1", "tied"]}, {"clickText": "Say what you see"}, {"wait": 600}, {"expect": "the colour, then the state"},
+  {"type": ["#widget input.field >> nth=0", "grey"]}, {"type": ["#widget input.field >> nth=1", "tied"]}, {"clickText": "Say what you see"}, {"wait": 900}, {"expect": "stays hers"}, {"shot": "ch4_chair_shut"}, {"clickText": "Back to the room"},
+  {"wait": 400}, {"expect": "0 found"}, {"clickText": "Stop searching"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"},
+  {"assert": "VigilStore.state.flags.TAPESTRY !== true && VigilStore.state.flags.GREY !== true && VigilStore.state.flags.LAW0 === false"},
+  {"eval": "VigilStore.state.log.slice(-3)"}
+] }

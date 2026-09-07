@@ -6,5 +6,5 @@
   {"wait": 1000}, {"key": "Space"}, {"wait": 300}, {"shot": "hold_none"}, {"expect": "says no name"}, {"clickText": "Run"},
   {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"expect": "bell-chamber soon after you"}, {"clickText": "The bell-chamber"},
   {"wait": 800}, {"key": "Space"}, {"clickText": "The paths you walked"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "the soldiers follow"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, SOLDIERS: VigilStore.state.flags.SOLDIERS, HOLD_NOBODY: VigilStore.state.flags.HOLD_NOBODY, HOLD_YES: VigilStore.state.flags.HOLD_YES})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "the soldiers follow"}, {"assert": "VigilStore.state.flags.STAIR === 'RUN' && VigilStore.state.flags.VOLUNTEER === 0 && VigilStore.state.flags.SOLDIERS === true && VigilStore.state.flags.HOLD_NOBODY === true && VigilStore.state.flags.HOLD_YES === 0"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, SOLDIERS: VigilStore.state.flags.SOLDIERS, HOLD_NOBODY: VigilStore.state.flags.HOLD_NOBODY, HOLD_YES: VigilStore.state.flags.HOLD_YES})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
 ] }

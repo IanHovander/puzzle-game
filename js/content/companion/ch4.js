@@ -1,7 +1,7 @@
 /* Companion — Chapter IV: The Oath (EMBER · cast: LETTER, ORIEL, SORREL, VANE_ACCEPT, SURRENDERED, WREN_SCARED).
    One fact each, and no page holds another's: the Reader has the words on the spines and on the scroll,
-   the Listener the order they come in, the Seer where each mark is cut and what is under the paint,
-   the Binder what a board hung the other way up does and what a lock costs. */
+   the Listener one step of each tune, the Seer where every cut is and what is under the paint,
+   the Binder what a turned board does to a book, which kind of cut a sigil starts at, and what a lock costs. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw;
@@ -86,14 +86,20 @@
       s += `<g transform="translate(${x},190)"><path d="M-7,0 L-5,-34 L5,-34 L7,0 Z" fill="#fff"/><circle cx="0" cy="-40" r="5" fill="#fff"/><path d="M5,-30 L16,-22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-3,0 L-24,5 L4,0 Z" fill="#fff" opacity=".4"/>`
         + (i === 3 ? `<g transform="translate(24,-26) scale(0.62)" style="color:#a482e6">${G.shapeInner('Flame', true)}</g>` : '') + `</g>`;
     }
-    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">under the paint: four walking in, and no child</text>`;
-    // C — the scroll's ring, one cut
+    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">four walk in, no child — the fourth carries something</text>`;
+    // C — the scroll's ring, and the two cuts in it
     s += `<g transform="translate(110,278)" stroke="#fff" fill="none" stroke-width="1.4"><circle r="40"/>`;
     s += [0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 40).toFixed(1), y = (Math.sin(a) * 40).toFixed(1); return `<circle cx="${x}" cy="${y}" r="11"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif" stroke="none">${i + 1}</text>`; }).join('');
     s += `</g>`;
-    s += `<path d="M46,272 L58,278 L46,284 Z" fill="#a482e6"/>`;
-    s += `<text x="250" y="282" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">the ring is cut at slot 4</text>`;
-    s += `<text x="180" y="330" text-anchor="middle" fill="#fff" opacity=".7" font-size="9" font-family="Cinzel,serif">two marks, and nothing else cut</text>`;
+    /* Two cuts, drawn the same white and lettered the same size: slot 2 (right of the ring) carries a
+       long scratch, slot 4 (left of it) a small notch. Not ch3's pair, on purpose -- see ch4.js. Which kind of cut a sigil starts at is the
+       Binder's Law, so neither cut takes the violet — an accent here would say which one matters, and
+       that is the whole of the Binder's seat at this puzzle. Same shape as the Prologue's lamp foot. */
+    s += `<path d="M174,258 L174,298" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+    s += `<path d="M46,274 L46,282" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+    s += `<text x="262" y="264" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">beside slot 2 — a long scratch</text>`;
+    s += `<text x="262" y="290" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">beside slot 4 — a small notch</text>`;
+    s += `<text x="180" y="330" text-anchor="middle" fill="#fff" opacity=".7" font-size="9" font-family="Cinzel,serif">three cuts in this room, and nothing else</text>`;
     return s + `</svg>`;
   })();
 
@@ -111,7 +117,11 @@
   /* ---------- the Binder's figure ----------
      What a board hung the other way up does, drawn: every tile turns over, and the place numbers do
      not. That last clause is the Binder's alone — the Reader's Book gives the turning and not the
-     places — so it is the one thing the shelf cannot be solved without. */
+     places — so it is the one thing the shelf cannot be solved without.
+     Both rows are drawn the same white, and the one accent is on the place numbers, which are the
+     thing that does not move. Painting the turned row in the Binder's colour said "this is tonight's
+     board", which is the Seer's fact and not on this page. The rule has two arms and the drawing
+     shows both. */
   const turnedBoard = () => {
     const row = (y, flipped, numColor) => {
       let s = '';
@@ -124,11 +134,11 @@
       return s;
     };
     return `<svg viewBox="0 0 300 176" style="width:100%;max-width:300px;height:auto">
-      ${row(14, false, 'rgba(255,255,255,.7)')}
+      ${row(14, false, '#d96b4a')}
       <path d="M8,22 L18,29 L8,36 Z" fill="rgba(255,255,255,.7)"/>
       ${row(94, true, '#d96b4a')}
-      <path d="M290,102 L280,109 L290,116 Z" fill="#d96b4a"/>
-      <text x="150" y="172" text-anchor="middle" fill="#d96b4a" font-size="11" font-family="Cinzel,serif">the numbers do not move</text>
+      <path d="M290,102 L280,109 L290,116 Z" fill="rgba(255,255,255,.7)"/>
+      <text x="150" y="172" text-anchor="middle" fill="#d96b4a" font-size="11" font-family="Cinzel,serif">either way up, the numbers do not move</text>
     </svg>`;
   };
 
@@ -160,7 +170,7 @@
         P.sight.push({ t: 'p', text: '**The oath scroll.** Three words are cut round the ring, worn nearly smooth. Clean, here:' });
         P.sight.push({ t: 'html', html: oathRing() });
         P.sight.push({ t: 'p', text: '**ASH, THORN, WELL** — *fire; a gate; down.* Nobody cut the fourth. The swearer chooses that one.' });
-        P.sight.push({ t: 'fine', text: 'A ring has no first and no last. Somebody here can hear which word comes first.' });
+        P.sight.push({ t: 'fine', text: 'A ring has no first and no last. Somebody here can hear how the first two step.' });
 
         P.wren.push({ t: 'h', text: 'The name' });
         P.wren.push({ t: 'html', html: runeLine('WRENN', { height: 60 }) });
@@ -178,9 +188,12 @@
         P.sight.push({ t: 'fine', text: 'Say whose voice it was, and say her last two words. Nobody here will like them. Say them anyway.' });
         P.sight.push({ t: 'audio', label: 'The third shelf, humming', strip: CA.strip([2, 2, 1]), play: (A) => CA.playSteps(A, [2, 2, 1]),
           text: '**Up two, up two, up one.** Four books, three climbs, and only one order climbs like that.' });
-        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]),
-          text: '**Down one, up four.** Three words, and then a silence where the lock goes. The lock makes no sound at all.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. The Reader has the words.' });
+        /* One step, not the contour. Two steps pin the three words on their own, and then the Reader's
+           set is confirming what this page has already said. One step plus three known words is still
+           exactly one order; one step without them is thirty-two boards. */
+        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then it dies away</span></div>', play: (A) => CA.playSteps(A, [-1]),
+          text: '**Down one, and then the tune goes out of it.** Three words are cut there. The ring will only give you the step from the first to the second.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. Three words, one step — the Reader has to tell you which three.' });
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -194,9 +207,9 @@
         P.sight.push({ t: 'h', text: 'Under three things in this study' });
         P.sight.push({ t: 'p', text: 'The shelf board, the tapestry, and the scroll on the desk. All three have something under them.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
-        P.sight.push({ t: 'fine', text: 'Two marks, and nothing else cut anywhere in the room.' });
-        P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say how many walk into the fire, and how many children are in it.' });
-        P.sight.push({ t: 'fine', text: 'What a mark obliges is not yours. Say where it is cut, and stop.' });
+        P.sight.push({ t: 'fine', text: 'Three cuts, and nothing else cut anywhere in the room. **The two in the scroll\'s ring are not the same kind.**' });
+        P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say how many walk into the fire, and which of them has something in his hand.' });
+        P.sight.push({ t: 'fine', text: 'What a cut obliges is not yours — one kind starts a sigil and one does not, and that is the Binder\'s. Say where they are, and stop.' });
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
@@ -208,15 +221,16 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
         P.sight.push({ t: 'html', html: turnedBoard() });
-        P.sight.push({ t: 'p', text: '**A board hung the other way up says the opposite.** Every book keeps the place it stands in. Pull by the place, not by the reading.' });
-        P.sight.push({ t: 'p', text: '**A sigil begins in the cut itself**, not after it — the same rule as the lamp. What is left over at the end of it is where a lock goes.' });
+        P.sight.push({ t: 'p', text: '**Whichever way up a board hangs, every book keeps its place.** Hung the other way up, it says the opposite word. Which way this one hangs is not yours to see.' });
+        P.sight.push({ t: 'p', text: '**A sigil begins at the scratch, and runs the way a clock counts** — the same rule as the lamp.' });
+        P.sight.push({ t: 'p', text: 'A notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
         P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
-          ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not after tonight.'],
+          ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not ever.'],
           ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],
         ] });
-        P.sight.push({ t: 'p', text: 'Those two, and nothing else the wax will take. The one you swear to cannot tell the difference. You can.' });
+        P.sight.push({ t: 'p', text: 'Those two, and nothing else the wax takes. The one you swear to cannot tell the difference. You can.' });
         P.sight.push({ t: 'p', text: '**The Provost\'s thread to Wren is grey.** Hers to the four of you is red, and not tied yet.' });
-        P.sight.push({ t: 'fine', text: 'You cannot read a word or find a mark. Ask for both.' });
+        P.sight.push({ t: 'fine', text: 'You cannot read a word or find a cut. Ask for both.' });
 
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
