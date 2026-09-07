@@ -88,7 +88,7 @@
     P.fog(380, 400, '#2a1e18', 0.35)
   ));
 
-  /* The Tower door: a great iron-bound door with two shapes carved over it; soldiers' silhouettes; the ward's glow (p.ward: 'ash' | 'cold' | none). */
+  /* The Tower door: a great iron-bound door with three worn carvings on the arch over it; soldiers' silhouettes; the ward's glow (p.ward: 'ash' | 'cold' | none). */
   A.define('ch3_towerdoor', (p) => {
     const glow = p && p.ward === 'cold' ? '#4fb3bf' : (p && p.ward ? '#ff9a3c' : null);
     return P.wrap(
@@ -100,9 +100,17 @@
       // the door
       P.door(800, 300, 240, 460, '#2a2030', glow) +
       `${[0, 1, 2, 3].map(i => `<rect x="700" y="${400 + i * 80}" width="200" height="10" fill="#3a3040"/>`).join('')}` +
-      // the two carved shapes above the door, worn on the Hearth
-      `<g transform="translate(740,240) scale(1.7)" style="color:#6a5a4a" opacity=".75">${window.VigilGlyphs.shapeInner('Flame', false)}</g>` +
-      `<g transform="translate(860,240) scale(1.7)" style="color:#6a5a4a" opacity=".75">${window.VigilGlyphs.shapeInner('Spike', false)}</g>` +
+      // The arch over the door: three carvings, worn past reading. The Hearth shows the recesses and the
+      // wear; WHICH three shapes they are is on the Reader's page, and their order is nobody's but the ward's.
+      `<g transform="translate(800,238)">` +
+        `<path d="M-160,40 A160,160 0 0 1 160,40" fill="none" stroke="#3a3040" stroke-width="9"/>` +
+        `<path d="M-160,40 A160,160 0 0 1 160,40" fill="none" stroke="#4a3f52" stroke-width="2" opacity=".5"/>` +
+        [[-108, 22], [0, -18], [108, 22]].map(([dx, dy]) =>
+          `<g transform="translate(${dx},${dy})">` +
+            `<ellipse rx="24" ry="27" fill="#0d0a12" opacity=".9"/>` +
+            [0, 1, 2].map(k => `<path d="M${-14 + k * 6},${-16 + k * 7} L${12 - k * 5},${11 - k * 6}" stroke="#6a5a4a" stroke-width="2.5" stroke-linecap="round" opacity="${(0.45 - k * 0.1).toFixed(2)}"/>`).join('') +
+          `</g>`).join('') +
+      `</g>` +
       // torches either side
       P.torch(560, 380, 1.1) + P.torch(1040, 380, 1.1) +
       P.floorTiles(760, '#0b090f', 'rgba(255,255,255,0.03)') +

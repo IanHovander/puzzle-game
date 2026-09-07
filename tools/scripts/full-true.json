@@ -633,28 +633,16 @@
    "key": "Space"
   },
   {
-   "clickText": "The Gallery"
+   "expect": "four went down"
   },
   {
-   "wait": 600
+   "expect": "a ward on the door"
   },
   {
-   "key": "Space"
+   "clickText": "Under the paint"
   },
   {
-   "clickText": "The dark"
-  },
-  {
-   "wait": 600
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "clickText": "The word"
-  },
-  {
-   "wait": 600
+   "wait": 800
   },
   {
    "key": "Space"
@@ -666,43 +654,40 @@
    "clickText": "All phones are ready"
   },
   {
-   "wait": 600
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "clickText": "Into the dark"
-  },
-  {
    "wait": 800
   },
   {
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 500
   },
   {
-   "dialog": "VEIL"
+   "expect": "Twelve turns"
+  },
+  {
+   "expect": "runs all the way back to the gallery"
   },
   {
    "clickText": "South"
   },
   {
    "clickText": "South"
+  },
+  {
+   "expect": "Turn 2 of 12"
+  },
+  {
+   "expectNot": "The lantern:"
+  },
+  {
+   "expectNot": "The sentry:"
+  },
+  {
+   "dialog": "CROWN"
   },
   {
    "clickText": "East"
-  },
-  {
-   "wait": 400
-  },
-  {
-   "expect": "LINEN"
-  },
-  {
-   "clickText": "Back to the corridors"
   },
   {
    "wait": 500
@@ -723,13 +708,13 @@
    "expect": "Turn 6 of 12"
   },
   {
-   "dialog": "THORN"
+   "dialog": "WELL"
   },
   {
    "clickText": "East"
   },
   {
-   "wait": 300
+   "wait": 500
   },
   {
    "expect": "Turn 7 of 12"
@@ -750,12 +735,6 @@
    "clickText": "South"
   },
   {
-   "wait": 300
-  },
-  {
-   "expect": "Turn 11 of 12"
-  },
-  {
    "wait": 1500
   },
   {
@@ -771,7 +750,7 @@
    "expect": "very small general"
   },
   {
-   "clickText": "Continue"
+   "clickText": "The laundry, before"
   },
   {
    "wait": 800
@@ -834,7 +813,7 @@
    "wait": 300
   },
   {
-   "expect": "SIXTY HEARTBEATS"
+   "expect": "SEVENTY-FIVE HEARTBEATS"
   },
   {
    "click": ".btn.choice >> nth=0"
@@ -846,17 +825,24 @@
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 500
+  },
+  {
+   "expect": "Nothing on this ring says which slot it begins in"
   },
   {
    "slots": [
     [
-     1,
+     4,
      "ASH"
     ],
     [
-     2,
+     1,
      "THORN"
+    ],
+    [
+     2,
+     "KNOT"
     ]
    ]
   },
@@ -882,7 +868,7 @@
    "expect": "Not tonight, then"
   },
   {
-   "clickText": "Continue"
+   "clickText": "The stair"
   },
   {
    "wait": 800
@@ -897,7 +883,7 @@
    "shot": "t_ch3_flow"
   },
   {
-   "expect": "the ward, woken"
+   "expect": "you woke the ward"
   },
   {
    "expect": "turn 11"

@@ -1,11 +1,30 @@
 { "start": "ch3_start", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"}, {"expect": "Hook"}, {"expect": "Seer knows which end the mark is on"},
-  {"tab": "Wren"}, {"expect": "plaques"}, {"tab": "Speak"}, {"expect": "Sealed"}, {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the Laundry"}, {"shot": "c3_reader_speak"},
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"},
+  {"expect": "What is cut over the seams"}, {"expect": "scratch at the left end"}, {"expect": "CROWN"}, {"expect": "Ask the Seer, seam by seam"}, {"expectNot": "ASH"},
+  {"tab": "Wren"}, {"expect": "plaques"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
+  {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the laundry, in a whisper"}, {"expect": "Never show your phone"}, {"shot": "c3_reader_speak"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "VYXX"}, {"shot": "c3_reader_token"},
-  {"companion": true}, {"role": "Listener"}, {"unlock": ["VEIL", "CLE"]}, {"shot": "c3_listener_sight"}, {"expect": "west stair-foot"}, {"expect": "four went down"}, {"clickText": "next beat"}, {"expect": "beat 1"},
-  {"tab": "Wren"}, {"expect": "sling"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "bad arm held close"}, {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "BAX6"}, {"tab": "Book"}, {"shot": "c3_listener_book"},
-  {"companion": true}, {"role": "Seer"}, {"unlock": ["VEIL", "BYR"]}, {"shot": "c3_seer_sight"}, {"expect": "spyhole"}, {"expect": "linen chute"},
-  {"tab": "Wren"}, {"expect": "dais"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "What do you see"}, {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "65SY"},
-  {"companion": true}, {"role": "Binder"}, {"unlock": ["VEIL", "E4Z"]}, {"shot": "c3_binder_sight"}, {"expect": "Bess"}, {"expect": "your own wrists"}, {"expect": "sunwise from the mark"},
-  {"tab": "Wren"}, {"expect": "not looked at"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "really the one"}, {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "8JM9"}, {"shot": "c3_binder_token"}, {"tab": "Book"}, {"expect": "STRUCK"}
+  {"clickText": "Pages"}, {"unlock": ["ward"]}, {"expect": "The arch over the Tower door"}, {"expect": "no first, no last"}, {"expect": "KNOT"}, {"shot": "c3_reader_ward"},
+
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["VEIL", "CLE"]}, {"shot": "c3_listener_sight"},
+  {"expect": "twelve beats"}, {"expect": "Lose the count"}, {"expect": "The Seer has the rooms"}, {"expect": "twelve beats, then round again"},
+  {"tab": "Wren"}, {"expect": "sling"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "Can you hear mine"},
+  {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "BAX6"},
+  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "The ward hums"}, {"expect": "one rung above"}, {"shot": "c3_listener_ward"},
+  {"tab": "Book"}, {"shot": "c3_listener_book"},
+
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["VEIL", "BYR"]}, {"shot": "c3_seer_sight"},
+  {"expect": "Under the corridors"}, {"expect": "scratched at its left end"}, {"expect": "Say where things are"},
+  {"expectNot": "porter"}, {"expectNot": "what it sees"},
+  {"tab": "Wren"}, {"expect": "shadow"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "What do you see"},
+  {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "65SY"},
+  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "scratch under slot 4"}, {"expect": "notch"}, {"shot": "c3_seer_ward"},
+
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["VEIL", "E4Z"]}, {"shot": "c3_binder_sight"},
+  {"expect": "Bess"}, {"expect": "paid to shout"}, {"expect": "since the Hall, are you"}, {"expect": "Ask for all three"},
+  {"expect": "buys four rooms: B5, C5, D5 and C4"}, {"expect": "that turn and three after it"}, {"expectNot": "that beat and three"},
+  {"tab": "Wren"}, {"expect": "not looked at"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "really the one"},
+  {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "8JM9"}, {"shot": "c3_binder_token"},
+  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "Where a sigil begins"}, {"expect": "comes back to slot 1"}, {"shot": "c3_binder_ward"},
+  {"tab": "Book"}, {"expect": "STRUCK"}
 ] }
