@@ -170,4 +170,6 @@
   .glyph { width: 72px; height: 86px; }
   .glyph svg { width: 46px; height: 46px; }
   .glyph.name-only { width: 84px; height: 48px; }
+  .table-area { width: min(320px, 46vh); height: min(320px, 46vh); }
+  .seat { width: 62px; height: 62px; font-size: 11px; }
 }
