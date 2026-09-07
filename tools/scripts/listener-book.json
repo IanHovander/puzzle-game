@@ -1,6 +1,6 @@
 { "start": "ch0_start", "steps": [
   {"companion": true}, {"role": "Listener", "name": "Sam"}, {"unlock": ["KINDLE"]},
-  {"expect": "up three"}, {"expectNot": "♪"},
+  {"expect": "three steps above"}, {"expectNot": "♪"},
   {"assert": "window.VigilUI.audioButton('♪ X',()=>0).textContent.trim()==='X'"},
   {"assert": "![...document.querySelectorAll('.audio-btn')].some(b=>/[♪♫]/.test(b.textContent))"},
   {"assert": "getComputedStyle(document.getElementById('cmenu')).backgroundColor==='rgba(0, 0, 0, 0)' && /Cinzel/.test(getComputedStyle(document.getElementById('cmenu')).fontFamily)"},
