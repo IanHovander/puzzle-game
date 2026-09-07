@@ -364,7 +364,13 @@
     }
     UI.modal(box, { title: 'Companion — open on each phone' });
   };
+  // Short redirect to the hosted companion page. Phones that scan the raw
+  // hosting URL get sent into an app instead of the browser, so the QR (and the
+  // printed link) use this redirect. Set to null to fall back to the page's own
+  // companion.html.
+  const COMPANION_SHORT_URL = 'https://shorturl.at/fMzeG';
   Game.companionUrl = function () {
+    if (COMPANION_SHORT_URL) return COMPANION_SHORT_URL;
     if (location.protocol === 'file:') return null;
     return new URL('companion.html', location.href).href;
   };
