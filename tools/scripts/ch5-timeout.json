@@ -1,0 +1,7 @@
+{ "start": "ch5_soldiers", "set": "OATH=1,DOOR=BLUFF", "steps": [
+  {"key": "Space"}, {"clickText": "Ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "forty-five heartbeats"}, {"wait": 48000},
+  {"key": "Space"}, {"wait": 600}, {"shot": "timeout_run"}, {"expect": "bell-chamber soon after you"},
+  {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, SOLDIERS: VigilStore.state.flags.SOLDIERS, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, timedout: VigilStore.state.flags.STAIR_timedout})"},
+  {"clickText": "The bell-chamber"}, {"wait": 800}, {"key": "Space"}, {"clickText": "The paths you walked"}, {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "the soldiers follow"}, {"log": true}
+] }

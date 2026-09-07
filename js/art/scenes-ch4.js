@@ -113,9 +113,9 @@
     if (p.open) s += `<rect x="150" y="${sy - 170}" width="1300" height="160" fill="#06050a"/><rect x="150" y="${sy - 170}" width="1300" height="160" fill="url(#ch4cab)"/><defs><radialGradient id="ch4cab" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#ffd27a" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>`;
     /* Six great books. Every stamp is rubbed past reading here and clean only on the Reader's page:
        the Hearth may show the wear, never the word. The four lifted when the shelf is open are the
-       answer's places, 2, 5, 6 and 4 (indices 1, 4, 5, 3). */
+       answer's places, 2, 5, 4 and 1 (indices 1, 4, 3, 0). */
     const bcol = ['#4a2f22', '#2e2a3a', '#3a3222', '#2a3a30', '#3d2e2e', '#33302a'];
-    const pulled = [1, 4, 5, 3];
+    const pulled = [1, 4, 3, 0];
     for (let i = 0; i < 6; i++) {
       const bx = 210 + i * 190, bw = 140, bh = 150;
       const y0 = sy - 10 - bh + (p.open && pulled.indexOf(i) >= 0 ? -14 : 0);
@@ -155,8 +155,14 @@
     // the scroll
     s += `<g transform="translate(800,560)">`;
     s += `<rect x="-420" y="-200" width="840" height="400" rx="10" fill="#d9cba8"/><rect x="-440" y="-214" width="40" height="428" rx="18" fill="#b8a880"/><rect x="400" y="-214" width="40" height="428" rx="18" fill="#b8a880"/>`;
-    s += `<text x="0" y="-130" text-anchor="middle" fill="#3a2a1a" font-size="34" font-family="Cinzel,serif" letter-spacing="8">THE WARDEN'S OATH</text>`;
-    s += `<text x="0" y="-80" text-anchor="middle" fill="#5a4a3a" font-size="22" font-family="Georgia,serif" font-style="italic">sworn to the Chair</text>`;
+    /* The heading is a rubbed cartouche, not a title: the scroll is allowed to show that something was
+       named at the top of it, and not to name it. Painting a title here put two proper nouns on a
+       puzzle surface and stamped a word the chapter no longer says. */
+    s += `<g transform="translate(0,-118)" fill="none" stroke="#8a7a5a" opacity=".75">`
+      + `<rect x="-210" y="-30" width="420" height="60" rx="14" stroke-width="2.5"/>`
+      + [0, 1, 2, 3, 4].map(i => `<path d="M${-168 + i * 76},6 h44" stroke-width="9" stroke-linecap="round" opacity="${(0.30 + (i % 2) * 0.12).toFixed(2)}"/>`).join('')
+      + [0, 1, 2, 3].map(i => `<path d="M${-140 + i * 80},-14 h56" stroke-width="7" stroke-linecap="round" opacity="${(0.22 + (i % 2) * 0.10).toFixed(2)}"/>`).join('')
+      + `</g>`;
     // four faint slots in a ring, the inscription above
     s += `<circle cx="0" cy="50" r="90" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`;
     for (let i = 0; i < 4; i++) { const a = (i / 4 * 360 - 90) * Math.PI / 180; s += `<circle cx="${(Math.cos(a) * 90).toFixed(1)}" cy="${(50 + Math.sin(a) * 90).toFixed(1)}" r="20" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`; }

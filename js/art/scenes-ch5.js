@@ -51,7 +51,6 @@
     flight(560, 520, 12, 1, 40, 18, '#191724') +
     torchRow([[520, 500], [1080, 720]], 0.8) +
     P.figures([{ x: 700, s: 0.55 }, { x: 760, s: 0.55 }, { x: 820, s: 0.55 }, { x: 880, s: 0.55 }, { x: 960, s: 0.45, color: '#2a2438' }], 700, '#0a0910') +
-    `<text x="800" y="120" text-anchor="middle" fill="rgba(233,226,210,0.18)" font-size="26" font-family="Cinzel,serif" letter-spacing="10">THE FOUNDATIONS</text>` +
     coldGlow(640, 0.35, 'coldglow2') + P.fog(300, 400, '#141426', 0.3)
   ));
 
@@ -70,22 +69,32 @@
     `<defs><radialGradient id="coldsun" cx=".5" cy="1" r=".7"><stop offset="0" stop-color="${COLD2}" stop-opacity=".9"/><stop offset=".4" stop-color="${COLD}" stop-opacity=".45"/><stop offset="1" stop-color="${COLD}" stop-opacity="0"/></radialGradient></defs><rect x="0" y="600" width="${W}" height="300" fill="url(#coldsun)"><animate attributeName="opacity" values="1;.75;1;.85;1" dur="6s" repeatCount="indefinite"/></rect>` +
     P.stars(40, 17, 160).replace(/#e8ecff/g, COLD2) +
     P.figures([{ x: 180, s: 0.7 }, { x: 240, s: 0.7 }, { x: 300, s: 0.7 }, { x: 360, s: 0.7 }, { x: 440, s: 0.6, color: '#2a2438' }], 760, '#07070c') +
-    `<text x="800" y="110" text-anchor="middle" fill="rgba(168,230,238,0.35)" font-size="24" font-family="Cinzel,serif" letter-spacing="10">THE UNDER-MARCHES</text>` +
     P.fog(360, 300, '#0e1a28', 0.35)
   ));
+
+  /* A carved panel on the lintel, worn past reading: a sunken recess and a few broken chisel strokes.
+     The Hearth never draws the shape itself — what each recess says is the Reader's page and nowhere
+     else, and a placed glyph on the board would otherwise read the lintel back to the room. */
+  function wornPanel(x, y, seed) {
+    const strokes = [0, 1, 2].map(k => {
+      const a = ((seed * 37 + k * 61) % 90) - 45, len = 22 + ((seed * 13 + k * 7) % 18);
+      return `<path d="M${x - len / 2},${y} l${len},0" stroke="#3a3346" stroke-width="${3 + (k % 2) * 2}" stroke-linecap="round" transform="rotate(${a} ${x} ${y + k * 12 - 12})"/>`;
+    }).join('');
+    return `<rect x="${x - 38}" y="${y - 44}" width="76" height="88" rx="6" fill="#12101a" stroke="#241f2e" stroke-width="3"/>${strokes}`;
+  }
+  const bell = (x, y) => `<g transform="translate(${x},${y})"><path d="M-22,10 L-22,0 Q-22,-26 0,-28 Q22,-26 22,0 L22,10 Z" fill="#241f2e" stroke="#3a3346" stroke-width="2"/><circle cy="16" r="4" fill="#3a3346"/></g>`;
 
   /* 4. A gate on the stair. params: { n: 1|2|3, cold: 0..1 } */
   A.define('ch5_gate', (p) => {
     const n = (p && p.n) || 1; const cold = p && p.cold != null ? p.cold : 0.4;
-    const shapes = n === 1 ? [['Crown', false], ['Hook', false], ['Spike', false]] : n === 2 ? [['Crown', false], ['Flame', false], ['Flame', true], ['Hook', false], ['Spike', true]] : [['Flame', false], ['Spike', false], ['Spike', true]];
-    const G = window.VigilGlyphs; const cell = 110; const x0 = 800 - (shapes.length - 1) * cell / 2;
+    const count = n === 2 ? 5 : 3; const cell = 110; const x0 = 800 - (count - 1) * cell / 2;
     return P.wrap(
       P.sky('#07070d', '#0a1016') +
       `<rect x="200" y="0" width="1200" height="${H}" fill="#0d0c13"/>` +
       P.door(800, 300, 300, 520, '#1c1926', n === 2 ? null : COLD) +
       `<rect x="470" y="200" width="660" height="110" rx="6" fill="#171420" stroke="#2c2738" stroke-width="4"/>` +
-      `<g opacity=".8">${shapes.map(([sh, inv], i) => `<g transform="translate(${x0 + i * cell},255) scale(1.8)" style="color:#7a6a5a">${G.shapeInner(sh, inv)}</g>`).join('')}</g>` +
-      (n === 2 ? `<g>${[0, 1, 2, 3, 4].map(i => `<g transform="translate(${470 + 66 + i * 132},130)"><path d="M-22,10 L-22,0 Q-22,-26 0,-28 Q22,-26 22,0 L22,10 Z" fill="#241f2e" stroke="#3a3346" stroke-width="2"/><circle cy="16" r="4" fill="#3a3346"/></g>`).join('')}</g>` : '') +
+      `<g opacity=".85">${Array.from({ length: count }, (_, i) => wornPanel(x0 + i * cell, 255, i + n * 5)).join('')}</g>` +
+      `<g>${Array.from({ length: count }, (_, i) => bell(x0 + i * cell, 130)).join('')}</g>` +
       `<circle cx="800" cy="720" r="120" fill="${COLD}" opacity=".08"><animate attributeName="opacity" values=".08;.16;.08" dur="1.1s" repeatCount="indefinite"/></circle>` +
       torchRow([[360, 420], [1240, 420]], 0.9) +
       P.floorTiles(760, '#0b0a11', 'rgba(255,255,255,0.04)') +

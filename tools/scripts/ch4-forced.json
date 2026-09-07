@@ -1,11 +1,16 @@
 { "start": "ch4_shelf", "steps": [
-  {"key": "Space"}, {"wait": 400}, {"expect": "rubbed to nothing"},
-  {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"4\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "as they stand"}, {"wait": 1200},
-  {"click": ".wheel .slot[data-i=\"4\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"2\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "Right words, wrong books"}, {"wait": 1200},
-  {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"4\"]"}, {"click": ".wheel .slot[data-i=\"5\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "The four are right and the order is not"}, {"wait": 1200},
-  {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"2\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"clickText": "Pull the books"}, {"wait": 1600}, {"key": "Space"}, {"wait": 800},
-  {"expect": "puts a boot through the board"}, {"shot": "ch4_shelf_forced"}, {"clickText": "Search the study"},
+  {"key": "Space"}, {"wait": 400}, {"expect": "rubbed to nothing"}, {"expect": "gives once"},
+  {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"clickText": "Pull the books"}, {"wait": 400}, {"expect": "not four of them"}, {"wait": 1000},
+  {"click": ".wheel .slot[data-i=\"2\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"5\"]"}, {"clickText": "Pull the books"}, {"wait": 400}, {"expect": "as they stand"}, {"wait": 1600}, {"key": "Space"}, {"wait": 800},
+  {"expect": "puts a boot through the board"}, {"expect": "still stood in its own place"}, {"shot": "ch4_shelf_forced"}, {"clickText": "Search the study"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "0 found"}, {"clickText": "Stop searching"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"},
-  {"eval": "VigilStore.state.log.slice(-2)"}
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"}, {"click": ".btn.choice >> nth=0"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "three times at most"},
+  {"slots": [[1, "ASH"], [2, "WELL"], [3, "KNOT"], [4, "VEIL"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "Frost creeps over the ring"}, {"wait": 1200},
+  {"slots": [[1, "THORN"], [2, "ASH"], [3, "WELL"], [4, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "Frost creeps over the ring"}, {"wait": 1200},
+  {"slots": [[1, "CROWN"], [2, "VEIL"], [3, "KNOT"], [4, "EMBER"]]}, {"clickText": "Close the sigil"}, {"wait": 1600}, {"key": "Space"}, {"wait": 800},
+  {"expect": "wax stays grey"}, {"expect": "no part of this"}, {"expect": "nearly took"}, {"shot": "ch4_oath_cold"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "would not close"}, {"expect": "you found none"}, {"shot": "ch4_forced_flow"},
+  {"assert": "VigilStore.state.flags.OATH === 0 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === true && VigilStore.state.flags.LAW0 === false"},
+  {"eval": "VigilStore.state.log.slice(-3)"}
 ] }

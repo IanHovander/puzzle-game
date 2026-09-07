@@ -901,7 +901,10 @@
    "expect": "still smoking"
   },
   {
-   "clickText": "Marrow speaks"
+   "expect": "primer"
+  },
+  {
+   "clickText": "What she wants"
   },
   {
    "wait": 600
@@ -910,10 +913,10 @@
    "key": "Space"
   },
   {
-   "expect": "primer"
+   "expect": "third shelf"
   },
   {
-   "clickText": "The word"
+   "clickText": "Look at the mantel"
   },
   {
    "wait": 600
@@ -937,40 +940,34 @@
    "wait": 400
   },
   {
-   "click": ".wheel .slot[data-i=\"0\"]"
+   "expect": "gives once"
   },
   {
-   "click": ".wheel .slot[data-i=\"2\"]"
+   "click": ".wheel .slot[data-i=\"1\"]"
   },
   {
-   "click": ".wheel .slot[data-i=\"5\"]"
+   "click": ".wheel .slot[data-i=\"4\"]"
   },
   {
    "click": ".wheel .slot[data-i=\"3\"]"
   },
   {
+   "click": ".wheel .slot[data-i=\"0\"]"
+  },
+  {
    "clickText": "Pull the books"
   },
   {
-   "wait": 1500
+   "wait": 1600
   },
   {
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 600
   },
   {
-   "expect": "cabinet"
-  },
-  {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
+   "expect": "red wax"
   },
   {
    "clickText": "Search the study"
@@ -985,6 +982,9 @@
    "wait": 400
   },
   {
+   "expect": "0 found"
+  },
+  {
    "click": ".ch4-hot[data-id=\"desk\"]"
   },
   {
@@ -992,8 +992,14 @@
   },
   {
    "type": [
-    "#widget input.field",
-    "fourteen years. it laughs at my jokes."
+    "#widget input.field >> nth=0",
+    "fourteen years."
+   ]
+  },
+  {
+   "type": [
+    "#widget input.field >> nth=1",
+    "it laughs at my jokes."
    ]
   },
   {
@@ -1003,7 +1009,7 @@
    "wait": 1400
   },
   {
-   "expect": "Mere's niche"
+   "expect": "in your Book now"
   },
   {
    "clickText": "Back to the room"
@@ -1021,13 +1027,25 @@
    "wait": 400
   },
   {
-   "click": ".ch4-opts .btn >> nth=1"
+   "type": [
+    "#widget input.field >> nth=0",
+    "vane"
+   ]
   },
   {
-   "wait": 1000
+   "type": [
+    "#widget input.field >> nth=1",
+    "through it"
+   ]
   },
   {
-   "expect": "gutters and steadies"
+   "clickText": "Say it back"
+  },
+  {
+   "wait": 1400
+  },
+  {
+   "expect": "gutters, and steadies"
   },
   {
    "clickText": "Back to the room"
@@ -1045,10 +1063,22 @@
    "wait": 400
   },
   {
-   "clickText": "Scrape"
+   "type": [
+    "#widget input.field >> nth=0",
+    "four"
+   ]
   },
   {
-   "wait": 300
+   "type": [
+    "#widget input.field >> nth=1",
+    "none"
+   ]
+  },
+  {
+   "clickText": "Say what is under it"
+  },
+  {
+   "wait": 1200
   },
   {
    "clickText": "Scrape"
@@ -1069,12 +1099,6 @@
    "wait": 2200
   },
   {
-   "click": ".ch4-opts .btn >> nth=2"
-  },
-  {
-   "wait": 1000
-  },
-  {
    "expect": "So he had"
   },
   {
@@ -1093,10 +1117,22 @@
    "wait": 400
   },
   {
-   "click": ".ch4-opts .btn >> nth=2"
+   "type": [
+    "#widget input.field >> nth=0",
+    "grey"
+   ]
   },
   {
-   "wait": 1000
+   "type": [
+    "#widget input.field >> nth=1",
+    "red"
+   ]
+  },
+  {
+   "clickText": "Say the colours"
+  },
+  {
+   "wait": 1400
   },
   {
    "expect": "Oriel"
@@ -1120,19 +1156,10 @@
    "key": "Space"
   },
   {
-   "expect": "all four"
+   "wait": 400
   },
   {
    "expect": "So. The Seer."
-  },
-  {
-   "clickText": "Unroll the scroll"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
   },
   {
    "click": ".btn.choice >> nth=0"
@@ -1182,10 +1209,10 @@
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 600
   },
   {
-   "expect": "doesn't come undone"
+   "expect": "does not come undone"
   },
   {
    "clickText": "The night moves on"
@@ -1206,13 +1233,10 @@
    "expect": "sworn under KNOT"
   },
   {
-   "expect": "4 found"
+   "expect": "all four"
   },
   {
-   "expect": "Mere's rubbing was read"
-  },
-  {
-   "expect": "Oriel's note was found"
+   "assert": "VigilStore.state.flags.OATH === 1 && VigilStore.state.flags.OATH_KNOT === true && VigilStore.state.flags.TAPESTRY === true && VigilStore.state.flags.LETTER_READ === true && VigilStore.state.flags.LAW0 === true"
   },
   {
    "clickText": "The Long Stair"

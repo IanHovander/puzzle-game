@@ -1,0 +1,10 @@
+{ "start": "ch5_soldiers", "set": "OATH=1,DOOR=BLUFF", "steps": [
+  {"key": "Space"}, {"clickText": "Ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"click": ".btn.choice >> nth=1"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "Every phone has answered"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"type": ["#widget input.token >> nth=0", "DYND"]}, {"type": ["#widget input.token >> nth=1", "83Z6"]}, {"type": ["#widget input.token >> nth=2", "MSB4"]}, {"type": ["#widget input.token >> nth=3", "Q3UT"]}, {"clickText": "Speak the words"},
+  {"wait": 1000}, {"key": "Space"}, {"wait": 300}, {"shot": "hold_none"}, {"expect": "says no name"}, {"clickText": "Run"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"expect": "bell-chamber soon after you"}, {"clickText": "The bell-chamber"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "The paths you walked"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "the soldiers follow"}, {"eval": "JSON.stringify({STAIR: VigilStore.state.flags.STAIR, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, SOLDIERS: VigilStore.state.flags.SOLDIERS, HOLD_NOBODY: VigilStore.state.flags.HOLD_NOBODY, HOLD_YES: VigilStore.state.flags.HOLD_YES})"}, {"clickText": "The Bells"}, {"wait": 1200}, {"log": true}
+] }

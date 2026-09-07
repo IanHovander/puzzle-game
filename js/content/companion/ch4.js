@@ -132,6 +132,13 @@
     </svg>`;
   };
 
+  /* A thread, drawn two ways: whole, and the empty bracket where one should be. The Binder's Wren tab
+     is the one place in this chapter a thread is a picture rather than a colour. */
+  const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
+    kind === 'whole' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/>'
+      : '<path d="M6,2 L2,2 L2,14 L6,14 M84,2 L88,2 L88,14 L84,14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>'
+  }</svg>`;
+
   const SPINES = ['EMBER', 'WELL', 'ASH', 'KNOT', 'CROWN', 'VEIL'];  // as the stamps stand, place 1..6
 
   C.chapters.push({
@@ -146,14 +153,14 @@
       /* ================= READER ================= */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What is written in this room' });
-        P.sight.push({ t: 'p', text: 'The Provost left her primer open, and it is in your **Book** now. Read the journal on the desk out loud — both lines.' });
+        P.sight.push({ t: 'p', text: 'The primer she left open is in your **Book** now. Read the journal on the desk out loud, both lines.' });
         P.sight.push({ t: 'p', text: '**The third shelf.** Six books, each stamped with a shape. The Hearth shows them rubbed to nothing. Here they are clean:' });
         P.sight.push({ t: 'table', head: ['spine', 'it says'], rows: SPINES.map((w, i) => [`<b>${i + 1}</b>`, `<b>${w}</b>`]) });
-        P.sight.push({ t: 'fine', text: 'That is what they say **as they stand.** Whether the board is the right way up is not on your page. Somebody here can see which end is marked.' });
+        P.sight.push({ t: 'fine', text: 'That is what they say **as they stand.** Which end of the board is marked is not yours to see. Somebody here can.' });
         P.sight.push({ t: 'p', text: '**The oath scroll.** Three words are cut round the ring, worn nearly smooth. Clean, here:' });
         P.sight.push({ t: 'html', html: oathRing() });
         P.sight.push({ t: 'p', text: '**ASH, THORN, WELL** — *fire; a gate; down.* Nobody cut the fourth. The swearer chooses that one.' });
-        P.sight.push({ t: 'fine', text: 'A ring has no first and no last, so your page cannot say which word comes first. Somebody here can hear it.' });
+        P.sight.push({ t: 'fine', text: 'A ring has no first and no last. Somebody here can hear which word comes first.' });
 
         P.wren.push({ t: 'h', text: 'The name' });
         P.wren.push({ t: 'html', html: runeLine('WRENN', { height: 60 }) });
@@ -169,8 +176,8 @@
           play: (A) => { CA.playSteps(A, [-1, -2], 58); CA.later(() => CA.announce(2, { rest: true }), 2000); CA.later(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
           text: 'A low voice, courteous and certain — **the Envoy:** *"The Crown will have the Cold open, one way or another."*\n\nThen hers — **the Provost:** *"Then the Crown will go through me. And through it."*' });
         P.sight.push({ t: 'fine', text: 'Say whose voice it was, and say her last two words. Nobody here will like them. Say them anyway.' });
-        P.sight.push({ t: 'audio', label: 'The third shelf, humming', strip: CA.strip([2, -1, 3]), play: (A) => CA.playSteps(A, [2, -1, 3]),
-          text: '**Up two, down one, up three.** Four books, three climbs, and only one order climbs like that.' });
+        P.sight.push({ t: 'audio', label: 'The third shelf, humming', strip: CA.strip([2, 2, 1]), play: (A) => CA.playSteps(A, [2, 2, 1]),
+          text: '**Up two, up two, up one.** Four books, three climbs, and only one order climbs like that.' });
         P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]),
           text: '**Down one, up four.** Three words, and then a silence where the lock goes. The lock makes no sound at all.' });
         P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. The Reader has the words.' });
@@ -193,17 +200,16 @@
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. The Provost\'s does. Wren\'s still falls towards it.' });
-        P.wren.push({ t: 'p', text: scared ? 'You blamed the lamp in the dormitory. Wren has not looked at anything since the stair, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.' });
-        P.wren.push({ t: 'p', text: 'A Warden with your Sight scraped this same paint as a boy, saw four, and was sent away. He is the Envoy now. You have his eyes.' });
+        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. Wren\'s still falls towards it.' });
+        P.wren.push({ t: 'p', text: scared ? 'You blamed the lamp in the dormitory. There is no lamp here, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.' });
       }
 
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
         P.sight.push({ t: 'html', html: turnedBoard() });
-        P.sight.push({ t: 'p', text: '**A board hung the other way up says the opposite of what it said.** Every book keeps the place it stands in. Pull by the place, not by the reading.' });
-        P.sight.push({ t: 'p', text: 'On a ring, the first word goes **in** the mark, and then clockwise. That has not changed since the lamp.' });
+        P.sight.push({ t: 'p', text: '**A board hung the other way up says the opposite.** Every book keeps the place it stands in. Pull by the place, not by the reading.' });
+        P.sight.push({ t: 'p', text: '**A sigil begins in the cut itself**, not after it — the same rule as the lamp. What is left over at the end of it is where a lock goes.' });
         P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
           ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not after tonight.'],
           ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],
@@ -213,9 +219,11 @@
         P.sight.push({ t: 'fine', text: 'You cannot read a word or find a mark. Ask for both.' });
 
         P.wren.push({ t: 'h', text: 'No thread found' });
-        P.wren.push({ t: 'p', text: 'Wren, in a room with four of you and the woman who did the naming. No thread to any of it.' });
-        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. There is nothing there to cut.' });
-        P.wren.push({ t: 'p', text: scared ? 'You have looked every hour since the laundry, and twice since the stair. There is still nothing to find.' : 'You have looked every hour since the laundry. There is still nothing to find.' });
+        P.wren.push({ t: 'html', html: '<ul class="blk-list">'
+          + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> one thread each, all night.</li>'
+          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing going out, to anyone.</li></ul>' });
+        P.wren.push({ t: 'p', text: 'A thread reaches her from the woman who named her. Nothing comes back — not to the Provost, not to you.' });
+        P.wren.push({ t: 'p', text: scared ? 'You have looked every hour since the laundry, and twice since the stair. Still nothing.' : 'You have looked every hour since the laundry. There is still nothing to find.' });
         P.wren.push({ t: 'p', text: 'You decided years ago it was a blind spot in your own gift. You have never told anyone your gift has one.' });
       }
       return P;
