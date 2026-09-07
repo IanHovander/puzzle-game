@@ -10,19 +10,16 @@
     mood: 'hearth', fx: 'embers', art: 'ch0_hearthfire', flame: 1,
     flow: {
       nodes: [
-        { id: 'ch0_start', label: 'Four hundred years of fire', col: 0, row: 2 },
-        { id: 'ch0_dorm', label: 'The dormitory', col: 1, row: 2 },
-        { id: 'ch0_lamp', label: 'The lamp, the old way', col: 2, row: 2, kind: 'choice' },
-        { id: 'ch0_name', label: 'What Wren calls you', col: 3, row: 2, kind: 'choice' },
-        { id: 'ch1_start', label: 'The Vigil', col: 4, row: 2, secret: true },
-        { id: 'ch0_x1', label: 'the Convocation', col: 4, row: 0, secret: true },
-        { id: 'ch0_x2', label: 'the Envoy', col: 4, row: 1, secret: true },
-        { id: 'ch0_x3', label: 'the Vault', col: 4, row: 3, secret: true },
-        { id: 'ch0_x4', label: 'the Gallery', col: 4, row: 4, secret: true },
-        { id: 'ch0_x5', label: 'the Stair', col: 5, row: 1, secret: true },
-        { id: 'ch0_x6', label: 'the Bells', col: 5, row: 3, secret: true },
+        { id: 'ch0_start', label: 'Four hundred years of fire', col: 0, row: 0 },
+        { id: 'ch0_dorm', label: 'The dormitory, past curfew', col: 1, row: 0 },
+        { id: 'ch0_practice', label: 'The four keys', col: 2, row: 0 },
+        { id: 'ch0_dare', label: "Wren's dare", col: 3, row: 0 },
+        { id: 'ch0_carve', label: 'A name in the brass', col: 4, row: 0 },
+        { id: 'ch0_lamp', label: 'The lamp, lit the old way', col: 5, row: 0 },
+        { id: 'ch0_name', label: 'What Wren calls you', col: 6, row: 0, kind: 'choice' },
+        { id: 'ch1_start', label: 'Tomorrow', col: 7, row: 0 },
       ],
-      edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start'], ['ch0_name', 'ch0_x1'], ['ch0_name', 'ch0_x2'], ['ch0_name', 'ch0_x3'], ['ch0_name', 'ch0_x4'], ['ch0_x2', 'ch0_x5'], ['ch0_x3', 'ch0_x6']],
+      edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_practice'], ['ch0_practice', 'ch0_dare'], ['ch0_dare', 'ch0_carve'], ['ch0_carve', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start']],
     },
     scenes: {
       /* ---------- cold open ---------- */

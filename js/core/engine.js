@@ -21,7 +21,8 @@
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.textContent = m ? '🔇 Muted' : '🔊 Sound'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
+    const SOUND_ON = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5" stroke-linecap="round"/></g></svg>`, SOUND_OFF = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M15.5 9a4 4 0 010 6" stroke-linecap="round"/><path d="M18 6.5a7.5 7.5 0 010 11" stroke-linecap="round"/></g></svg>`;
+    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.innerHTML = (m ? SOUND_OFF : SOUND_ON) + '<span>' + (m ? 'Muted' : 'Sound') + '</span>'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
     dom.mute.addEventListener('click', () => { Audio.init(); Audio.toggleMute(); muteLabel(); });
     muteLabel();
     dom.menu.addEventListener('click', () => Game.showMenu());

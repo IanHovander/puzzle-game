@@ -37,12 +37,18 @@
     opts = opts || {};
     const speed = opts.speed || 14; // ms per char
     skipRequested = false;
+    let lastSpeaker = null, lastEl = null;
     for (const para of paragraphs) {
       const isObj = typeof para === 'object';
       const text = isObj ? para.text : para;
-      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (isObj && para.speaker ? ' speech' : '');
+      const speaker = isObj ? para.speaker : null;
+      // One speaker, several paragraphs: name it once and let the rule down the side carry the rest.
+      const same = speaker && speaker === lastSpeaker;
+      const cls = 'para' + (isObj && para.cls ? ' ' + para.cls : '') + (speaker ? ' speech' : '') + (same ? ' cont' : '');
       const p = UI.el('p', { class: cls });
-      if (isObj && para.speaker) p.appendChild(UI.el('span', { class: 'speaker', text: para.speaker }));
+      if (same && lastEl) lastEl.classList.add('joined');
+      if (speaker && !same) p.appendChild(UI.el('span', { class: 'speaker', text: speaker }));
+      lastSpeaker = speaker || null; lastEl = p;
       const span = UI.el('span', { class: 'tw' }); p.appendChild(span);
       container.appendChild(p);
       const html = UI.rich(text);
