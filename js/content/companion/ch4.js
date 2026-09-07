@@ -1,10 +1,15 @@
-/* Companion — Chapter IV: The Oath (EMBER·cast: LETTER, ORIEL, SORREL, VANE_ACCEPT, SURRENDERED, WREN_SCARED) */
+/* Companion — Chapter IV: The Oath (EMBER · cast: LETTER, ORIEL, SORREL, VANE_ACCEPT, SURRENDERED, WREN_SCARED).
+   One fact each, and no page holds another's: the Reader has the words on the spines and on the scroll,
+   the Listener the order they come in, the Seer where each mark is cut and what is under the paint,
+   the Binder what a board hung the other way up does and what a lock costs. */
 (function () {
   'use strict';
-  const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
+  const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw;
   const C = window.CompanionContent;
 
-  /* ---------- the older alphabet (24 letters; no Q, no X). Identical to the table in js/content/ch4.js. ---------- */
+  /* ---------- the older alphabet (24 letters; no Q, no X).
+     KEEP BYTE-IDENTICAL with the copy in js/content/ch4.js — the Hearth draws the journal from that
+     table and this primer is the only thing that decodes it. Edit one, edit both. ---------- */
   const OLD_RUNES = {
     A: 'M10,2 L10,26 M10,8 L18,14', B: 'M10,2 L10,26 M10,2 L18,10 L10,18', C: 'M16,4 L4,14 L16,24', D: 'M10,2 L10,26 M2,14 L18,14',
     E: 'M10,2 L10,26 M2,20 L10,14 L18,20', F: 'M10,2 L10,26 M10,6 L18,12 M10,14 L18,20', G: 'M6,2 L14,2 L14,26 L6,26', H: 'M6,2 L6,26 M14,2 L14,26 M6,10 L14,18',
@@ -27,66 +32,107 @@
     }
     return `<svg viewBox="0 0 ${x + 8} ${h + 6}" style="height:${opts.height || 48}px;width:auto;max-width:100%;color:${opts.color || '#e0b04a'};display:block;margin:6px auto">${s}</svg>`;
   }
-  const primerBlocks = () => [
-    { t: 'p', text: 'Twenty-four letters, each with its modern letter written beside it in the Provost\'s hand. No **Q** and no **X** — the Founders had no use for them. A plain substitution: slow, and yours.' },
-    { t: 'key', items: OLD_ALPHA.split('').map(ch => ({ svg: runeGlyph(ch, 34), label: ch })) },
-  ];
-  // The primer joins the Reader's Book once Chapter IV is open.
-  C.bookExtras.push((roleId, ctx) => (roleId === 'reader' && ctx.maxChapter >= 4) ? [{ t: 'h', text: 'The primer (from the Provost\'s study)' }].concat(primerBlocks()) : []);
 
-  /* ---------- shared drawings ---------- */
-  const lawHtml = (laws) => `<div class="laws">${laws.map(l => `<div class="law ${l.era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${l.n} · ${l.era === 'F' ? 'Founders\' · Year 0' : 'Order\'s · Year ' + l.year}</div><div class="txt">${UI.esc(l.text)}</div></div>`).join('')}</div>`;
-  const law = (n) => L.laws.find(l => l.n === n);
-  const founders4 = [['Halvard', 'THORN'], ['Idony', 'KNOT'], ['Rook', 'VEIL'], ['Mere', 'EMBER']];
-  const shelfShapes = [['Spike', true], ['Flame', false], ['Hook', true], ['Crown', false], ['Spike', false], ['Hook', false], ['Flame', true], ['Crown', true]];
-  const oathInscription = (color) => G.inscription([{ shape: 'Spike', inv: false }, { shape: 'Flame', inv: false }, { shape: 'Spike', inv: true }, { shape: 'Crown', inv: false, hidden: true }], { showMark: false, color: color || '#fff' }).replace('SHIELD', 'LOCK');
-  const mereText = '"We were four. I offered to go alone and was refused: one is never enough, and one was never asked. We went down together, wrote the cold glyph with four hands, and came up grey. The fire is only what we left behind. If you read this, the Hearth is failing and someone has told you one must go. — Mere, who keeps the fire, after."';
+  /* The Reader's permanent pages: the primer from Chapter IV on, and Mere's sheet once it has been
+     rubbed. Both live in the Book, not on the Sight page — a permanent reference is never re-printed.
+     The ch4 flags are read off the ch4 unlock itself, so the Book keeps them once the table has moved on. */
+  const mereText = '"We were four. I offered to go alone and was refused. One was never asked. We wrote the cold glyph with four hands, and came up grey. — Mere, who kept the fire, after."';
+  C.bookExtras.push((roleId, ctx) => {
+    if (roleId !== 'reader' || ctx.maxChapter < 4) return [];
+    const u = (ctx.state && ctx.state.unlocked && ctx.state.unlocked.ch4) || {};
+    const out = [
+      { t: 'h', text: 'The primer (from the Provost\'s study)' },
+      { t: 'p', text: 'Twenty-four letters, each with its modern letter written beside it in the Provost\'s hand. No **Q** and no **X**. A plain substitution: slow, and yours.' },
+      { t: 'key', items: OLD_ALPHA.split('').map(ch => ({ svg: runeGlyph(ch, 34), label: ch })) },
+    ];
+    if (u.flags && u.flags.LETTER) {
+      out.push({ t: 'h', text: 'Mere\'s sheet, from the niche below' });
+      out.push({ t: 'letter', text: mereText });
+    }
+    return out;
+  });
 
-  // Seer: the shelf as one turned line, mark on the right.
-  const underShelf = `<svg viewBox="0 0 360 150">
-    <rect width="360" height="150" fill="#000"/>
-    <rect x="12" y="30" width="336" height="80" rx="4" fill="none" stroke="#fff" stroke-width="1.2"/>
-    ${shelfShapes.map(([sh, inv], i) => `<g transform="translate(${34 + i * 41},70) scale(0.9)" style="color:#fff">${G.shapeInner(sh, inv)}</g><text x="${34 + i * 41}" y="124" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif">${i + 1}</text>`).join('')}
-    <path d="M352,62 L344,70 L352,78 Z" fill="#a482e6"/>
-    <text x="180" y="20" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">the shelf's mark: on the right — one turned line</text>
-    <text x="180" y="144" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">physical positions 1–8, as the books stand</text>
-  </svg>`;
-  // Seer: the tapestry's under-paint — four walking into a flame, the fourth hand holding an inverted flame; shadows away.
-  const underTapestry = `<svg viewBox="0 0 360 200">
-    <rect width="360" height="200" fill="#000"/>
-    <rect x="10" y="10" width="340" height="180" fill="none" stroke="#fff" stroke-width="1.2"/>
-    <g stroke="#fff" fill="none" stroke-width="1.5">
-      ${[0, 1, 2].map(i => `<path d="M${290 + i * 14 - 10},170 C${280 + i * 14},130 ${290 + i * 14},110 ${296 + i * 14},80 C${302 + i * 14},110 ${312 + i * 14},130 ${300 + i * 14},170"/>`).join('')}
-    </g>
-    ${[0, 1, 2, 3].map(i => { const x = 60 + i * 52; return `<g transform="translate(${x},170)"><path d="M-9,0 L-6,-46 L6,-46 L9,0 Z" fill="#fff"/><circle cx="0" cy="-54" r="7" fill="#fff"/><path d="M6,-40 L22,-28" stroke="#fff" stroke-width="4" stroke-linecap="round"/>${i === 3 ? `<g transform="translate(30,-30) scale(0.8)" style="color:#a482e6">${G.shapeInner('Flame', true)}</g>` : ''}<path d="M-4,0 L-30,10 L6,0 Z" fill="#fff" opacity=".45"/></g>`; }).join('')}
-    <text x="180" y="30" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">under the paint: four, walking in</text>
-    <text x="255" y="60" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">the fourth hand: a flame, turned over</text>
-    <text x="180" y="192" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">no child anywhere in it</text>
-  </svg>`;
-  // Seer: the oath ring, mark at slot 4.
-  const underRing = `<svg viewBox="0 0 320 200">
-    <rect width="320" height="200" fill="#000"/>
-    <g stroke="#fff" fill="none" stroke-width="1.5" transform="translate(110,100)">
-      <circle r="60"/>
-      ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${(Math.cos(a) * 60).toFixed(1)}" cy="${(Math.sin(a) * 60).toFixed(1)}" r="12"/><text x="${(Math.cos(a) * 82).toFixed(1)}" y="${(Math.sin(a) * 82 + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif" stroke="none">${i + 1}</text>`; }).join('')}
-      <path d="M-84,-8 L-72,0 L-84,8 Z" fill="#a482e6" stroke="none"/>
-      <path d="M-14,-74 a76,76 0 0 1 28,0" stroke-width="1.5"/><path d="M14,-74 l-6,-4 l0,8 z" fill="#fff" stroke="none"/>
-    </g>
-    <text x="240" y="70" text-anchor="middle" fill="#a482e6" font-size="11" font-family="Cinzel,serif">the mark: slot 4</text>
-    <text x="240" y="92" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">sunwise from it:</text>
-    <text x="240" y="112" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif">4 · 1 · 2 · 3</text>
-    <text x="240" y="140" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the last placed is the lock</text>
-  </svg>`;
-  // Seer: shadows in the study — the fire at the right; four away, Marrow's away, Wren's toward.
-  const underStudy = `<svg viewBox="0 0 360 200">
+  /* ---------- the Reader's figure ----------
+     The oath's three worn words, drawn as a ring so the page cannot imply an order, and set at odd
+     angles with no mark and no numbers. Read round from the top they come out ASH, THORN, WELL —
+     neither the answer nor its reverse, so reading the picture fails and the Listener is needed. */
+  const oathRing = () => {
+    const at = (deg, r) => [150 + Math.cos(deg * Math.PI / 180) * r, 84 + Math.sin(deg * Math.PI / 180) * r];
+    const put = (name, deg) => { const [x, y] = at(deg, 58); return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(1.05)" style="color:#f2d27a">${G.inner(name)}</g>`; };
+    const [ex, ey] = at(265, 58);
+    return `<svg viewBox="0 0 300 168" style="width:100%;max-width:300px;height:auto">
+      <circle cx="150" cy="84" r="58" fill="none" stroke="rgba(212,169,78,.3)" stroke-width="10"/>
+      ${put('ASH', -60)}${put('THORN', 55)}${put('WELL', 175)}
+      <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="17" fill="#0b0a10" stroke="rgba(212,169,78,.45)" stroke-dasharray="4 4"/>
+      <text x="150" y="162" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="11" font-family="Cinzel,serif">three worn words and one empty place · no first, no last</text>
+    </svg>`;
+  };
+
+  /* ---------- the Seer's figure ----------
+     One plate, three things: the shelf board and where it is marked, the paint and what is under it,
+     the scroll's ring and where it is cut. No arrow, no direction, no rule — the Seer reports cuts. */
+  const underMarks = (() => {
+    let s = `<svg viewBox="0 0 360 336"><rect width="360" height="336" fill="#000"/>`;
+    // A — the shelf board, six blank spines, one mark
+    s += `<rect x="14" y="22" width="300" height="46" fill="none" stroke="#fff" stroke-width="1.2"/>`;
+    for (let i = 0; i < 6; i++) s += `<rect x="${24 + i * 48}" y="28" width="36" height="34" fill="none" stroke="#fff" stroke-width="1"/><text x="${42 + i * 48}" y="82" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">${i + 1}</text>`;
+    s += `<path d="M332,37 L320,45 L332,53 Z" fill="#a482e6"/>`;
+    s += `<text x="180" y="16" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">the board is marked at the right-hand end</text>`;
+    // B — under the paint: four walking in, no child
+    s += `<rect x="14" y="102" width="332" height="96" fill="none" stroke="#fff" stroke-width="1.2"/>`;
+    s += `<g stroke="#fff" fill="none" stroke-width="1.4">${[0, 1, 2].map(i => `<path d="M${292 + i * 12},190 C${286 + i * 12},166 ${294 + i * 12},152 ${300 + i * 12},134 C${306 + i * 12},152 ${314 + i * 12},166 ${304 + i * 12},190"/>`).join('')}</g>`;
+    for (let i = 0; i < 4; i++) {
+      const x = 62 + i * 44;
+      s += `<g transform="translate(${x},190)"><path d="M-7,0 L-5,-34 L5,-34 L7,0 Z" fill="#fff"/><circle cx="0" cy="-40" r="5" fill="#fff"/><path d="M5,-30 L16,-22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-3,0 L-24,5 L4,0 Z" fill="#fff" opacity=".4"/>`
+        + (i === 3 ? `<g transform="translate(24,-26) scale(0.62)" style="color:#a482e6">${G.shapeInner('Flame', true)}</g>` : '') + `</g>`;
+    }
+    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">under the paint: four walking in, and no child</text>`;
+    // C — the scroll's ring, one cut
+    s += `<g transform="translate(110,278)" stroke="#fff" fill="none" stroke-width="1.4"><circle r="40"/>`;
+    s += [0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 40).toFixed(1), y = (Math.sin(a) * 40).toFixed(1); return `<circle cx="${x}" cy="${y}" r="11"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif" stroke="none">${i + 1}</text>`; }).join('');
+    s += `</g>`;
+    s += `<path d="M46,272 L58,278 L46,284 Z" fill="#a482e6"/>`;
+    s += `<text x="250" y="282" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">the ring is cut at slot 4</text>`;
+    s += `<text x="180" y="330" text-anchor="middle" fill="#fff" opacity=".7" font-size="9" font-family="Cinzel,serif">two marks, and nothing else cut</text>`;
+    return s + `</svg>`;
+  })();
+
+  // Seer, Wren tab: shadows in the study — the fire at the right; four away, the Provost's away, Wren's toward.
+  const underShadows = `<svg viewBox="0 0 360 200">
     <rect width="360" height="200" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="180"/><rect x="20" y="120" width="90" height="16"/><rect x="120" y="24" width="120" height="60"/><path d="M300,140 L300,110 M292,116 L308,116"/></g>
     <g fill="#fff" opacity=".9"><circle cx="70" cy="90" r="6"/><circle cx="110" cy="150" r="6"/><circle cx="160" cy="120" r="6"/><circle cx="200" cy="160" r="6"/><circle cx="260" cy="90" r="6"/><circle cx="240" cy="150" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,90 L36,84"/><path d="M110,150 L76,152"/><path d="M160,120 L126,116"/><path d="M200,160 L166,164"/><path d="M260,90 L228,82"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L278,146"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="60" y="108">Reader</text><text x="100" y="168">Listener</text><text x="150" y="138">Seer</text><text x="190" y="178">Binder</text><text x="248" y="80">the Provost</text><text x="230" y="168" fill="#a482e6">Wren</text><text x="300" y="158" text-anchor="middle">the fire</text><text x="65" y="118" opacity=".7">the desk</text><text x="180" y="20" text-anchor="middle" opacity=".7">the tapestry</text></g>
-    <text x="180" y="194" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall — the Provost's away, like yours</text>
+    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="60" y="108">Reader</text><text x="100" y="168">Listener</text><text x="150" y="138">Seer</text><text x="190" y="178">Binder</text><text x="248" y="80">the Provost</text><text x="230" y="168" fill="#a482e6">Wren</text><text x="300" y="158" text-anchor="middle">the fire</text></g>
+    <text x="180" y="194" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
   </svg>`;
+
+  /* ---------- the Binder's figure ----------
+     What a board hung the other way up does, drawn: every tile turns over, and the place numbers do
+     not. That last clause is the Binder's alone — the Reader's Book gives the turning and not the
+     places — so it is the one thing the shelf cannot be solved without. */
+  const turnedBoard = () => {
+    const row = (y, flipped, numColor) => {
+      let s = '';
+      for (let i = 0; i < 6; i++) {
+        const x = 22 + i * 42;
+        s += `<rect x="${x}" y="${y}" width="34" height="30" rx="3" fill="none" stroke="rgba(255,255,255,.35)"/>`;
+        s += `<g transform="translate(${x + 17},${y + 15}) rotate(${flipped ? 180 : 0})"><path d="M-7,4 L0,-5 L7,4" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linecap="round"/></g>`;
+        s += `<text x="${x + 17}" y="${y + 46}" text-anchor="middle" fill="${numColor}" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`;
+      }
+      return s;
+    };
+    return `<svg viewBox="0 0 300 176" style="width:100%;max-width:300px;height:auto">
+      ${row(14, false, 'rgba(255,255,255,.7)')}
+      <path d="M8,22 L18,29 L8,36 Z" fill="rgba(255,255,255,.7)"/>
+      ${row(94, true, '#d96b4a')}
+      <path d="M290,102 L280,109 L290,116 Z" fill="#d96b4a"/>
+      <text x="150" y="172" text-anchor="middle" fill="#d96b4a" font-size="11" font-family="Cinzel,serif">the numbers do not move</text>
+    </svg>`;
+  };
+
+  const SPINES = ['EMBER', 'WELL', 'ASH', 'KNOT', 'CROWN', 'VEIL'];  // as the stamps stand, place 1..6
 
   C.chapters.push({
     id: 'ch4',
@@ -94,125 +140,83 @@
       const f = ctx.flags || {};
       const P = { sight: [], wren: [], speak: [] };
       const scared = !!f.WREN_SCARED;
-      const marrowLetter = !f.ORIEL && !f.SORREL && !f.VANE_ACCEPT;
+      P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. The Hearth will call you by name.' });
+      P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
 
       /* ================= READER ================= */
       if (roleId === 'reader') {
-        P.sight.push({ t: 'h', text: 'The primer — the Older Alphabet (page 1 of 5)' });
-        P.sight.push(...primerBlocks());
-        P.sight.push({ t: 'fine', text: 'Unlocked. Your Book\'s locked page opens with it, from now on.' });
-        P.sight.push({ t: 'h', text: 'The Vigil roll (page 2 of 5)' });
-        P.sight.push({ t: 'p', text: 'Fourteen years of names in the Vigil\'s script — and one, the last, added in the Provost\'s own hand, in the older alphabet:' });
-        P.sight.push({ t: 'html', html: runeLine('WRENN', { height: 64 }) });
-        P.sight.push({ t: 'p', text: 'Cipher it. Five letters, not four. Then look in your Book at the lexicon\'s gloss for **COLD**, and at the last word of it.' });
-        P.sight.push({ t: 'reveal', label: 'When you have ciphered it', blocks: [{ t: 'p', text: '**WRENN** — *the hollow of a bell; the space that rings.* Your glossary has it now.' }, { t: 'fine', text: 'And COLD, from the lexicon: *the cold; the wound; the space left when warmth goes; a hollow.*' }] });
-        P.sight.push({ t: 'h', text: 'The journal on the desk (page 3 of 5)' });
-        P.sight.push({ t: 'p', text: 'The Hearth shows one line of the Provost\'s journal in the old letters. Read it with the primer — aloud, letter by letter if you must — and the Warden types what you say. Scribble here if it helps:' });
-        P.sight.push({ t: 'note', id: 'cipher', placeholder: 'letters, as you cipher them…' });
-        if (f.LETTER) {
-          P.sight.push({ t: 'h', text: 'The rubbing from Mere\'s niche (page 4 of 5)' });
-          P.sight.push({ t: 'p', text: 'It has been a smear of grey on your page since the Vault. With the primer beside it, it reads. **Mere, Year 3:**' });
-          P.sight.push({ t: 'letter', text: mereText });
-          P.sight.push({ t: 'fine', text: 'Read it to them. All of it. It is the oldest thing anyone at your table will ever hear. Once you have read the journal on the Hearth, the Hearth will count the rubbing as read too.' });
-        } else {
-          P.sight.push({ t: 'h', text: 'A sheet you do not have (page 4 of 5)' });
-          P.sight.push({ t: 'fine', text: 'There was a sheet in the older alphabet in Mere\'s niche, below the Vault. Nobody took a rubbing. The primer would have read it.' });
-        }
-        P.sight.push({ t: 'h', text: 'The shelf, and the scroll (page 5 of 5)' });
-        P.sight.push({ t: 'p', text: '**The Founders\' four glyphs**, from the plinths in the Vault — a set, not an order. The order is the Listener\'s:' });
-        P.sight.push({ t: 'glyphs', items: founders4.map(([who, g]) => ({ svg: G.svg(g, { size: 44, color: '#f2d27a' }), label: `${who} — **${g}**` })) });
-        P.sight.push({ t: 'p', text: '**The third shelf**, eight spines, as the shapes stand. Read *upright*, left to right, they say:' });
-        P.sight.push({ t: 'table', head: ['book', 'shape', 'reads upright'], rows: shelfShapes.map(([sh, inv], i) => [String(i + 1), G.shapeSvg(sh, inv, { size: 34, color: '#f2d27a' }), `<b>${G.read(sh, inv)}</b>`]) });
-        P.sight.push({ t: 'fine', text: 'Whether the line is upright is the Seer\'s to say. If it is turned, your Book says what that does: read right to left, every glyph inverted — and every book keeps its place.' });
-        P.sight.push({ t: 'p', text: '**The Oath scroll.** Three glyphs and a lock, clean on your page where the Hearth shows them worn:' });
-        P.sight.push({ t: 'html', html: oathInscription('#f2d27a') });
-        P.sight.push({ t: 'p', text: `${G.svg('THORN', { size: 30, color: '#f2d27a' })} THORN, ${G.svg('ASH', { size: 30, color: '#f2d27a' })} ASH, ${G.svg('WELL', { size: 30, color: '#f2d27a' })} WELL — *a gate; fire; down* — and a lock, which is not written because the swearer writes it. Where the ring begins is the Seer\'s; the order is the Listener\'s; what may lock an oath is the Binder\'s.` });
+        P.sight.push({ t: 'h', text: 'What is written in this room' });
+        P.sight.push({ t: 'p', text: 'The Provost left her primer open, and it is in your **Book** now. Read the journal on the desk out loud — both lines.' });
+        P.sight.push({ t: 'p', text: '**The third shelf.** Six books, each stamped with a shape. The Hearth shows them rubbed to nothing. Here they are clean:' });
+        P.sight.push({ t: 'table', head: ['spine', 'it says'], rows: SPINES.map((w, i) => [`<b>${i + 1}</b>`, `<b>${w}</b>`]) });
+        P.sight.push({ t: 'fine', text: 'That is what they say **as they stand.** Whether the board is the right way up is not on your page. Somebody here can see which end is marked.' });
+        P.sight.push({ t: 'p', text: '**The oath scroll.** Three words are cut round the ring, worn nearly smooth. Clean, here:' });
+        P.sight.push({ t: 'html', html: oathRing() });
+        P.sight.push({ t: 'p', text: '**ASH, THORN, WELL** — *fire; a gate; down.* Nobody cut the fourth. The swearer chooses that one.' });
+        P.sight.push({ t: 'fine', text: 'A ring has no first and no last, so your page cannot say which word comes first. Somebody here can hear it.' });
 
         P.wren.push({ t: 'h', text: 'The name' });
-        P.wren.push({ t: 'p', text: 'You ciphered it yourself, in the Provost\'s study, with her primer. **WRENN.** Not a bird. The hollow of a bell — the space inside it that makes the sound.' });
-        const a = ctx.answer('ch3', 'whisper');
-        P.wren.push({ t: 'p', text: a === 'TELL' ? 'In the laundry you told Wren it meant *a small brave bird*. It was kind. It is not in any alphabet.' : a === 'DONTKNOW' ? 'In the laundry you said you did not know yet. You know now.' : 'Whatever you said in the laundry, you know now.' });
-        P.wren.push({ t: 'p', text: scared ? 'Wren has not asked you again tonight. Wren has not asked anyone anything since the fourth bell.' : 'It is a good name for a bell. You do not yet know why it makes you want to sit down.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Reader**, the keyboard is yours: the journal on the desk, and the first glyph of the oath.' });
+        P.wren.push({ t: 'html', html: runeLine('WRENN', { height: 60 }) });
+        P.wren.push({ t: 'p', text: 'On the Vigil roll the Provost wrote it herself, in the old letters. You ciphered it tonight with her own primer.' });
+        P.wren.push({ t: 'p', text: 'Not a bird. *Wrenn* is the hollow of a bell — the space inside it that makes the sound.' });
+        P.wren.push({ t: 'p', text: 'You decided, a year ago, that it was a spelling mistake. You have never asked her.' });
       }
 
       /* ================= LISTENER ================= */
       if (roleId === 'listener') {
-        P.sight.push({ t: 'h', text: 'The memory-bell (page 1 of 4)' });
-        P.sight.push({ t: 'p', text: 'On the mantel, older than the mantel. Struck, it says back the last thing said near it — to an Ear. The Hearth hears a hum. Cup yours.' });
-        P.sight.push({ t: 'audio', label: 'The bell remembers: two voices', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]), play: (A) => { CA.playSteps(A, [-1, -2], 58); CA.later(() => CA.announce(2, { rest: true }), 2000); CA.later(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
-          text: 'A low voice, courteous and certain — **the Envoy, Vane:** *"The Crown will have the Cold open, Ilsabet, one way or another."*\n\nThen a voice you know from two floors down — **the Provost:** *"Then the Crown will go through me. And through it."*' });
-        P.sight.push({ t: 'fine', text: 'Voices, not glyphs: two people speaking, low then high. There is nothing here for the row-player.' });
-        P.sight.push({ t: 'fine', text: 'Say it word for word. Then say whose. *Through it.* Nobody at the table will like that sentence; say it anyway.' });
-        P.sight.push({ t: 'h', text: 'The Founders\' phrase, again (page 2 of 4)' });
-        P.sight.push({ t: 'audio', label: 'The Hymn\'s opening, as the Founders left it', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]), text: '**Up one, up three, down two.** Over the four glyphs the Founders left on their plinths there is only one order that climbs like this. Your row-player is in the Book if you want to test it.' });
-        P.sight.push({ t: 'p', text: 'The shelf itself plays nothing. Eight books; what you have is the phrase, and the Reader has the four.' });
-        P.sight.push({ t: 'h', text: 'The Oath\'s phrase (page 3 of 4)' });
-        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]), text: '**Down one, up four — then the lock.** The lock is not a note; it is a glyph someone chooses. Three notes, three of the Reader\'s glyphs; the order is yours, from wherever the Seer says the ring begins.' });
-        P.sight.push({ t: 'h', text: 'Heartbeats in the study (page 4 of 4)' });
-        P.sight.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.sight.push({ t: 'fine', text: f.SURRENDERED ? 'The Provost\'s: fast, and staying fast, even after the door closed. Wren\'s: too quiet to catch. Still.' : 'The Provost\'s: slow. Slower than a heart should be on a night like this — the slowness of a thing decided. Wren\'s: too quiet to catch. Still.' });
+        P.sight.push({ t: 'h', text: 'What you can hear' });
+        P.sight.push({ t: 'audio', label: 'The bell on the mantel, struck', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]),
+          play: (A) => { CA.playSteps(A, [-1, -2], 58); CA.later(() => CA.announce(2, { rest: true }), 2000); CA.later(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
+          text: 'A low voice, courteous and certain — **the Envoy:** *"The Crown will have the Cold open, one way or another."*\n\nThen hers — **the Provost:** *"Then the Crown will go through me. And through it."*' });
+        P.sight.push({ t: 'fine', text: 'Say whose voice it was, and say her last two words. Nobody here will like them. Say them anyway.' });
+        P.sight.push({ t: 'audio', label: 'The third shelf, humming', strip: CA.strip([2, -1, 3]), play: (A) => CA.playSteps(A, [2, -1, 3]),
+          text: '**Up two, down one, up three.** Four books, three climbs, and only one order climbs like that.' });
+        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1, 4]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then the lock</span></div>', play: (A) => CA.playSteps(A, [-1, 4]),
+          text: '**Down one, up four.** Three words, and then a silence where the lock goes. The lock makes no sound at all.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. The Reader has the words.' });
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
-        P.wren.push({ t: 'p', text: scared ? 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and your own voice asking the Seer for the primer. Wren has not spoken since the fourth bell — but you remember the laundry, and the bell there, and you have started to wonder whether any bell has ever kept Wren\'s voice.' : 'You struck the bell twice more while nobody was looking. It gave you the Provost again, and the Envoy again, and — from a minute ago — your own voice asking the Seer for the primer. It did not give you Wren\'s joke about the lamp. It keeps every voice in the room but one.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Listener**, the keyboard is yours: the bell on the mantel, and the second glyph of the oath.' });
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        P.wren.push({ t: 'p', text: 'You struck it twice more while nobody was looking. It gave you the Provost, and the Envoy, and your own voice asking for the primer.' });
+        P.wren.push({ t: 'p', text: 'It did not give you Wren. It keeps every voice in this room but one.' });
+        P.wren.push({ t: 'p', text: 'You decided years ago that the fault was in your ear. You have never said so out loud.' });
       }
 
       /* ================= SEER ================= */
       if (roleId === 'seer') {
-        P.sight.push({ t: 'h', text: 'Under the shelf (page 1 of 4)' });
-        P.sight.push({ t: 'p', text: 'The third shelf was re-hung upside down — the whole board, all eight books, in one go. One turned line: the **mark is on the right**.' });
-        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underShelf });
-        P.sight.push({ t: 'fine', text: 'A turned line: Reader reads it right to left with every glyph inverted, and the Binder\'s Book has the Law that says so. Every book keeps its *place* on the shelf — the book you pull is the book in that position, whatever it now reads.' });
-        P.sight.push({ t: 'h', text: 'Under the paint (page 2 of 4)' });
-        P.sight.push({ t: 'p', text: 'The tapestry. Under the Order\'s picture — the hall, the fire, the one small figure — this:' });
-        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underTapestry });
-        P.sight.push({ t: 'fine', text: 'Four. No child. The fourth hand holds a **flame turned over**. The Hearth can scrape it, and the table should; you already know what they will find.' });
-        P.sight.push({ t: 'h', text: 'The Oath ring (page 3 of 4)' });
-        P.sight.push({ t: 'p', text: 'The scroll\'s ring has its mark at **slot 4**. Sunwise from there: 4, then 1, then 2, then 3. The last placed is the lock.' });
-        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
-        P.sight.push({ t: 'h', text: 'Shadows in the study (page 4 of 4)' });
-        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underStudy });
-        P.sight.push({ t: 'fine', text: 'The Provost\'s falls away from her own fire, like yours. One does not.' });
+        P.sight.push({ t: 'h', text: 'Under three things in this study' });
+        P.sight.push({ t: 'p', text: 'The shelf board, the tapestry, and the scroll on the desk. All three have something under them.' });
+        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
+        P.sight.push({ t: 'fine', text: 'Two marks, and nothing else cut anywhere in the room.' });
+        P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say how many walk into the fire, and how many children are in it.' });
+        P.sight.push({ t: 'fine', text: 'What a mark obliges is not yours. Say where it is cut, and stop.' });
 
-        P.wren.push({ t: 'h', text: 'The boy who scraped the paint' });
-        P.wren.push({ t: 'p', text: 'Twenty-two years ago a Warden with your Sight scraped this same paint, in the Hall, saw four, and was sent away for it. He is the Envoy now. You have been told all night not to trust him. You have his eyes.' });
-        P.wren.push({ t: 'p', text: scared ? 'Wren has not looked at the tapestry once. Wren has not looked at anything since the fourth bell.' : 'Wren keeps glancing at the tapestry and then at you, as if you might have moved it.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Seer**, the keyboard is yours: the tapestry, and the third glyph of the oath. You are also the Voice: read the Hearth aloud.' });
+        P.wren.push({ t: 'h', text: 'The shadow, again' });
+        P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
+        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. The Provost\'s does. Wren\'s still falls towards it.' });
+        P.wren.push({ t: 'p', text: scared ? 'You blamed the lamp in the dormitory. Wren has not looked at anything since the stair, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.' });
+        P.wren.push({ t: 'p', text: 'A Warden with your Sight scraped this same paint as a boy, saw four, and was sent away. He is the Envoy now. You have his eyes.' });
       }
 
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
-        P.sight.push({ t: 'h', text: 'Laws for the study (page 1 of 3)' });
-        P.sight.push({ t: 'html', html: lawHtml([law(10), law(4), law(3)]) });
-        P.sight.push({ t: 'p', text: '**Law 10, for the shelf.** If the Seer says the line is turned: reverse it and invert every glyph — but every glyph *keeps its place*. Pull the book by where it stands, not by what it says.' });
-        P.sight.push({ t: 'p', text: '**Law 4, for the oath.** The last glyph is the lock, and only two glyphs can be one. **KNOT** cannot be unbound. **EMBER** can be remembered and reconsidered. *The one you swear to cannot tell the difference.* This one is yours to argue, and the table should hear you argue it.' });
-        P.sight.push({ t: 'h', text: 'Threads in the study (page 2 of 3)' });
-        P.sight.push({ t: 'list', items: [
-          '**The Provost → Wren:** *grey.* Not thin, not fraying — grey all through. The colour of someone who has already said goodbye.',
-          '**The Provost → the four of you:** red, unfinished — an oath lying on the desk waiting to be tied.' + (f.SURRENDERED ? ' There is a knot in it that was not there this morning.' : ''),
-          '**The Provost → the Convocation:** gold, thin, pulled very tight.',
-          '**The bell on the mantel:** it holds a thread\'s worth of the Envoy. Gold, and under the gold, red. He is pulled two ways.',
-          '**Wren:** *No thread found.* Not unbound; the knot itself.',
+        P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
+        P.sight.push({ t: 'html', html: turnedBoard() });
+        P.sight.push({ t: 'p', text: '**A board hung the other way up says the opposite of what it said.** Every book keeps the place it stands in. Pull by the place, not by the reading.' });
+        P.sight.push({ t: 'p', text: 'On a ring, the first word goes **in** the mark, and then clockwise. That has not changed since the lamp.' });
+        P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
+          ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not after tonight.'],
+          ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],
         ] });
-        if (f.ORIEL) {
-          P.sight.push({ t: 'h', text: 'Under the cushion — Oriel\'s note (page 3 of 3)' });
-          P.sight.push({ t: 'letter', text: '"I scraped the paint myself, as a girl, in the Hall, with a bread-knife, and put it back before Matins. Four. Vane saw it too, twenty years after me; that is why he was sent away and I was not — I never said. You asked me to tell you what you find below. Here is what I found first. — Oriel."' });
-          P.sight.push({ t: 'p', text: 'Law 0 was struck in 212 for being wrong. A Law struck for being wrong is un-struck by being right. The Seer\'s tapestry, the Reader\'s rubbing, or this note — any one of them restores it. From the next chapter your Book will show it **restored**.' });
-        } else if (marrowLetter) {
-          P.sight.push({ t: 'h', text: 'Under the cushion — an unsent letter (page 3 of 3)' });
-          P.sight.push({ t: 'letter', text: '"To the Convocation. I have chaired you for nineteen years and lied to you for fourteen — not in what I said; in what I did not. There is another way. I have never said the other way aloud, because saying it costs four of us what sending one costs none of us. I will send this when I am braver. — I. Marrow."' });
-          P.sight.push({ t: 'fine', text: 'Never sent. You are the first to read it. Read it to them.' });
-        } else {
-          P.sight.push({ t: 'h', text: 'Under the cushion (page 3 of 3)' });
-          P.sight.push({ t: 'fine', text: 'Nothing but the shape of her. Whatever the Provost writes and does not send, she does not keep it in her chair tonight.' });
-        }
+        P.sight.push({ t: 'p', text: 'Those two, and nothing else the wax will take. The one you swear to cannot tell the difference. You can.' });
+        P.sight.push({ t: 'p', text: '**The Provost\'s thread to Wren is grey.** Hers to the four of you is red, and not tied yet.' });
+        P.sight.push({ t: 'fine', text: 'You cannot read a word or find a mark. Ask for both.' });
 
-        P.wren.push({ t: 'h', text: 'The lock' });
-        P.wren.push({ t: 'p', text: 'You will tie this oath. Tie it under **KNOT** and it cannot be untied — not by you, not by the Provost, not by whatever happens at midnight. Tie it under **EMBER** and it can be reconsidered later, if there turns out to be a later.' });
-        P.wren.push({ t: 'p', text: 'The one you swear to cannot tell the difference. Neither can Wren. You can.' });
-        P.wren.push({ t: 'p', text: scared ? 'Wren has not looked at you since the fourth bell. You have looked for a thread anyway. There is still nothing to find.' : 'Wren asked you in the laundry whether you thought Wren was really the one. You have looked for a thread every hour since. There is still nothing to find.' });
-        P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. When the Hearth calls **The Binder**, the keyboard is yours: the Provost\'s chair, and the lock of the oath.' });
+        P.wren.push({ t: 'h', text: 'No thread found' });
+        P.wren.push({ t: 'p', text: 'Wren, in a room with four of you and the woman who did the naming. No thread to any of it.' });
+        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. There is nothing there to cut.' });
+        P.wren.push({ t: 'p', text: scared ? 'You have looked every hour since the laundry, and twice since the stair. There is still nothing to find.' : 'You have looked every hour since the laundry. There is still nothing to find.' });
+        P.wren.push({ t: 'p', text: 'You decided years ago it was a blind spot in your own gift. You have never told anyone your gift has one.' });
       }
       return P;
     },

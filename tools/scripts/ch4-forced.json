@@ -1,0 +1,11 @@
+{ "start": "ch4_shelf", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"expect": "rubbed to nothing"},
+  {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"4\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "as they stand"}, {"wait": 1200},
+  {"click": ".wheel .slot[data-i=\"4\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"2\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "Right words, wrong books"}, {"wait": 1200},
+  {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"4\"]"}, {"click": ".wheel .slot[data-i=\"5\"]"}, {"clickText": "Pull the books"}, {"wait": 300}, {"expect": "The four are right and the order is not"}, {"wait": 1200},
+  {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"2\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"clickText": "Pull the books"}, {"wait": 1600}, {"key": "Space"}, {"wait": 800},
+  {"expect": "puts a boot through the board"}, {"shot": "ch4_shelf_forced"}, {"clickText": "Search the study"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "0 found"}, {"clickText": "Stop searching"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"},
+  {"eval": "VigilStore.state.log.slice(-2)"}
+] }

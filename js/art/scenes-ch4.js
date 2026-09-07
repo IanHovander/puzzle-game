@@ -54,7 +54,7 @@
     }
     // shadows away from the fire
     for (let i = 0; i < 4; i++) { const px = w * (0.14 + i * 0.16); s += `<path d="M${px - 6},${fb} L${px - w * 0.11},${fb + h * 0.06} L${px + 8},${fb} Z" fill="${ink}" opacity=".35"/>`; }
-    if (opts.caption !== false) s += `<text x="${w / 2}" y="${h - 8}" text-anchor="middle" fill="rgba(255,240,200,0.5)" font-size="${h * 0.06}" font-family="Cinzel,serif" letter-spacing="4">FOUR</text>`;
+    // No caption: how many walk into the fire is the Seer's count, and the Hearth may not stamp it.
     return s + '</g>';
   }
   // The Order's overpaint: a great hall, a fire, one small figure walking in alone.
@@ -66,7 +66,6 @@
     for (let i = 0; i < 3; i++) { const dx = (i - 1) * w * 0.03, fh = h * (0.28 + (i % 2) * 0.1); s += `<path d="M${fx + dx - w * 0.03},${fb} C${fx + dx - w * 0.04},${fb - fh * 0.4} ${fx + dx - w * 0.01},${fb - fh * 0.6} ${fx + dx},${fb - fh} C${fx + dx + w * 0.01},${fb - fh * 0.6} ${fx + dx + w * 0.04},${fb - fh * 0.4} ${fx + dx + w * 0.03},${fb} Z" fill="#b8702e" opacity=".85"/>`; }
     const sc = h / 380;
     s += `<g transform="translate(${w * 0.42},${fb}) scale(${sc})"><path d="M-10,0 L-7,-52 L7,-52 L10,0 Z" fill="#0d0a0a"/><circle cx="0" cy="-62" r="9" fill="#0d0a0a"/></g>`;
-    s += `<text x="${w / 2}" y="${h - 8}" text-anchor="middle" fill="rgba(255,240,200,0.35)" font-size="${h * 0.06}" font-family="Cinzel,serif" letter-spacing="4">ONE BORN OF FOUR</text>`;
     return s + '</g>';
   }
   A.ch4 = { foundersWalking, orderPaint, bookcase };
@@ -112,16 +111,21 @@
     [1, 2, 4].forEach(i => { const sy = 60 + i * 180; s += `<rect x="120" y="${sy - 10}" width="1360" height="10" fill="#2c211a"/>`; let bx = 140; while (bx < 1450) { const bw = 16 + Math.floor(r() * 26), bh = 90 + r() * 60; s += `<rect x="${bx}" y="${(sy - 10 - bh).toFixed(0)}" width="${bw}" height="${bh.toFixed(0)}" fill="${cols[Math.floor(r() * cols.length)]}"/>`; bx += bw + 2 + Math.floor(r() * 5); } });
     const sy = 60 + 3 * 180; s += `<rect x="120" y="${sy - 10}" width="1360" height="10" fill="#2c211a"/>`;
     if (p.open) s += `<rect x="150" y="${sy - 170}" width="1300" height="160" fill="#06050a"/><rect x="150" y="${sy - 170}" width="1300" height="160" fill="url(#ch4cab)"/><defs><radialGradient id="ch4cab" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#ffd27a" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>`;
-    const shapes = [['Spike', true], ['Flame', false], ['Hook', true], ['Crown', false], ['Spike', false], ['Hook', false], ['Flame', true], ['Crown', true]];
-    const bcol = ['#4a2f22', '#2e2a3a', '#3a3222', '#2a3a30', '#3d2e2e', '#33302a', '#2a2438', '#4a3a24'];
-    shapes.forEach(([sh, inv], i) => {
-      const bx = 190 + i * 158, bw = 118, bh = 150;
-      const y0 = sy - 10 - bh + (p.open ? (i === 0 || i === 2 || i === 5 || i === 3 ? -14 : 0) : 0);
+    /* Six great books. Every stamp is rubbed past reading here and clean only on the Reader's page:
+       the Hearth may show the wear, never the word. The four lifted when the shelf is open are the
+       answer's places, 2, 5, 6 and 4 (indices 1, 4, 5, 3). */
+    const bcol = ['#4a2f22', '#2e2a3a', '#3a3222', '#2a3a30', '#3d2e2e', '#33302a'];
+    const pulled = [1, 4, 5, 3];
+    for (let i = 0; i < 6; i++) {
+      const bx = 210 + i * 190, bw = 140, bh = 150;
+      const y0 = sy - 10 - bh + (p.open && pulled.indexOf(i) >= 0 ? -14 : 0);
       s += `<rect x="${bx}" y="${y0}" width="${bw}" height="${bh}" rx="4" fill="${bcol[i]}" stroke="rgba(212,169,78,0.25)" stroke-width="2"/>`;
-      s += `<rect x="${bx + 8}" y="${y0 + 12}" width="${bw - 16}" height="4" fill="rgba(212,169,78,0.35)"/><rect x="${bx + 8}" y="${y0 + bh - 16}" width="${bw - 16}" height="4" fill="rgba(212,169,78,0.35)"/>`;
-      s += `<g transform="translate(${bx + bw / 2},${y0 + bh / 2}) scale(1.7)" style="color:#e0b04a" opacity=".9">${G().shapeInner(sh, inv)}</g>`;
+      s += `<rect x="${bx + 10}" y="${y0 + 14}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/><rect x="${bx + 10}" y="${y0 + bh - 18}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/>`;
+      s += `<g transform="translate(${bx + bw / 2},${y0 + bh / 2})" fill="none" stroke="#8a7040" opacity=".55">`
+         + `<ellipse rx="30" ry="30" stroke-width="2.5" stroke-dasharray="4 7"/>`
+         + `<path d="M-13,8 L-4,-9 M3,-8 L11,6" stroke-width="3" stroke-linecap="round"/></g>`;
       s += `<text x="${bx + bw / 2}" y="${y0 + bh + 26}" text-anchor="middle" fill="rgba(233,226,210,0.4)" font-size="16" font-family="Cinzel,serif">${i + 1}</text>`;
-    });
+    }
     s += `<rect x="0" y="780" width="${W}" height="120" fill="#0d0b0c"/>`;
     s += P.fog(560, 340, '#1a120c', 0.35);
     return P.wrap(s);
@@ -134,7 +138,6 @@
     s += `<rect x="0" y="100" width="${W}" height="620" fill="#1a1410"/>`;
     s += `<rect x="160" y="90" width="1280" height="640" fill="#3a2a1a"/>`;
     s += p.scraped ? foundersWalking(180, 110, 1240, 600, {}) : orderPaint(180, 110, 1240, 600);
-    if (p.half) s += `<g clip-path="inset(0 0 0 50%)">${foundersWalking(180, 110, 1240, 600, {})}</g>`;
     s += `<rect x="160" y="90" width="1280" height="640" fill="none" stroke="#5a4020" stroke-width="8"/>`;
     s += `<rect x="130" y="70" width="1340" height="18" rx="8" fill="#4a3620"/>`;
     s += P.floorTiles(730, '#0d0b0c', 'rgba(255,255,255,0.03)');
@@ -157,7 +160,11 @@
     // four faint slots in a ring, the inscription above
     s += `<circle cx="0" cy="50" r="90" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`;
     for (let i = 0; i < 4; i++) { const a = (i / 4 * 360 - 90) * Math.PI / 180; s += `<circle cx="${(Math.cos(a) * 90).toFixed(1)}" cy="${(50 + Math.sin(a) * 90).toFixed(1)}" r="20" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`; }
-    s += `<g transform="translate(-300,40)" style="color:#5a4a3a" opacity=".8">${[['Spike', false], ['Flame', false], ['Spike', true]].map(([sh, inv], i) => `<g transform="translate(${i * 60},0) scale(1.4)">${G().shapeInner(sh, inv)}</g>`).join('')}<rect x="150" y="-26" width="52" height="52" rx="6" fill="none" stroke="#8a7a5a" stroke-dasharray="6 5"/></g>`;
+    /* Three worn places and one empty. What was cut there is on the Reader's page; the scroll shows
+       only that something was cut, which is what "worn nearly smooth" has to look like. */
+    s += `<g transform="translate(-300,40)" fill="none" stroke="#8a7a5a" opacity=".6">`
+      + [0, 1, 2].map(i => `<g transform="translate(${i * 60},0)"><ellipse rx="24" ry="24" stroke-width="2" stroke-dasharray="3 6"/><path d="M-9,7 L-2,-8 M4,-6 L9,4" stroke-width="2.5" stroke-linecap="round"/></g>`).join('')
+      + `<rect x="150" y="-26" width="52" height="52" rx="6" stroke-dasharray="6 5"/></g>`;
     // the Chair's seal — CROWN in red wax
     s += `<g transform="translate(300,80)"><circle r="54" fill="#8a2a2a"/><circle r="54" fill="none" stroke="#5a1a1a" stroke-width="4"/><g transform="scale(1.8)" style="color:#f0c8a0" opacity=".9">${G().shapeInner('Crown', false)}</g></g>`;
     s += `</g>`;
