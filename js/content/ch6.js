@@ -42,25 +42,33 @@
 
   /* ================= THE BELLS =================
      Two counted patterns and a practice peal. Lanes are R L S B, left to right.
-     A token is a bell (the lanes that ring it); `x` before it is the Cold — a pale blue light that
+     A token is a bell (the lanes that ring it); `x` before it is the Cold — pale blue lights that
      must NOT be answered (reaction.js `kind:'mimic'`, judged wrong on any press, right if ignored).
-     The Cold is the whole anti-mash: a table that hammers every key rings all eight of them.
+     A third of every pattern is Cold, so what the widget scores is lights answered right, not bells
+     struck: a table that strikes all sixteen bells and rings the eight Colds with them scores 16 of 24.
 
-     Verified by enumeration (scratchpad/v/bells.js, run against reaction.js's own remap and judge):
+     Verified by enumeration (scratchpad/v/bells-after.js, replaying reaction.js's own remap and judge):
        ROUND ONE  24 events = 16 bells (4 singles, 8 chords of two, 4 of all four) + 8 Cold.
-         pass mark 16.8/24 · perfect 24 · every lane rings 9 of the 16 bells
-         mash 16/24 = .667 fails · drop any one lane 15/24 = .625 fails
-         with a volunteer (that lane silent, remapped onto a neighbour) dropping any survivor also fails
-       ROUND THREE 32 beats: 16 bells (10 singles, 4 chords of two, 2 of all three) + 8 Cold + 8 silent.
-         lane 1 never rings (the Listener is the voice) so reaction.js's dead-lane remap is a no-op
-         pass mark 16.8/24 · perfect 24 · each of R, S, B rings 8 of the 16
-         mash 16/24 = .667 fails · drop R, S or B 16/24 = .667 fails
-         drop the LISTENER and there is no script at all: the lanes are dark, the chord bar is hidden,
-         and no other page says which beats ring. */
+         Every Cold falls on THREE lanes at once, so no single careful player can buy back a mashing
+         table: pass mark 16.8/24 · four hands played right 24 · four mashing 16 · one careful and
+         three mashing 16 · two careful and two mashing 16 — all fail. Three careful and one mashing
+         is 18/24 and passes, which is the intended forgiveness. Drop any one lane 15/24 fails, and
+         so does dropping any survivor on the volunteer branch (that lane silent, remapped onto a
+         neighbour, who then covers both).
+       ROUND THREE 32 beats, of which 24 sound: 16 bells (10 singles, 4 chords of two, 2 of all three)
+         and 8 Cold. Lane 1 never rings — the Listener is the voice, so reaction.js's dead-lane remap
+         is a no-op. EVERY sounding beat carries a number, 1 to 24, and the Listener calls all of them
+         one beat early. Only the three role pages say which numbers are bells, one list each, and the
+         eight numbers on nobody's list are the Cold.
+         pass mark 16.8/24 · four hands with four pages 24 · press on every number called 16 ·
+         drop the Reader, the Seer or the Binder 16 · one page only 11 to 12 — all fail.
+       Neither round is *physically* four-handed: reaction.js binds keys to lanes and not to people,
+       so three players can cover four keys. Round one is a declared reflex pass with a rule card and
+       a practice peal (R10.26); round three is four-handed by information, which is the claim that holds. */
   const LEAD = 2500;                                   // ms from GO to beat 1
   const LANE = { R: 0, L: 1, S: 2, B: 3 };
-  const ROUND1 = 'R xL S B xR L RS xS LB RLSB xB RL SB xR RB LS RLSB xL SB xS RL RLSB xB RLSB';
-  const PRACTICE = 'R L S xB RS xL LB RLSB';
+  const ROUND1 = 'R xRSB S B xLSB L RS xRLB LB RLSB xRLS RL SB xLSB RB LS RLSB xRSB SB xRLB RL RLSB xRLS RLSB';
+  const PRACTICE = 'R L S xRLS RS xRSB LB RLSB';
   /* One token per beat, 1 to 32. '.' is a silent beat. THIS STRING IS COPIED IN js/content/companion/ch6.js
      — the Listener's comb and the three bell-lists are derived from it there. Keep them identical. */
   const ROUND3 = '. R xRSB S . RS B xRSB R . SB xRSB S B . RSB xRSB R . RB S xRSB . B xRSB R SB . xRSB . xRSB RSB';
@@ -130,7 +138,7 @@
   function litCfg(s) {
     const beatMs = 60000 / tempo(s, 88);
     const v = volunteerLane(s);
-    ruleCard([['press', 'press on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold'], [null, 'seven in ten holds']]);
+    ruleCard([['press', 'press on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold — every hand off'], [null, 'seven lights in ten holds']]);
     return {
       title: 'THE PATTERN' + (s.flags.SLOW_BELLS ? ' · SLOW' : ''), laneNames: L.nicks,
       events: evenEvents(ROUND1, beatMs), fallMs: 1800, windowMs: win(s, 380), braceWindowMs: win(s, 320),
@@ -140,7 +148,7 @@
   function darkCfg(s) {
     const beatMs = 60000 / tempo(s, 60);
     beatOverlay(beatMs, 32);
-    ruleCard([[null, 'the Hearth counts the beats'], [null, 'the Listener calls a number'], [null, 'if it is yours, ring on the next beat'], ['cold', 'a number nobody calls is the Cold']]);
+    ruleCard([[null, 'the Hearth counts the beats'], [null, 'the Listener calls every number'], [null, 'if the number is yours, ring on the next beat'], ['cold', 'a number that is on no page is the Cold']]);
     return {
       title: 'THE DARK PATTERN' + (s.flags.SLOW_BELLS ? ' · SLOW' : ''),
       laneNames: L.nicks.map((k, i) => i === 1 ? 'Voice' : k),
@@ -155,14 +163,18 @@
       if (!r.passed) { Store.set('BELLS_CRACKED', Math.min(3, crackedNow(s) + 1)); Store.set('BELLS_R' + n + '_CRACK', true); }
     };
   }
-  function roundText(holdLines) {
+  /* The widget scores decisions, not strikes: a Cold answered by keeping still counts as much as a bell
+     rung. So the line says lights answered right, and the failure text does not claim to know whether a
+     light was a missed bell or a Cold that was rung. `again` is the round's own closing line — the dark
+     pattern has no next one to send them back to. */
+  function roundText(holdLines, again) {
     return (s, r) => {
-      const out = [{ text: `${r.hits} of ${r.total} struck clean. Seven in ten holds the lid.`, cls: 'whisper' }];
+      const out = [{ text: `${r.hits} of ${r.total} lights answered right. Seven in ten holds the lid.`, cls: 'whisper' }];
       if (r.passed) { out.push.apply(out, holdLines); return out; }
       const c = s.flags.BELLS_CRACKED | 0;
-      out.push('Not enough. The Cold comes up where the pattern was thin, and a bell answers it with a flat note that goes on too long.');
+      out.push('Not enough. The Cold comes up through the gaps, and a bell answers it with a flat note that goes on too long.');
       out.push({ text: c >= 3 ? 'Three bells cracked. The lid holds on the pattern alone now.' : `A bell is cracked. ${c} of four.`, cls: 'whisper' });
-      out.push({ speaker: 'Provost Marrow', text: 'Again. The next one. You do not stop for a cracked bell.' });
+      out.push({ speaker: 'Provost Marrow', text: again });
       return out;
     };
   }
@@ -196,14 +208,21 @@
        LISTENER the tune ends on a silence, and there is no silence anywhere before it.
        BINDER   the cold word is written, not left out. The older Law binds.
 
-     Enumerated (scratchpad/v/stone2.js) over every board the rule card can produce — four burns x
-     (4 shapes x 2 orientations) x 2 directions x written-or-blank = 16,384 fillings, 13,981 distinct boards:
+     The rule card states the ORDER's practice — leave the cold word out — so the Binder's page has
+     something to overturn. The Hearth never says how many words go back, and never names a role in a
+     wrong-answer line: those two leaks were what made the Binder and the Listener droppable.
+
+     Enumerated (scratchpad/v/stone.js) over every board the rule card can produce — four burns x
+     (4 shapes x 2 orientations) x 2 directions x the cold word written or left out = 13,981 boards:
        all four        -> 1   KNOT CROWN ASH WELL VEIL EMBER ASH COLD
        drop the Reader -> 36
        drop the Seer   -> 8
        drop the Listener -> 2  (the answer, and the Order's own reading — which is the decoy)
-       drop the Binder -> 2  (the answer, and the answer with slot 8 left empty)
-     No pair of pages gets below 4 boards; the best pair, Reader+Seer, still has 4. */
+       drop the Binder -> 2  (the answer, and the answer with slot 8 left empty, which is what the
+                              rule card alone tells a table to do — so a Binder-less table reads it wrong)
+     No pair of pages gets below 4 boards; the best pair, Reader+Seer, still has 4.
+     A wrong reading is not free: it cracks a bell (BELLS_CRACKED, the same currency the two patterns
+     spend, read by ch7 and ch8), so neither binary fact can be flipped for nothing. */
   const STONE = [{ shape: 'Flame', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Crown', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Crown', inv: true }, { shape: 'Hook', inv: true }];
   const BURNT = [0, 2, 4, 6];                          // the cuts the fire took (0-based)
   const NAIVE = G.readNaive(STONE);                    // ASH COLD CROWN KNOT THORN COLD EMBER VEIL
@@ -238,13 +257,14 @@
     };
     const said = (role) => L.roleById(role).nick + ': ' + (SHORT[role][f['ASK_' + role]] || 'no answer');
     const c = f.BELLS_CRACKED | 0; const rounds = [1, 3].filter(n => f['BELLS_R' + n + '_CRACK']);
-    const crackLabel = rounds.length ? (rounds.length > 1 ? 'two bells cracked' : 'a bell cracked') : (c ? 'a bell was cracked already' : 'a bell cracked');
+    const broke = rounds.length + (f.STONE_MISREAD | 0);
+    const crackLabel = broke ? (broke > 1 ? 'bells cracked' : 'a bell cracked') : (c ? 'a bell was cracked already' : 'a bell cracked');
     const nodes = [
       { id: 'ch6_start', label: 'The bell-chamber', col: 0, row: 1 },
       { id: 'ch6_ready', label: 'Hands on the keys', col: 1, row: 1 },
       { id: 'ch6_round1', label: 'The pattern', col: 2, row: 1 },
       { id: 'ch6_round3', label: 'The dark pattern', col: 2, row: 0 },
-      { id: 'ch6_crack', label: crackLabel, col: 2, row: 2, kind: 'end', secret: true, when: (st) => rounds.length > 0 || (st.flags.BELLS_CRACKED | 0) > 0 },
+      { id: 'ch6_crack', label: crackLabel, col: 2, row: 2, kind: 'end', secret: true, when: (st) => broke > 0 || (st.flags.BELLS_CRACKED | 0) > 0 },
       { id: 'ch6_ask_owl', label: said('seer'), col: 3, row: 0, kind: 'choice' },
       { id: 'ch6_ask_hush', label: said('listener'), col: 3, row: 1, kind: 'choice' },
       { id: 'ch6_ask_bookmoth', label: said('reader'), col: 3, row: 2, kind: 'choice' },
@@ -317,8 +337,8 @@
           const v = volunteerLane(s);
           const out = [
             { text: 'Four lanes, one each, left to right. Press your key as your light crosses the line.', cls: 'whisper' },
-            { text: 'A pale blue light is the Cold. Do not answer it.', cls: 'whisper' },
-            { text: 'Two patterns. Seven bells in ten hold the lid. Fewer cracks a bell, and the night goes on either way.', cls: 'whisper' },
+            { text: 'Pale blue lights are the Cold. Every hand off the keys.', cls: 'whisper' },
+            { text: 'Two patterns. Get seven lights in ten right and the lid holds. Fewer cracks a bell, and the night goes on either way.', cls: 'whisper' },
           ];
           if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))}, take both keys.`, cls: 'whisper' });
           return out;
@@ -345,11 +365,11 @@
       },
       ch6_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch6_chamber', mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_practice', replayable: true,
-        text: ['Eight lights, nothing counted. Two of them are the pale blue of the Cold. Leave those alone.'],
+        text: ['Eight lights, nothing counted. Two of them are the pale blue of the Cold. Every hand off for those.'],
         hints: [
           'Four keys, one each. Nobody presses another player\'s.',
           'Two lights joined by a bar are a chord: those hands together, inside a breath.',
-          'Pale blue is the Cold wearing a bell\'s face. Hands off the keys until it is past.',
+          'Pale blue is the Cold wearing a bell\'s face. Every hand off the keys until it is past.',
         ],
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', false); },
         config: (s) => {
@@ -376,7 +396,8 @@
         ],
         config: litCfg,
         onSolve: roundSolve(1),
-        solvedText: roundText(['The pattern holds. The frost at the rivets stops a hand\'s breadth from her knees and goes no further.', { speaker: 'Provost Marrow', text: 'Good. Do not get proud. The last one is the Founders\' own, and they did not ring it by sight.' }]),
+        solvedText: roundText(['The pattern holds. The frost at the rivets stops a hand\'s breadth from her knees and goes no further.', { speaker: 'Provost Marrow', text: 'Good. Do not get proud. The last one is the Founders\' own, and they did not ring it by sight.' }],
+          'Again. The next one. You do not stop for a cracked bell.'),
         next: 'ch6_tieoff', button: 'The last pattern',
       },
       ch6_tieoff: {
@@ -392,8 +413,9 @@
           out.push('Then the chamber goes dark. Not the lamps. There are no lamps. The light simply stops.');
           out.push({ speaker: 'Provost Marrow', text: 'The Founders rang the last pattern blind. One of them called it. Three of them rang.' });
           out.push({ speaker: 'Provost Marrow', text: 'Listener — your bell goes quiet. You are the voice.' });
-          out.push({ text: 'The Hearth counts the beats, one to thirty-two. The Listener has the bells and calls each one by its number.', cls: 'whisper' });
-          out.push({ text: 'Reader, Seer, Binder — your numbers are on your page. Ring on the beat after yours is called.', cls: 'whisper' });
+          out.push({ text: 'The Hearth counts the beats, one to thirty-two.', cls: 'whisper' });
+          out.push({ text: 'Listener — call a number on every beat that sounds.', cls: 'whisper' });
+          out.push({ text: 'Reader, Seer, Binder — ring only the numbers on your **Speak**.', cls: 'whisper' });
           return out;
         },
         next: 'ch6_round3', button: 'Ring it blind',
@@ -403,13 +425,14 @@
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); },
         text: ['Thirty-two beats at sixty to the minute. Nothing falls that you can see.'],
         hints: [
-          'Which beats ring — the Listener, and nobody else. Which of those bells are yours — your own page.',
+          'The count is the Hearth\'s. Every number is the Listener\'s. Which of them are bells is on three other pages, one list each.',
           'The call comes one beat early, so a hand has time to arrive. Ring on the count, never on the word.',
-          'A number nobody calls is the Cold. If yours was not called, keep still.',
+          'Every number gets called. If the number is not on your list, keep still. Eight of the twenty-four belong to nobody, and those are the Cold.',
         ],
         config: darkCfg,
         onSolve: roundSolve(3),
-        solvedText: roundText(['The last chord goes on ringing after your hands have left the keys, and the lid under your feet stops beating.', 'The chamber comes back a little at a time. The beam. The bells. Marrow kneeling in chalk gone from white to gold.']),
+        solvedText: roundText(['The last chord goes on ringing after your hands have left the keys, and the lid under your feet stops beating.', 'The chamber comes back a little at a time. The beam. The bells. Marrow kneeling in chalk gone from white to gold.'],
+          'That is what we have. Hands off the keys.'),
         next: 'ch6_held', button: 'The Cold is held',
       },
       /* ---------- held, and the Second Asking ---------- */
@@ -503,43 +526,62 @@
           'The underside of the prophecy stone, lit from beneath for the first time in four hundred years.',
           'Eight cuts in a line along its foot. Four of them are clean. Four are burned to a smear.',
           'The school has read it from the other side, over the fire, since the night the fire was lit.',
+          { text: 'Open your **Sight**. The stone is on it.', cls: 'whisper' },
         ],
         next: 'ch6_strip', button: 'Read it',
       },
       ch6_strip: {
         type: 'puzzle', puzzle: 'ring', art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.12, puzzleId: 'ch6_strip', par: [3, 5, 7],
         text: [
-          'Eight cuts. The fire took four. Put all eight words back.',
+          'Eight cuts. The fire took four. A wrong reading cracks a bell.',
           { text: 'Reader — what the four burns were.', cls: 'whisper' },
           { text: 'Listener — where the silence falls in the tune.', cls: 'whisper' },
           { text: 'Seer — which way each burn was struck.', cls: 'whisper' },
           { text: 'Binder — whether the cold word may be written.', cls: 'whisper' },
           { text: 'Say your one thing out loud before anybody places a word.', cls: 'whisper' },
         ],
-        config: () => ({
+        config: () => {
+        /* The price of a wrong reading. Retries are otherwise free, and with free retries a two-state
+           fact (which end to read from, whether the cold word is written) can be flipped for nothing —
+           which is what made the Listener and the Binder droppable. A reading costs a bell, in the same
+           currency the two patterns spend. A board with fewer than six words is not a reading and costs
+           nothing (R10.19: under-commitment is coached, not punished). */
+        let reads = 0;                                   // complete readings, for the try-2 nudge (R10.18)
+        const price = () => {
+          const st = Store.state;
+          Store.set('STONE_MISREAD', (st.flags.STONE_MISREAD | 0) + 1);
+          if (crackedNow(st) >= 3) return ' The cracked bells hum and say nothing.';
+          Store.set('BELLS_CRACKED', Math.min(3, crackedNow(st) + 1));
+          return ' Above you a bell takes the wrong word, and cracks.';
+        };
+        return {
           title: 'THE FOOT OF THE STONE',
-          note: 'Marrow, not looking up: *Read a line left to right and every cut says the word it stands for. Read it right to left and every cut says its other word. Slot 1 is the first word you read. Eight cuts, eight words.*',
+          note: 'The Provost, not looking up: *Read a line **left to right** and every cut says the word it stands for. Read it **right to left** and every cut says its other word. Slot 1 is the first word you read. The cold word is never written. Leave that slot **empty**.*',
           html: footStrip(),
           slots: 8, layout: 'strip', glyphs: glyphPalette(), allowRepeat: true, allowEmpty: true,
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to read it aloud',
           submitText: 'Read the stone', resetOnWrong: true,
-          wrongText: 'The stone does not answer. Frost feathers across the strip and it clears.',
-          onWrong: (m, tries) => tries >= 2 ? 'The stone does not answer. Wren, quietly: "Has everybody actually said their bit?"' : null,
+          /* No wrongText and no onWrong: check() answers every board itself, because every wrong board
+             also has to carry what the reading cost. */
           check: (m) => {
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (same(got, TURNED)) return true;
-            if (same(got, NAIVE)) return 'Left to right, upright: four hundred years of school. The strip stays cold. The Listener — where is the silence in that?';
-            if (same(got, TURNED.slice(0, 7).concat([null]))) return 'Seven words and a gap. One Law says leave it out. An older Law says write it. The Binder has the dates.';
-            if (same(got, TURNED.slice().reverse())) return 'The right eight words, the wrong way round. Slot 1 is the first word you read.';
-            if (same(got, NAIVE.slice().reverse())) return 'Right to left, and every cut still saying the word it stands up for. Read from that end and it says its *other* word.';
-            if (got.some(g => !g)) return 'Eight cuts, eight slots. A burn is still a cut, and a cut still says something.';
-            if (got.filter((g, i) => g !== TURNED[i]).length === 1) return 'Seven of the eight. One burn is read as the wrong shape, or the wrong way up.';
-            return false;
+            if (got.filter(Boolean).length < 6) return 'Not a reading yet. Six words at least, and then read it aloud.';
+            /* Past here the strip has been read, and the reading was wrong. Every line below says what
+               the stone did — never which of the four facts was the wrong one, and never a role name. */
+            reads++;
+            const cost = price();
+            if (same(got, NAIVE)) return 'Left to right, upright: four hundred years of school. The strip stays cold.' + cost;
+            if (same(got, TURNED.slice(0, 7).concat([null]))) return 'Seven words, and a hole where the eighth was. The strip stays cold.' + cost;
+            if (same(got, TURNED.slice().reverse())) return 'The right eight words, the wrong way round. Slot 1 is the first word you read.' + cost;
+            if (same(got, NAIVE.slice().reverse())) return 'Right to left, and every cut still saying the word it stands up for. Read from that end and it says its *other* word.' + cost;
+            return (reads >= 2 ? 'The stone does not answer. Wren, quietly: "Has everybody actually said their bit?"'
+              : 'The stone does not answer. Frost feathers across the strip and it clears.') + cost;
           },
-        }),
+        }; },
         hints: [
           'Four things, four people, and nobody has two. What the four burns were — the Reader. Where the silence falls — the Listener. Which way each was struck — the Seer. Whether the cold word may be written — the Binder.',
-          'The school has read this stone from the wrong end for four hundred years. Read it from the other end, and the tune tells you which end that is.',
+          'Two ways to read one line, and only one of them ends the way the tune ends. Somebody here can hear which end that is.',
           'Slot 1 KNOT, 2 CROWN, 3 ASH, 4 WELL, 5 VEIL, 6 EMBER, 7 ASH, 8 COLD. Then four hands.',
         ],
         onSolve: (s) => {
@@ -558,10 +600,9 @@
         art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.14,
         text: [
           'Four went down. Not one born of four — four, as one. The fire is only what they left behind.',
-          { text: 'Binder — a struck rule is written back into your Book, and it is older than the rule that struck it.', cls: 'whisper' },
           { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
-          { speaker: 'Provost Marrow', text: 'Both roads needed the child loved. One road needed the child alone.' },
-          { speaker: 'Provost Marrow', text: 'I chose the road that cost one. I told myself the one was not a person.' },
+          { text: 'The road four people walk together, not one.', cls: 'whisper' },
+          { text: 'Binder — the struck Law is back in your Book.', cls: 'whisper' },
           { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
         ],
         next: 'ch6_flow', button: 'The night moves on',

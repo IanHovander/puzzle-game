@@ -1,0 +1,39 @@
+{ "start": "ch6_strip", "set": "VOLUNTEER=0,PRECRACKED=false,BELLS_CRACKED=0,STAIR=HOLD,WHISPER_listener=NO,WHISPER_seer=TELL,WHISPER_reader=DONTKNOW,WHISPER_binder=DONTKNOW,CLUES=0,TRUTHS=4,LAW0=false",
+  "_what": "The stone, and what a wrong reading costs. The rule card now states the Order's practice (leave the cold word out), so a table without the Binder reads seven words and a hole; and no wrong-answer line names a role or says how close the board was. Every complete reading that fails cracks a bell, which is the price that stops a two-state fact being flipped for free. An unfinished board costs nothing.",
+  "steps": [
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "s_strip"},
+  {"expect": "Leave that slot empty"}, {"expect": "A wrong reading cracks a bell"},
+  {"expectNot": "Eight cuts, eight words"}, {"expectNot": "Put all eight words back"},
+
+  {"slots": [[1, "ASH"], [2, "COLD"], [3, "CROWN"]]}, {"clickText": "Read the stone"}, {"wait": 700},
+  {"expect": "Not a reading yet"},
+  {"assert": "(window.VigilStore.state.flags.BELLS_CRACKED | 0) === 0 && !window.VigilStore.state.flags.STONE_MISREAD"},
+  {"wait": 1200},
+
+  {"slots": [[1, "ASH"], [2, "COLD"], [3, "CROWN"], [4, "KNOT"], [5, "THORN"], [6, "COLD"], [7, "EMBER"], [8, "VEIL"]]},
+  {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_school"},
+  {"expect": "four hundred years of school"}, {"expect": "a bell takes the wrong word"},
+  {"expectNot": "where is the silence in that"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1 && window.VigilStore.state.flags.STONE_MISREAD === 1"},
+  {"wait": 1200},
+
+  {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, null]]},
+  {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_hole"},
+  {"expect": "a hole where the eighth was"},
+  {"expectNot": "older Law"}, {"expectNot": "has the dates"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 2 && window.VigilStore.state.flags.STONE_MISREAD === 2"},
+  {"wait": 1200},
+
+  {"slots": [[1, "KNOT"], [2, "EMBER"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]},
+  {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_oneoff"},
+  {"expectNot": "Seven of the eight"}, {"expectNot": "wrong way up"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 3 && window.VigilStore.state.flags.STONE_MISREAD === 3"},
+  {"wait": 1200},
+
+  {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]},
+  {"clickText": "Read the stone"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400},
+  {"expect": "The fire is the hollow they left."}, {"shot": "s_solved"},
+  {"assert": "window.VigilStore.state.flags.WALK_UNLOCKED === true && window.VigilStore.state.flags.LAW0 === true"},
+  {"eval": "({ CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, MISREAD: window.VigilStore.state.flags.STONE_MISREAD, WALK: window.VigilStore.state.flags.WALK_UNLOCKED })"},
+  {"clickText": "What it means"}, {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"}
+] }

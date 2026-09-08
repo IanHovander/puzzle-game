@@ -1579,15 +1579,6 @@
    "expect": "Seer's thread still runs up the Stair"
   },
   {
-   "clickText": "Look up"
-  },
-  {
-   "wait": 600
-  },
-  {
-   "key": "Space"
-  },
-  {
    "clickText": "The Provost"
   },
   {
@@ -1595,6 +1586,9 @@
   },
   {
    "key": "Space"
+  },
+  {
+   "expect": "nothing holds it but the old pattern"
   },
   {
    "clickText": "Attune"
@@ -1636,17 +1630,17 @@
    "wait": 300
   },
   {
-   "eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (Math.abs(y - hy) < 22) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 25); return 'auto-ringer on'; })()"
+   "eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb:not(.mimic)').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (y >= hy - 10) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 20); return 'auto-ringer on'; })()"
   },
   {
    "wait": 6000
   },
   {
    "waitFor": "#actions .btn.primary",
-   "timeout": 40000
+   "timeout": 50000
   },
   {
-   "clickText": "Ring the first round"
+   "clickText": "Ring the pattern"
   },
   {
    "wait": 800
@@ -1655,42 +1649,20 @@
    "key": "Space"
   },
   {
-   "wait": 12000
+   "wait": 8000
   },
   {
    "waitFor": "#actions .btn.primary",
-   "timeout": 70000
+   "timeout": 90000
   },
   {
-   "expect": "bells struck clean"
+   "expect": "lights answered right"
   },
   {
    "expect": "The pattern holds"
   },
   {
-   "clickText": "The second round"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 12000
-  },
-  {
-   "waitFor": "#actions .btn.primary",
-   "timeout": 70000
-  },
-  {
-   "expect": "bells struck clean"
-  },
-  {
-   "expect": "stays settled"
-  },
-  {
-   "clickText": "The last round"
+   "clickText": "The last pattern"
   },
   {
    "wait": 800
@@ -1711,14 +1683,14 @@
    "key": "Space"
   },
   {
-   "wait": 12000
+   "wait": 8000
   },
   {
    "waitFor": "#actions .btn.primary",
-   "timeout": 80000
+   "timeout": 100000
   },
   {
-   "expect": "bells struck clean"
+   "expect": "lights answered right"
   },
   {
    "expect": "stops beating"
@@ -1742,15 +1714,6 @@
    "expect": "Now, love. Walk."
   },
   {
-   "clickText": "Wren"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
    "clickText": "Seer first"
   },
   {
@@ -1763,19 +1726,7 @@
    "click": ".btn.choice >> nth=1"
   },
   {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "expect": "being poetic"
-  },
-  {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
@@ -1784,19 +1735,7 @@
    "click": ".btn.choice >> nth=2"
   },
   {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "expect": "didn't flinch"
-  },
-  {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
@@ -1805,19 +1744,7 @@
    "click": ".btn.choice >> nth=1"
   },
   {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "expect": "Do you now?"
-  },
-  {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
@@ -1826,28 +1753,16 @@
    "click": ".btn.choice >> nth=2"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "expect": "kindest thing"
+   "expect": "all four were the ones I already knew"
   },
   {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "expect": "All four the ones Wren already knew"
-  },
-  {
-   "expect": "Loved enough to walk back in."
+   "expect": "Loved enough to walk back in"
   },
   {
    "clickText": "The stone"
@@ -1859,19 +1774,22 @@
    "key": "Space"
   },
   {
-   "expect": "the foot of the stone"
+   "expect": "burned to a smear"
   },
   {
    "clickText": "Read it"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 500
+  },
+  {
+   "expect": "Slot 1 is the first word you read"
   },
   {
    "slots": [
@@ -1931,19 +1849,10 @@
    "expect": "The fire is the hollow they left."
   },
   {
-   "clickText": "Marrow"
+   "assert": "window.VigilStore.state.flags.WALK_UNLOCKED === true && window.VigilStore.state.flags.LAW0 === true"
   },
   {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "expect": "Both roads needed him loved"
-  },
-  {
-   "clickText": "The Book"
+   "clickText": "What it means"
   },
   {
    "wait": 800
@@ -1973,13 +1882,19 @@
    "shot": "t_ch6_flow"
   },
   {
-   "expect": "Clues caught: 4 of 4"
+   "expect": "The four bells came through whole"
   },
   {
-   "expect": "Truths told in the laundry: 4 of 4"
+   "expect": "four answers Wren already had"
   },
   {
-   "expect": "cracked: 0 of 3"
+   "assert": "window.VigilStore.state.flags.CLUES === 4"
+  },
+  {
+   "assert": "window.VigilStore.state.flags.TRUTHS === 4"
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.BELLS_CRACKED | 0) === 0 && !window.VigilStore.state.flags.STONE_MISREAD"
   },
   {
    "clickText": "The Finale"
@@ -2661,5 +2576,6 @@
   {
    "eval": "({ ENDING: VigilStore.state.flags.ENDING, scene: VigilStore.state.scene, CLUES: VigilStore.state.flags.CLUES, TRUTHS: VigilStore.state.flags.TRUTHS, CRACKED: VigilStore.state.flags.BELLS_CRACKED, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, OATH: VigilStore.state.flags.OATH, hints: VigilStore.state.flags.hintsTotal || 0 })"
   }
- ]
+ ],
+ "_auto": "the ch6 auto-ringer must select .orb:not(.mimic) — a .mimic orb is the Cold, and ringing one is a miss. A third of each pattern is Cold, so a ringer that hits everything scores 16 of 24 and fails."
 }

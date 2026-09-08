@@ -1,8 +1,9 @@
 /* Companion — Chapter VI, the bell-chamber (WELL · cast: VOLUNTEER, PRECRACKED).
    The stone, one fact each and no page holding another's: the Reader has what the four burned cuts were,
    the Seer which way each of them was struck, the Listener where the silence falls in the tune, the Binder
-   whether the cold word may be written at all. The bells live on Speak: the Listener has which beats ring,
-   and the Reader, the Seer and the Binder each have their own bell numbers and nobody else's. */
+   whether the cold word may be written at all. The bells live on Speak: the Listener has the count and
+   calls every number, and the Reader, the Seer and the Binder each have the numbers that are bells of
+   theirs and nobody else's — the numbers on no page at all are the Cold. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -12,15 +13,19 @@
 
   /* ---------- the dark pattern ----------
      One token per beat, 1 to 32. A COPY of ROUND3 in js/content/ch6.js — the Hearth rings it, this page
-     reads it. Keep the two identical. 'x' is the Cold (called by nobody), '.' a silent beat. */
+     reads it. Keep the two identical. 'x' is the Cold, '.' a silent beat. */
   const ROUND3 = '. R xRSB S . RS B xRSB R . SB xRSB S B . RSB xRSB R . RB S xRSB . B xRSB R SB . xRSB . xRSB RSB';
   const BEATS = ROUND3.trim().split(/\s+/);
-  const BELLS = [];                                    // { n, beat, lanes:'RSB' subset }
-  BEATS.forEach((t, i) => { if (t !== '.' && t[0] !== 'x') BELLS.push({ n: BELLS.length + 1, beat: i + 1, lanes: t }); });
+  /* EVERY sounding beat is numbered, 1 to 24 — bells and Cold alike — and the Listener calls all of
+     them. Nothing on this page says which is which. That is the point: the three role pages are the
+     only thing that separates a bell from the Cold, so pressing on every call rings all eight Colds
+     and fails. (The enumeration is in js/content/ch6.js, above ROUND3.) */
+  const SOUND = [];                                    // { n, beat, tok, cold }
+  BEATS.forEach((t, i) => { if (t !== '.') SOUND.push({ n: SOUND.length + 1, beat: i + 1, tok: t, cold: t[0] === 'x' }); });
   const CALL = {};                                     // beat -> the number to call on it (one beat early)
-  BELLS.forEach(b => { CALL[b.beat - 1] = b.n; });
+  SOUND.forEach(b => { CALL[b.beat - 1] = b.n; });
   const LETTER = { reader: 'R', seer: 'S', binder: 'B' };
-  const mine = (roleId) => BELLS.filter(b => b.lanes.indexOf(LETTER[roleId]) >= 0).map(b => b.n);
+  const mine = (roleId) => SOUND.filter(b => !b.cold && b.tok.indexOf(LETTER[roleId]) >= 0).map(b => b.n);
 
   /* The Listener's score: thirty-two beats, and the number to say on each. Nobody else has it. */
   const callComb = () => {
@@ -35,16 +40,17 @@
     s += `<text x="${(per * cw) / 2}" y="${rows * 46 + 18}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the count, and the number to say on it</text>`;
     return s + '</svg>';
   };
-  /* One player's bells, drawn: sixteen numbers, and the ones that are yours. */
+  /* One player's bells, drawn: all twenty-four numbers, and the eight that are yours. The other
+     sixteen are somebody else's bell or the Cold, and this page never says which. */
   const myBells = (roleId) => {
-    const ms = mine(roleId), col = COL[roleId], cw = 42;
-    let s = `<svg viewBox="0 0 ${8 * cw + 16} 108" style="width:100%">`;
-    for (let i = 1; i <= 16; i++) {
+    const ms = mine(roleId), col = COL[roleId], cw = 42, n = SOUND.length;
+    let s = `<svg viewBox="0 0 ${8 * cw + 16} 154" style="width:100%">`;
+    for (let i = 1; i <= n; i++) {
       const r = Math.floor((i - 1) / 8), c = (i - 1) % 8, x = 8 + c * cw, y = 6 + r * 46, on = ms.indexOf(i) >= 0;
       s += `<rect x="${x}" y="${y}" width="${cw - 6}" height="36" rx="4" fill="${on ? col : 'none'}" fill-opacity="${on ? .85 : 0}" stroke="${on ? col : 'rgba(255,255,255,.18)'}" stroke-width="1.2"/>`;
       s += `<text x="${x + (cw - 6) / 2}" y="${y + 25}" text-anchor="middle" fill="${on ? '#12101a' : 'rgba(255,255,255,.3)'}" font-size="16" ${F}>${i}</text>`;
     }
-    s += `<text x="${(8 * cw) / 2}" y="${104}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>your bells, of the sixteen</text>`;
+    s += `<text x="${(8 * cw) / 2}" y="150" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>your bells, of the twenty-four numbers</text>`;
     return s + '</svg>';
   };
 
@@ -139,7 +145,7 @@
     el.appendChild(UI.el('p', { class: 'fine', text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
   } });
 
-  const COST = 'A wrong reading clears the strip. Eight slots, filled again from nothing.';
+  const COST = 'A wrong reading cracks a bell above you, and the strip clears.';
 
   C.chapters.push({
     id: 'ch6',
@@ -155,12 +161,13 @@
         P.speak.push({ t: 'h', text: 'The dark pattern — you are the voice' });
         P.speak.push({ t: 'p', text: 'Your own bell goes quiet. The Hearth counts to thirty-two and you say the number in the cell it reaches. On an empty cell, say nothing.' });
         P.speak.push({ t: 'svg', svg: callComb() });
+        P.speak.push({ t: 'fine', text: '**Say all twenty-four.** Which of them are bells is on three other pages, and not on yours.' });
         P.speak.push({ t: 'fine', text: 'The call comes one beat early on purpose: whoever owns that number rings on the beat after you say it.' });
       } else {
         P.speak.push({ t: 'h', text: 'Your bells' });
-        P.speak.push({ t: 'p', text: 'In the dark the Listener calls a number one beat early. **' + mine(roleId).join(' · ') + '** are yours. Ring on the beat after yours is called.' });
+        P.speak.push({ t: 'p', text: 'In the dark the Listener calls every number, one beat early. Only **' + mine(roleId).join(' · ') + '** are yours. Ring on the beat after yours is called.' });
         P.speak.push({ t: 'svg', svg: myBells(roleId) });
-        P.speak.push({ t: 'fine', text: 'A number nobody calls is the Cold wearing a bell’s face. Keep your hand still for it.' });
+        P.speak.push({ t: 'fine', text: 'A number that is not on your list is somebody else’s bell, or the Cold wearing a bell’s face. Keep your hand still for it.' });
       }
       if (isVol) {
         P.speak.push({ t: 'divider' });
@@ -183,7 +190,9 @@
         P.sight.push({ t: 'h', text: 'Where the silence falls' });
         P.sight.push({ t: 'p', text: 'When the fire drops, the shaft rings the line cut by cut. You cannot hear which words. You can hear where it stops.' });
         P.sight.push({ t: 'html', html: restFig() });
-        P.sight.push({ t: 'audio', label: 'The end of the line', strip: '<div class="arrow-strip"><span class="step"><b>♪</b></span><span class="step"><b>♪</b></span><span class="step"><b>♪</b></span><span class="step rest"><b>—</b>rest</span></div>', play: (A) => CA.playSteps(A, [-2, -3, 'rest']), text: '**The silence comes last, and there is none before it.**' });
+        /* Flat on purpose. The line's real steps would name two of the burned words to anybody
+           holding the Ladder in their Book, and this page may only say where the silence falls. */
+        P.sight.push({ t: 'audio', label: 'The end of the line', strip: CA.strip([0, 0, 'rest']), play: (A) => CA.playSteps(A, [0, 0, 'rest']), text: '**The silence comes last, and there is none before it.** The steps are flattened here. Listen for the gap, not the tune.' });
         P.sight.push({ t: 'fine', text: 'Read the line from the wrong end and every one of the eight words is wrong.' });
         P.sight.push({ t: 'fine', text: 'You never hear a word’s name. The Reader has the shapes. Ask.' });
       }
