@@ -126,13 +126,17 @@
     // the slab, foreshortened from below (wider at the bottom)
     s += `<path d="M300,120 L1300,120 L1380,540 L220,540 Z" fill="#1c1619" stroke="#33282b" stroke-width="5"/>`;
     s += `<path d="M330,150 L1270,150 L1335,515 L265,515 Z" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>`;
-    let burn = 0;
+    /* Every cut is numbered 1 to 8 — one coordinate system, the same one the companion pages and the
+       puzzle board use. The line runs round the foot, so the ends are drawn open. */
     s += STONE.map(([sh, inv], i) => {
       const x = 400 + i * 114;
-      if (BURNT.indexOf(i) < 0) return `<g transform="translate(${x},330) scale(2.6)" style="color:#8a7a70" opacity=".92">${Gl().shapeInner(sh, inv)}</g>`;
-      burn++;
-      return `<g transform="translate(${x},330)">${scorch(2.6)}</g><text x="${x}" y="452" text-anchor="middle" fill="#6b5a4a" font-size="20" font-family="Cinzel,serif">burn ${burn}</text>`;
+      const body = BURNT.indexOf(i) < 0
+        ? `<g transform="translate(${x},330) scale(2.6)" style="color:#8a7a70" opacity=".92">${Gl().shapeInner(sh, inv)}</g>`
+        : `<g transform="translate(${x},330)">${scorch(2.6)}</g>`;
+      return body + `<text x="${x}" y="452" text-anchor="middle" fill="#6b5a4a" font-size="20" font-family="Cinzel,serif">cut ${i + 1}</text>`;
     }).join('');
+    s += `<path d="M360,330 C300,330 300,220 350,210" fill="none" stroke="#6b5a4a" stroke-width="4" stroke-dasharray="10 8" opacity=".8"/>`;
+    s += `<path d="M1240,330 C1300,330 1300,220 1250,210" fill="none" stroke="#6b5a4a" stroke-width="4" stroke-dasharray="10 8" opacity=".8"/>`;
     // the foot: bare, lit from below in cold light
     s += `<rect x="220" y="540" width="1160" height="26" fill="#23191c"/>`;
     s += `<rect x="220" y="540" width="1160" height="26" fill="${COLD}" opacity=".18"><animate attributeName="opacity" values=".18;.3;.14;.26;.18" dur="2.4s" repeatCount="indefinite"/></rect>`;

@@ -1,9 +1,9 @@
 /* Companion — Chapter VI, the bell-chamber (WELL · cast: VOLUNTEER, PRECRACKED).
-   The stone, one fact each and no page holding another's: the Reader has what the four burned cuts were,
-   the Seer which way each of them was struck, the Listener where the silence falls in the tune, the Binder
-   whether the cold word may be written at all. The bells live on Speak: the Listener has the count and
-   calls every number, and the Reader, the Seer and the Binder each have the numbers that are bells of
-   theirs and nobody else's — the numbers on no page at all are the Cold. */
+   The stone, one fact each and no page holding another's: the Reader has what the four burnt cuts were,
+   the Seer which way each of them was struck, the Listener where the lap ends, the Binder the older Law
+   and its three clauses. The bells live on Speak: the Listener has the count and calls every number, and
+   the Reader, the Seer and the Binder each have six numbers that are bells of theirs and nobody else's.
+   No bell in the dark pattern is shared, so no page can be covered by pooling the other two. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -14,12 +14,12 @@
   /* ---------- the dark pattern ----------
      One token per beat, 1 to 32. A COPY of ROUND3 in js/content/ch6.js — the Hearth rings it, this page
      reads it. Keep the two identical. 'x' is the Cold, '.' a silent beat. */
-  const ROUND3 = '. R xRSB S . RS B xRSB R . SB xRSB S B . RSB xRSB R . RB S xRSB . B xRSB R SB . xRSB . xRSB RSB';
+  const ROUND3 = '. R S B . xRSB S R B . xRSB B R . S B xRSB R . S B xRSB . xRSB S R . B S xRSB . R';
   const BEATS = ROUND3.trim().split(/\s+/);
   /* EVERY sounding beat is numbered, 1 to 24 — bells and Cold alike — and the Listener calls all of
-     them. Nothing on this page says which is which. That is the point: the three role pages are the
-     only thing that separates a bell from the Cold, so pressing on every call rings all eight Colds
-     and fails. (The enumeration is in js/content/ch6.js, above ROUND3.) */
+     them. Nothing on this page says which is which. Every bell belongs to exactly one lane, so a page
+     is the only thing that can ring it: pressing on every call rings the Cold and fails, and so does
+     pressing on every number somebody else claimed. (The enumeration is above ROUND3 in ch6.js.) */
   const SOUND = [];                                    // { n, beat, tok, cold }
   BEATS.forEach((t, i) => { if (t !== '.') SOUND.push({ n: SOUND.length + 1, beat: i + 1, tok: t, cold: t[0] === 'x' }); });
   const CALL = {};                                     // beat -> the number to call on it (one beat early)
@@ -40,8 +40,8 @@
     s += `<text x="${(per * cw) / 2}" y="${rows * 46 + 18}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the count, and the number to say on it</text>`;
     return s + '</svg>';
   };
-  /* One player's bells, drawn: all twenty-four numbers, and the eight that are yours. The other
-     sixteen are somebody else's bell or the Cold, and this page never says which. */
+  /* One player's bells, drawn: all twenty-four numbers, and the six that are yours. The other
+     eighteen are somebody else's bell or the Cold, and this page never says which. */
   const myBells = (roleId) => {
     const ms = mine(roleId), col = COL[roleId], cw = 42, n = SOUND.length;
     let s = `<svg viewBox="0 0 ${8 * cw + 16} 154" style="width:100%">`;
@@ -55,41 +55,46 @@
   };
 
   /* ---------- the stone ----------
-     Cuts 1, 3, 5 and 7 are the four the fire took; the Hearth calls them burns 1 to 4. */
+     Cuts 1, 3, 5 and 7 are the four the fire took, and cut numbers are the only coordinates on any
+     page — the Hearth's board, the art and all four Sight pages use the same 1 to 8. */
+  const BURNT_CUTS = [1, 3, 5, 7];
   const BURN_SHAPES = ['Flame', 'Crown', 'Spike', 'Crown'];   // Reader: WHAT was cut
   const BURN_UP = [true, true, true, false];                  // Seer: which way the chisel went in
 
   /* The Reader's four burns, drawn on their side, so the page can say what was cut and cannot say which
      way up it stood — that half is the Seer's, and the geometry is what keeps it there. (ch0's collar.) */
   const burnCuts = () => `<svg viewBox="0 0 320 108" style="width:100%;max-width:320px">
-    ${BURN_SHAPES.map((sh, i) => { const x = 40 + i * 80; return `<g><rect x="${x - 32}" y="10" width="64" height="64" rx="6" fill="rgba(0,0,0,.35)" stroke="rgba(242,210,122,.35)"/><g transform="translate(${x},42) rotate(90) scale(1.25)" style="color:#f2d27a">${G.SHAPES[sh]}</g><text x="${x}" y="90" text-anchor="middle" fill="rgba(242,210,122,.8)" font-size="11" ${F}>burn ${i + 1}</text></g>`; }).join('')}
+    ${BURN_SHAPES.map((sh, i) => { const x = 40 + i * 80; return `<g><rect x="${x - 32}" y="10" width="64" height="64" rx="6" fill="rgba(0,0,0,.35)" stroke="rgba(242,210,122,.35)"/><g transform="translate(${x},42) rotate(90) scale(1.25)" style="color:#f2d27a">${G.SHAPES[sh]}</g><text x="${x}" y="90" text-anchor="middle" fill="rgba(242,210,122,.8)" font-size="11" ${F}>cut ${BURNT_CUTS[i]}</text></g>`; }).join('')}
     <text x="160" y="104" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="9" ${F}>laid on their side · what was cut, not which way up</text>
   </svg>`;
 
-  /* The Listener's fact, drawn: eight sounds, and the last one is not one. */
-  const restFig = () => `<svg viewBox="0 0 300 96" style="width:100%;max-width:300px">
-    <line x1="14" y1="52" x2="286" y2="52" stroke="rgba(255,255,255,.22)" stroke-width="1.5"/>
-    ${[0,1,2,3,4,5,6].map(i => `<circle cx="${24 + i * 34}" cy="52" r="8" fill="#4fb3bf"/>`).join('')}
-    <circle cx="262" cy="52" r="8" fill="none" stroke="#4fb3bf" stroke-width="1.5" stroke-dasharray="3 3"/>
-    <text x="262" y="30" text-anchor="middle" fill="#4fb3bf" font-size="10" ${F}>silence</text>
-    <text x="150" y="86" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the silence comes last, and nowhere before</text>
+  /* The Listener's fact, drawn as a lap: eight notes round a ring, and the one it stops on is a
+     silence. No cut number anywhere on it — WHICH cut that is comes from the other three pages, and
+     this page may not know. The geometry is the separation. */
+  const restFig = () => `<svg viewBox="0 0 300 132" style="width:100%;max-width:300px">
+    <circle cx="150" cy="62" r="44" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
+    ${[0,1,2,3,4,5,6].map(i => { const a = (-90 + (i + 1) * 45) * Math.PI / 180; return `<circle cx="${(150 + Math.cos(a) * 44).toFixed(1)}" cy="${(62 + Math.sin(a) * 44).toFixed(1)}" r="7" fill="#4fb3bf"/>`; }).join('')}
+    <circle cx="150" cy="18" r="7" fill="none" stroke="#4fb3bf" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <path d="M120,104 A44,44 0 0 0 174,100" fill="none" stroke="#4fb3bf" stroke-width="1.4" opacity=".7"/>
+    <text x="150" y="10" text-anchor="middle" fill="#4fb3bf" font-size="10" ${F}>silence</text>
+    <text x="150" y="126" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>one lap of eight, and it stops on the silence</text>
   </svg>`;
 
   /* Under the foot: eight recesses, four of them scorched, and which way each chisel went in.
      No shape and no rule — the Seer reports how a cut was struck, never what it says. */
   const underFoot6 = (() => {
     let s = `<svg viewBox="0 0 360 200"><rect width="360" height="200" fill="#000"/>`;
-    s += `<text x="180" y="18" text-anchor="middle" fill="#fff" font-size="10" ${F} opacity=".8">the foot of the stone, from below</text>`;
+    s += `<text x="180" y="18" text-anchor="middle" fill="#fff" font-size="10" ${F} opacity=".8">the foot of the stone, from below · cuts 1 to 8</text>`;
     let burn = 0;
     for (let i = 0; i < 8; i++) {
       const x = 26 + i * 42, isBurn = i % 2 === 0;
       s += `<rect x="${x}" y="34" width="34" height="52" rx="3" fill="none" stroke="#fff" stroke-width="1.1" opacity="${isBurn ? .5 : .85}"/>`;
+      s += `<text x="${x + 17}" y="100" text-anchor="middle" fill="${isBurn ? '#a482e6' : 'rgba(255,255,255,.45)'}" font-size="9" ${F}>${i + 1}</text>`;
       if (isBurn) {
         burn++;
         const up = BURN_UP[burn - 1];
         s += `<g stroke="#a482e6" stroke-width="2.4" fill="none" stroke-linecap="round" transform="translate(${x + 17},60)">`
           + (up ? `<path d="M-9,6 L0,-7 L9,6"/>` : `<path d="M-9,-6 L0,7 L9,-6"/>`) + `</g>`;
-        s += `<text x="${x + 17}" y="100" text-anchor="middle" fill="#a482e6" font-size="9" ${F}>burn ${burn}</text>`;
       }
     }
     s += `<g stroke="#fff" fill="none" stroke-width="1.4" transform="translate(180,140) scale(0.9)"><path d="M0,-16 C6,-8 10,-2 10,4 C10,11 5,15 0,15 C-5,15 -10,11 -10,4 C-10,-2 -6,-8 0,-16 Z" opacity=".7"/><path d="M-70,16 L70,16" opacity=".4"/></g>`;
@@ -145,7 +150,7 @@
     el.appendChild(UI.el('p', { class: 'fine', text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
   } });
 
-  const COST = 'A wrong reading cracks a bell above you, and the strip clears.';
+  const COST = 'A wrong reading cracks a bell above you, and a cracked bell is one you do not have later.';
 
   C.chapters.push({
     id: 'ch6',
@@ -165,9 +170,9 @@
         P.speak.push({ t: 'fine', text: 'The call comes one beat early on purpose: whoever owns that number rings on the beat after you say it.' });
       } else {
         P.speak.push({ t: 'h', text: 'Your bells' });
-        P.speak.push({ t: 'p', text: 'In the dark the Listener calls every number, one beat early. Only **' + mine(roleId).join(' · ') + '** are yours. Ring on the beat after yours is called.' });
+        P.speak.push({ t: 'p', text: 'In the dark the Listener calls every number, one beat early. Six of the twenty-four are yours: **' + mine(roleId).join(' · ') + '**. Ring on the beat after yours is called.' });
         P.speak.push({ t: 'svg', svg: myBells(roleId) });
-        P.speak.push({ t: 'fine', text: 'A number that is not on your list is somebody else’s bell, or the Cold wearing a bell’s face. Keep your hand still for it.' });
+        P.speak.push({ t: 'fine', text: 'A number that is not on your list is somebody else’s bell, or the Cold wearing a bell’s face. Keep your hand still for it — nobody else can ring yours, and you cannot ring theirs.' });
       }
       if (isVol) {
         P.speak.push({ t: 'divider' });
@@ -179,43 +184,43 @@
       /* ---------- SIGHT: the stone ---------- */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What the fire ate' });
-        P.sight.push({ t: 'p', text: 'Four of the eight cuts are burned away. The Hearth shows those four as scorch and the other four as they are. On your page all eight are clean.' });
+        P.sight.push({ t: 'p', text: 'Four of the eight cuts are burned away — cuts 1, 3, 5 and 7. The Hearth shows those four as scorch. On your page they are clean.' });
         P.sight.push({ t: 'html', html: burnCuts() });
-        P.sight.push({ t: 'p', text: '**Burn 1 a flame. Burn 2 a crown. Burn 3 a spike. Burn 4 a crown.** Say them in that order.' });
+        P.sight.push({ t: 'p', text: '**Cut 1 a flame. Cut 3 a crown. Cut 5 a spike. Cut 7 a crown.** Say them by number.' });
         P.sight.push({ t: 'fine', text: COST });
         P.sight.push({ t: 'fine', text: 'Every shape has two words, one for each way up, and your **Book** has them — for these four and for the four the fire spared. Which way up these four stood is not on your page. Ask.' });
       }
 
       if (roleId === 'listener') {
-        P.sight.push({ t: 'h', text: 'Where the silence falls' });
-        P.sight.push({ t: 'p', text: 'When the fire drops, the shaft rings the line cut by cut. You cannot hear which words. You can hear where it stops.' });
+        P.sight.push({ t: 'h', text: 'Where the lap ends' });
+        P.sight.push({ t: 'p', text: 'The line runs all the way round the foot, so it has no first cut. When the fire drops, the shaft rings one lap of it. You cannot hear which words. You can hear where it stops.' });
         P.sight.push({ t: 'html', html: restFig() });
-        /* Flat on purpose. The line's real steps would name two of the burned words to anybody
-           holding the Ladder in their Book, and this page may only say where the silence falls. */
-        P.sight.push({ t: 'audio', label: 'The end of the line', strip: CA.strip([0, 0, 'rest']), play: (A) => CA.playSteps(A, [0, 0, 'rest']), text: '**The silence comes last, and there is none before it.** The steps are flattened here. Listen for the gap, not the tune.' });
-        P.sight.push({ t: 'fine', text: 'Read the line from the wrong end and every one of the eight words is wrong.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name. The Reader has the shapes. Ask.' });
+        /* Flat on purpose. The line's real steps would name two of the burnt words to anybody
+           holding the Ladder in their Book, and this page may only say where the lap ends. */
+        P.sight.push({ t: 'audio', label: 'The end of the lap', strip: CA.strip([0, 0, 'rest']), play: (A) => CA.playSteps(A, [0, 0, 'rest']), text: '**The lap ends on a silence.** The steps are flattened here. Listen for the gap, not the tune.' });
+        P.sight.push({ t: 'fine', text: 'One of the eight words has no note at all, and your **Book** says which one. The lap stops there, so that cut is read last.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, and you cannot see a cut. Ask.' });
       }
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the soot' });
-        P.sight.push({ t: 'p', text: 'The fire has covered the foot of this stone since the night it was lit. Under the soot the four burned cuts are still there, and you can see which way each chisel went in.' });
+        P.sight.push({ t: 'p', text: 'The fire has covered the foot of this stone since the night it was lit. Under the soot the four burnt cuts are still there, and you can see which way each chisel went in.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot6 });
-        P.sight.push({ t: 'p', text: '**Burns one, two and three were struck point-up. Burn four points down.**' });
-        P.sight.push({ t: 'fine', text: 'A cut read the wrong way up says the opposite word. One is enough to lose the line.' });
-        P.sight.push({ t: 'fine', text: 'You cannot read a cut and you cannot hear the tune. Say which way, and stop.' });
+        P.sight.push({ t: 'p', text: '**Cuts 1, 3 and 5 were struck point-up. Cut 7 points down.**' });
+        P.sight.push({ t: 'fine', text: 'Get one of the four the wrong way up and the whole lap is wrong.' });
+        P.sight.push({ t: 'fine', text: 'What a cut struck that way says is not yours to know. Say which way, and stop.' });
       }
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Two Laws, one hand' });
         P.sight.push({ t: 'html', html: olderBinds() });
         P.sight.push({ t: 'html', html: `<div class="laws">
-          <div class="law founders${law0 ? '' : ' struck'}"><div class="era">Law 0 · Founders' · Year 0 · ${law0 ? 'RESTORED' : 'STRUCK, 212'}</div><div class="txt">COLD is written by four hands.</div></div>
-          <div class="law order"><div class="era">Law 6 · Order's · Year 212</div><div class="txt">COLD is never written. Where an inscription shows it, leave the slot empty.</div></div>
+          <div class="law founders${law0 ? '' : ' struck'}"><div class="era">Law 0 · Founders' · Year 0 · ${law0 ? 'RESTORED' : 'STRUCK, 212'}</div><div class="txt">Read a line as the cuts count down. Every cut says its other word. COLD is written by four hands.</div></div>
+          <div class="law order"><div class="era">Law 6 · the Convocation's · Year 212</div><div class="txt">Begin at the mark and read as the cuts count up. A cut says the word it stands for. COLD is never written.</div></div>
         </div>` });
-        P.sight.push({ t: 'p', text: 'A Law that is merely wrong is forgotten. A Law that is *inconvenient* is struck. **The older one binds, so the cold word is written.**' });
-        P.sight.push({ t: 'fine', text: 'Leave that slot empty and the strip reads seven words and a hole.' });
-        P.sight.push({ t: 'fine', text: 'You cannot read a cut and you cannot see which way it was struck. Ask.' });
+        P.sight.push({ t: 'p', text: 'A Law that is merely wrong is forgotten. A Law that is *inconvenient* is struck. **The older one binds, and all three of it.**' });
+        P.sight.push({ t: 'fine', text: 'So: down the count, every cut its other word, and the cold word written in.' });
+        P.sight.push({ t: 'fine', text: 'You cannot read a cut, see how it was struck, or hear where the lap ends. Ask.' });
       }
 
       /* ---------- WREN ---------- */
