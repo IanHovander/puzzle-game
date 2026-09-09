@@ -165,7 +165,7 @@
         text: [
           'The Provost sits down on the bottom step of the Long Stair, which she has never done, and stays there a long time. Wren sits down next to her. Neither says anything. The Binder, who cannot see threads any more, does not need to.',
           'Lord Cassian Vane writes his report to the Crown by the light of a fire that no longer needs him. It says the Cold is closed. It says there is nothing under Thornhallow to harness. It is the first true thing he has ever sent them.',
-          'Master Tarn goes home. Nobody stops him. The nine Houses find, in the morning, that the school beneath them is still there, and that it is warm.',
+          'The Master who took Crown coin goes home. Nobody stops him. The nine Houses find, in the morning, that the school beneath them is still there, and that it is warm.',
         ],
         next: 'ch8_years', button: 'Years later',
       },

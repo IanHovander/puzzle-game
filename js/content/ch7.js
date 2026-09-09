@@ -30,10 +30,14 @@
     body[data-chapter="ch7"] .pad .pad-key { font-size: 20px; }
     body[data-chapter="ch7"] .pad .pad-name { font-size: 10px; }
     body[data-chapter="ch7"] .fourhands .pz-title { margin-bottom: 2px; }
-    /* ring.js puts a "Close it without the ritual" button inside the four-hands box: one player can click
-       past the beat the whole chapter is about. The Finale hides it. Four keys on one keyboard, or four
-       pads under one mouse, still work, so nobody is blocked. */
-    body[data-chapter="ch7"] .fourhands > .btn.small.ghost { display: none; }
+    /* ring.js puts a "Close it without the ritual" button inside the four-hands box, and it is the only
+       other way out of the ritual. The Finale must not hide it outright: a stuck key at the last beat of
+       the game would be a dead end with no hint and no navigation. So it is held back for forty-five
+       seconds — long enough that nobody clicks past the beat, short enough that nobody is trapped. */
+    body[data-chapter="ch7"] .fourhands > .btn.small.ghost {
+      opacity: 0; pointer-events: none; animation: ch7-hatch 0s linear 45s forwards;
+    }
+    @keyframes ch7-hatch { to { opacity: .5; pointer-events: auto; } }
     .ch7-vow { font-family: var(--hand); font-size: 14px; line-height: 1.2; color: var(--ink); text-align: center; padding: 0; margin: 0; }
   ` });
   if (document.head && document.head.appendChild) document.head.appendChild(ch7css);
@@ -67,30 +71,58 @@
        SCRATCH / NOTCH  the two cuts in the rim of the floor                  Seer
        (the Laws)       a sigil begins in the scratch and runs sunwise,       Binder
                         and names every word once
-     Enumerated against the live js/content/glyphs.js (the script is in the commit message):
+     BASE, ROT and the five keyed near-misses below are COMPUTED from those four facts, not typed in.
+     Enumerated against the live js/content/glyphs.js:
        8 phrases (2 wall orders x 2 readings x 2 readings) x 8 start sockets x 2 directions = 128 rings.
+       Law 8 leaves 4 of the 8 phrases standing; the Listener's opening climb leaves exactly 1.
        ALL FOUR PAGES  -> exactly 1 ring, with the oath and without it.
-       drop the Reader   -> no glyph can be named at all: the palette is name-only, and the shape-to-word
-                            lexicon lives only in the Reader's Book.
-       drop the Listener -> 4 rings (2 under the oath).
+       drop the Reader   -> no word can be named: the palette is name-only and the walls are legible only
+                            on the Reader's page. (The shape-to-word lexicon itself is NOT private —
+                            companion/book.js prints all eight shapes beside their names on the Listener's
+                            Book page — so the art is load-bearing: js/art/scenes-ch7.js must draw the
+                            wear on those walls and never the cut.)
+       drop the Listener -> 4 rings (2 under the oath: the rotation destroys the wall order).
        drop the Seer     -> 8 rings (8 under the oath).
-       drop the Binder   -> 8 rings (2 under the oath).
-       No pair of pages does better than 8. allowRepeat is load-bearing: without it ring.js refuses a
-       duplicate glyph for free and the Binder's Law 8 costs the table nothing. */
+       drop the Binder   -> 8 rings (8 under the oath).
+       No pair of pages does better than 16. allowRepeat is load-bearing: without it ring.js refuses a
+       duplicate glyph for free and the Binder's Law 8 costs the table nothing.
+     The cuts are deliberately OFF the defaults. Socket 1 is the top socket and the first number, so
+     "start at 1 and count up" is what a table with no Seer and no Binder tries first; the notch sits
+     there and the scratch does not, exactly as the Prologue's lamp puts its decoy notch on socket 1.
+     Begun at the notch, the ring is BEGUN / BEGUN_ROT below, and both are keyed. */
   const WEST = [{ shape: 'Spike', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: true }];  // Reader
   const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }]; // Reader
   const OPENING_CLIMB = 1;                                  // Listener
-  const SCRATCH = 1, NOTCH = 6;                             // Seer
-  const SWORN = 'CROWN';                                    // Binder: the word of the one the oath was sworn to
-  /* sockets 1..8; null is the socket the cold word falls in, which stays empty, or takes COLD by four hands */
-  const BASE   = ['THORN', 'KNOT', 'VEIL', 'EMBER', 'ASH', 'WELL', 'CROWN', null];
-  const ROT    = ['CROWN', null, 'THORN', 'KNOT', 'VEIL', 'EMBER', 'ASH', 'WELL'];
-  /* the rings a table reaches by getting exactly one fact wrong */
-  const RIVAL  = ['CROWN', 'KNOT', 'VEIL', 'WELL', 'ASH', 'EMBER', 'THORN', null];     // a wall read from the wrong end
-  const BEGUN  = ['EMBER', 'ASH', 'WELL', 'CROWN', null, 'THORN', 'KNOT', 'VEIL'];     // begun at the notch, unsworn
-  const WIDDER = ['THORN', null, 'CROWN', 'WELL', 'ASH', 'EMBER', 'VEIL', 'KNOT'];     // counted the wrong way, unsworn
-  const WIDDER_ROT = ['CROWN', 'WELL', 'ASH', 'EMBER', 'VEIL', 'KNOT', 'THORN', null]; // counted the wrong way, sworn
-  const SWAP   = ['ASH', 'WELL', 'CROWN', null, 'THORN', 'KNOT', 'VEIL', 'EMBER'];     // the two walls the wrong way round
+  const SCRATCH = 4, NOTCH = 1;                             // Seer
+  const ONCE_EACH = true, SWORN = 'CROWN';                  // Binder
+
+  /* The answer, and the near misses, computed from those four facts. */
+  const readEnd = (wall, end) => G.readLine(wall, end);      // 'left' or 'right'
+  const climb = (a, b) => { const x = G.GLYPHS[a].step, y = G.GLYPHS[b].step; return (x == null || y == null) ? null : y - x; };
+  const PHRASES = [];
+  ['left', 'right'].forEach(we => ['left', 'right'].forEach(ee => {
+    const w = readEnd(WEST, we), e = readEnd(EAST, ee);
+    PHRASES.push(w.concat(e)); PHRASES.push(e.concat(w));
+  }));
+  /* Law 8 leaves four of the eight phrases standing (two pairings, either wall first).
+     The Listener's opening climb leaves exactly one. */
+  const LEGAL = PHRASES.filter(p => !ONCE_EACH || new Set(p).size === 8);
+  const PHRASE = LEGAL.filter(p => climb(p[0], p[1]) === OPENING_CLIMB)[0];
+  /* Lay a phrase into the ring from a cut, one socket at a time. The cold word is never placed. */
+  const lay = (phrase, start, dir) => { const m = new Array(8).fill(null); for (let i = 0; i < 8; i++) { const g = phrase[i]; m[((start - 1 + dir * i) % 8 + 8) % 8] = g === 'COLD' ? null : g; } return m; };
+  const turnTo = (ring, word, socket) => { for (let k = 0; k < 8; k++) { const r = ring.map((_, i) => ring[((i - k) % 8 + 8) % 8]); if (r[socket - 1] === word) return r; } return ring; };
+  const BASE       = lay(PHRASE, SCRATCH, 1);                                          // by the Laws, unsworn
+  const ROT        = turnTo(BASE, SWORN, SCRATCH);                                     // and then turned, under the oath
+  const RIVAL      = lay(readEnd(WEST, 'right').concat(readEnd(EAST, 'left')), SCRATCH, 1); // a wall read from the wrong end
+  const RIVAL_ROT  = turnTo(RIVAL, SWORN, SCRATCH);                                    // and the same mistake, sworn
+  /* The two walls the wrong way round is only a mistake WITHOUT the oath: E+W is a cyclic rotation of
+     W+E, so once the ring is turned to stand the sworn word at the cut, the wall order has gone. That is
+     also why dropping the Listener leaves 4 rings unsworn and only 2 sworn. */
+  const SWAP       = lay(readEnd(EAST, 'right').concat(readEnd(WEST, 'left')), SCRATCH, 1);
+  const BEGUN      = lay(PHRASE, NOTCH, 1);                                            // begun at the notch, unsworn
+  const BEGUN_ROT  = turnTo(BEGUN, SWORN, NOTCH);                                      // begun at the notch, sworn
+  const WIDDER     = lay(PHRASE, SCRATCH, -1);                                         // counted the wrong way, unsworn
+  const WIDDER_ROT = turnTo(WIDDER, SWORN, SCRATCH);                                   // counted the wrong way, sworn
   const ringOf = (map) => [1, 2, 3, 4, 5, 6, 7, 8].map(i => map[i] || null);
   const shape = (ring) => ring.map(x => x === 'COLD' ? null : x); // an empty socket and the cold word read alike
   const same = (a, b) => a.every((x, i) => x === b[i]);
@@ -168,7 +200,7 @@
         text: (s) => [
           'Far above, the Hearth is a spark. The floor is a lid, and under it the Cold glows.',
           'On the wall, four carved figures walk into a flame. Nobody is looking at them.',
-          'Boots on the old road. Lord Vane stops at the edge. Behind him, Master Tarn\'s guards: Tarn took Crown coin at the Vigil.',
+          'Boots on the old road. Lord Vane stops at the edge, with the Crown\'s soldiers behind him.',
           arrival(s),
         ],
         next: 'ch7_vane', button: 'The Envoy speaks',
@@ -191,7 +223,15 @@
       },
       ch7_wall: {
         art: 'ch7_edge', artParams: artP, mood: 'sorrow', fx: 'ash', flame: 0.06, sfx: 'reveal',
-        enter: (s) => { s.flags.VANE_ALLY = true; s.flags.VANE_STOOD_DOWN = true; Store.save(); },
+        /* The Envoy withdraws here, so the bargain is settled here too. ch7_tokens.onTokens is the only
+           other writer of BARGAIN_<role>, and on this path L.finaleValues() never asks the question —
+           so without this line the flag would go unwritten and the Epilogue would say the four were
+           never asked. They were asked, in the Hall, and the offer has just been taken off the table. */
+        enter: (s) => {
+          s.flags.VANE_ALLY = true; s.flags.VANE_STOOD_DOWN = true;
+          ROLES.forEach(r => { s.flags['BARGAIN_' + r] = 'refused'; });
+          Store.save();
+        },
         text: (s) => [
           s.flags.TAPESTRY
             ? 'The Seer says what is under the paint in the study, and the Hearth turns it round.'
@@ -254,7 +294,7 @@
           { id: 'letter', text: 'A struck Law says the cold word is written by four hands.', if: (s) => !s.flags.TAPESTRY || !!(s.flags.LETTER_READ || s.flags.LETTER), next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'They could not afford four Masters, so they made it grammar.' }] },
           { id: 'feel', text: 'Because it is Wren, and we are not doing it.', cls: 'dark', next: 'ch7_dec_fourfold',
-            after: [{ speaker: 'Provost Marrow', text: 'That is not a reading. She steps aside anyway.' }] },
+            after: [{ speaker: 'Provost Marrow', text: 'That is not a reading.' }, 'She steps aside anyway.'] },
         ],
       },
       ch7_dec_walk: {
@@ -339,10 +379,15 @@
       },
 
       /* ---------- Stage 2: bargains in the room ----------
-         Silence is a refusal. It used to be a kept bargain, so fifteen seconds of hesitation bound a
-         player's key to the Envoy, and two such silences ended the night with neither puzzle played. */
+         Silence is a refusal, and the timeout writes 'refused' — not 'broken' and not 'kept'. It used to
+         be a kept bargain, so fifteen seconds of hesitation bound a player's key to the Envoy; then it
+         was a broken one, and the Epilogue credited a player who never clicked with breaking the Envoy's
+         word to his face. The timeout has its own destination now, so the promise, the flag and the
+         Epilogue all say the same thing. */
       ...Object.fromEntries(ROLES.map((r, i) => ['ch7_bargain_' + r, {
-        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_BARGAIN_' + r, timer: 15, timerText: '*Fifteen heartbeats. Silence is a refusal.*', timeout: 'break', sfx: 'heart',
+        type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_BARGAIN_' + r, timer: 15, timerText: '*Fifteen heartbeats. Silence is a refusal.*', sfx: 'heart',
+        timeout: { id: 'silence', next: (s) => nextBargain(s, i), set: { ['BARGAIN_' + r]: 'refused' }, note: `${nickOf(r)} said nothing, and the Envoy heard it.`,
+          after: [{ speaker: 'Lord Vane', text: 'Nothing. Well. Nothing is an answer.' }] },
         text: [
           `The fire says one name out loud: ${nickOf(r)}.`,
           { speaker: 'Lord Vane', text: 'I keep my promises. Do you keep yours?' },
@@ -385,35 +430,49 @@
           { text: 'Listener — how the phrase opens.', cls: 'whisper' },
           { text: 'Seer — where the floor is cut.', cls: 'whisper' },
           { text: 'Binder — what a cut obliges.', cls: 'whisper' },
-          { text: 'A wrong ring costs no time.', cls: 'whisper' },
+          { text: 'A wrong ring costs thirty seconds.', cls: 'whisper' },
         ],
         config: (s) => {
           const knot = oathKnot(s), walk = walkOn(s);
           const ans = knot ? ROT : BASE;
           return {
             title: 'THE GREAT SIGIL',
-            note: 'Provost Marrow reads it off the rim: *Eight sockets. Two walls, four words each, one phrase. It begins at a cut in the floor. Not every socket takes a word.*'
+            /* "Either wall may speak first" is the x2 that doubles the phrase space. It used to live only
+               in the Reader's closing line and in hint 2; it is on the shared surface now, because no
+               phone may hold a position. */
+            note: 'Provost Marrow reads it off the rim: *Eight sockets. Two walls, four words each, one phrase. Either wall may speak first. It begins at a cut in the floor. Not every socket takes a word.*'
               + (knot ? ' *A sworn ring is built, then turned whole, until the sworn word stands where the phrase began.*' : ''),
             slots: 8, glyphs: glyphPalette(), allowEmpty: true,
             allowRepeat: true,   /* load-bearing: without it the palette enforces Law 8 and the Binder is droppable */
             showArrow: false,    /* the hub arrow says SUNWISE, and sunwise is the Binder's Law, not the Hearth's */
             resetOnWrong: false,
             fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat',
+            /* A keyed failure may quote the RULE CARD, which the whole room can read, and may describe
+               what the floor did. It may NOT name the role to ask, and it may not say WHICH axis is
+               wrong -- that was the leak: naming the axis turns a three-role table's residual field
+               into a guided binary search, and across the eight lines the Hearth recited the Binder's
+               whole Law set back to a table that had just lost it.
+               So the four "laid down wrong" cases -- wrong opening, wrong direction, wrong starting cut,
+               and the rival phrase -- now answer with ONE line that does not distinguish them. A table
+               without the Binder cannot tell whether to turn the ring or move its start, which is the
+               difference between 2 candidates and 16.
+               Under-commitment is coached and costs nothing (R10.19). */
             check: (map) => {
               const g = ringOf(map), sh = shape(g);
               const named = g.filter(Boolean), filled = named.length;
-              if (same(sh, ans)) {
-                if (g.includes('COLD') && !walk) return 'The cold word is never written. Where the phrase shows it, that socket stays empty. Ask the Binder.';
-                return true;
-              }
+              if (filled < 7) return `Only ${filled} sockets spoken for. The ring will not close half-said.`;
+              const cold = g.includes('COLD') && !walk;
+              if (same(sh, ans) && !cold) return true;
+              Game.clock.penalty(30);
+              if (cold) return 'The cold word is never written. Where the phrase shows it, that socket stays empty.';
               if (knot && same(sh, BASE)) return 'Right by the Laws, and still it will not close. You swore to somebody. Turn the whole ring until the sworn word stands where the phrase began.';
               if (!knot && same(sh, ROT)) return 'Nothing was sworn tonight. The ring does not turn. Build it from the cut and leave it there.';
-              if (named.length !== new Set(named).size) return 'Two sockets say the same word. A Great Sigil names every word once — that is the Law on the rim.';
-              if (same(sh, RIVAL)) return 'Eight words, each once, and the floor stays cold. One wall is being read from the wrong end. The phrase opens with the smallest climb there is.';
-              if (same(sh, SWAP)) return 'The right eight words, and the two walls the wrong way round. The phrase opens with the smallest climb there is.';
-              if (same(sh, knot ? WIDDER_ROT : WIDDER)) return 'Counted the wrong way round. A sigil runs sunwise from its cut — clockwise, the way the numbers count up.';
-              if (!knot && same(sh, BEGUN)) return 'The phrase began at the wrong cut. A notch is only a maker\'s signature. Ask the Binder which cut starts a sigil.';
-              if (filled < 7) return `Only ${filled} sockets spoken for. Seven words and one silence — the ring will not close half-said.`;
+              if (named.length !== new Set(named).size) return 'Two sockets say the same word, and the frost stays.';
+              /* One line for all four laid-down-wrong cases, on purpose: see the note above. */
+              if (same(sh, knot ? RIVAL_ROT : RIVAL) || (!knot && same(sh, SWAP))
+                || same(sh, knot ? WIDDER_ROT : WIDDER) || same(sh, knot ? BEGUN_ROT : BEGUN)) {
+                return 'Eight words, each once, and the floor stays cold. The words are right and the laying of them is not. Say all four things again, out loud, before the next one.';
+              }
               return false;
             },
             wrongText: 'Frost creeps over the ring. It keeps what you put in it.',
@@ -423,12 +482,11 @@
         },
         hints: [
           'Four answers, and nobody has two. What the walls say — the Reader. How the phrase opens — the Listener. Where the floor is cut — the Seer. What a cut obliges — the Binder.',
-          (s) => 'Two walls, two ways each: four phrases. Only two say eight different words, and only one opens with the smallest climb.'
+          (s) => 'Two walls, two ways each, and either may speak first: eight phrases. Four say eight different words. Only one opens with the smallest climb.'
             + (oathKnot(s) ? ' A sworn ring is turned after it is built.' : ''),
-          (s) => (oathKnot(s)
-            ? 'CROWN 1, empty 2, THORN 3, KNOT 4, VEIL 5, EMBER 6, ASH 7, WELL 8.'
-            : 'THORN 1, KNOT 2, VEIL 3, EMBER 4, ASH 5, WELL 6, CROWN 7, empty 8.')
-            + (walkOn(s) ? ' COLD may go there, by four hands.' : '') + ' Then four hands.',
+          /* read off the answer itself, so the last rung can never drift from the constants */
+          (s) => (oathKnot(s) ? ROT : BASE).map((g, i) => (g || 'empty') + ' ' + (i + 1)).join(', ') + '.'
+            + (walkOn(s) ? ' COLD may go in the empty one, by four hands.' : '') + ' Then four hands.',
         ],
         onSolve: (s, r) => { playHymn(); Store.note('The Great Sigil closed' + (r && r.tries > 1 ? ` after ${r.tries} tries.` : ' first time.')); },
         solvedText: [
@@ -526,9 +584,11 @@
           const wrap = UI.el('div', { class: 'pz' });
           wrap.appendChild(UI.el('div', { class: 'ch7-vow', text: '"COLD is written by four hands." — Law 0. Restored.' }));
           box.appendChild(wrap);
-          await window.VigilRing.fourHands(wrap, 'WRITE IT — all four keys within a heartbeat');
+          /* fourHands resolves false when the escape hatch is used. Do not record a ritual that did not
+             happen: the Epilogue reads these notes back. */
+          const byFour = await window.VigilRing.fourHands(wrap, 'WRITE IT — all four keys within a heartbeat');
           if (!api.alive()) return;
-          Audio.sfx('seal'); Store.note('COLD was written by four hands.');
+          Audio.sfx('seal'); Store.note(byFour ? 'COLD was written by four hands.' : 'COLD was written, but not by four hands.');
           await UI.sleep(900);
           return 'ch7_white';
         },
@@ -587,7 +647,7 @@
           const names = ['the Fourfold Walk', 'the Half-Walk', 'the Sealing', 'the Keeper\'s Walk', 'the Envoy\'s Bargain'];
           const one = `The night ended in ${names[s.flags.ENDING | 0]}.`;
           const two = s.flags.MIDNIGHT_SPARE != null
-            ? `The Binding held with ${clockText(s.flags.MIDNIGHT_SPARE)} of midnight left${s.flags.WITH_HELP ? ', counted for you' : ''}.`
+            ? `The Binding held with ${clockText(s.flags.MIDNIGHT_SPARE)} of midnight left, after ${s.flags.BINDING_FAILS | 0} slips${s.flags.WITH_HELP ? ', counted for you' : ''}.`
             : 'The Binding was never called.';
           const three = kept(s).length ? `${UI.list(kept(s).map(nickOf))} kept the Envoy's word.`
             : broken(s).length ? `${UI.list(broken(s).map(nickOf))} almost took it.`

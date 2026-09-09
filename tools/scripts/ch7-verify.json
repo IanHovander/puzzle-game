@@ -1,20 +1,34 @@
 { "start": "ch7_sigil", "flags": "WALK_UNLOCKED,OATH_KNOT", "steps": [
   {"wait": 800}, {"key": "Space"}, {"wait": 700}, {"shot": "v_sigil"},
-  {"expect": "MIDNIGHT"}, {"expect": "Eight sockets. Two walls, four words each, one phrase"}, {"expect": "sworn ring is built"},
-  {"expectNot": "SUNWISE"}, {"expectNot": "names every word once"}, {"expectNot": "scratch"}, {"expectNot": "one rung"},
+  {"expect": "MIDNIGHT"}, {"expect": "Eight sockets. Two walls, four words each, one phrase"}, {"expect": "Either wall may speak first"}, {"expect": "sworn ring is built"},
+  {"expectNot": "SUNWISE"}, {"expectNot": "names every word once"}, {"expectNot": "scratch"}, {"expectNot": "notch"}, {"expectNot": "one rung"}, {"expectNot": "smallest climb"}, {"expectNot": "clockwise"},
   {"eval": "({wallSvgInWidget: document.querySelectorAll('#widget .inscription-svg').length, roleLines: ['Reader —','Listener —','Seer —','Binder —'].filter(t=>document.body.innerText.includes(t)).length})"},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "sockets spoken for"},
-  {"slots": [[1, "CROWN"], [2, "KNOT"], [3, "VEIL"], [4, "WELL"], [5, "ASH"], [6, "EMBER"], [7, "THORN"], [8, null]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "read from the wrong end"},
-  {"eval": "document.querySelectorAll('.wheel .slot.filled').length"},
-  {"slots": [[4, "ASH"]]}, {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Two sockets say the same word"},
-  {"slots": [[1, "CROWN"], [2, "WELL"], [3, "ASH"], [4, "EMBER"], [5, "VEIL"], [6, "KNOT"], [7, "THORN"], [8, null]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Counted the wrong way round"},
-  {"slots": [[1, "THORN"], [2, "KNOT"], [3, "VEIL"], [4, "EMBER"], [5, "ASH"], [6, "WELL"], [7, "CROWN"], [8, null]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "You swore to somebody"},
-  {"click": "#hint"}, {"wait": 400}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 400}, {"shot": "v_hints"},
-  {"expect": "nobody has two"}, {"expect": "smallest climb"}, {"expect": "CROWN 1, empty 2, THORN 3"}, {"clickText": "Back to the ward"}, {"wait": 500},
+
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "sockets spoken for"}, {"expectNot": "one silence"},
+  {"assert": "Game.clock.left() > 885"},
+
   {"slots": [[1, "CROWN"], [2, null], [3, "THORN"], [4, "KNOT"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "WELL"]]},
-  {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"expect": "plays itself through the floor"},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "signature"},
+  {"assert": "Game.clock.left() < 880"},
+
+  {"slots": [[1, "EMBER"], [2, "THORN"], [3, null], [4, "CROWN"], [5, "KNOT"], [6, "VEIL"], [7, "WELL"], [8, "ASH"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "smallest climb"},
+  {"eval": "document.querySelectorAll('.wheel .slot.filled').length"},
+
+  {"slots": [[3, "ASH"]]}, {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Two sockets say the same word"}, {"expectNot": "Ask the Binder"}, {"expectNot": "may not do twice"}, {"expectNot": "the Law on the rim"},
+
+  {"slots": [[1, "KNOT"], [2, "THORN"], [3, null], [4, "CROWN"], [5, "WELL"], [6, "ASH"], [7, "EMBER"], [8, "VEIL"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "sunwise"},
+
+  {"slots": [[1, "WELL"], [2, "CROWN"], [3, null], [4, "THORN"], [5, "KNOT"], [6, "VEIL"], [7, "EMBER"], [8, "ASH"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "You swore to somebody"},
+
+  {"click": "#hint"}, {"wait": 400}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 400}, {"shot": "v_hints"},
+  {"expect": "nobody has two"}, {"expect": "smallest climb"}, {"expect": "EMBER 1, ASH 2, WELL 3, CROWN 4, empty 5, THORN 6, KNOT 7, VEIL 8"}, {"clickText": "Back to the ward"}, {"wait": 500},
+
+  {"slots": [[1, "EMBER"], [2, "ASH"], [3, "WELL"], [4, "CROWN"], [5, null], [6, "THORN"], [7, "KNOT"], [8, "VEIL"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"},
+  {"assert": "!!document.querySelector('.fourhands > .btn.small.ghost')"},
+  {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"expect": "plays itself through the floor"},
   {"eval": "({left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running(), hints: VigilStore.state.hintsUsed.ch7_sigil})"}
 ] }
