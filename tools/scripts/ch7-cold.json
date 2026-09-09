@@ -1,0 +1,14 @@
+{ "start": "ch7_sigil", "flags": "WALK_UNLOCKED", "set": "WALK_reader=WALK", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 700}, {"expect": "MIDNIGHT"},
+  {"slots": [[1, "THORN"], [2, "KNOT"]]},
+  {"eval": "Game.clock.penalty(899)"}, {"wait": 1600}, {"key": "Space"}, {"wait": 900},
+  {"shot": "cold_hearth"}, {"expect": "Midnight"}, {"expect": "Nothing is on fire"}, {"expect": "Nothing you have done is undone"},
+  {"eval": "({scene: VigilStore.state.scene, attempts: VigilStore.state.flags.COLD_HEARTH_ATTEMPTS, hints: VigilStore.state.hintsUsed.ch7_sigil, walk: VigilStore.state.flags.WALK_reader, left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running()})"},
+  {"clickText": "Finish it in the dark"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 700}, {"expect": "Eight sockets"},
+  {"eval": "({scene: VigilStore.state.scene, running: Game.clock.running(), hints: VigilStore.state.hintsUsed.ch7_sigil})"},
+  {"slots": [[1, "THORN"], [2, "KNOT"], [3, "VEIL"], [4, "EMBER"], [5, "ASH"], [6, "WELL"], [7, "CROWN"], [8, "COLD"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"clickText": "The Binding"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"keys": "acm/"}, {"wait": 7000}, {"keys": "acm/"}, {"wait": 2400}, {"key": "Space"}, {"wait": 500},
+  {"eval": "({landed: VigilStore.state.flags.BINDING_LANDED, ending: VigilStore.state.flags.ENDING, walk: VigilStore.state.flags.WALK_reader, attempts: VigilStore.state.flags.COLD_HEARTH_ATTEMPTS})"}
+] }

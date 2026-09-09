@@ -1,9 +1,20 @@
-{ "start": "ch7_sigil", "flags": "WALK_UNLOCKED,OATH_KNOT,SOLDIERS", "steps": [
-  {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"expect": "MIDNIGHT"}, {"shot": "v_sigil_shields"},
-  {"eval": "({shields: document.querySelectorAll('.inscription-svg text').length, lawLeak: document.body.innerText.includes('names every glyph once')})"},
-  {"slots": [[1, "THORN"], [2, "KNOT"], [3, "VEIL"], [4, "EMBER"], [5, "ASH"], [6, "EMBER"], [7, "THORN"], [8, "COLD"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"expect": "Frost creeps"},
-  {"wait": 1000}, {"slots": [[1, "THORN"], [2, "KNOT"], [3, "VEIL"], [4, "EMBER"], [6, "CROWN"], [7, "WELL"], [8, "ASH"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"expect": "sworn to someone"},
-  {"wait": 1000}, {"click": "#hint"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 200}, {"click": "button.hint-btn"}, {"wait": 200}, {"click": "button.hint-btn"}, {"wait": 300}, {"shot": "v_hints"}, {"expect": "Seer has both"}, {"expect": "Chair's glyph at the first mark"}, {"expect": "CROWN in slot 1, WELL in 2, ASH in 3, THORN in 4, KNOT in 5, VEIL in 6, EMBER in 7, and slot 8 left empty"}, {"clickText": "Back to the ward"}, {"wait": 400},
-  {"slots": [[1, "CROWN"], [2, "WELL"], [3, "ASH"], [4, "THORN"], [5, "KNOT"], [6, "VEIL"], [7, "EMBER"], [8, "COLD"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"expect": "Every glyph, once"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "still works"},
-  {"eval": "({left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running()})"}
+{ "start": "ch7_sigil", "flags": "WALK_UNLOCKED,OATH_KNOT", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 700}, {"shot": "v_sigil"},
+  {"expect": "MIDNIGHT"}, {"expect": "Eight sockets. Two walls, four words each, one phrase"}, {"expect": "sworn ring is built"},
+  {"expectNot": "SUNWISE"}, {"expectNot": "names every word once"}, {"expectNot": "scratch"}, {"expectNot": "one rung"},
+  {"eval": "({wallSvgInWidget: document.querySelectorAll('#widget .inscription-svg').length, roleLines: ['Reader —','Listener —','Seer —','Binder —'].filter(t=>document.body.innerText.includes(t)).length})"},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "sockets spoken for"},
+  {"slots": [[1, "CROWN"], [2, "KNOT"], [3, "VEIL"], [4, "WELL"], [5, "ASH"], [6, "EMBER"], [7, "THORN"], [8, null]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "read from the wrong end"},
+  {"eval": "document.querySelectorAll('.wheel .slot.filled').length"},
+  {"slots": [[4, "ASH"]]}, {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Two sockets say the same word"},
+  {"slots": [[1, "CROWN"], [2, "WELL"], [3, "ASH"], [4, "EMBER"], [5, "VEIL"], [6, "KNOT"], [7, "THORN"], [8, null]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Counted the wrong way round"},
+  {"slots": [[1, "THORN"], [2, "KNOT"], [3, "VEIL"], [4, "EMBER"], [5, "ASH"], [6, "WELL"], [7, "CROWN"], [8, null]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "You swore to somebody"},
+  {"click": "#hint"}, {"wait": 400}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 400}, {"shot": "v_hints"},
+  {"expect": "nobody has two"}, {"expect": "smallest climb"}, {"expect": "CROWN 1, empty 2, THORN 3"}, {"clickText": "Back to the ward"}, {"wait": 500},
+  {"slots": [[1, "CROWN"], [2, null], [3, "THORN"], [4, "KNOT"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "WELL"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"expect": "plays itself through the floor"},
+  {"eval": "({left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running(), hints: VigilStore.state.hintsUsed.ch7_sigil})"}
 ] }

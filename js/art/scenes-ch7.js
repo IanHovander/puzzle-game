@@ -25,16 +25,22 @@
   function floorRing(cx, cy, rx, ry, lit) {
     let s = `<ellipse cx="${cx}" cy="${cy}" rx="${rx + 34}" ry="${ry + 16}" fill="none" stroke="rgba(212,169,78,${lit ? 0.5 : 0.25})" stroke-width="3"/>`;
     s += `<ellipse cx="${cx}" cy="${cy}" rx="${rx - 34}" ry="${ry - 16}" fill="none" stroke="rgba(212,169,78,${lit ? 0.35 : 0.18})" stroke-width="2"/>`;
-    for (let i = 0; i < 8; i++) { const a = (i / 8 * 360 - 90) * Math.PI / 180; const x = cx + Math.cos(a) * rx, y = cy + Math.sin(a) * ry; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="26" ry="12" fill="#0b0910" stroke="rgba(212,169,78,${lit ? 0.7 : 0.4})" stroke-width="2"/>`; if (lit && i !== 4) s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="12" ry="5" fill="#ffd27a" opacity=".6"><animate attributeName="opacity" values=".6;.3;.65;.4;.6" dur="${(1.4 + i * 0.2).toFixed(1)}s" repeatCount="indefinite"/></ellipse>`; }
+    for (let i = 0; i < 8; i++) { const a = (i / 8 * 360 - 90) * Math.PI / 180; const x = cx + Math.cos(a) * rx, y = cy + Math.sin(a) * ry; s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="26" ry="12" fill="#0b0910" stroke="rgba(212,169,78,${lit ? 0.7 : 0.4})" stroke-width="2"/>`; if (lit) s += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="12" ry="5" fill="#ffd27a" opacity=".6"><animate attributeName="opacity" values=".6;.3;.65;.4;.6" dur="${(1.4 + i * 0.2).toFixed(1)}s" repeatCount="indefinite"/></ellipse>`; }
     return s;
   }
-  /* a wall inscription, carved, faint */
-  /* hiddenIdx: a soldier's shield stands against that carving (the Hearth never shows what is behind it) */
-  function wallCarving(x, y, shapes, scale, color, hiddenIdx) {
-    const shield = `<path d="M-16,-22 L16,-22 L16,6 Q16,20 0,26 Q-16,20 -16,6 Z" fill="#2a2632" stroke="#4a4454" stroke-width="2"/><path d="M0,-18 L0,20" stroke="#4a4454" stroke-width="1.5"/>`;
-    return `<g transform="translate(${x},${y}) scale(${scale || 1.4})" style="color:${color || '#5a4e5a'}" opacity=".8">${shapes.map((sh, i) => `<g transform="translate(${i * 54},0)">${i === hiddenIdx ? shield : G().shapeInner(sh[0], sh[1])}</g>`).join('')}</g>`;
+  /* A wall inscription as the room sees it: rubbed almost out. The Hearth must never draw a fact that
+     lives on one player's phone, and what these walls say is the Reader's whole job -- so the fire shows
+     the WEAR (a cartouche, a broken outline, chips scratched across it) and the Reader's page shows the cut. */
+  function wallCarving(x, y, shapes, scale, color) {
+    const sc = scale || 1.1;
+    return `<g transform="translate(${x},${y}) scale(${sc})" style="color:${color || '#4a4250'}" opacity=".3">${shapes.map((sh, i) => {
+      let g = `<g transform="translate(${i * 54},0)">`;
+      g += `<rect x="-22" y="-24" width="44" height="48" rx="4" fill="rgba(255,255,255,0.022)"/>`;
+      g += `<g stroke-dasharray="5 7" opacity=".6">${G().shapeInner(sh[0], sh[1])}</g>`;
+      g += `<g stroke="#0d0b12" stroke-width="3" stroke-linecap="round" opacity=".9"><path d="M-20,${-10 + i * 3} L18,${-4 + i * 2}"/><path d="M-14,${12 - i * 2} L16,${16 - i * 3}"/></g>`;
+      return g + `</g>`;
+    }).join('')}</g>`;
   }
-  const hid = (p, side) => (p && p.shields && p.shields[side]) ? 1 : -1;
   const WEST = [['Spike', false], ['Hook', false], ['Hook', true], ['Crown', true]];
   const EAST = [['Flame', false], ['Crown', true], ['Spike', false], ['Flame', true]];
   /* the four carved figures walking into a flame */
@@ -59,7 +65,7 @@
     bells(330) +
     // chamber walls with the two inscriptions and the carved figures
     `<rect x="0" y="380" width="260" height="380" fill="#0d0b12"/><rect x="1340" y="380" width="260" height="380" fill="#0d0b12"/>` +
-    wallCarving(60, 470, WEST, 1.5, undefined, hid(p, 'west')) + wallCarving(1380, 470, EAST, 1.5, undefined, hid(p, 'east')) +
+    wallCarving(60, 470, WEST, 1.15) + wallCarving(1380, 470, EAST, 1.15) +
     carvedFigures(1340, 560, '#8a6a3a') +
     P.floorTiles(720, '#0a0810', 'rgba(255,255,255,0.035)') +
     coldFloor(720, 0.32) +
@@ -80,7 +86,7 @@
     P.lightBeam(800, 0, 80, 480, '#ff9a3c') +
     bells(300) +
     `<rect x="0" y="360" width="300" height="400" fill="#0d0b12"/><rect x="1300" y="360" width="300" height="400" fill="#0d0b12"/>` +
-    wallCarving(60, 440, WEST, 1.7, '#6a5c6a', hid(p, 'west')) + wallCarving(1340, 440, EAST, 1.7, '#6a5c6a', hid(p, 'east')) +
+    wallCarving(60, 440, WEST, 1.2, '#57506a') + wallCarving(1340, 440, EAST, 1.2, '#57506a') +
     P.floorTiles(700, '#0a0810', 'rgba(255,255,255,0.035)') +
     coldFloor(700, 0.4) +
     floorRing(800, 790, 420, 96, !!(p && p.lit)) +
@@ -93,7 +99,7 @@
     P.sky('#04050a', '#0a1018') +
     bells(300) +
     `<rect x="0" y="360" width="300" height="400" fill="#0a0d14"/><rect x="1300" y="360" width="300" height="400" fill="#0a0d14"/>` +
-    wallCarving(60, 440, WEST, 1.7, '#2f3a48') + wallCarving(1340, 440, EAST, 1.7, '#2f3a48') +
+    wallCarving(60, 440, WEST, 1.2, '#2f3a48') + wallCarving(1340, 440, EAST, 1.2, '#2f3a48') +
     P.floorTiles(700, '#070910', 'rgba(79,179,191,0.06)') +
     coldFloor(640, 0.85) +
     floorRing(800, 790, 420, 96, false) +
