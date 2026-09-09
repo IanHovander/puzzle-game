@@ -1,0 +1,20 @@
+{ "start": "ch7_start", "steps": [
+  {"key": "Space"}, {"wait": 300}, {"clickText": "The Envoy speaks"},
+  {"wait": 700}, {"key": "Space"}, {"wait": 400}, {"click": "button.choice:has-text('Say nothing')"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "ALK"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"click": "button.choice:has-text('Let Wren walk')"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Seal your word"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"clickText": "Every phone is sealed"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400},
+  {"type": [".token-row.p0 input", "YCTC"]}, {"type": [".token-row.p1 input", "D6YY"]}, {"type": [".token-row.p2 input", "Q6Z7"]}, {"type": [".token-row.p3 input", "MUP3"]}, {"clickText": "Speak the words"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "one name out loud: Reader"}, {"click": "button.choice:has-text('Keep it')"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "one name out loud: Listener"}, {"wait": 20000},
+  {"key": "Space"}, {"wait": 600}, {"shot": "barg_timeout"},
+  {"assert": "VigilStore.state.flags.BARGAIN_listener === 'refused'"}, {"eval": "({listener: VigilStore.state.flags.BARGAIN_listener, timedout: VigilStore.state.flags.FINALE_BARGAIN_listener_timedout})"}, {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "one name out loud: Seer"}, {"click": "button.choice:has-text('Keep it')"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "barg_done"}, {"expect": "majority of hands"},
+  {"eval": "({ending: VigilStore.state.flags.ENDING, kept: ['reader','listener','seer','binder'].map(r=>VigilStore.state.flags['BARGAIN_'+r]), sigil: !!(VigilStore.state.solved||{}).ch7_sigil})"},
+  {"clickText": "What comes of it"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "Nobody walked"}, {"clickText": "The night, whole"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Envoy"}
+] }

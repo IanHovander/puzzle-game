@@ -1,6 +1,21 @@
 { "start": "ch1_start", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["thorn"]}, {"shot": "c1_reader_sight"}, {"expect": "Sorrel"}, {"expect": "the Chair's mark"}, {"expect": "CROWN"}, {"tab": "Wren"}, {"shot": "c1_reader_wren"}, {"expect": "under the paint"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
-  {"companion": true}, {"role": "Listener"}, {"unlock": ["THORN"]}, {"shot": "c1_listener_sight"}, {"expect": "asks me to my face"}, {"expect": "I stand with the Provost"}, {"expect": "hear no one else"}, {"expect": "too quiet to catch"}, {"tab": "Wren"}, {"expect": "skipped"},
-  {"companion": true}, {"role": "Seer"}, {"unlock": ["THORN"]}, {"shot": "c1_seer_sight"}, {"expect": "Seat 5"}, {"expect": "Seat 8"}, {"expect": "Seat 6"}, {"tab": "Wren"}, {"expect": "toward the Hearth"},
-  {"companion": true}, {"role": "Binder"}, {"unlock": ["THORN"]}, {"shot": "c1_binder_sight"}, {"expect": "Quill follows Sorrel"}, {"expect": "opposite"}, {"expect": "waiting to be tied"}, {"expect": "Gold"}, {"tab": "Wren"}, {"expect": "knot itself"}, {"tab": "Book"}, {"expect": "STRUCK"}
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["thorn"]}, {"shot": "c1_reader_sight"},
+  {"expect": "Two Houses filed tonight"}, {"expect": "with the Chair"}, {"expect": "So you begin with two"}, {"expect": "an ask spent there buys a vote you have"},
+  {"expectNot": "sworn to Seat 1"}, {"expectNot": "under the cushion"},
+  {"tab": "Wren"}, {"shot": "c1_reader_wren"}, {"expect": "under the paint"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
+
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["THORN"]}, {"shot": "c1_listener_sight"},
+  {"expect": "asks me to my face"}, {"expect": "I hear nobody else"}, {"expect": "Seats 1, 3 and 7 are still open"}, {"expect": "Seat 4 has shut his ears"},
+  {"expectNot": "♪"}, {"expectNot": "filed in writing"},
+  {"tab": "Wren"}, {"expect": "nothing to catch"},
+
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["THORN"]}, {"shot": "c1_seer_sight"},
+  {"expect": "Seat 5"}, {"expect": "Seat 8"}, {"expect": "Seat 6"}, {"expect": "Bought, bought, out of reach"},
+  {"expectNot": "sworn to Seat 1"},
+  {"tab": "Wren"}, {"expect": "older paint"},
+
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["THORN"]}, {"shot": "c1_binder_sight"},
+  {"expect": "Seat 2 is sworn to Seat 1"}, {"expect": "cousins"}, {"expect": "one ask can be worth two votes"},
+  {"expectNot": "under the cushion"}, {"expectNot": "filed in writing"},
+  {"tab": "Wren"}, {"expect": "no thread found"}, {"tab": "Book"}, {"expect": "STRUCK"}
 ] }

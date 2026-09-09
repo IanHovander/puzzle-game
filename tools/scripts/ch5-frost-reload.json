@@ -1,0 +1,239 @@
+{
+ "start": "ch5_gate1",
+ "set": "OATH=1,DOOR=BLUFF",
+ "_what": "The frost ledger is a flag, not a variable: two frosts, a page reload (the Resume and paste-a-save paths both call location.reload), and the stair still charges for them.",
+ "steps": [
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "slots": [
+    [
+     2,
+     "WELL"
+    ],
+    [
+     4,
+     "VEIL"
+    ],
+    [
+     5,
+     "EMBER"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "wait": 1400
+  },
+  {
+   "assert": "VigilStore.state.flags.GATE1_FROST === 1"
+  },
+  {
+   "eval": "(setTimeout(function(){location.reload();},50), 'reloading')"
+  },
+  {
+   "wait": 3500
+  },
+  {
+   "waitFor": ".wheel"
+  },
+  {
+   "assert": "VigilStore.state.flags.GATE1_FROST === 1"
+  },
+  {
+   "slots": [
+    [
+     1,
+     "WELL"
+    ],
+    [
+     3,
+     "EMBER"
+    ],
+    [
+     5,
+     "VEIL"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 1200
+  },
+  {
+   "keys": "acm/"
+  },
+  {
+   "wait": 1800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "expect": "forget it was ever shut"
+  },
+  {
+   "clickText": "On down"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "The second gate"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "slots": [
+    [
+     1,
+     "CROWN"
+    ],
+    [
+     2,
+     "KNOT"
+    ],
+    [
+     3,
+     "WELL"
+    ],
+    [
+     4,
+     "ASH"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 1200
+  },
+  {
+   "keys": "acm/"
+  },
+  {
+   "wait": 1800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "clickText": "The third gate"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "Count us in"
+  },
+  {
+   "wait": 4600
+  },
+  {
+   "clickText": "The digits are in"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "type": [
+    "#widget input.field",
+    "3534"
+   ]
+  },
+  {
+   "clickText": "Count"
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Boots, above"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "Ready"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "expect": "40 heartbeats"
+  },
+  {
+   "expect": "cost you 5"
+  },
+  {
+   "click": ".btn.choice >> nth=2"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "expect": "bell-chamber soon after you"
+  },
+  {
+   "log": true
+  }
+ ]
+}

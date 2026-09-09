@@ -3,10 +3,10 @@
   'use strict';
   const L = {};
   L.roles = [
-    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Bookmoth', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
-    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Hush',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
-    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Owl',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
-    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Knot',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
+    { id: 'reader',   idx: 0, name: 'The Reader',   nick: 'Reader', gift: 'Glyph-Sight', color: '#e0b04a', blurb: 'You read the Founders\' Tongue: four shapes, each read two ways. Inscriptions the Hearth shows faded are clean on your page. You hold the lexicon and, later, an older alphabet.', what: 'WHAT the glyphs say' },
+    { id: 'listener', idx: 1, name: 'The Listener', nick: 'Listener',     gift: 'Ear-Sight',   color: '#4fb3bf', blurb: 'You hear what the Hearth cannot: the steps of a hymn, patrol boots by landmark, murmurs, and every heartbeat in a room — except one.', what: 'WHEN — the order of things' },
+    { id: 'seer',     idx: 2, name: 'The Seer',     nick: 'Seer',      gift: 'Under-Sight', color: '#a482e6', blurb: 'You see beneath: where an inscription begins and whether it is turned, hidden doors, what paint covers, sockets under rebuilt stone — and which way every shadow falls.', what: 'WHERE — marks, doors, what is turned' },
+    { id: 'binder',   idx: 3, name: 'The Binder',   nick: 'Binder',     gift: 'Thread-Sight', color: '#d96b4a', blurb: 'You see the threads between people — grey grief, gold Crown, red oath — and you keep the Book of Laws, each Law dated to the Founders or to the Order that came after.', what: 'WHETHER — the Laws, and who is bound to whom' },
   ];
   L.roleById = (id) => L.roles.find(r => r.id === id);
   L.nick = (i) => L.roles[i].nick;
@@ -48,8 +48,9 @@
   L.laws = [
     { n: 0,  era: 'F', year: 0,   struck: true, text: 'COLD is written by four hands.', note: 'struck by the Convocation, 212. See Law 6.', learned: 'ch0' },
     { n: 1,  era: 'F', year: 0,   text: 'A sigil is read sunwise from the mark.', learned: 'ch0' },
-    { n: 2,  era: 'F', year: 0,   text: 'Each Founder\'s glyph sits on the dial they face; turn the dials in the Hymn\'s order. The door counts your turns and forgets a wrong count.', learned: 'ch2' },
+    { n: 2,  era: 'F', year: 0,   text: 'The door hears one count. One word to each dial, in the order the line climbs, and then it is called.', learned: 'ch2' },
     { n: 3,  era: 'F', year: 0,   text: 'Where two Laws disagree, the older binds.', learned: 'ch2' },
+    { n: 13, era: 'F', year: 0,   text: 'A Founder faces the hole their plinth was cut for.', learned: 'ch2' },
     { n: 9,  era: 'O', year: 212, text: 'A Founder faces the dial before them.', learned: 'ch2' },
     { n: 10, era: 'F', year: 0,   text: 'A turned line reverses and inverts; a lone turned glyph only inverts; every glyph keeps its place on the stone.', learned: 'ch4' },
     { n: 4,  era: 'O', year: 340, text: 'An oath\'s last glyph is its lock. KNOT cannot be unbound. EMBER can be remembered and reconsidered. The one you swear to cannot tell the difference.', learned: 'ch4' },

@@ -1,0 +1,16 @@
+{ "start": "ch5_count", "set": "OATH=1,DOOR=BLUFF", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"expect": "hears three answers and then stops"},
+  {"clickText": "Count"}, {"wait": 400}, {"expect": "does not count that as an answer"},
+  {"type": ["#widget input.field", "abcd"]}, {"clickText": "Count"}, {"wait": 400}, {"expect": "does not count that as an answer"},
+  {"type": ["#widget input.field", "1111"]}, {"clickText": "Count"}, {"wait": 400}, {"expect": "2 answers left"},
+  {"type": ["#widget input.field", "2222"]}, {"clickText": "Count"}, {"wait": 400}, {"expect": "One answer left"},
+  {"type": ["#widget input.field", "1112"]}, {"clickText": "Count"}, {"wait": 1500}, {"key": "Space"}, {"wait": 400},
+  {"shot": "ch5_count_forced"}, {"expect": "Forgive me"}, {"expect": "three flights closer"},
+  {"assert": "VigilStore.state.flags.COUNT_FORCED === true"},
+  {"clickText": "Boots, above"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "Ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "35 heartbeats"}, {"expect": "cost you 10"},
+  {"click": ".btn.choice >> nth=2"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"expect": "bell-chamber soon after you"},
+  {"assert": "VigilStore.state.flags.STAIR === 'RUN' && VigilStore.state.flags.SOLDIERS === true"}, {"log": true}
+] }

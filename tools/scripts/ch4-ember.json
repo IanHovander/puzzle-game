@@ -1,0 +1,14 @@
+{ "start": "ch4_secrets", "steps": [
+  {"key": "Space"}, {"wait": 400},
+  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"type": ["#widget input.field >> nth=0", "gray"]}, {"type": ["#widget input.field >> nth=1", "untied"]}, {"clickText": "Say what you see"}, {"wait": 1400}, {"expect": "letter she never sent"}, {"expect": "never named to you"}, {"expectNot": "Convocation"}, {"shot": "ch4em_chair"}, {"clickText": "Back to the room"},
+  {"wait": 400}, {"clickText": "Stop searching"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expectNot": "So. The Seer."}, {"click": ".btn.choice >> nth=0"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400},
+  {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"]]}, {"clickText": "Close the sigil"}, {"wait": 600}, {"expect": "an oath without a lock is a wish"}, {"wait": 1200},
+  {"slots": [[1, "THORN"], [2, "ASH"], [3, "WELL"]]}, {"clickText": "Close the sigil"}, {"wait": 600}, {"expect": "an oath without a lock is a wish"}, {"wait": 1200},
+  {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"], [1, "EMBER"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 2200},
+  {"key": "Space"}, {"wait": 600}, {"expect": "EMBER"}, {"expect": "wax does not change"}, {"shot": "ch4em_sworn"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "swore under EMBER"}, {"expect": "you found one"},
+  {"assert": "VigilStore.state.flags.OATH === 2 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === false && VigilStore.state.flags.MARROW_LETTER === true && VigilStore.state.flags.GREY === true"},
+  {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, MARROW_LETTER: VigilStore.state.flags.MARROW_LETTER})"}
+] }

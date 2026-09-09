@@ -1,0 +1,10 @@
+{ "start": "ch0_name", "viewport": { "width": 1280, "height": 720 }, "steps": [
+  {"wait": 900}, {"key": "Space"}, {"wait": 500},
+  {"assert": "document.querySelectorAll('#text .speaker').length === 1"},
+  {"assert": "(() => { const e = document.getElementById('text'); return e.scrollHeight <= e.clientHeight + 1; })()"},
+  {"click": ".btn.choice >> nth=0"}, {"wait": 900}, {"key": "Space"}, {"wait": 500},
+  {"expect": "Grand."},
+  {"assert": "document.querySelectorAll('#text .speaker').length === 1"},
+  {"assert": "(() => { const e = document.getElementById('text'); return e.scrollHeight <= e.clientHeight + 1; })()"},
+  {"shot": "ch0_name_joined"}
+] }

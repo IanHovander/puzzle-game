@@ -28,8 +28,9 @@ html, body { height: 100%; margin: 0; }
 body {
   background: var(--bg); color: var(--ink);
   font-family: var(--serif); font-size: 20px; line-height: 1.5;
-  -webkit-font-smoothing: antialiased; overflow: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+body.hearth { overflow: hidden; }
 h1, h2, h3, .display { font-family: var(--display); font-weight: 600; letter-spacing: 0.06em; }
 a { color: var(--gold); }
 em { font-style: italic; color: var(--gold-2); }
@@ -50,8 +51,25 @@ strong { color: var(--gold-2); font-weight: 600; }
 .btn.primary:hover { filter: brightness(1.08); }
 .btn.ghost { background: transparent; border-color: rgba(255,255,255,0.15); }
 .btn.danger { border-color: var(--blood); color: #f0b0b0; }
+.btn.primary.danger { border-color: #d24b4b; color: #fff3ee; background: linear-gradient(180deg, #c04444, #8e2a2a); text-shadow: 0 1px 0 rgba(0,0,0,0.35); }
+.btn.primary.danger:hover { color: #fff; background: linear-gradient(180deg, #c94a4a, #9a2f2f); box-shadow: 0 0 22px rgba(178,58,58,0.35); filter: none; }
+.btn.primary.danger:focus-visible { color: #fff; background: linear-gradient(180deg, #c94a4a, #9a2f2f); box-shadow: 0 0 22px rgba(178,58,58,0.35); filter: none; }
+.btn.audio-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn.audio-btn .audio-icon { flex: 0 0 auto; }
+.btn.audio-btn.playing { border-color: var(--sea); color: var(--sea); }
+.btn.audio-btn.playing .audio-icon path { animation: eq 0.9s ease-in-out infinite; transform-origin: center; }
+.btn.audio-btn.playing .audio-icon path:nth-child(2) { animation-delay: .15s; } .btn.audio-btn.playing .audio-icon path:nth-child(3) { animation-delay: .3s; }
+.btn.audio-btn.playing .audio-icon path:nth-child(4) { animation-delay: .45s; } .btn.audio-btn.playing .audio-icon path:nth-child(5) { animation-delay: .6s; }
+@keyframes eq { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.35); } }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn.small { font-size: 13px; padding: 7px 12px; }
+/* small bar buttons (both screens) and the utility class that hides a block */
+.iconbtn { background: none; border: 1px solid transparent; color: var(--ink-dim); font-family: var(--display); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 10px; border-radius: 6px; transition: color .15s, border-color .15s; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex: 0 0 auto; line-height: 1; }
+.iconbtn svg { flex: 0 0 auto; width: 15px; height: 15px; display: block; }
+.iconbtn:hover { color: var(--gold-2); border-color: var(--line); }
+.iconbtn.attention { color: var(--gold-2); animation: pulse 1.2s infinite; border-color: var(--line); }
+.hidden { display: none !important; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
 
 input.field, textarea.field {
   font-family: var(--display); font-size: 22px; letter-spacing: 0.25em; text-transform: uppercase; text-align: center;
@@ -96,9 +114,14 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 .fc-node rect, .fc-node path { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.18); stroke-width: 1.2; }
 .fc-node.on rect, .fc-node.on path { fill: rgba(212,169,78,0.16); stroke: var(--gold); }
 .fc-node.end.on rect { fill: rgba(159,123,216,0.25); stroke: var(--violet); }
-.fc-node text { fill: rgba(233,226,210,0.45); font-family: var(--serif); font-size: 12.5px; }
+.fc-node text { fill: rgba(233,226,210,0.72); font-family: var(--serif); font-size: 15px; }
 .fc-node.on text { fill: var(--ink); }
-.fc-node.choice text { font-size: 11.5px; }
+.fc-node.choice text { font-size: 13.5px; }
+.flowchart-wrap.zoomable { cursor: zoom-in; }
+.flowchart-wrap.zoomable:hover .flowchart { filter: drop-shadow(0 0 14px rgba(212,169,78,0.25)); }
+.flow-zoom-hint { font-family: var(--display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); text-align: right; padding-top: 4px; }
+.flowchart-wrap.big { overflow: auto; max-height: 76vh; max-width: min(1500px, 92vw); cursor: default; }
+.flowchart-wrap.big .flowchart { max-width: none; }
 
 /* pads for 4-key input */
 .pads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }

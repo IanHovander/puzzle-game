@@ -1,4 +1,4 @@
-# HEARTHFALL — Implementer conventions
+# WHAT THE FIRE KEEPS — Implementer conventions
 
 Read `docs/DESIGN.md` (spoilers) for the story and puzzle specs. This file is the *contract* for writing content: file layout, the scene API, widget configs, flags, tokens, casts, Companion blocks, art, audio, and how to test. Everything is vanilla JS, classic `<script>` tags, no build step, no modules. Everything must work from GitHub Pages or `python3 -m http.server`.
 
@@ -53,7 +53,7 @@ Text then a Continue button. `auto: ms` advances automatically.
 ```js
 { type: 'puzzle', puzzle: 'ring', puzzleId: 'ch2_door',   // puzzleId defaults to scene id; solved puzzles are skipped on resume
   config: (state) => ({ ... }),                            // widget config (see §3)
-  hints: ['Owl knows where a ring begins.', 'Sunwise from slot 3.', (s) => 'ASH at 3, EMBER at 4.'], par: [3, 6],
+  hints: ['The Seer knows where a ring begins.', 'Sunwise from slot 3.', (s) => 'ASH at 3, EMBER at 4.'], par: [3, 6],
   onSolve: (state, result) => { ... },                     // side effects
   solvedText: ['The lamp catches.'], next: 'ch0_x', autoNext: false }
 ```
@@ -61,7 +61,7 @@ The widget resolves with a result object; `result.set` (if present) is written t
 
 ### 2.4 `code` — attunement word (chapter boundary)
 ```js
-{ type: 'code', text: ['The word is carved above the door.'], roles: 'Warden of the Hearth: **Owl**. Voice: **Bookmoth**.', sightSeconds: 90, next: 'ch2_1' }
+{ type: 'code', text: ['The word is carved above the door.'], roles: 'Warden of the Hearth: **The Seer**. Voice: **The Reader**.', sightSeconds: 90, next: 'ch2_1' }
 ```
 The word comes from the chapter's `code`; the cast is computed automatically from `VigilLore.chapter(id).cast` and current flags. Use `code: 'LINEN'` on a scene to show a mini-word (no cast). After the code scene, the Companion has the chapter's pages.
 
@@ -79,7 +79,7 @@ The word comes from the chapter's `code`; the cast is computed automatically fro
 ```js
 flow: { nodes: [ { id: 'ch1_vote', label: 'The Convocation votes', col: 0, row: 1 },
                  { id: 'ch1_vote_lost', label: 'Wren is taken', col: 1, row: 2, kind: 'choice', when: (s) => s.flags.VOTE_LOST, secret: true },
-                 { id: 'ch1_private', label: 'only Hush knows', col: 2, row: 0, kind: 'end', secret: true } ],
+                 { id: 'ch1_private', label: 'only the Listener knows', col: 2, row: 0, kind: 'end', secret: true } ],
         edges: [ ['ch1_vote', 'ch1_vote_lost'] ] }
 { type: 'flow', text: ['The bell. The night moves on.'], stats: (s) => 'Hints so far: ' + (s.flags.hintsTotal || 0), next: 'ch2_start' }
 ```
@@ -135,7 +135,7 @@ Blocks: `{t:'h', text}`, `{t:'p', text}`, `{t:'fine', text}`, `{t:'letter', text
 
 Token choices: the block `id` must equal the beat name used on the Hearth (`'whisper'`, `'hold'`, `'finale'`), and `options` ids must equal `VigilLore.tokens.*` values for that role. The token shown is `Shared.token(lore.channel(id, roleId), optionId, values)`.
 
-Listener audio: `Audio.init()` is called by the block; play steps with `CompanionAudio.playSteps(['+1','+3','-2','rest'])` or `CompanionAudio.playContour(names)` from `js/content/companion/book.js`; arrow strips with `CompanionAudio.strip(steps)`. Heartbeats: `CompanionAudio.heartbeat(bpm)`.
+Listener audio: `Audio.init()` is called by the block; play steps with `CompanionAudio.playSteps(Audio, [1, 3, -2, 'rest'])` or a row of glyphs with `CompanionAudio.playGlyphs(Audio, names)` from `js/content/companion/book.js`; arrow strips with `CompanionAudio.strip(steps)`. Heartbeats: `CompanionAudio.heartbeat(Audio, bpm, beats)`; chimes: `CompanionAudio.pulses(Audio, n, gapMs)`. Every player returns the phrase length in ms — a block's `play` should return it too, so the button's *Listening…* state lasts as long as the sound. Schedule chained sounds with `CompanionAudio.later(fn, ms)` so a new press cancels them. Buttons that play something are built with `UI.audioButton(label, onPlay, { cls })`.
 
 The Seer's under-layer: `{ t: 'svg', cls: 'underlayer', svg: VigilArt.underlayer(...) }` or hand-written white-on-black SVG. In every under-layer with Wren and a flame, draw four shadows away from the fire and Wren's toward it.
 
@@ -174,7 +174,7 @@ A chapter may inject its own CSS from its Hearth file (`document.head.appendChil
 
 ## 11. Asymmetry rules for widgets (integrator notes)
 
-- Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs Bookmoth to name what is carved. Do not add shapes to palette tiles.
+- Ring and dial palettes show glyph **names only**; placed glyphs render as shapes. The shape→word lexicon lives on the Reader's phone, so the Warden needs the Reader to name what is carved. Do not add shapes to palette tiles.
 - A solved widget stays on screen while `solvedText` plays (set `clearWidget: true` on the scene to hide it instead).
 - `seats` accepts `keepSelection: true` to keep the current approaches after a non-final wrong check.
 

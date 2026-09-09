@@ -14,7 +14,7 @@
       `<path d="M-38,0 L-30,-150 C-30,-190 -14,-215 0,-222 C14,-215 30,-190 30,-150 L38,0 Z" fill="#06050a"/>` +
       `<path d="M${lit * 30},-150 C${lit * 30},-190 ${lit * 14},-215 0,-222 L0,-214 C${lit * 11},-208 ${lit * 24},-186 ${lit * 24},-150 L${lit * 32},0 L${lit * 38},0 Z" fill="#5a4c66" opacity=".85"/>` +
       `<path d="M-14,-226 C-14,-238 14,-238 14,-226 L10,-206 L-10,-206 Z" fill="#06050a"/>` +
-      (name ? `<text y="46" text-anchor="middle" fill="rgba(212,169,78,0.55)" font-size="17" font-family="Cinzel,serif" letter-spacing="4">${name}</text>` : '') +
+      (name ? `<text y="48" text-anchor="middle" fill="rgba(212,169,78,0.55)" font-size="26" font-family="Cinzel,serif" letter-spacing="0">${name}</text>` : '') +
       `</g>`;
   }
   /* A bronze dial set in the floor. */
@@ -63,7 +63,9 @@
 
   /* ---------- the Founders' Antechamber: four statues, four dials ---------- */
   A.define('ch2_antechamber', (p) => {
-    const names = ['MERE', 'HALVARD', 'ROOK', 'IDONY'];
+    /* Plinths and dials carry the same one number set. No name, no shape, no mark: the carvings are the
+       Reader's and the old holes are the Seer's, and the Hearth may not draw either. */
+    const names = ['1', '2', '3', '4'];
     const xs = [320, 640, 960, 1280];
     return P.wrap(
       P.sky('#07060b', '#120e16') +
@@ -73,7 +75,7 @@
       P.floorTiles(560, '#0e0b13', 'rgba(255,255,255,0.045)') +
       xs.map((x, i) => statue(x, 490, 0.95, i < 2 ? 1 : -1, names[i])).join('') +
       `<rect x="120" y="556" width="1360" height="6" fill="#221a20"/>` +
-      xs.map((x, i) => dial(x, 690, 'ABCD'[i])).join('') +
+      xs.map((x, i) => dial(x, 690, String(i + 1))).join('') +
       `<g transform="translate(800,300)"><rect x="-260" y="-90" width="520" height="180" rx="8" fill="#15101a" stroke="#2c2330" stroke-width="4"/>` +
       `<path d="M-260,-90 A260,260 0 0 1 260,-90" fill="#15101a" stroke="#2c2330" stroke-width="4"/>` +
       `<line x1="0" y1="-300" x2="0" y2="90" stroke="#2c2330" stroke-width="5"/>` +
@@ -96,18 +98,20 @@
       `<path d="M660,480 L660,300 A140,140 0 0 1 940,300 L940,480 Z" fill="#241c22" stroke="#2c2330" stroke-width="6"/>` +
       `<clipPath id="ch2arch"><path d="M672,480 L672,300 A128,128 0 0 1 928,300 L928,480 Z"/></clipPath><g clip-path="url(#ch2arch)">${bricks}</g>` +
       `<text x="800" y="512" text-anchor="middle" fill="rgba(233,226,210,0.35)" font-size="16" font-family="Cinzel,serif" letter-spacing="5">212</text>` +
+      (p && p.arch ? `<path d="M660,480 L660,300 A140,140 0 0 1 940,300 L940,480 Z" fill="none" stroke="${COLD}" stroke-width="3" opacity=".35"/>` : '') +
       P.floorTiles(560, '#0b0a12', 'rgba(255,255,255,0.05)') +
       // plinth with the Ember
       `<g transform="translate(800,600)"><path d="M-90,60 L-70,-40 L70,-40 L90,60 Z" fill="#17131c" stroke="#2a2330" stroke-width="3"/><rect x="-80" y="-52" width="160" height="14" fill="#221a20"/></g>` +
-      ember(800, 550, 1.4) +
-      (p && p.empty ? `<rect x="740" y="470" width="120" height="100" fill="#0b0a12" opacity=".9"/>` : '') +
+      (p && p.empty ? '' : ember(800, 550, 1.4)) +
       `<g transform="translate(800,600)"><rect x="-80" y="-52" width="160" height="14" fill="#221a20"/></g>` +
       P.torch(230, 470, 1) + P.torch(1370, 470, 1) +
       P.fog(500, 300, '#0f2a30', 0.35)
     );
   });
 
-  /* ---------- the Map of the Night turning downward: the school, the vault, the bricked road, four thrones far below ---------- */
+  /* ---------- the Map of the Night: defined, and deliberately unreferenced ----------
+     Chapter II no longer shows the Map: it named Thornhallow, the Founders' road and 212 to a table that
+     could act on none of them. Kept here for a later chapter rather than deleted. */
   A.define('ch2_map', () => {
     const vellum = '#3a2f22', ink = 'rgba(233,226,210,0.75)', gold = 'rgba(242,210,122,0.9)';
     let thrones = '';

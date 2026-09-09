@@ -1,0 +1,19 @@
+{ "start": "ch3_start", "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]},
+  {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the Laundry"},
+  {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "delighted"}, {"expectNot": "undefined"},
+  {"eval": "document.querySelector('.blk-code .word').textContent"},
+  {"assert": "document.querySelector('.blk-choice .opt.chosen') && getComputedStyle(document.querySelector('.blk-choice .opt.chosen')).opacity==='1'"},
+  {"click": "#cmenu"}, {"wait": 400}, {"clickText": "Change seat"}, {"wait": 500},
+  {"role": "Listener", "name": "Ben"},
+  {"clickText": "Chapter III"}, {"wait": 300}, {"tab": "Speak"}, {"wait": 300}, {"shot": "seat-change-listener"},
+  {"assert": "/Can you hear mine/.test(document.body.innerText)"}, {"expectNot": "undefined"},
+  {"assert": "!document.querySelector('.blk-choice .opt.chosen') && [...document.querySelectorAll('.blk-choice .opt')].every(b => !b.disabled) && !document.querySelector('.blk-code')"},
+  {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400},
+  {"assert": "(function(){const t=document.querySelector('.blk-code .word').textContent; return window.VigilShared.decode(window.VigilLore.channel('whisper','listener'), t, window.VigilLore.tokens.whisper.listener)!==null;})()"},
+  {"click": "#cmenu"}, {"wait": 400}, {"clickText": "Change seat"}, {"wait": 500},
+  {"role": "Reader", "name": "Ana"},
+  {"clickText": "Chapter III"}, {"wait": 300}, {"tab": "Speak"}, {"wait": 300},
+  {"expect": "delighted"}, {"expectNot": "undefined"},
+  {"assert": "!!document.querySelector('.blk-choice .opt.chosen') && !!document.querySelector('.blk-code .word')"}
+] }

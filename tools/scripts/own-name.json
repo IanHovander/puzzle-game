@@ -1,0 +1,6 @@
+{ "start": "ch0_name", "dialogText": "The Bell-Ringers", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 600}, {"shot": "own_choices"},
+  {"clickText": "Something of our own"}, {"wait": 700},
+  {"expect": "Bell-Ringers"}, {"shot": "own_named"},
+  {"clickText": "Continue"}, {"wait": 2500}, {"key": "Space"}, {"wait": 1200}, {"expect": "Bell-Ringers"}, {"shot": "own_flow"}
+] }

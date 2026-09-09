@@ -1,0 +1,5 @@
+{ "start": "ch0_start", "steps": [
+  {"companion": true}, {"role": "Listener", "name": "Sam"}, {"unlock": ["KINDLE"]},
+  {"assert": "(function(){const d=document.createElement('div');d.className='inner hidden';document.body.appendChild(d);const r=getComputedStyle(d).display==='none';d.remove();return r;})()"},
+  {"assert": "getComputedStyle(document.getElementById('cmenu')).fontSize==='14px'"}
+] }

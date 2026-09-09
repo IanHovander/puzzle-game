@@ -1,4 +1,4 @@
-# Hosting a night of HEARTHFALL — spoiler-free guide
+# Hosting a night of WHAT THE FIRE KEEPS — spoiler-free guide
 
 This page contains no story spoilers. It tells you what to set up, what to expect, and what to do if something goes wrong.
 
@@ -30,6 +30,8 @@ Find the laptop's local IP (e.g. `192.168.1.23`), open `http://192.168.1.23:8080
 
 Opening `index.html` directly from the file system works for the Hearth alone, but phones cannot reach a `file://` page — use A or B.
 
+**Option C — single-file pages.** `node tools/bundle.js` writes `dist/hearth.html` and `dist/companion.html` with everything inlined, so each is one file you can host anywhere that serves a static page (pass `--companion-url <url>` so the Hearth's *Phones* button points at wherever the Companion ended up). `--artifact` emits the same pages as fragments for hosts that supply their own page skeleton.
+
 ## Seating and roles
 
 Sit in a row facing the screen, left to right: **the Reader, the Listener, the Seer, the Binder**. Each seat has a different gift and a different phone. Each seat also has a key on the laptop keyboard (defaults `A`, `C`, `M`, `/`, changeable on the title screen). On each phone: pick your seat, type your first name (it stays on the phone), and wait for the Hearth to show a word.
@@ -59,6 +61,7 @@ The Hearth saves after every scene. Closing the laptop or the tab is fine: the t
 - **The wrong scene, or a mistake you want to undo** — the menu (☰) has *Replay scene* and *Chapter select*.
 - **Someone typed a private word wrong** — the Hearth just says it isn't attuned; retype it.
 - **No sound** — click anywhere once (browsers require a gesture), then check the speaker icon.
+- **No sound on a phone** — on an iPhone, set the Ring/Silent switch to ring (no orange showing) and turn the volume up, then press the listening button again; on Android, check the media volume. Every sound a Companion page plays is also written on that page, so nobody is stuck without it.
 - **You want to start over** — menu → *Abandon game*, or *New game* on the title screen.
 
 ## For the host who wants to know more

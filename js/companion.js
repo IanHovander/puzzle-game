@@ -4,6 +4,8 @@
   'use strict';
   const UI = window.VigilUI, Shared = window.VigilShared, Audio = window.VigilAudio, Lore = window.VigilLore;
   const C = window.CompanionContent;
+  document.body.classList.add('companion'); document.body.classList.remove('hearth');
+  document.documentElement.classList.add('companion-page'); // the scroll rules for browsers without :has()
   const KEY = 'vigil.companion.v2';
   const fresh = () => ({ role: null, name: '', unlocked: {}, mini: {}, answers: {}, notes: {}, done: {}, tab: 'sight', current: null });
   let st = fresh();
@@ -13,11 +15,23 @@
   document.addEventListener('pointerdown', () => { try { Audio.init(); } catch (e) {} }, { once: true });
   document.getElementById('cmenu').addEventListener('click', menu);
 
+  /* Answers, task results and notes belong to the player in the seat, not to the phone: changing seat parks the
+     current seat's private state under st.seats and restores the new seat's (chapter unlocks stay: the Hearth's
+     words are the same for everyone). Otherwise a second player on this phone would see, and be unable to change,
+     the first one's sealed answers. */
+  function switchRole(id) {
+    if (st.role === id) return;
+    st.seats = st.seats || {};
+    if (st.role) st.seats[st.role] = { answers: st.answers, done: st.done, notes: st.notes };
+    const s = (id && st.seats[id]) || {};
+    st.answers = s.answers || {}; st.done = s.done || {}; st.notes = s.notes || {};
+    st.role = id;
+  }
   const qs = new URLSearchParams(location.search);
-  if (qs.get('role') && Lore.roleById(qs.get('role'))) { st.role = qs.get('role'); save(); }
+  if (qs.get('role') && Lore.roleById(qs.get('role'))) { switchRole(qs.get('role')); save(); }
 
   const role = () => Lore.roleById(st.role);
-  function setHeader() { const r = role(); roleEl.textContent = r ? `${r.nick} · ${r.name}` : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
+  function setHeader() { const r = role(); roleEl.textContent = r ? r.nick : ''; roleEl.className = 'crole' + (r ? ' p' + r.idx : ''); }
   const chapterOrder = () => Lore.chapters.map(c => c.id);
   const maxUnlockedN = () => Math.max(-1, ...Object.keys(st.unlocked).map(id => Lore.chapter(id).n));
 
@@ -37,8 +51,8 @@
     p.appendChild(UI.el('p', { class: 'fine', html: UI.rich(C.roleIntro || 'Sit left to right: Reader, Listener, Seer, Binder. Pick the seat you are in. What appears here is for your eyes — share it by talking.') }));
     const grid = UI.el('div', { class: 'role-grid' });
     Lore.roles.forEach((r, i) => {
-      grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { st.role = r.id; save(); Audio.sfx('chime'); showName(); } }, [
-        UI.el('span', { class: 'rname', text: `${r.name} — "${r.nick}"` }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
+      grid.appendChild(UI.el('button', { class: 'role-card p' + i, onclick: () => { switchRole(r.id); save(); Audio.sfx('chime'); showName(); } }, [
+        UI.el('span', { class: 'rname', text: r.name }), UI.el('span', { class: 'rgift', text: r.gift + ' · ' + r.what }),
       ]));
     });
     p.appendChild(grid); main.appendChild(p);
@@ -60,6 +74,13 @@
   function showHome() {
     setHeader(); UI.clear(main);
     const r = role();
+    // Who you are, first thing on the page: the rest of the night hangs off it.
+    const who = UI.el('div', { class: 'cpanel who p' + r.idx });
+    who.appendChild(UI.el('h2', { text: r.nick }));
+    who.appendChild(UI.el('p', { class: 'fine', html: UI.rich(r.blurb) }));
+    who.appendChild(UI.el('p', { class: 'fine rule', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
+    main.appendChild(who);
+
     const u = UI.el('div', { class: 'cpanel' });
     u.appendChild(UI.el('h2', { text: 'Word of attunement' }));
     u.appendChild(UI.el('p', { class: 'fine', text: 'When the Hearth shows a word, enter it here. If a mark stands beside the word, enter the mark too.' }));
@@ -78,6 +99,16 @@
         const data = Shared.uncast(lc.word, m);
         if (data == null) { fail('The mark is not right. Look again at the Hearth.'); return; }
         flags = Shared.unpack(lc.cast, data); castStr = m;
+      }
+      const prev = st.unlocked[lc.id];
+      if (prev && (prev.cast || null) !== (castStr || null)) {
+        // The same page turned again with a different mark: the Hearth's night has changed (a retry), so this
+        // chapter's sealed answers and finished tasks are stale — the option sets and tokens may differ now.
+        // Seats parked on this phone are cleared as well; they never turn the page themselves.
+        const wipe = (o) => o && Object.keys(o).forEach(k => { if (k.startsWith(lc.id + ':')) delete o[k]; });
+        [st.answers, st.done].forEach(wipe);
+        Object.values(st.seats || {}).forEach(s => { wipe(s.answers); wipe(s.done); });
+        UI.toast('A new mark: this page\'s answers begin again.', 2600);
       }
       st.unlocked[lc.id] = { cast: castStr, flags }; st.current = lc.id; st.tab = 'sight'; save(); Audio.sfx('unlock'); showChapter(lc.id);
     };
@@ -98,10 +129,6 @@
       list.appendChild(b);
     });
     l.appendChild(list); main.appendChild(l);
-    const h = UI.el('div', { class: 'cpanel' });
-    h.appendChild(UI.el('p', { class: 'fine', html: `<span class="tag">${UI.esc(r.nick)}</span> ${UI.rich(r.blurb)}` }));
-    h.appendChild(UI.el('p', { class: 'fine', html: '<em>' + UI.esc(Lore.houseRule) + '</em>' }));
-    main.appendChild(h);
   }
 
   const TABS = [['sight', 'Sight'], ['wren', 'Wren'], ['speak', 'Speak'], ['book', 'Book']];
@@ -161,9 +188,16 @@
           const w = UI.el('div', { class: 'blk-audio' });
           if (b.label) w.appendChild(UI.el('div', { class: 'label', text: b.label }));
           if (b.strip) w.appendChild(UI.el('div', { class: 'strip', html: typeof b.strip === 'function' ? b.strip(cx) : b.strip }));
-          const btn = UI.el('button', { class: 'btn', text: b.button || '♪ Cup your ear', onclick: () => { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); try { b.play(Audio, cx); } catch (e) { console.error(e); } } });
+          const btn = UI.audioButton(b.button || 'Cup your ear', () => {
+            Audio.init(); if (Audio.isMuted()) Audio.setMuted(false);
+            const ms = b.play(Audio, cx);
+            const len = typeof ms === 'number' && isFinite(ms) ? ms : 2200;
+            UI.lightStrip(w.querySelector('.strip'), len);
+            return len;
+          });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {
@@ -187,19 +221,22 @@
           if (b.prompt) w.appendChild(UI.el('p', { html: UI.rich(b.prompt) }));
           const opts = UI.el('div', { class: 'opts' });
           const key = ch.id + ':' + b.id;
-          const chosen = st.answers[key];
           const values = b.options.map(o => o.id);
+          // A stored answer that is not one of this page's options is stale (another seat's, or an older mark's): unanswered.
+          let chosen = values.includes(st.answers[key]) ? st.answers[key] : undefined;
+          if (chosen === undefined && st.answers[key] !== undefined) { delete st.answers[key]; save(); } // a stale answer is no answer, to content too
           const channel = b.channel || Lore.channel(b.id, st.role);
           const showToken = (optId) => {
             const tok = Shared.token(channel, optId, values);
             w.appendChild(UI.el('div', { class: 'blk-code sea' }, [UI.el('div', { class: 'label', text: b.tokenLabel || 'Your sealed word — type it into the Hearth when it asks' }), UI.el('div', { class: 'word', text: tok })]));
-            if (b.after) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(typeof b.after === 'function' ? b.after(optId, cx) : b.after) }));
+            const after = b.after ? (typeof b.after === 'function' ? b.after(optId, cx) : b.after) : '';
+            if (after) w.appendChild(UI.el('p', { class: 'fine after', html: UI.rich(after) }));
           };
           b.options.forEach(o => {
-            const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: () => {
-              if (st.answers[key] !== undefined && !b.changeable) return;
-              if (!b.changeable && !confirm('Seal this answer? It cannot be unsaid.')) return;
-              st.answers[key] = o.id; save(); Audio.sfx('seal');
+            const btn = UI.el('button', { class: 'btn opt' + (chosen === o.id ? ' chosen' : ''), html: UI.rich(o.text), onclick: async () => {
+              if (chosen !== undefined && !b.changeable) return;
+              if (!b.changeable && !(await UI.confirm('Seal this answer? It cannot be unsaid.', { ok: 'Seal it', cancel: 'Not yet' }))) return;
+              chosen = o.id; st.answers[key] = o.id; save(); Audio.sfx('seal');
               Array.from(opts.children).forEach(x => { x.classList.toggle('chosen', x === btn); x.disabled = !b.changeable; });
               w.querySelectorAll('.blk-code, .fine.after').forEach(x => x.remove()); showToken(o.id);
             } });
@@ -237,7 +274,7 @@
     const row = UI.el('div', { class: 'row' });
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Change seat / name', onclick: () => { m.close(); showRoles(); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: Audio.isMuted() ? 'Unmute' : 'Mute', onclick: () => { Audio.init(); Audio.toggleMute(); m.close(); } }));
-    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Forget everything', onclick: () => { if (confirm('Erase this phone\'s pages and choices?')) { st = fresh(); save(); m.close(); showRoles(); } } }));
+    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Forget everything', onclick: async () => { if (await UI.confirm('Erase this phone\'s pages and choices?', { danger: true, ok: 'Erase' })) { st = fresh(); save(); m.close(); showRoles(); } } }));
     box.appendChild(row);
     const m = UI.modal(box, { title: 'Companion' });
   }

@@ -1,0 +1,236 @@
+{
+ "start": "ch5_gate1",
+ "set": "OATH=1,DOOR=BLUFF",
+ "_what": "Four frosts at the first gate: the gate stops answering, the Provost breaks it, and the stair is charged for the frosts and for the breaking.",
+ "steps": [
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "slots": [
+    [
+     2,
+     "WELL"
+    ],
+    [
+     4,
+     "VEIL"
+    ],
+    [
+     5,
+     "EMBER"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "wait": 1400
+  },
+  {
+   "slots": [
+    [
+     1,
+     "EMBER"
+    ],
+    [
+     3,
+     "WELL"
+    ],
+    [
+     4,
+     "VEIL"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "wait": 1400
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "gate1_forced"
+  },
+  {
+   "expect": "four hundred years old"
+  },
+  {
+   "expect": "a flight closer"
+  },
+  {
+   "assert": "VigilStore.state.flags.GATE1_FROST === 2"
+  },
+  {
+   "clickText": "On down"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "The second gate"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "slots": [
+    [
+     1,
+     "CROWN"
+    ],
+    [
+     2,
+     "KNOT"
+    ],
+    [
+     3,
+     "WELL"
+    ],
+    [
+     4,
+     "ASH"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 1200
+  },
+  {
+   "keys": "acm/"
+  },
+  {
+   "wait": 1800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "clickText": "The third gate"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "Count us in"
+  },
+  {
+   "wait": 4600
+  },
+  {
+   "clickText": "The digits are in"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "type": [
+    "#widget input.field",
+    "3534"
+   ]
+  },
+  {
+   "clickText": "Count"
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Boots, above"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "expect": "cost you time"
+  },
+  {
+   "clickText": "Ready"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "expect": "25 heartbeats"
+  },
+  {
+   "expect": "cost you 20"
+  },
+  {
+   "click": ".btn.choice >> nth=2"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "expect": "bell-chamber soon after you"
+  },
+  {
+   "log": true
+  }
+ ]
+}

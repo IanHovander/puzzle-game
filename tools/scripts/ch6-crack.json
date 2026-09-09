@@ -1,0 +1,23 @@
+{ "start": "ch6_start", "set": "VOLUNTEER=0,STAIR=COLLAPSE,WHISPER_listener=NO,WHISPER_seer=TELL,WHISPER_reader=DONTKNOW,WHISPER_binder=DONTKNOW",
+  "_what": "The worst night the chapter can hand forward. One bell already cracked by the fallen stair, then both patterns rung so badly that two more crack: BELLS_CRACKED reaches 3, which is what ch7 mutes lanes on and ch8 prints. The auto-ringer is switched on late in each round, so most of the pattern is simply missed.",
+  "steps": [
+  {"key": "Space"}, {"expect": "went tang instead of tong"}, {"clickText": "The Provost"},
+  {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Practice peal"},
+  {"wait": 800}, {"key": "Space"}, {"waitFor": "#actions .btn.primary", "timeout": 40000}, {"clickText": "Ring the pattern"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 26000},
+  {"eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb:not(.mimic)').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (Math.abs(y - hy) < 22) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 25); return 'auto-ringer on (late)'; })()"},
+  {"waitFor": "#actions .btn.primary", "timeout": 70000}, {"expect": "Not enough"}, {"expect": "A bell is cracked. 2 of four."}, {"expect": "Again. The next one."}, {"shot": "k_round1"}, {"log": true},
+  {"eval": "clearInterval(window.__auto); 'auto-ringer off'"},
+  {"clickText": "The last pattern"},
+  {"wait": 800}, {"key": "Space"}, {"clickText": "Ring it blind"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 26000},
+  {"eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb:not(.mimic)').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (Math.abs(y - hy) < 22) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 25); return 'auto-ringer on (late)'; })()"},
+  {"waitFor": "#actions .btn.primary", "timeout": 80000}, {"expect": "Three bells cracked"}, {"shot": "k_round3"}, {"log": true},
+  {"eval": "clearInterval(window.__auto); 'auto-ringer off'"},
+  {"clickText": "The Cold is held"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "One bell humming"}, {"shot": "k_held"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 3"},
+  {"eval": "({ CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, R1: window.VigilStore.state.flags.BELLS_R1_HITS, R1C: window.VigilStore.state.flags.BELLS_R1_CRACK, R3: window.VigilStore.state.flags.BELLS_R3_HITS, R3C: window.VigilStore.state.flags.BELLS_R3_CRACK })"}
+] }

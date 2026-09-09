@@ -1,0 +1,16 @@
+{ "start": "ch4_shelf", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"expect": "rubbed to nothing"}, {"expect": "gives once"},
+  {"click": ".wheel .slot[data-i=\"0\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"clickText": "Pull the books"}, {"wait": 400}, {"expect": "not four of them"}, {"wait": 1000},
+  {"click": ".wheel .slot[data-i=\"2\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"5\"]"}, {"clickText": "Pull the books"}, {"wait": 400}, {"expect": "as they stand"}, {"wait": 1600}, {"key": "Space"}, {"wait": 800},
+  {"expect": "puts a boot through the board"}, {"expect": "still stood in its own place"}, {"shot": "ch4_shelf_forced"}, {"clickText": "Search the study"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "0 found"}, {"clickText": "Stop searching"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"}, {"click": ".btn.choice >> nth=0"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "Wax does not soften twice"},
+  {"slots": [[1, "ASH"], [2, "WELL"], [3, "COLD"], [4, "THORN"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "will not take COLD"}, {"wait": 1200},
+  {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "an oath without a lock is a wish"}, {"wait": 1200},
+  {"slots": [[4, "THORN"], [1, "ASH"], [2, "WELL"], [3, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1600}, {"key": "Space"}, {"wait": 900},
+  {"expect": "wax stays grey"}, {"expect": "began at the notch"}, {"expect": "no part of this"}, {"expect": "nearly took"}, {"shot": "ch4_oath_cold"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "would not close"}, {"expect": "you found none"}, {"shot": "ch4_forced_flow"},
+  {"assert": "VigilStore.state.flags.OATH === 0 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === true && VigilStore.state.flags.LAW0 === false"},
+  {"eval": "VigilStore.state.log.slice(-3)"}
+] }

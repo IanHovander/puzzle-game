@@ -1,10 +1,16 @@
-{ "start": "ch4_secrets", "flags": "SURRENDERED,WREN_SCARED,SORREL", "steps": [
-  {"key": "Space"}, {"wait": 400}, {"shot": "ch4alt_secrets"},
-  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"click": ".ch4-opts .btn >> nth=2"}, {"wait": 1000}, {"expect": "shape of her"}, {"expect": "does not ask what colour"}, {"clickText": "Back to the room"},
+{ "start": "ch4_start", "flags": "SURRENDERED,WREN_SCARED,SORREL", "set": "DOOR=SURRENDERED", "steps": [
+  {"key": "Space"}, {"wait": 400}, {"shot": "ch4alt_start"},
+  {"expect": "took the child back"}, {"expect": "a man with a writ"}, {"expect": "not made a joke since the stair"}, {"expectNot": "Nobody stopped you on the stair"}, {"clickText": "What she wants"},
+  {"wait": 600}, {"key": "Space"}, {"wait": 400}, {"expect": "decide what you are"}, {"shot": "ch4alt_marrow"}, {"clickText": "Look at the mantel"},
+  {"wait": 600}, {"key": "Space"}, {"wait": 400}, {"expect": "EMBER"}, {"expect": "WT2"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "gives once"},
+  {"click": ".wheel .slot[data-i=\"1\"]"}, {"click": ".wheel .slot[data-i=\"4\"]"}, {"click": ".wheel .slot[data-i=\"3\"]"}, {"click": ".wheel .slot[data-i=\"0\"]"}, {"clickText": "Pull the books"}, {"wait": 1600}, {"key": "Space"}, {"wait": 600}, {"expect": "does not come to look"}, {"clickText": "Search the study"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch4alt_secrets"},
+  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"type": ["#widget input.field >> nth=0", "grey"]}, {"type": ["#widget input.field >> nth=1", "not yet"]}, {"clickText": "Say what you see"}, {"wait": 1400}, {"expect": "already said goodbye"}, {"expect": "shape of her"}, {"expect": "does not ask what colour"}, {"shot": "ch4alt_chair"}, {"clickText": "Back to the room"},
   {"wait": 400}, {"expect": "1 found"}, {"clickText": "Stop searching"},
-  {"wait": 800}, {"key": "Space"}, {"expect": "You found one"}, {"expect": "says nothing at all"}, {"shot": "ch4alt_return"}, {"clickText": "Unroll the scroll"},
-  {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=1"},
-  {"wait": 800}, {"key": "Space"}, {"expect": "no part of the Sealing"}, {"expect": "they said no"}, {"shot": "ch4alt_refused"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "refused"}, {"shot": "ch4alt_flow"},
-  {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, GREY: VigilStore.state.flags.GREY})"}
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"}, {"expect": "says nothing at all"}, {"shot": "ch4alt_swear"}, {"click": ".btn.choice >> nth=1"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "no part of this"}, {"expect": "they said no"}, {"expectNot": "wax stays grey"}, {"shot": "ch4alt_refused"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "refused to swear"}, {"expect": "you found one"}, {"shot": "ch4alt_flow"},
+  {"assert": "VigilStore.state.flags.OATH === 0 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === true && VigilStore.state.flags.GREY === true && VigilStore.state.flags.MARROW_LETTER === undefined && VigilStore.state.flags.LAW0 === false"},
+  {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, GREY: VigilStore.state.flags.GREY, MARROW_LETTER: VigilStore.state.flags.MARROW_LETTER})"}
 ] }

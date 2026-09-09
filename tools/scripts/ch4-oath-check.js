@@ -1,0 +1,49 @@
+/* Chapter IV oath-ring assertions. Loads the real chapter under a stub window, pulls the shipped
+   config for ch4_oath, and enumerates every legal board against the shipped check() — so the
+   drop-a-role table in the chapter comment is measured, not asserted.
+   Run: node tools/scripts/ch4-oath-check.js */
+const fs = require('fs'), path = require('path'), vm = require('vm');
+const root = path.join(__dirname, '..', '..');
+const noop = () => {};
+const el = () => ({ appendChild: noop, addEventListener: noop, classList: { add: noop, remove: noop, toggle: noop, contains: () => false }, style: {}, querySelector: () => null, querySelectorAll: () => [], setAttribute: noop, remove: noop, innerHTML: '', textContent: '' });
+const win = { addEventListener: noop, location: { href: 'http://x/', protocol: 'http:', search: '' }, localStorage: { getItem: () => null, setItem: noop, removeItem: noop }, document: { getElementById: el, createElement: el, createTextNode: () => ({}), body: el(), head: el(), addEventListener: noop, querySelector: () => null, querySelectorAll: () => [], hidden: false }, navigator: {}, performance: { now: () => 0 }, requestAnimationFrame: noop, setInterval: () => 0, setTimeout: () => 0, clearInterval: noop, clearTimeout: noop, console, prompt: () => null, confirm: () => true, alert: noop, URLSearchParams, Math, JSON, Object, Array, String, Number, Promise, Set, Map, Date };
+win.window = win; const ctx = vm.createContext(win);
+for (const f of ['js/core/audio.js', 'js/core/fx.js', 'js/core/store.js', 'js/core/input.js', 'js/core/ui.js', 'js/core/engine.js', 'js/art/art.js', 'js/content/glyphs.js', 'js/content/shared.js', 'js/content/lore.js', 'js/content/ch3.js', 'js/content/ch4.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f });
+
+const G = win.VigilGlyphs;
+const NAMES = G.names.slice();                       // the eight words the palette offers
+const cfg = win.Game.scenes.ch4_oath.config({ flags: {} });
+const assert = (c, m) => { if (!c) { console.error('FAIL', m); process.exitCode = 1; } else console.log('ok  ', m); };
+
+/* every legal board: four slots, each empty or one of the eight, no repeats */
+const boards = [];
+(function build(slot, used, m) {
+  if (slot > 4) { boards.push(Object.assign({}, m)); return; }
+  build(slot + 1, used, m);                                        // leave it empty
+  for (const w of NAMES) { if (used.has(w)) continue; used.add(w); m[slot] = w; build(slot + 1, used, m); delete m[slot]; used.delete(w); }
+})(1, new Set(), {});
+
+const verdict = (m) => { const r = cfg.check(m); return r === true ? 'ACCEPT' : typeof r === 'string' ? r : 'false'; };
+const accepted = boards.filter(m => verdict(m) === 'ACCEPT');
+console.log(`${boards.length} legal boards, ${accepted.length} accepted`);
+accepted.forEach(m => console.log('    ', [1, 2, 3, 4].map(i => m[i] || '_').join('/')));
+assert(boards.length === 3393, `3393 legal boards (got ${boards.length})`);
+assert(accepted.length >= 1 && accepted.length <= 2, `the ring accepts ${accepted.length} board(s)`);
+
+/* The scratch and notch must not be Chapter III's pair, or a table that solved the Tower threshold
+   already knows where this sigil begins and the Seer's seat is free. */
+const src = fs.readFileSync(path.join(root, 'js/content/ch4.js'), 'utf8');
+const ch3src = fs.readFileSync(path.join(root, 'js/content/ch3.js'), 'utf8');
+const g = (re, t) => { const m = re.exec(t); return m ? +m[1] : null; };
+const s4 = g(/OATH_SCRATCH = (\d)/, src), n4 = g(/OATH_NOTCH = (\d)/, src);
+const c3 = /CUTS = \{ scratch: (\d), notch: (\d) \}/.exec(ch3src);
+assert(c3 && !(s4 === +c3[1] && n4 === +c3[2]),
+  `the oath's cuts (scratch ${s4}, notch ${n4}) are not Chapter III's (scratch ${c3 && c3[1]}, notch ${c3 && c3[2]})`);
+
+/* No drop-a-role table here, deliberately. The four facts interact -- the Binder's rule ("a sigil
+   begins at the scratch and runs the way a clock counts") only locates the words once the Seer has
+   said where the scratch is, and the Listener's step only orders them once they are located -- so a
+   generic per-role filter gives numbers that look authoritative and are wrong. The measured table
+   lives in the comment above the oath data in js/content/ch4.js, derived against this same shipped
+   check(); what this file guards is the part a change can break silently: the size of the legal
+   space, the number of winning boards, and the collision with Chapter III's cuts. */

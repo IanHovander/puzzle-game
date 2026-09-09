@@ -45,3 +45,47 @@ for (const hurt of [false, true]) {
   const bad = found.filter(f => { const c3 = f.steps.find(s => s[1] === 'C3'); const b3 = f.steps.some(s => s[1] === 'B3'); return !b3 || !c3 || (c3[0] !== 7 && c3[0] !== 8); });
   assert(found.length > 0 && bad.length === 0, `hurt=${hurt}: ${found.length} safe schedules, all through the Laundry, all reaching C3 on beat 7 or 8`);
 }
+
+/* The simulator above ends a run at the first sighting, which is not what the widget does: grid.js throws Wren
+   back to the last safe room and the count runs on. That blind spot hid a real break -- with the bounce
+   modelled and a sighting costing nothing but a counter, "push east, and when you are thrown back walk the
+   same road again" reached the Tower on turn 12 with no Companion pages at all. ch3.js now spends a turn in
+   onSpotted; this is the guard that says so. States are (room, turn, sightings), which is small enough to
+   enumerate exhaustively. */
+function winsWithSightings(hurt, sightingCostsATurn) {
+  const wins = {};                                  // sightings -> number of distinct winning routes
+  const seenState = new Set();
+  const at = (p, t, alarmUntil) => (alarmUntil >= t && p.alarmCell) ? p.alarmCell : p.path[(t - 1) % p.path.length];
+  const spotted = (t, w, alarmUntil) => !cfg.safe.includes(w)
+    && cfg.patrols.some(p => { const pc = at(p, t, alarmUntil); return pc === w || open.has(pc + '|' + w); });
+  (function walk(wren, turn, alarmUntil, sightings) {
+    if (turn > cfg.maxTurns) return;
+    const key = wren + '|' + turn + '|' + alarmUntil + '|' + sightings;
+    if (seenState.has(key)) return; seenState.add(key);
+    for (const mv of nb(wren).concat(['wait'])) {
+      let t = turn, w = wren, a = alarmUntil;
+      if (mv !== 'wait' && hurt && doors.has(w + '|' + mv)) { t++; if (t > cfg.maxTurns) continue; if (spotted(t, w, a)) { continue; } }
+      t++; if (t > cfg.maxTurns) continue;
+      if (mv !== 'wait') w = mv;
+      if (cfg.alarm.cells.includes(w)) a = t + cfg.alarm.turns;
+      if (spotted(t, w, a)) {
+        let s2 = sightings + 1, t2 = t;
+        if (sightingCostsATurn) { t2++; if (t2 > cfg.maxTurns) continue; }   // the deferred Wait in onSpotted
+        walk(cfg.safe[0], t2, a, s2);
+        continue;
+      }
+      if (w === cfg.goal) { wins[sightings] = (wins[sightings] || 0) + 1; continue; }
+      walk(w, t, a, sightings);
+    }
+  })(cfg.start, 0, -1, 0);
+  return wins;
+}
+for (const hurt of [false, true]) {
+  const withCost = winsWithSightings(hurt, true);
+  const withoutCost = winsWithSightings(hurt, false);
+  const label = hurt ? 'hurt  ' : 'unhurt';
+  const sighted = Object.keys(withCost).filter(k => +k > 0).reduce((a, k) => a + withCost[k], 0);
+  const sightedBefore = Object.keys(withoutCost).filter(k => +k > 0).reduce((a, k) => a + withoutCost[k], 0);
+  assert(sighted === 0, `${label}: no run wins after being seen (a sighting costs a turn; without that cost ${sightedBefore} would)`);
+  assert((withCost[0] || 0) > 0, `${label}: clean runs still win (${withCost[0]} of them)`);
+}

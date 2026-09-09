@@ -1,0 +1,9 @@
+{ "start": "ch3_door", "flags": "SORREL", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "Read it, captain"}, {"shot": "ch3_door_writ"},
+  {"click": ".btn.choice >> nth=1"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "war on a stair"}, {"expect": "goat"}, {"shot": "ch3_stand_writ"},
+  {"clickText": "The Tower stair"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "Sorrel"}, {"shot": "ch3_flow_writ"},
+  {"eval": "(function(){return window.VigilStore.state.flags.DOOR})()"},
+  {"clickText": "The Oath"}, {"wait": 1000}, {"log": true}
+] }

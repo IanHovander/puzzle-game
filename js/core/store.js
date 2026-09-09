@@ -16,7 +16,7 @@
       visited: [],            // scene ids in order (for flowchart)
       hintsUsed: {},          // puzzleId -> level reached
       solved: {},             // puzzleId -> true
-      names: ['Bookmoth', 'Hush', 'Owl', 'Knot'], // nicknames by seat (Reader, Listener, Seer, Binder)
+      names: ['Reader', 'Listener', 'Seer', 'Binder'], // seat names, left to right
       keys: ['A', 'C', 'M', '/'],
       elapsedMs: 0,           // accumulated play time (excluding pauses)
       startedAt: null,        // wall-clock of first start

@@ -79,20 +79,27 @@
   G.readTurned = (items) => items.slice().reverse().map(it => G.invert(G.read(it.shape, it.inv)));
   G.readLine = (items, mark) => mark === 'right' ? G.readTurned(items) : G.readNaive(items);
 
-  /* Steps between consecutive glyphs on the ladder. Returns array of numbers or 'rest'. */
+  /* Steps between consecutive glyphs on the ladder. Returns an array with one entry per glyph after the first:
+     a number (the step from the last glyph that sounded), 'rest' (this glyph is COLD, a pause), or 'start'
+     (this glyph sounds first — only when the row opens with a rest). A rest is a pause, not a reset: the glyph
+     after it is measured from the last one that sounded. */
   G.steps = function (names) {
-    const out = [];
-    for (let i = 1; i < names.length; i++) {
-      const a = GLYPHS[names[i - 1]].step, b = GLYPHS[names[i]].step;
-      if (b == null) out.push('rest'); else if (a == null) out.push('start'); else out.push(b - a);
+    const out = []; let last = null;
+    for (let i = 0; i < names.length; i++) {
+      const g = GLYPHS[names[i]]; const s = g ? g.step : null;
+      if (i === 0) { if (s != null) last = s; continue; }
+      if (s == null) out.push('rest');
+      else if (last == null) { out.push('start'); last = s; }
+      else { out.push(s - last); last = s; }
     }
     return out;
   };
-  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
+  G.stepsText = (names) => G.steps(names).map(s => s === 'rest' ? 'then a rest' : s === 'start' ? 'then it begins' : s === 0 ? 'the same' : (s > 0 ? 'up ' + s : 'down ' + (-s))).join(', ');
   /* Which orderings of a set match a contour? (used to verify uniqueness) */
   G.orderingsMatching = function (set, contour) {
     const res = []; const perm = (arr, m) => { if (!arr.length) { if (JSON.stringify(G.steps(m)) === JSON.stringify(contour)) res.push(m.slice()); return; } arr.forEach((x, i) => perm(arr.slice(0, i).concat(arr.slice(i + 1)), m.concat([x]))); };
-    perm(set, []); return res;
+    perm(set, []);
+    const seen = new Set(); return res.filter(m => { const k = m.join(','); if (seen.has(k)) return false; seen.add(k); return true; });
   };
 
   window.VigilGlyphs = G;

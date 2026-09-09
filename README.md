@@ -1,4 +1,4 @@
-# HEARTHFALL
+# WHAT THE FIRE KEEPS
 
 *Four fourth-year Wardens of Thornhallow, each with a different way of seeing, must get their friend Wren — the prophesied "one born of four" — through one night of politics, wards and bells to the Cold beneath their school, and decide, when the Hearth goes cold, who really has to walk in.*
 
@@ -44,6 +44,7 @@ tools/                local server, headless test runners, scripted playthroughs
 - `node tools/check-content.js` — static checks (every scene link resolves, every chapter registered on both screens, codes round-trip).
 - `node tools/run.js <sceneId> --shots /tmp/shots` — load one scene headlessly, report console errors, screenshot.
 - `node tools/play.js tools/scripts/ch0.json --shots /tmp/shots` — scripted playthroughs of a chapter (see the file header for the step vocabulary). The runners use `playwright-core` with a system Chromium; install with `npm i playwright-core` if you don't have it.
+- `node tools/bundle.js [--companion-url URL] [--artifact] [--host-sim]` — single-file builds of both pages in `dist/` for hosting anywhere; `--host-sim` also writes `dist/*-hosted.html`, the fragments wrapped in a host-style skeleton, for checking layout under a host that supplies its own body tag.
 
 ## License
 

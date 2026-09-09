@@ -1,0 +1,14 @@
+{ "start": "ch7_start", "steps": [
+  {"key": "Space"}, {"wait": 300}, {"expect": "the Crown's soldiers"}, {"expectNot": "Tarn"}, {"clickText": "The Envoy speaks"},
+  {"wait": 700}, {"key": "Space"}, {"wait": 400}, {"click": "button.choice:has-text('Say nothing')"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "ALK"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "vane_decision"}, {"expect": "Give Wren to the Envoy"},
+  {"click": "button.choice:has-text('Give Wren to the Envoy')"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "vane_given"}, {"expect": "holds his hand out"}, {"expect": "The spark goes out"},
+  {"assert": "VigilStore.state.flags.ENDING === 4 && VigilStore.state.flags.DECISION === 'VANE'"},
+  {"clickText": "What the Crown does"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "vane_ending"}, {"expect": "Nobody walked"}, {"expect": "garrison by spring"}, {"clickText": "The night, whole"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Envoy's Bargain"}, {"expect": "The Binding was never called"},
+  {"assert": "!VigilStore.state.solved || !VigilStore.state.solved.ch7_sigil"},
+  {"eval": "({ending: VigilStore.state.flags.ENDING, decision: VigilStore.state.flags.DECISION})"}
+] }

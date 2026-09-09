@@ -1,0 +1,9 @@
+{ "start": "ch6_start", "set": "VOLUNTEER=0,PRECRACKED=false,STAIR=RUN",
+  "_what": "The third opening branch: Chapter V ended with the table running. The chapter used to plant 'boots on the Stair' here and never touch it again for seventeen scenes, which pushed the RUN branch to eight open questions. The line is cut; the flag still travels to ch7. So this script now checks the branch adds NOTHING and claims no cracked bell.",
+  "steps": [
+  {"key": "Space"}, {"shot": "r_start"}, {"expect": "You are standing on a lid"},
+  {"expectNot": "boots on the Stair"}, {"expectNot": "One bell is wrong already"}, {"expectNot": "thread still runs up the Stair"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 0"},
+  {"assert": "window.VigilStore.state.flags.STAIR === 'RUN'"},
+  {"clickText": "The Provost"}, {"wait": 800}, {"key": "Space"}, {"expect": "Hands on your keys"}
+] }

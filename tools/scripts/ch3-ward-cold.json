@@ -1,0 +1,16 @@
+{ "start": "ch3_door", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "Seventy-five heartbeats"},
+  {"wait": 80000},
+  {"wait": 1200}, {"key": "Space"}, {"wait": 800}, {"expect": "Nobody answers the captain"}, {"shot": "ch3_ward_timedout"},
+  {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.TOWER_DOOR_timedout,f.DOOR||null,f.SURRENDERED||null]})()"},
+  {"slots": [[1, "ASH"], [2, "THORN"], [3, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "begun at slot 1"},
+  {"slots": [[2, "ASH"], [3, "THORN"], [4, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "iron does not answer"},
+  {"expectNot": "notch"}, {"expectNot": "cut under slot"}, {"expectNot": "wrong way round the ring"},
+  {"slots": [[1, "ASH"], [2, "THORN"], [4, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"shot": "ch3_ward_cold"},
+  {"key": "Space"}, {"wait": 800}, {"expect": "the soot stays soot"}, {"expect": "gave you longer"}, {"clickText": "The stair"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 600}, {"expect": "ring would not wake"}, {"expect": "will not hang tonight"}, {"shot": "ch3_surrender_cold"},
+  {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.SURRENDERED,f.WARD_COLD]})()"},
+  {"clickText": "The empty stair"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "you handed Wren over"},
+  {"clickText": "The Oath"}, {"wait": 1200}, {"log": true}
+] }

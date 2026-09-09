@@ -61,7 +61,7 @@
         const grid = UI.el('div', { class: 'palette-grid' });
         cfg.glyphs.forEach(g => {
           const used = !cfg.allowRepeat && map.includes(g.id);
-          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'Bookmoth reads the shapes; the palette names only the words.', onclick: () => {
+          grid.appendChild(UI.el('button', { class: 'glyph name-only' + (used ? ' used' : ''), html: `<span class="gname">${UI.esc(g.label || g.id)}</span>`, title: 'The Reader reads the shapes; the palette names only the words.', onclick: () => {
             if (sel == null) { status.textContent = 'Choose a slot first.'; Audio.sfx('wrong'); return; }
             if (used) { const j = map.indexOf(g.id); map[j] = null; }
             map[sel] = g.id; Audio.sfx('click'); if (cfg.onPlace) cfg.onPlace(g.id, sel + 1);
@@ -111,7 +111,7 @@
         const set = times.filter(x => x != null);
         if (set.length === 4) {
           const spread = Math.max(...set) - Math.min(...set);
-          if (spread <= (windowMs || 1000)) { st.className = 'pz-status good'; st.textContent = 'Four hands.'; Audio.sfx('magic'); Input.deactivate(); setTimeout(() => { box.remove(); resolve(true); }, 600); }
+          if (spread <= (windowMs || 1000)) { st.className = 'pz-status good'; st.textContent = 'Four hands.'; Audio.sfx('success'); Input.deactivate(); setTimeout(() => { box.remove(); resolve(true); }, 600); }
           else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Again — count yourselves in.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'good', false); } }
         }
       });

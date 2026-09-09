@@ -21,8 +21,10 @@
     for (const k in ids) dom[k] = document.getElementById(ids[k]);
     FX.mount(dom.fx);
     dom.hint.addEventListener('click', () => Game.showHint());
-    dom.mute.addEventListener('click', () => { Audio.init(); const m = Audio.toggleMute(); dom.mute.textContent = m ? '🔇' : '🔊'; });
-    dom.mute.textContent = Audio.isMuted() ? '🔇' : '🔊';
+    const SOUND_ON = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5" stroke-linecap="round"/></g></svg>`, SOUND_OFF = `<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M15.5 9a4 4 0 010 6" stroke-linecap="round"/><path d="M18 6.5a7.5 7.5 0 010 11" stroke-linecap="round"/></g></svg>`;
+    const muteLabel = () => { const m = Audio.isMuted(); dom.mute.innerHTML = (m ? SOUND_OFF : SOUND_ON) + '<span>' + (m ? 'Muted' : 'Sound') + '</span>'; dom.mute.title = m ? 'Sound is off' : 'Sound is on'; };
+    dom.mute.addEventListener('click', () => { Audio.init(); Audio.toggleMute(); muteLabel(); });
+    muteLabel();
     dom.menu.addEventListener('click', () => Game.showMenu());
     setInterval(() => { dom.timer.textContent = Store.elapsedText(); }, 500);
     document.addEventListener('keydown', (e) => { if (e.key === ' ' && !e.target.matches('input,textarea,button')) { UI.requestSkip(); } });
@@ -150,10 +152,17 @@
     const holder = UI.el('div', { class: 'choices' });
     if (scene.prompt) dom.actions.appendChild(UI.el('div', { class: 'prompt', html: UI.rich(scene.prompt) }));
     dom.actions.appendChild(holder);
-    const pick = (o, how) => {
+    const pick = async (o, how) => {
       if (!api.alive()) return;
       if (ctl) ctl.cancel();
       Array.from(holder.children).forEach(b => b.disabled = true);
+      // An option may ask the table for words of its own.
+      if (o.ask) {
+        const typed = await UI.ask(o.ask.prompt, o.ask.value || '', { plain: true, ok: o.ask.ok || 'That one', cancel: 'Back', maxlength: o.ask.maxlength || 28 });
+        const v = (typed || '').trim();
+        if (!v) { Array.from(holder.children).forEach(b => b.disabled = false); return; }
+        Store.set(o.ask.set, v);
+      }
       if (scene.choice) Store.choose(scene.choice, o.id);
       if (o.set) for (const k in o.set) Store.set(k, typeof o.set[k] === 'function' ? o.set[k](Store.state) : o.set[k]);
       if (o.note) Store.note(typeof o.note === 'function' ? o.note(Store.state) : o.note);
@@ -225,7 +234,7 @@
     const box = UI.el('div', { class: 'attune' }, [
       UI.el('div', { class: 'attune-label', text: scene.codeLabel || (cast ? 'Word of attunement, and the mark beside it — on every phone' : 'Word of attunement — enter it on every phone') }),
       UI.el('div', { class: 'attune-word', html: UI.esc(code) + (cast ? `<span class="attune-cast">·${UI.esc(cast)}</span>` : '') }),
-      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Read your Sight. Say nothing. When all four phones have turned the page, continue.') }),
+      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Each of you gets a different page — read yours, and only yours. Say nothing until all four of you have looked up.') }),
     ]);
     if (scene.roles) box.appendChild(UI.el('div', { class: 'attune-roles', html: UI.rich(typeof scene.roles === 'function' ? scene.roles(Store.state) : scene.roles) }));
     dom.actions.appendChild(box);
@@ -257,7 +266,7 @@
         const v = scene.decode(inp.value.trim().toUpperCase(), i, Store.state);
         if (v == null) { bad = true; inp.classList.add('wrong'); } else values.push(v);
       });
-      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) UI.toast(scene.stuckText, 5000); return; }
+      if (bad) { tries++; Audio.sfx('wrong'); UI.toast(scene.badText || 'One of the words is not attuned. Check the phones and try again.', 2400, 'bad'); if (tries >= 3 && scene.stuckText) setTimeout(() => UI.toast(scene.stuckText, Math.max(5000, scene.stuckText.split(' ').length * 320)), 2500); return; }
       Audio.sfx('success');
       Store.state.tokens[scene.id] = values; Store.save();
       if (scene.onTokens) scene.onTokens(values, Store.state);
@@ -335,11 +344,11 @@
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Companion QR', onclick: () => { m.close(); Game.showQR(); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Replay scene', onclick: () => { m.close(); Game.go(currentScene.id); } }));
     row.appendChild(UI.el('button', { class: 'btn small', text: 'Chapter select', onclick: () => { m.close(); Game.showChapterSelect(); } }));
-    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Abandon game', onclick: () => { if (confirm('Erase this playthrough and start over?')) { Store.reset(); location.reload(); } } }));
+    row.appendChild(UI.el('button', { class: 'btn small danger', text: 'Abandon game', onclick: async () => { if (await UI.confirm('Erase this playthrough and start over?', { danger: true, ok: 'Erase it' })) { Store.reset(); location.reload(); } } }));
     box.appendChild(row);
     const row2 = UI.el('div', { class: 'row' });
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
-    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: () => { const v = prompt('Paste the save code:'); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { alert('That code is not a Hearthfall save.'); } } }));
+    row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
     const m = UI.modal(box, { title: 'The Hearth' });
   };
@@ -359,12 +368,20 @@
     if (url) {
       try { const q = qrcode(0, 'M'); q.addData(url); q.make(); box.appendChild(UI.el('div', { class: 'qr', html: q.createSvgTag({ cellSize: 6, margin: 2 }) })); } catch (e) {}
       box.appendChild(UI.el('p', { class: 'qr-url', text: url }));
+      const row = UI.el('div', { class: 'row', style: { justifyContent: 'center' } });
+      row.appendChild(UI.el('button', { class: 'btn small', text: 'Copy the link', onclick: (e) => {
+        const done = () => { e.target.textContent = 'Copied'; setTimeout(() => { e.target.textContent = 'Copy the link'; }, 1600); };
+        try { navigator.clipboard.writeText(url).then(done, () => {}); } catch (x) {}
+      } }));
+      box.appendChild(row);
+      if (/claude\.ai/.test(url)) box.appendChild(UI.el('p', { class: 'fine', style: { marginTop: '10px' }, html: UI.rich('If a phone opens the Claude app instead of the page, that phone has the app installed and is grabbing the link. Copy the link above and paste it into the phone\'s browser, or open it once in the app and choose *Open in browser*.') }));
     } else {
       box.appendChild(UI.el('p', { html: 'This page was opened from a file, so phones cannot reach it. Host the folder (for example <code>python3 -m http.server 8080</code>) and open <code>http://YOUR-LAN-IP:8080/</code> on this screen and <code>.../companion.html</code> on phones. GitHub Pages also works.' }));
     }
     UI.modal(box, { title: 'Companion — open on each phone' });
   };
   Game.companionUrl = function () {
+    if (window.COMPANION_URL) return window.COMPANION_URL;
     if (location.protocol === 'file:') return null;
     return new URL('companion.html', location.href).href;
   };

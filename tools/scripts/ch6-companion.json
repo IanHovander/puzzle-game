@@ -1,7 +1,35 @@
-{ "start": "ch6_start", "_casts": "WELL casts: AQE = no volunteer, not precracked; NSV = VOLUNTEER 4 (Binder) + PRECRACKED; C4K = VOLUNTEER 2 (Listener)", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_reader_sight"}, {"expect": "Two readings"}, {"expect": "KNOT · CROWN · ASH · WELL · VEIL · EMBER · ASH · COLD"}, {"expect": "ASH · COLD · CROWN · KNOT · THORN · COLD · EMBER · VEIL"}, {"tab": "Wren"}, {"shot": "c6_reader_wren"}, {"expect": "hollow"}, {"tab": "Speak"}, {"expect": "your voice is your own"}, {"tab": "Book"}, {"expect": "WRENN"},
-  {"companion": true}, {"role": "Listener"}, {"unlock": ["WELL", "NSV"]}, {"shot": "c6_listener_sight"}, {"expect": "Round three"}, {"expect": "Knot's bell is silent"}, {"expect": "already cracked"}, {"expect": "up four"}, {"expect": "two rests"}, {"click": "button:has-text(\"Rounds one and two\")"}, {"expect": "BOOK · HUSH · OWL · KNOT · BOOK · OWL · HUSH · KNOT"}, {"shot": "c6_listener_sight2"}, {"tab": "Speak"}, {"shot": "c6_listener_speak"}, {"expect": "47"}, {"expect": "ALL"}, {"tab": "Wren"}, {"expect": "the voice"}, {"tab": "Book"}, {"expect": "Row-player"},
-  {"companion": true}, {"role": "Seer"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_seer_sight"}, {"expect": "mark is on the RIGHT"}, {"expect": "Under the bell-chamber"}, {"tab": "Wren"}, {"expect": "foot of that stone"}, {"tab": "Book"}, {"expect": "sunwise"},
-  {"companion": true}, {"role": "Binder"}, {"unlock": ["WELL", "NSV"]}, {"shot": "c6_binder_thread"}, {"expect": "The Thread"}, {"expect": "Owl"}, {"click": "button:has-text(\"The thread is tied off\")"}, {"wait": 300}, {"shot": "c6_binder_sight"}, {"expect": "The 212 page"}, {"expect": "STRUCK, 212"}, {"expect": "Law 10"}, {"expect": "tied off"}, {"tab": "Wren"}, {"expect": "212"}, {"tab": "Book"}, {"expect": "The bell-chamber"},
-  {"companion": true}, {"role": "Listener", "name": "Vol"}, {"unlock": ["WELL", "C4K"]}, {"expect": "The Thread"}, {"expect": "Bookmoth"}, {"shot": "c6_listener_volunteer"}
+{ "start": "ch6_start", "_casts": "WELL casts: AQE = no volunteer, not precracked; NSV = VOLUNTEER 4 (the Binder) + PRECRACKED; C4K = VOLUNTEER 2 (the Listener)",
+  "_what": "No page may hold another's fact, on either puzzle. THE STONE: the Reader has the four burnt shapes and never which way up, the Seer which way up and never a shape, the Listener where the lap ends and never a word, the Binder the two dated Laws and neither a shape nor a cut. THE DARK PATTERN: the Listener has the count and calls all twenty-four numbers and is told which are bells on none of them; the other three have SIX numbers each, no number on two lists, and every bell a single lane — so the union of two lists can never cover the third. This suite pins the six-number lists, because a list of eight with shared bells is the defect that made round three three-handed.",
+  "steps": [
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_reader_sight"},
+  {"expect": "What the fire ate"}, {"expect": "Cut 1 a flame"}, {"expect": "laid on their side"}, {"expect": "cracks a bell above you"},
+  {"expectNot": "KNOT · CROWN · ASH · WELL · VEIL · EMBER · ASH · COLD"},
+  {"expectNot": "point-up"}, {"expectNot": "counts down"}, {"expectNot": "right to left"},
+  {"tab": "Speak"}, {"shot": "c6_reader_speak"}, {"expect": "Your bells"}, {"expect": "1 · 6 · 10 · 14 · 20 · 24"}, {"expect": "Say what you see. Never show your phone."},
+  {"expectNot": "2 · 5 · 11"}, {"expectNot": "3 · 7 · 9"},
+  {"tab": "Wren"}, {"shot": "c6_reader_wren"}, {"expect": "the hollow of a bell"}, {"tab": "Book"}, {"expect": "WRENN"},
+
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_listener_sight"},
+  {"expect": "Where the lap ends"}, {"expect": "The lap ends on a silence"},
+  {"expectNot": "down 2"}, {"expectNot": "down 3"},
+  {"expectNot": "flame"}, {"expectNot": "crown"}, {"expectNot": "point-up"},
+  {"tab": "Speak"}, {"shot": "c6_listener_speak"}, {"expect": "you are the voice"}, {"expect": "the beats, and the number to say on each"}, {"expect": "Say all twenty-four"},
+  {"expectNot": "Six of the twenty-four are yours"},
+  {"tab": "Wren"}, {"expect": "the fault was yours"},
+
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_seer_sight"},
+  {"expect": "Under the soot"}, {"expect": "struck point-up"}, {"expect": "which way each chisel went in"},
+  {"expectNot": "flame"}, {"expectNot": "right to left"}, {"expectNot": "counts down"},
+  {"tab": "Speak"}, {"expect": "2 · 5 · 11 · 15 · 19 · 22"},
+  {"expectNot": "1 · 6 · 10"}, {"expectNot": "3 · 7 · 9"},
+  {"tab": "Wren"}, {"shot": "c6_seer_wren"}, {"expect": "shadows, as they fall"}, {"expectNot": "Halvard"},
+
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["WELL", "NSV"]}, {"shot": "c6_binder_sight"},
+  {"expect": "Two Laws, one hand"}, {"expect": "STRUCK, 212"}, {"expect": "The older one binds"},
+  {"expectNot": "right to left"}, {"expectNot": "Law 10"}, {"expectNot": "point-up"}, {"expectNot": "a spike"},
+  {"tab": "Speak"}, {"shot": "c6_binder_speak"}, {"expect": "3 · 7 · 9 · 12 · 16 · 21"}, {"expect": "holding the way shut"}, {"expect": "Seer"},
+  {"expectNot": "1 · 6 · 10"}, {"expectNot": "2 · 5 · 11"},
+  {"tab": "Wren"}, {"expect": "No thread found"}, {"tab": "Book"}, {"expect": "The bell-chamber"},
+
+  {"companion": true}, {"role": "Listener", "name": "Vol"}, {"unlock": ["WELL", "C4K"]}, {"tab": "Speak"}, {"shot": "c6_listener_volunteer"}, {"expect": "holding the way shut"}, {"expect": "Reader"}
 ] }

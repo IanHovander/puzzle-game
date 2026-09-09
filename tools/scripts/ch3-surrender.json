@@ -1,0 +1,9 @@
+{ "start": "ch3_door", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "Seventy-five heartbeats"}, {"shot": "ch3_door_timer"},
+  {"click": ".btn.choice >> nth=1"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 600}, {"expect": "the others do not say otherwise"}, {"expect": "will not hang tonight"}, {"shot": "ch3_surrender"},
+  {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.SURRENDERED,f.WREN_TRUST,f.WARD_COLD||null]})()"},
+  {"clickText": "The empty stair"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "you handed Wren over"}, {"expect": "alive and furious"}, {"shot": "ch3_flow_surrender"},
+  {"clickText": "The Oath"}, {"wait": 1000}, {"log": true}
+] }

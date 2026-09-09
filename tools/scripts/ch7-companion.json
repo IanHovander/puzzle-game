@@ -1,10 +1,34 @@
 { "start": "ch7_start", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_reader_sight"}, {"expect": "West wall"}, {"expect": "Law 8"}, {"tab": "Wren"}, {"shot": "c7_reader_wren"}, {"expect": "To you alone"}, {"expect": "Ana"}, {"tab": "Speak"}, {"shot": "c7_reader_speak"}, {"expect": "Seal both"},
-  {"click": ".blk-choice .opt:has-text('WALK')"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"clickText": "Seal both"}, {"wait": 500}, {"shot": "c7_reader_token"}, {"expect": "6N6Z"},
-  {"companion": true}, {"role": "Listener"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_listener_sight"}, {"expect": "up one"}, {"expect": "one — two — three — OFF"}, {"expect": "1 cracked bell"}, {"tab": "Speak"}, {"click": ".blk-choice .opt:has-text('STAY')"}, {"click": ".blk-choice .opt:has-text('ACCEPT')"}, {"clickText": "Seal both"}, {"wait": 500}, {"expect": "ZHHT"},
-  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_seer_sight"}, {"expect": "slot 8"}, {"expect": "turned"}, {"tab": "Wren"}, {"expect": "shadow"},
-  {"companion": true}, {"role": "Binder"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_binder_sight"}, {"expect": "Idony"}, {"expect": "CROWN"}, {"expect": "RESTORED"}, {"expect": "the knot itself"}, {"tab": "Book"}, {"shot": "c7_binder_book"}, {"expect": "Law 7"},
-  {"companion": true}, {"role": "Reader"}, {"unlock": ["CROWN", "DLP"]}, {"tab": "Speak"}, {"shot": "c7_reader_speak_ally"}, {"expect": "walk into the fire"}, {"click": ".blk-choice .opt:has-text('WALK')"}, {"wait": 400}, {"expect": "ZZPN"}, {"tab": "Wren"}, {"expect": "Nobody scraped the paint"},
-  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "ALK"]}, {"tab": "Speak"}, {"expect": "Vane's word"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"wait": 400}, {"expect": "YTN3"},
+  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_reader_sight"},
+  {"expect": "The two walls"}, {"expect": "from the other"}, {"expect": "a wall has two ends and no beginning"}, {"expect": "the Chair’s scroll is one word"},
+  {"expectNot": "socket"}, {"expectNot": "one rung"}, {"expectNot": "scratch"}, {"expectNot": "sunwise"},
+  {"tab": "Wren"}, {"shot": "c7_reader_wren"}, {"expect": "The word in the socket"}, {"expectNot": "Ana"},
+  {"tab": "Speak"}, {"shot": "c7_reader_speak"}, {"expect": "Say what you see. Never show your phone."}, {"expect": "Ana"}, {"expect": "Seal both"},
+  {"click": ".blk-choice .opt:has-text('WALK')"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"clickText": "Seal both"}, {"wait": 600}, {"shot": "c7_reader_token"}, {"expect": "6N6Z"},
+
+  {"companion": true}, {"role": "Listener"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_listener_sight"},
+  {"expect": "How it opens"}, {"expect": "one rung above the first"}, {"expect": "Everything you would hear"},
+  {"expectNot": "THORN"}, {"expectNot": "CROWN"}, {"expectNot": "socket"}, {"expectNot": "count them in"},
+  {"tab": "Wren"}, {"expect": "eight hearts"},
+  {"tab": "Speak"}, {"click": ".blk-choice .opt:has-text('STAY')"}, {"click": ".blk-choice .opt:has-text('ACCEPT')"}, {"clickText": "Seal both"}, {"wait": 600}, {"expect": "ZHHT"},
+
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_seer_sight"},
+  {"expect": "Two cuts in the floor"}, {"expect": "scratch"}, {"expect": "notch"}, {"expect": "socket 4"}, {"expect": "socket 1"},
+  {"expectNot": "THORN"}, {"expectNot": "turned"}, {"expectNot": "sunwise"}, {"expectNot": "clockwise"},
+  {"tab": "Wren"}, {"expect": "shadow"},
+
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_binder_sight"},
+  {"expect": "The Law on the rim"}, {"expect": "Sunwise is clockwise"}, {"expect": "You swore under KNOT, to the Chair"}, {"expect": "no word twice"},
+  {"assert": "!/socket\\s*[0-9]/i.test(document.body.innerText)"}, {"expectNot": "THORN"}, {"expectNot": "west"},
+  {"assert": "(() => { const s = [...document.querySelectorAll('svg')].find(x => x.getAttribute('viewBox') === '0 0 170 160'); if (!s) return false; if (s.querySelectorAll('circle').length !== 1) return false; const cx = 85, cy = 80; const marks = [...s.querySelectorAll('path')].filter(p => !/[al]/.test(p.getAttribute('d') || '')); if (marks.length !== 3) return false; return marks.every(p => { const pts = (p.getAttribute('d') || '').match(/-?[0-9.]+,-?[0-9.]+/g).map(q => q.split(',').map(Number));   const x = pts.reduce((a, q) => a + q[0], 0) / pts.length, y = pts.reduce((a, q) => a + q[1], 0) / pts.length;   let a = Math.atan2(y - cy, x - cx) * 180 / Math.PI; if (a < 0) a += 360;   return [0,1,2,3,4,5,6,7].every(i => { let g = Math.abs(a - ((i * 45 + 270) % 360)); g = Math.min(g, 360 - g); return g > 15; }); }); })()"},
+  {"tab": "Wren"}, {"expect": "No thread"}, {"tab": "Book"}, {"shot": "c7_binder_book"}, {"expect": "Law 7"},
+
+  {"companion": true}, {"role": "Reader"}, {"unlock": ["CROWN", "DLP"]}, {"tab": "Speak"}, {"shot": "c7_reader_speak_ally"},
+  {"expect": "walk into the fire"}, {"expect": "The Envoy has stood down"}, {"expectNot": "bring the boy to my door"},
+  {"click": ".blk-choice .opt:has-text('WALK')"}, {"wait": 500}, {"expect": "ZZPN"},
+
+  {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "ALK"]}, {"tab": "Speak"}, {"expect": "word, to you alone"},
+  {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"wait": 500}, {"expect": "YTN3"},
+
   {"companion": true}, {"role": "Binder"}, {"unlock": ["CROWN", "CGN"]}, {"tab": "Speak"}, {"expect": "Nothing to speak"}
 ] }
