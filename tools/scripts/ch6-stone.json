@@ -1,8 +1,8 @@
 { "start": "ch6_strip", "set": "VOLUNTEER=0,PRECRACKED=false,BELLS_CRACKED=0,STAIR=HOLD,WHISPER_listener=NO,WHISPER_seer=TELL,WHISPER_reader=DONTKNOW,WHISPER_binder=DONTKNOW,CLUES=0,TRUTHS=4,LAW0=false",
-  "_what": "The stone, and what a wrong reading costs. The rule card now states the Order's practice (leave the cold word out), so a table without the Binder reads seven words and a hole; and no wrong-answer line names a role or says how close the board was. Every complete reading that fails cracks a bell, which is the price that stops a two-state fact being flipped for free. An unfinished board costs nothing.",
+  "_what": "The stone, and what a wrong reading costs at EVERY point in the chapter. Four complete wrong readings in a row: the first three each crack a bell, and the FOURTH — the one the last version refunded — must still be charged. STONE_MISREAD is the stone's own counter, it is a Store flag so a Resume cannot erase it, and it is uncapped. An unfinished board still costs nothing (R10.19). No keyed line may name a role, say how close a board was, or fire on the seven-words-and-a-hole board: those were oracles and they are gone.",
   "steps": [
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "s_strip"},
-  {"expect": "Leave that slot empty"}, {"expect": "A wrong reading cracks a bell"},
+  {"expect": "leaving the cold word empty"}, {"expect": "A wrong reading cracks a bell"},
   {"expectNot": "Eight cuts, eight words"}, {"expectNot": "Put all eight words back"},
 
   {"slots": [[1, "ASH"], [2, "COLD"], [3, "CROWN"]]}, {"clickText": "Read the stone"}, {"wait": 700},
@@ -19,15 +19,24 @@
 
   {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, null]]},
   {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_hole"},
-  {"expect": "a hole where the eighth was"},
+  {"expect": "a bell takes the wrong word"},
+  {"expectNot": "a hole where the eighth was"}, {"expectNot": "Seven words"},
   {"expectNot": "older Law"}, {"expectNot": "has the dates"},
   {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 2 && window.VigilStore.state.flags.STONE_MISREAD === 2"},
   {"wait": 1200},
 
   {"slots": [[1, "KNOT"], [2, "EMBER"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]},
   {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_oneoff"},
+  {"expect": "a bell takes the wrong word"},
   {"expectNot": "Seven of the eight"}, {"expectNot": "wrong way up"},
   {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 3 && window.VigilStore.state.flags.STONE_MISREAD === 3"},
+  {"wait": 1200},
+
+  {"_note": "the fourth reading: three bells cracked already, and it must STILL cost",
+   "slots": [[1, "VEIL"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]},
+  {"clickText": "Read the stone"}, {"wait": 700}, {"shot": "s_fourth"},
+  {"expect": "No bell left to crack"}, {"expect": "four wrong readings"},
+  {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 3 && window.VigilStore.state.flags.STONE_MISREAD === 4"},
   {"wait": 1200},
 
   {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]},
@@ -35,5 +44,7 @@
   {"expect": "The fire is the hollow they left."}, {"shot": "s_solved"},
   {"assert": "window.VigilStore.state.flags.WALK_UNLOCKED === true && window.VigilStore.state.flags.LAW0 === true"},
   {"eval": "({ CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, MISREAD: window.VigilStore.state.flags.STONE_MISREAD, WALK: window.VigilStore.state.flags.WALK_UNLOCKED })"},
-  {"clickText": "What it means"}, {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"}
+  {"clickText": "What it means"}, {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"},
+  {"expect": "four wrong readings first"}, {"shot": "s_open_misread"},
+  {"assert": "(window.VigilStore.state.log || []).some(t => t.indexOf('four wrong readings') > -1)"}
 ] }

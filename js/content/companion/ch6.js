@@ -37,7 +37,7 @@
       s += `<text x="${x + 3}" y="${y + 11}" fill="rgba(255,255,255,.45)" font-size="8" ${F}>${b}</text>`;
       if (n) s += `<text x="${x + (cw - 6) / 2}" y="${y + 29}" text-anchor="middle" fill="#4fb3bf" font-size="17" ${F}>${n}</text>`;
     }
-    s += `<text x="${(per * cw) / 2}" y="${rows * 46 + 18}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the count, and the number to say on it</text>`;
+    s += `<text x="${(per * cw) / 2}" y="${rows * 46 + 18}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the beats, and the number to say on each</text>`;
     return s + '</svg>';
   };
   /* One player's bells, drawn: all twenty-four numbers, and the six that are yours. The other
@@ -164,7 +164,7 @@
       /* ---------- SPEAK: the bells ---------- */
       if (roleId === 'listener') {
         P.speak.push({ t: 'h', text: 'The dark pattern — you are the voice' });
-        P.speak.push({ t: 'p', text: 'Your own bell goes quiet. The Hearth counts to thirty-two and you say the number in the cell it reaches. On an empty cell, say nothing.' });
+        P.speak.push({ t: 'p', text: 'Your own bell goes quiet. The Hearth counts the beats to thirty-two. Say the number on each beat that has one, and nothing on the beats that do not.' });
         P.speak.push({ t: 'svg', svg: callComb() });
         P.speak.push({ t: 'fine', text: '**Say all twenty-four.** Which of them are bells is on three other pages, and not on yours.' });
         P.speak.push({ t: 'fine', text: 'The call comes one beat early on purpose: whoever owns that number rings on the beat after you say it.' });

@@ -1696,6 +1696,12 @@
    "expect": "stops beating"
   },
   {
+   "assert": "window.VigilStore.state.flags.BELLS_R1_TOTAL === 24 && window.VigilStore.state.flags.BELLS_R1_PASS === true"
+  },
+  {
+   "assert": "window.VigilStore.state.flags.BELLS_R3_TOTAL === 24 && window.VigilStore.state.flags.BELLS_R3_PASS === true"
+  },
+  {
    "clickText": "The Cold is held"
   },
   {
@@ -1792,6 +1798,12 @@
    "expect": "Slot 1 is the first word you read"
   },
   {
+   "expect": "leaving the cold word empty"
+  },
+  {
+   "expectNot": "a hole where the eighth was"
+  },
+  {
    "slots": [
     [
      1,
@@ -1865,6 +1877,9 @@
   },
   {
    "expect": "ask me a third time"
+  },
+  {
+   "expectNot": "wrong reading"
   },
   {
    "clickText": "The night moves on"

@@ -1,5 +1,5 @@
 { "start": "ch6_start", "set": "VOLUNTEER=4,PRECRACKED=true,STAIR=HOLD,BELLS_CRACKED=1,WHISPER_listener=LOUD,WHISPER_seer=NOTHING,WHISPER_reader=TELL,WHISPER_binder=YES,LAW0=true",
-  "_what": "The Binder held the stair (VOLUNTEER 4) and a bell is already cracked. Slow bells on. The table answers all four of Wren's questions wrongly, then reads the stone the school's way and then with the cold word left out — two wrong readings, two more cracked bells — before spending the whole hint ladder.",
+  "_what": "The Binder held the stair (VOLUNTEER 4) and a bell is already cracked. Slow bells on. The table answers all four of Wren's questions wrongly, then reads the stone the school's way and then with the cold word left out — two wrong readings, two more cracked bells — before spending the whole hint ladder. Neither wrong-answer line may name a role or say how close the board was.",
   "steps": [
   {"key": "Space"}, {"expect": "Binder's thread still runs up the Stair"}, {"clickText": "The Provost"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"},
@@ -22,12 +22,12 @@
   {"wait": 900}, {"key": "Space"}, {"wait": 500},
   {"slots": [[1, "ASH"], [2, "COLD"], [3, "CROWN"], [4, "KNOT"], [5, "THORN"], [6, "COLD"], [7, "EMBER"], [8, "VEIL"]]}, {"clickText": "Read the stone"}, {"wait": 700}, {"expect": "four hundred years of school"}, {"expect": "a bell takes the wrong word"},
   {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 2"}, {"wait": 1200},
-  {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, null]]}, {"clickText": "Read the stone"}, {"wait": 700}, {"expect": "Seven words, and a hole where the eighth was"}, {"shot": "v_lawsix"},
+  {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, null]]}, {"clickText": "Read the stone"}, {"wait": 700}, {"expect": "Has everybody actually said their bit"}, {"expectNot": "a hole where the eighth was"}, {"shot": "v_lawsix"},
   {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 3 && window.VigilStore.state.flags.STONE_MISREAD === 2"}, {"wait": 1200},
   {"click": "#hint"}, {"wait": 400}, {"click": ".hint-btn"}, {"wait": 300}, {"click": ".hint-btn"}, {"wait": 300}, {"click": ".hint-btn"}, {"wait": 300}, {"expect": "Slot 1 KNOT"}, {"shot": "v_hint3"}, {"clickText": "Back to the ward"}, {"wait": 400},
   {"slots": [[1, "KNOT"], [2, "CROWN"], [3, "ASH"], [4, "WELL"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "COLD"]]}, {"clickText": "Read the stone"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "The fire is the hollow they left."}, {"clickText": "What it means"},
   {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "v_flow"}, {"expect": "Three bells are cracked"}, {"expect": "You gave Wren 0"}, {"expectNot": "rung slowly"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "v_flow"}, {"expect": "Three bells are cracked, and the stone took two wrong readings"}, {"expect": "You gave Wren 0"}, {"expectNot": "rung slowly"},
   {"assert": "window.VigilStore.state.flags.CLUES_HELP === true"}, {"assert": "window.VigilStore.state.flags.CLUES === 0"},
   {"eval": "({ WALK: window.VigilStore.state.flags.WALK_UNLOCKED, LAW0: window.VigilStore.state.flags.LAW0, CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, CLUES: window.VigilStore.state.flags.CLUES, HELP: window.VigilStore.state.flags.CLUES_HELP, SLOW: window.VigilStore.state.flags.SLOW_BELLS, SLOW_NOTED: window.VigilStore.state.flags.SLOW_NOTED })"},
   {"clickText": "The Finale"}, {"wait": 1500}

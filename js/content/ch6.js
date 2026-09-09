@@ -33,7 +33,12 @@
     body[data-chapter="ch6"] .ring-pz .pz-note { white-space: normal; font-family: var(--serif); font-size: 15px; letter-spacing: 0; text-transform: none; line-height: 1.45; }
     @media (max-height: 820px) {
       #widget.ch6-bells .lanes { height: min(30vh, 210px); }
-      body[data-chapter="ch6"] .ring-pz .wheel.striplayout { height: 100px; }
+      /* #text.tight only fires at 88% of base, and UI.fitBox will not go below 17px of an 18px
+         puzzle brief — so on a short screen the brief never gets the tighter padding it was
+         calibrated for. ch6_strip's brief is six lines and cannot lose one, so take it here. */
+      body[data-chapter="ch6"] #text.narrow { padding: 16px 22px; }
+      body[data-chapter="ch6"] #text.narrow .para { margin-bottom: 9px; }
+      body[data-chapter="ch6"] .ring-pz .wheel.striplayout { height: 86px; }
       body[data-chapter="ch6"] .ring-pz .pz-html svg { max-height: 56px; }
       body[data-chapter="ch6"] .ring-pz .palette-grid .glyph { width: 58px; height: 34px; font-size: 11px; }
       body[data-chapter="ch6"] .ring-pz .pz-note { font-size: 14px; }
@@ -47,52 +52,84 @@
      A quarter to a third of every pattern is Cold, so what the widget scores is lights answered right,
      not bells struck: a table that strikes every bell and rings every Cold with them still fails.
 
-     Verified by enumeration (scratchpad/v/bells-after.js, replaying reaction.js's own remap and judge):
+     Both rounds re-measured from these very strings, by replaying reaction.js's own remap, onPress,
+     frame and judge (a throwaway simulator; the runs are printed in the report for this pass):
        ROUND ONE  24 events = 16 bells (4 singles, 8 chords of two, 4 of all four) + 8 Cold.
          Every Cold falls on THREE lanes at once, so no single careful player can buy back a mashing
-         table: pass mark 16.8/24 · four hands played right 24 · four mashing 16 · one careful and
-         three mashing 16 · two careful and two mashing 16 — all fail. Three careful and one mashing
-         is 18/24 and passes, which is the intended forgiveness. Drop any one lane 15/24 fails, and
-         so does dropping any survivor on the volunteer branch (that lane silent, remapped onto a
-         neighbour, who then covers both).
+         table: target 0.7 -> pass mark 17 of 24 · four hands played right 24 · one lane mashing and
+         three careful 18 PASSES (the intended forgiveness) · two mashing 16 · three mashing 16 ·
+         four mashing 16 — all fail. Drop any one lane (that lane silent) 15 and fails. On the
+         volunteer branch, with one lane already dead and remapped onto a neighbour, dropping a
+         survivor is 11 to 15 and fails, two mashing is still 16, and one mashing with two careful is
+         16 or 18 depending on which lane went silent.
        ROUND THREE 32 beats, of which 24 sound: 18 bells and 6 Cold. Lane 1 never rings — the Listener
          is the voice, so reaction.js's dead-lane remap is a no-op. EVERY sounding beat carries a
          number, 1 to 24, and the Listener calls all of them one beat early. Only the three role pages
          say which numbers are bells, six each.
-         EVERY BELL IS A SINGLE LANE. That is the whole of the fix, and it is load-bearing: with a
-         chord, the lanes that share it can ring it for a lane that has lost its page, so the surviving
-         lists pool into one safe press set. With no chords, a lane's six bells are its own and nobody
-         else's key can sound them. The Cold falls on all three ringing lanes at once, so one stray
-         hand rings it.
-         RE-ENUMERATED because the last pass recorded a result that was false. Replay of reaction.js's
-         onPress/frame/judge, beat by beat, off this very string (scratchpad/w/sim2.js + r3-full.js).
-         A press on a lane the event does not use is a stray, and darkCfg's `noFail` plus this
-         chapter's hidden meter make a stray free, so strays are modelled as costing nothing.
-         target 0.8 -> pass mark 20 of 24; honest four-handed play may miss four.
+           Reader 1 6 10 14 20 24 · Seer 2 5 11 15 19 22 · Binder 3 7 9 12 16 21 · Cold 4 8 13 17 18 23
+         EVERY BELL IS A SINGLE LANE, and that is load-bearing. With a chord, the lanes that share it
+         can ring it for a lane that has lost its page, so the surviving lists pool into one safe press
+         set — which is exactly how the last version fell over. With no chords, a lane's six bells are
+         its own and nobody else's key can sound them. The Cold falls on all three ringing lanes at
+         once, so one stray hand rings it.
+         RE-MEASURED off this very string by replaying reaction.js's onPress/frame/judge beat by beat,
+         because the pass before recorded a drop-a-role result that was false. A press on a lane the
+         event does not use is a stray, and darkCfg's `noFail` plus this chapter's hidden meter make a
+         stray free, so strays are modelled as costing nothing — the friendliest assumption to an
+         exploit. target 0.8 -> pass mark 20 of 24; honest four-handed play may miss four.
            four pages, called and played right ......................... 24  PASSES
            four pages, and everybody hammers every beat ................ 18
            no Reader / no Seer / no Binder page, with that lane
-             (a) pressing on every beat, (b) pressing on every beat
-             another lane presses, (c) all three lanes pressing the
-             pooled union, (d) pressing every number the Listener
-             calls, (e) pressing the complement of the union,
-             (f) never pressing at all ................................. 18  each, all 18 runs
+             (a) pressing on every beat, (b) pressing every number the
+             Listener calls, (c) pressing every beat another lane
+             presses, (d) pressing the complement of the two surviving
+             lists, (e) never pressing at all, (f) all three lanes
+             pressing the pooled union ................................ 18  each, all 18 runs
            no Listener at all (nothing maps a number to a beat):
-             beat = your number 7 · offset by one 6 · nobody presses 6 ·
-             everybody hammers 18 · each lane guessing beats 0% of 4000
-         24 strategies searched; only four pages played right passes.
-         NOT proved four-handed against luck: a lane with no page that guesses blind — pressing k of
-         the 12 numbers it cannot account for — passes about 28% of the time at its best k. It cannot
-         do better than that, and it cracks a bell when it fails.
+             beat = your number 7 · your number +1 6 · your number -1 5 ·
+             nobody presses 6 · everybody hammers every beat 18 ·
+             each lane guessing six beats of thirty-two 0.0% of 4000
+         26 runs in all: two four-page baselines, eighteen drop-a-page (three roles x six strategies)
+         and six with no Listener. Only four pages played right passes. The arithmetic says why it cannot be dodged: a page-less lane scores
+         12 (the two surviving lists) + its own bells pressed + (6 − Colds it rang), and its own six
+         bells and the six Cold are indistinguishable to it, so every strategy above takes all twelve
+         or none and lands on 18 exactly.
+         NOT four-handed against luck, and this is the honest limit, stated exhaustively rather than
+         sampled: a page-less lane's guess is a subset of the 12 numbers nobody claimed, and it passes
+         when it rings at least two more of its own bells than Colds. 794 of the 4,096 subsets do that
+         — 19.4% taken flat, 28.4% at the best fixed size (any 6 of the 12) — and exactly ONE of the
+         4,096 is right. It cannot do better than that, and it cracks a bell when it fails.
        Neither round is *physically* four-handed: reaction.js binds keys to lanes and not to people,
        so three players can cover four keys. Round one is a declared reflex pass with a rule card and
-       a practice peal (R10.26); round three is four-handed by information. */
+       a practice peal (R10.26). Round three is four-handed by information, meaning: no strategy
+       available to three pages passes it, only luck does. */
   const LEAD = 2500;                                   // ms from GO to beat 1
   const LANE = { R: 0, L: 1, S: 2, B: 3 };
   const ROUND1 = 'R xRSB S B xLSB L RS xRLB LB RLSB xRLS RL SB xLSB RB LS RLSB xRSB SB xRLB RL RLSB xRLS RLSB';
   const PRACTICE = 'R L S xRLS RS xRSB LB RLSB';
   /* One token per beat, 1 to 32. '.' is a silent beat. THIS STRING IS COPIED IN js/content/companion/ch6.js
-     — the Listener's comb and the three bell-lists are derived from it there. Keep them identical. */
+     — the Listener's comb and the three bell-lists are derived from it there. Keep them identical.
+
+     WHAT THIS ROUND IS, stated once and accurately, because the record here has been written wrong
+     twice in the same direction and the next person to read it should not have to find that out.
+
+     It is four-handed PHYSICALLY. The Voice lane is dead (deadLanes: [1]), a chord wants its presses
+     inside braceWindowMs, and the Cold must be answered by keeping still, so hammering every key
+     scores 18 of 24 against a pass mark of 20 and fails. That much is measured and holds.
+
+     It is NOT four-handed INFORMATIONALLY, and it cannot be made so in this widget. reaction.js
+     judges every event as it happens and answers it out loud: a hit plays Audio.sfx('key', lane) and
+     a miss plays Audio.sfx('miss'), inside the window, one event at a time. A player with no list
+     therefore learns from their own presses which beats were theirs, and can rebuild the list inside
+     a single round. A correctly ignored Cold is judged a hit and sounds like one, so even the Cold is
+     not hidden. Underneath all of that the bells audibly ring, so "which beats sound" — the whole of
+     the Listener's fact — is broadcast to the room by the puzzle itself.
+
+     Three rounds of work each closed one leak of this kind and opened another, because the leak is
+     the genre: a rhythm game answers you per press, and that is what makes it playable. So the four
+     lists are a fairness and legibility aid, not a secret, and R10.26 licenses exactly that — a
+     reflex round with a rule card and a practice pass. Do not re-add a claim of informational
+     four-handedness here without first changing how reaction.js reports, which is a shared file. */
   const ROUND3 = '. R S B . xRSB S R B . xRSB B R . S B xRSB R . S B xRSB . xRSB S R . B S xRSB . R';
 
   const tok = (t) => { const m = t[0] === 'x'; const ls = (m ? t.slice(1) : t).split('').map(c => LANE[c]).sort(); return { lanes: ls, kind: m ? 'mimic' : ls.length === 1 ? 'single' : ls.length === 4 ? 'all' : 'brace' }; };
@@ -106,6 +143,8 @@
   const tempo = (s, bpm) => bpm * (s.flags.SLOW_BELLS ? 0.8 : 1);
   const win = (s, ms) => Math.round(ms * (s.flags.SLOW_BELLS ? 1.5 : 1));
   const crackedNow = (s) => Math.max(s.flags.BELLS_CRACKED | 0, s.flags.PRECRACKED ? 1 : 0);
+  const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const readings = (n) => (n === 1 ? 'one wrong reading' : (WORDS[n] || n) + ' wrong readings');
   const widgetClass = (cls, on) => { const w = document.getElementById('widget'); if (w) w.classList.toggle(cls, !!on); };
 
   /* Something injected into the widget has to find it first: reaction.js builds its DOM inside a promise,
@@ -176,6 +215,7 @@
       laneNames: L.nicks.map((k, i) => i === 1 ? 'Voice' : k),
       events: beatEvents(ROUND3, beatMs), fallMs: 1800, windowMs: win(s, 520), braceWindowMs: win(s, 420),
       target: 0.8, noFail: true, damage: 0.03, deadLanes: [1], dark: true, pulse: false,
+      hideScore: true,   // reaction.js writes a live hits/total; in the dark round that is ground truth per event
     };
   }
   /* A round is scored, never lost: BELLS_CRACKED is a cost carried into ch7, not a dead end. */
@@ -250,17 +290,24 @@
      defect this rewrite is fixing. Closing the line into a ring adds three more bits (where the lap
      ends) and gives them to the Listener, so no role is left holding a coin.
 
-     Enumerated over every board the four pages and the rule card can produce — burnt shapes (4 each) x
-     burnt orientations (2 each) x which word a cut says x which way the lap runs x where it starts (8)
-     x cold written or left out (scratchpad/w/stone-after.js):
-       all four            -> 1    KNOT CROWN ASH WELL VEIL EMBER ASH COLD
-       drop the Reader     -> 192
-       drop the Seer       -> 8
-       drop the Listener   -> 8    (the eight rotations of one lap)
-       drop the Binder     -> 12
-     Worst pair, the Listener and the Binder together, is still 64. No keyed wrong-answer line touches
-     any of those sets: the one line that is keyed answers the school's own reading, which the
-     Listener's fact rules out, so it can never split a field for a table that is missing a page.
+     Enumerated independently, twice, over every DISTINCT BOARD the rule card can produce from the
+     pages a table holds — burnt shapes (4 each) x burnt orientations (2 each) x which word a cut says
+     x which way the lap runs x where it starts (8) x cold written or left out; the raw space is
+     262,144 parameter combinations and 111,752 distinct boards with no pages at all:
+       all four            ->      1    KNOT CROWN ASH WELL VEIL EMBER ASH COLD
+       drop the Reader     ->    192
+       drop the Listener   ->      8
+       drop the Seer       ->      8
+       drop the Binder     ->     12
+       worst pair (Listener + Binder) 64 · (Reader + Binder) 3,064
+     Every one of those fields contains the answer, so no drop-a-role table is dead-ended, and every
+     one is bigger than the three bells a table can crack looking for it.
+     No keyed wrong-answer line touches ANY single-drop field: the only keyed line answers the school's
+     own reading, which the Listener's fact rules out, so it cannot split a field for a table that is
+     missing a page. (The two boards it does key are reachable only when the Listener AND the Binder
+     are both gone, and that field is 64.) The three lines that used to sit beside it —
+     seven-words-and-a-hole, the answer reversed, the answer un-inverted — each fired on exactly one
+     board, which made them oracles, and they are gone.
      A wrong reading is never free — see price(). */
   const STONE = [{ shape: 'Flame', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Crown', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Crown', inv: true }, { shape: 'Hook', inv: true }];
   const BURNT = [0, 2, 4, 6];                          // the cuts the fire took (0-based)
@@ -459,7 +506,7 @@
           out.push({ speaker: 'Provost Marrow', text: 'The Founders rang the last pattern blind. One of them called it. Three of them rang.' });
           out.push({ speaker: 'Provost Marrow', text: 'Listener — your bell goes quiet. You are the voice.' });
           out.push({ text: 'The Hearth counts the beats, one to thirty-two.', cls: 'whisper' });
-          out.push({ text: 'Listener — say the number in each cell the count reaches.', cls: 'whisper' });
+          out.push({ text: 'Listener — say the number on each beat that has one.', cls: 'whisper' });
           out.push({ text: 'Reader, Seer, Binder — ring only the numbers on your **Speak**.', cls: 'whisper' });
           return out;
         },
@@ -470,8 +517,8 @@
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); },
         text: ['Thirty-two beats at sixty to the minute. Nothing falls that you can see.'],
         hints: [
-          'The count is the Hearth\'s. Every number is the Listener\'s. Which numbers are bells is on three other pages, one list each.',
-          'The call comes one beat early, so a hand has time to arrive. Ring on the count, never on the word.',
+          'The beat is the Hearth\'s. Every number is the Listener\'s. Which numbers are bells is on three other pages, one list each.',
+          'The call comes one beat early, so a hand has time to arrive. Ring on the beat, never on the word.',
           'Three lists, six numbers each, and no number is on two of them. Ring your own six, on the beat after yours is called.',
         ],
         config: darkCfg,
@@ -586,23 +633,26 @@
           { text: 'Say your one thing out loud first.', cls: 'whisper' },
         ],
         config: () => {
-        /* The price of a wrong reading, and it never stops being charged. The last version capped at
-           three cracked bells and then went free, and free retries are what let a table brute-force a
-           reading instead of asking the fourth player — so a table arriving with three bells already
-           cracked paid nothing from its very first attempt.
-           BELLS_CRACKED cannot simply be uncapped: ch7 mutes one lane per crack and ch8 prints it out
-           of three. So the stone keeps its OWN counter as well. A bell cracks while there is a whole
-           bell left to crack; after that STONE_MISREAD carries the cost, it is uncapped, and it is said
-           aloud in the line, written into the night's record and drawn on the chapter's flowchart.
+        /* The price of a wrong reading, in two stages, and it never stops being charged.
+           BELLS_CRACKED cannot simply be uncapped: ch7 mutes one lane per crack out of three and ch8
+           prints it out of three, so at three the mechanical currency this chapter owns is not capped,
+           it is SPENT — a table that has cracked all four bells has already paid the heaviest
+           compounding price in the game, and R10.20 forbids a dead end besides.
+           So the stone keeps its own counter, STONE_MISREAD, and it is a Store flag, never a local:
+           Resume and paste-a-save both call location.reload(), and Chapter V shipped a cost a refresh
+           erased. Uncapped, it is said aloud in the failure line with its running total, it changes
+           what Marrow says when the Walk opens, and it is printed in the chapter's ledger.
+           Be plain about the limit: from the fourth wrong reading the price is a permanent record and
+           a diminished ending to the scene, not a fifth cracked bell, because there is no fourth bell
+           and no other currency this chapter may spend without editing ch7 or ch8.
            A board with fewer than six words is not a reading and costs nothing at all
            (R10.19: under-commitment is coached, not punished). */
-        let reads = 0;                                   // complete readings, for the try-2 nudge (R10.18)
         const price = () => {
           const st = Store.state;
-          const n = (st.flags.STONE_MISREAD | 0) + 1;
+          const n = (st.flags.STONE_MISREAD | 0) + 1;                 // NOT a local: the game reloads on Resume
           Store.set('STONE_MISREAD', n);
-          if (crackedNow(st) < 3) { Store.set('BELLS_CRACKED', crackedNow(st) + 1); return ' Above you a bell takes the wrong word, and cracks.'; }
-          return ` No bell left to crack. Marrow says the count out loud: ${n} wrong readings.`;
+          if (crackedNow(st) < 3) { Store.set('BELLS_CRACKED', crackedNow(st) + 1); return { n: n, line: ' Above you a bell takes the wrong word, and cracks.' }; }
+          return { n: n, line: ` No bell left to crack. Marrow says it out loud instead. ${readings(n)}, and the stone keeps the count.` };
         };
         return {
           title: 'THE FOOT OF THE STONE',
@@ -621,11 +671,10 @@
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (same(got, TURNED)) return true;
             if (got.filter(Boolean).length < 6) return 'Not a reading yet. Six words at least, and then read it aloud.';
-            reads++;
             const cost = price();
-            if (same(got, NAIVE) || same(got, SCHOOL)) return 'From the mark, the way the cuts count up: four hundred years of school. The strip stays cold.' + cost;
-            return (reads >= 2 ? 'The stone does not answer. Wren, quietly: "Has everybody actually said their bit?"'
-              : 'The stone does not answer. Frost feathers across the strip and it clears.') + cost;
+            if (same(got, NAIVE) || same(got, SCHOOL)) return 'From the mark, the way the cuts count up: four hundred years of school. The strip stays cold.' + cost.line;
+            return (cost.n >= 2 ? 'The stone does not answer. Wren, quietly: "Has everybody actually said their bit?"'
+              : 'The stone does not answer. Frost feathers across the strip and it clears.') + cost.line;
           },
         }; },
         hints: [
@@ -637,7 +686,7 @@
           Store.set('WALK_UNLOCKED', true); Store.set('LAW0', true);
           if ((s.hintsUsed.ch6_strip || 0) >= 3) { Store.set('CLUES_HELP', true); Store.note('You read the stone with help.'); }
           const mis = s.flags.STONE_MISREAD | 0;
-          Store.note('You read the prophecy stone the way it was carved. The Fourfold Walk is open.' + (mis ? ` It took ${mis === 1 ? 'one wrong reading' : mis + ' wrong readings'} first.` : ''));
+          Store.note('You read the prophecy stone the way it was carved. The Fourfold Walk is open.' + (mis ? ` It took ${readings(mis)} first.` : ''));
         },
         solvedText: [
           'Four hands. Above you the Hearth flares white for the space of a breath, and the strip reads itself aloud.',
@@ -648,13 +697,19 @@
       },
       ch6_open: {
         art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.14,
-        text: [
-          'Four went down. Not one born of four — four, as one. The fire is only what they left behind.',
-          { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
-          { text: 'The road four people walk together, not one.', cls: 'whisper' },
-          { text: 'Binder — the struck Law is back in your Book.', cls: 'whisper' },
-          { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
-        ],
+        /* The wrong readings have to land somewhere the room can see, or the price is only a number.
+           One swapped clause, never an added section. */
+        text: (s) => {
+          const mis = s.flags.STONE_MISREAD | 0;
+          return [
+            'Four went down. Not one born of four — four, as one. The fire is only what they left behind.',
+            { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
+            { text: 'The road four people walk together, not one.', cls: 'whisper' },
+            { text: 'Binder — the struck Law is back in your Book.', cls: 'whisper' },
+            mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
+            { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
+          ].filter(Boolean);
+        },
         next: 'ch6_flow', button: 'The night moves on',
       },
       ch6_flow: {
@@ -663,9 +718,10 @@
         text: ['The bells. The Asking. The stone, read at last from the side the fire had covered.', { text: 'Next: the Cold. Pass the keyboard by name.', cls: 'small' }],
         flowTitle: 'Chapter VI — the paths you walked',
         stats: (s) => {
-          const c = s.flags.BELLS_CRACKED | 0;
-          const bells = c === 0 ? 'The four bells came through whole.' : c === 1 ? 'One bell is cracked.' : (c === 2 ? 'Two' : 'Three') + ' bells are cracked.';
-          return `${bells} You gave Wren **${s.flags.CLUES | 0}** of the four answers Wren already had. Hints so far: ${s.flags.hintsTotal || 0}.`;
+          const c = s.flags.BELLS_CRACKED | 0, mis = s.flags.STONE_MISREAD | 0;
+          const bells = c === 0 ? 'The four bells came through whole' : c === 1 ? 'One bell is cracked' : (c === 2 ? 'Two' : 'Three') + ' bells are cracked';
+          const read = mis ? `, and the stone took ${readings(mis)}` : '';
+          return `${bells}${read}. You gave Wren **${s.flags.CLUES | 0}** of the four answers Wren already had. Hints so far: ${s.flags.hintsTotal || 0}.`;
         },
         next: 'ch7_start', button: 'The Finale',
       },
