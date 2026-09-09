@@ -4,9 +4,9 @@
 two, because every defect below was found by attacking a chapter that had already been written to the
 style and had already passed its own review.
 
-Sixteen patterns, every one of them taken from a real defect in this game, with the chapter it was
+Seventeen patterns, every one of them taken from a real defect in this game, with the chapter it was
 found in. They share a shape: **each is invisible from inside the chapter it lives in.** A reviewer
-reading one chapter against its own sources will pass all sixteen. That is why they are written down.
+reading one chapter against its own sources will pass all seventeen. That is why they are written down.
 
 Two of them (13 and 16) are not about the game at all. They are about how the checking goes wrong,
 and they are the ones to read first.
@@ -136,6 +136,24 @@ two chapter workflows at once makes the shared end-to-end test non-deterministic
 have no way to know that.
 CHECK: never run the whole-game regression as an acceptance gate while another chapter is being
 edited, and tell a reviewer which files are in flight so a red run is attributed correctly.
+
+## 17. Coverage that exists by accident, and dies silently when the accident is cleaned up
+ch8's epilogue drew the whole night by walking EVERY chapter's `flow.nodes` and running each node's
+`when()` inside a try/catch. Nobody designed that as a check, but it was the only thing in the
+project that ever executed those predicates outside their own chapter -- so a broken flow spec
+anywhere surfaced, faintly, as a node missing from a picture at the end of the game. Reworking ch8
+removed the walk, correctly: it coupled the epilogue to eight files it is forbidden to edit. The
+rework's own report named the loss instead of hiding it, which is the only reason it was caught.
+Adding the check properly to `tools/check-content.js` found four dead nodes in ch7 on the first run
+-- `ch7_p0`-`p3`, one per player's sealed word, none of them a scene id and none carrying a
+`when()`, so all four had rendered as `? ? ?` on every path since the chapter was written. The
+try/catch had been swallowing exactly the class of defect it was accidentally detecting.
+CHECK: when you delete code that touched other chapters' data, ask what it was incidentally proving
+and where that proof now lives. Two questions find this class: which invariants hold only because
+some feature happens to exercise them, and which `try/catch` turns a broken invariant into a
+cosmetic absence. Any predicate a chapter declares for another system to run must be executed by a
+tool, on a blank state and a full one -- a blank state is what catches `s.flags.X.y` on a flag no
+path has set yet, which is the shape most of these take.
 
 ## OPEN 2 — the retry economy in the last two chapters (improvement pass, item 1)
 Both ch6's stone and ch7's Great Sigil have residual three-role fields (2 to 8 candidates) and no

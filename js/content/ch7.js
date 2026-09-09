@@ -168,10 +168,12 @@
         { id: 'ch7_argue1', label: 'The Provost bars it', col: 2, row: 4, kind: 'choice', secret: true },
         { id: 'ch7_dec_vane', label: 'Wren given up', col: 3, row: 0, kind: 'end', secret: true },
         { id: 'ch7_tokens', label: 'Four sealed words', col: 3, row: 2 },
-        { id: 'ch7_p0', label: 'Reader', col: 4, row: 0, kind: 'end', secret: true },
-        { id: 'ch7_p1', label: 'Listener', col: 4, row: 1, kind: 'end', secret: true },
-        { id: 'ch7_p2', label: 'Seer', col: 4, row: 3, kind: 'end', secret: true },
-        { id: 'ch7_p3', label: 'Binder', col: 4, row: 4, kind: 'end', secret: true },
+        /* One node per player's sealed word, lit when that player's word is in -- ch7_tokens'
+           onTokens() writes WALK_<role>. These four are not scene ids, so without a when() they
+           could never light: all four sat at '? ? ?' for the whole chart, on every path. Derived
+           from ROLES rather than written out four times, so a role rename cannot leave a literal
+           behind. Rows skip 2, which is ch7_bargains_done. */
+        ...ROLES.map((r, i) => ({ id: 'ch7_p' + i, label: nickOf(r), col: 4, row: [0, 1, 3, 4][i], kind: 'end', secret: true, when: (s) => !!s.flags['WALK_' + r] })),
         { id: 'ch7_bargains_done', label: 'The bargains', col: 4, row: 2, kind: 'choice', secret: true, when: (s) => accepted(s).length + kept(s).length + broken(s).length > 0 },
         { id: 'ch7_sigil', label: 'The Great Sigil', col: 5, row: 2 },
         { id: 'ch7_cold', label: 'Midnight passed', col: 5, row: 4, secret: true, when: (s) => (s.flags.COLD_HEARTH_ATTEMPTS | 0) > 0 },

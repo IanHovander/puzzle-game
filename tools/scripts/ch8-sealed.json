@@ -1,0 +1,244 @@
+{
+ "start": "ch8_start",
+ "set": "ENDING=2,CLUES=2,TRUTHS=1,BELLS_CRACKED=0,MIDNIGHT_LEFT=45,VOLUNTEER=0,STAIR=COLLAPSE,VOTE_LOST=true,OATH=0,GROUP_NAME=the Four,hintsTotal=2",
+ "viewport": {
+  "width": 1280,
+  "height": 720
+ },
+ "steps": [
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "s8_start"
+  },
+  {
+   "expect": "Walked into the fire: Wren"
+  },
+  {
+   "clickText": "What the fire left behind"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "s8_e2"
+  },
+  {
+   "expect": "there are four boxes you did not open"
+  },
+  {
+   "expectNot": "the older alphabet"
+  },
+  {
+   "expectNot": "They went in together"
+  },
+  {
+   "clickText": "The whole night"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 4600
+  },
+  {
+   "shot": "s8_night"
+  },
+  {
+   "expect": "The two you asked were not enough"
+  },
+  {
+   "expect": "an oath you would not swear"
+  },
+  {
+   "expect": "You brought it down behind you"
+  },
+  {
+   "expectNot": "The route: KNOT"
+  },
+  {
+   "expectNot": "The eighth glyph"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "Four boxes, still sealed"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "expect": "Unseal what each of you chose in the dark?"
+  },
+  {
+   "click": ".btn.choice >> nth=1"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "expect": "The fire keeps them"
+  },
+  {
+   "clickText": "Continue"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 4200
+  },
+  {
+   "shot": "s8_map"
+  },
+  {
+   "assert": "VigilStore.state.scene === 'ch8_map'"
+  },
+  {
+   "assert": "VigilStore.state.choices.UNSEAL === 'no'"
+  },
+  {
+   "expect": "IT IS THE GLYPH KNOT"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "The numbers"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 2600
+  },
+  {
+   "shot": "s8_stats"
+  },
+  {
+   "expect": "Four clues in the bell-chamber"
+  },
+  {
+   "expect": "You asked the fire for"
+  },
+  {
+   "expectNot": "The fire also remembers"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "One more thing"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 3800
+  },
+  {
+   "expect": "were the Great Sigil in wall order"
+  },
+  {
+   "clickText": "The last word"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "shot": "s8_code"
+  },
+  {
+   "assert": "VigilStore.state.scene === 'ch8_code'"
+  },
+  {
+   "expect": "Warden (keyboard)"
+  },
+  {
+   "expectNot": "sunwise"
+  },
+  {
+   "clickText": "Every phone has gone dark"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "shot": "s8_flow"
+  },
+  {
+   "expect": "The night ended in the Sealing"
+  },
+  {
+   "expectNot": "They went in together"
+  },
+  {
+   "clickText": "Sit with it"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "shot": "s8_end"
+  },
+  {
+   "expect": "There was a night where nobody had to"
+  },
+  {
+   "expectNot": "They went in together"
+  },
+  {
+   "log": true
+  }
+ ]
+}

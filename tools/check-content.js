@@ -28,6 +28,53 @@ for (const ch of Game.chapters) {
     if (sc.type === 'flow' && !(sc.flow || ch.flow)) problems.push(`${id}: flow scene without flow spec`);
   }
 }
+// flow specs: every chart in every chapter.
+// This used to be checked by accident -- ch8's epilogue walked every chapter's flow.nodes to draw
+// the whole night, so a broken spec anywhere surfaced there as a silently missing node. That was
+// never a real check and it coupled the epilogue to eight files it cannot edit, so ch8 dropped it.
+// The check belongs here, where a broken spec is an error rather than a hole in a picture.
+const probe = () => {
+  const st = { version: 1, scene: null, chapter: null, flags: {}, choices: {}, tokens: {},
+    visited: [], hintsUsed: {}, solved: {}, names: ['Reader', 'Listener', 'Seer', 'Binder'], keys: ['A', 'C', 'M', '/'] };
+  return st;
+};
+// A when() must survive a blank state, a fully-visited state, and every ending. Blank is the one
+// that catches `s.flags.X.y` on a flag no path has set yet -- the shape of most real breakages.
+const PROBES = [probe()];
+{ const all = probe(); all.visited = [...ids]; PROBES.push(all); }
+for (let e = 0; e <= 4; e++) { const st = probe(); st.flags.ENDING = e; st.visited = [...ids]; PROBES.push(st); }
+for (const ch of Game.chapters) {
+  const specs = [];
+  if (ch.flow) specs.push([ch.id + ' (chapter flow)', ch.flow]);
+  for (const id in ch.scenes) if (ch.scenes[id].flow) specs.push([id, ch.scenes[id].flow]);
+  for (const [where, flow] of specs) {
+    if (!Array.isArray(flow.nodes) || !flow.nodes.length) { problems.push(`${where}: flow spec has no nodes`); continue; }
+    const seen = new Set();
+    for (const n of flow.nodes) {
+      if (!n.id) { problems.push(`${where}: flow node with no id`); continue; }
+      if (seen.has(n.id)) problems.push(`${where}: duplicate flow node "${n.id}"`);
+      seen.add(n.id);
+      if (!n.label) problems.push(`${where}: flow node "${n.id}" has no label`);
+      if (typeof n.col !== 'number' || typeof n.row !== 'number') problems.push(`${where}: flow node "${n.id}" needs numeric col and row`);
+      // A node lights when its id is a visited SCENE, or when its when() says so. A node that is
+      // neither can never light, which is how a phantom node hides in a chart for months.
+      if (!ids.has(n.id) && !n.when) problems.push(`${where}: flow node "${n.id}" is not a scene and has no when() -- it can never light`);
+      if (n.when) {
+        if (typeof n.when !== 'function') problems.push(`${where}: flow node "${n.id}" when is not a function`);
+        else for (const st of PROBES) {
+          try { n.when(st); } catch (e) { problems.push(`${where}: flow node "${n.id}" when() throws (${e.message}) on ENDING=${st.flags.ENDING}, ${st.visited.length} visited`); break; }
+        }
+      }
+    }
+    const linked = new Set();
+    for (const ed of (flow.edges || [])) {
+      if (!Array.isArray(ed) || ed.length !== 2) { problems.push(`${where}: malformed flow edge ${JSON.stringify(ed)}`); continue; }
+      for (const end of ed) if (!seen.has(end)) problems.push(`${where}: flow edge -> undeclared node "${end}"`);
+      linked.add(ed[0]); linked.add(ed[1]);
+    }
+    if (flow.nodes.length > 1) for (const n of flow.nodes) if (n.id && !linked.has(n.id)) problems.push(`${where}: flow node "${n.id}" has no edge -- it floats`);
+  }
+}
 // chapters present in lore vs registered
 for (const lc of Lore.chapters) if (!Game.chapter(lc.id)) problems.push(`lore chapter ${lc.id} has no Hearth chapter registered`);
 // companion

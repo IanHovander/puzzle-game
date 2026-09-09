@@ -396,7 +396,7 @@
    "shot": "t_ch1_flow"
   },
   {
-   "expect": "5–4 to keep"
+   "expect": "5\u20134 to keep"
   },
   {
    "expect": "Oriel's"
@@ -2371,21 +2371,6 @@
    "expect": "grey-eyed and ordinary"
   },
   {
-   "clickText": "Dawn"
-  },
-  {
-   "wait": 700
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
-  },
-  {
-   "expect": "first true thing"
-  },
-  {
    "clickText": "Years later"
   },
   {
@@ -2410,16 +2395,37 @@
    "key": "Space"
   },
   {
-   "wait": 600
+   "wait": 4600
   },
   {
    "shot": "t_ch8_night"
   },
   {
-   "expect": "only the Listener knows"
+   "expect": "the dormitory"
   },
   {
-   "clickText": "Onward"
+   "expect": "the bell-chamber"
+  },
+  {
+   "expect": "The Seer stayed behind to hold it"
+  },
+  {
+   "expect": "an oath you swore to a fourteen-year-old"
+  },
+  {
+   "expect": "each of you answered alone"
+  },
+  {
+   "expectNot": "The route: KNOT"
+  },
+  {
+   "expectNot": "The eighth glyph"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "Four boxes, still sealed"
   },
   {
    "wait": 700
@@ -2482,13 +2488,13 @@
    "shot": "t_ch8_unsealed"
   },
   {
-   "expect": "said yes to the stair"
+   "expect": "Refused the Envoy"
   },
   {
-   "expect": "refused the Envoy"
+   "expect": "Would walk into the fire"
   },
   {
-   "expect": "would walk into the fire"
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
   },
   {
    "clickText": "Onward"
@@ -2500,10 +2506,13 @@
    "key": "Space"
   },
   {
-   "wait": 5500
+   "wait": 4200
   },
   {
    "expect": "IT IS THE GLYPH KNOT"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
   },
   {
    "clickText": "The numbers"
@@ -2515,7 +2524,7 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 2600
   },
   {
    "shot": "t_ch8_stats"
@@ -2524,13 +2533,16 @@
    "expect": "to spare"
   },
   {
-   "expect": "Seer"
+   "expect": "Four clues in the bell-chamber"
   },
   {
    "expect": "the Idiots"
   },
   {
-   "expect": "The Fourfold Walk"
+   "expectNot": "The fire also remembers"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
   },
   {
    "clickText": "One more thing"
@@ -2560,10 +2572,10 @@
    "wait": 300
   },
   {
-   "expect": "Epilogue — the paths you walked"
+   "expect": "Epilogue \u2014 the paths you walked"
   },
   {
-   "expect": "The Fourfold Walk"
+   "expect": "The night ended in the Fourfold Walk"
   },
   {
    "clickText": "Sit with it"
@@ -2593,5 +2605,5 @@
    "eval": "({ ENDING: VigilStore.state.flags.ENDING, scene: VigilStore.state.scene, CLUES: VigilStore.state.flags.CLUES, TRUTHS: VigilStore.state.flags.TRUTHS, CRACKED: VigilStore.state.flags.BELLS_CRACKED, VOLUNTEER: VigilStore.state.flags.VOLUNTEER, OATH: VigilStore.state.flags.OATH, hints: VigilStore.state.flags.hintsTotal || 0 })"
   }
  ],
- "_auto": "the ch6 auto-ringer must select .orb:not(.mimic) — a .mimic orb is the Cold, and ringing one is a miss. A third of each pattern is Cold, so a ringer that hits everything scores 16 of 24 and fails."
+ "_auto": "the ch6 auto-ringer must select .orb:not(.mimic) \u2014 a .mimic orb is the Cold, and ringing one is a miss. A third of each pattern is Cold, so a ringer that hits everything scores 16 of 24 and fails."
 }
