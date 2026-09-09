@@ -1921,25 +1921,37 @@
    "key": "Space"
   },
   {
-   "expect": "Master Oriel steps past all of them"
+   "wait": 400
   },
   {
-   "expect": "Seer still has the feel of the thread"
+   "shot": "t_ch7_start"
   },
   {
-   "clickText": "Vane speaks"
+   "expect": "Master Oriel came down behind you"
   },
   {
-   "wait": 600
+   "expect": "the Crown's soldiers"
+  },
+  {
+   "expectNot": "Tarn"
+  },
+  {
+   "clickText": "The Envoy speaks"
+  },
+  {
+   "wait": 700
   },
   {
    "key": "Space"
   },
   {
+   "wait": 400
+  },
+  {
    "expect": "the Idiots"
   },
   {
-   "clickText": "Attune"
+   "click": "button.choice:has-text('Say nothing')"
   },
   {
    "wait": 800
@@ -1948,10 +1960,13 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
    "expect": "CROWN"
+  },
+  {
+   "expect": "TQP"
   },
   {
    "clickText": "All phones are ready"
@@ -1963,28 +1978,13 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
-   "expect": "THE FOURFOLD WALK"
+   "expect": "Four of us go in together"
   },
   {
-   "click": "button.choice:has-text('FOURFOLD')"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
-  },
-  {
-   "expect": "Cite a clue"
-  },
-  {
-   "click": "button.choice:has-text('prophecy stone')"
+   "click": "button.choice:has-text('Four of us go in together')"
   },
   {
    "wait": 800
@@ -1993,10 +1993,25 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
-   "expect": "one Seer with the fire low enough"
+   "expect": "Name one thing you saw"
+  },
+  {
+   "click": "button.choice:has-text('mark at its foot')"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "expect": "low enough to look"
   },
   {
    "clickText": "Continue"
@@ -2008,28 +2023,16 @@
    "key": "Space"
   },
   {
-   "wait": 300
-  },
-  {
-   "expect": "Idony"
-  },
-  {
-   "clickText": "The Walk"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
+   "wait": 400
   },
   {
    "expect": "the Idiots"
   },
   {
-   "clickText": "Continue"
+   "expect": "Ask your Binder"
+  },
+  {
+   "clickText": "Seal your word"
   },
   {
    "wait": 800
@@ -2053,7 +2056,7 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
    "type": [
@@ -2083,87 +2086,88 @@
    "clickText": "Speak the words"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
-   "expect": "Nobody in the room was bound"
+   "expect": "Nobody was bound"
   },
   {
-   "clickText": "Continue"
+   "clickText": "What comes of it"
   },
   {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
-  },
-  {
-   "expect": "midnight starts"
-  },
-  {
-   "clickText": "The ring"
-  },
-  {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "wait": 500
+   "wait": 600
+  },
+  {
+   "shot": "t_ch7_sigil"
   },
   {
    "expect": "MIDNIGHT"
   },
   {
+   "expect": "Either wall may speak first"
+  },
+  {
+   "expect": "sworn ring is built"
+  },
+  {
    "slots": [
     [
      1,
-     "CROWN"
+     "EMBER"
     ],
     [
      2,
-     "WELL"
-    ],
-    [
-     3,
      "ASH"
     ],
     [
+     3,
+     "WELL"
+    ],
+    [
      4,
-     "THORN"
+     "CROWN"
     ],
     [
      5,
-     "KNOT"
+     null
     ],
     [
      6,
-     "VEIL"
+     "THORN"
     ],
     [
      7,
-     "EMBER"
+     "KNOT"
+    ],
+    [
+     8,
+     "VEIL"
     ]
    ]
-  },
-  {
-   "expect": "the eighth glyph"
   },
   {
    "clickText": "Close the sigil"
   },
   {
-   "wait": 1200
+   "wait": 1300
+  },
+  {
+   "expect": "Every word, once"
+  },
+  {
+   "assert": "Game.clock.left() > 860"
   },
   {
    "keys": "acm/"
@@ -2175,28 +2179,31 @@
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 500
   },
   {
-   "expect": "still works"
+   "expect": "plays itself through the floor"
   },
   {
-   "clickText": "Continue"
+   "clickText": "The Binding"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "wait": 500
+   "wait": 600
   },
   {
    "shot": "t_ch7_binding"
   },
   {
    "expect": "THE BINDING"
+  },
+  {
+   "expectNot": "no light"
   },
   {
    "keys": "acm/"
@@ -2208,28 +2215,28 @@
    "keys": "acm/"
   },
   {
-   "wait": 2200
+   "wait": 2400
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "expect": "The fire climbs"
+  },
+  {
+   "clickText": "What the fire decides"
+  },
+  {
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
    "wait": 400
-  },
-  {
-   "expect": "Midnight stops"
-  },
-  {
-   "clickText": "Continue"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
   },
   {
    "expect": "It is never written"
@@ -2247,28 +2254,37 @@
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 400
   },
   {
    "expect": "WREN"
   },
   {
-   "wait": 1500
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 800
-  },
-  {
-   "expect": "Write it"
+   "wait": 1200
   },
   {
    "clickText": "Every phone is dark"
   },
   {
-   "wait": 800
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "expect": "WRITE IT"
+  },
+  {
+   "expect": "Law 0"
+  },
+  {
+   "keys": "acm/"
+  },
+  {
+   "wait": 2600
   },
   {
    "key": "Space"
@@ -2277,37 +2293,19 @@
    "wait": 500
   },
   {
-   "expect": "WRITE IT"
-  },
-  {
-   "keys": "acm/"
-  },
-  {
-   "wait": 2200
-  },
-  {
-   "wait": 800
-  },
-  {
-   "key": "Space"
-  },
-  {
-   "wait": 300
-  },
-  {
    "expect": "White"
   },
   {
    "clickText": "After"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
   },
   {
-   "wait": 300
+   "wait": 500
   },
   {
    "shot": "t_ch7_ending"
@@ -2322,7 +2320,7 @@
    "clickText": "The night, whole"
   },
   {
-   "wait": 800
+   "wait": 900
   },
   {
    "key": "Space"
@@ -2334,10 +2332,13 @@
    "shot": "t_ch7_flow"
   },
   {
-   "expect": "Ending: The Fourfold Walk"
+   "expect": "The night ended in the Fourfold Walk"
   },
   {
-   "expect": "Binding failures: 0"
+   "expect": "after 0 slips"
+  },
+  {
+   "assert": "VigilStore.state.flags.ENDING === 0 && VigilStore.state.flags.WREN_SHOWN === true && (VigilStore.state.flags.BINDING_FAILS|0) === 0"
   },
   {
    "clickText": "What the fire left behind"

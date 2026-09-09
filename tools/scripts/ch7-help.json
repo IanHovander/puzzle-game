@@ -1,0 +1,13 @@
+{ "start": "ch7_binding", "steps": [
+  {"wait": 900}, {"key": "Space"}, {"wait": 700}, {"shot": "help_binding"}, {"expect": "THE BINDING"}, {"expect": "All four together"},
+  {"keys": "acm/"}, {"wait": 7000}, {"key": "a"}, {"wait": 900}, {"key": "c"}, {"wait": 900}, {"key": "m"}, {"wait": 900}, {"key": "/"}, {"wait": 1600}, {"expect": "apart"},
+  {"keys": "acm/"}, {"wait": 7000}, {"key": "a"}, {"wait": 900}, {"key": "c"}, {"wait": 900}, {"key": "m"}, {"wait": 900}, {"key": "/"}, {"wait": 1600},
+  {"keys": "acm/"}, {"wait": 7000}, {"key": "a"}, {"wait": 900}, {"key": "c"}, {"wait": 900}, {"key": "m"}, {"wait": 900}, {"key": "/"}, {"wait": 2200},
+  {"shot": "help_counted"}, {"expect": "The Hearth counts for you"},
+  {"key": "Space"}, {"wait": 700}, {"expect": "It holds, barely"},
+  {"assert": "VigilStore.state.flags.WITH_HELP === true && VigilStore.state.flags.BINDING_LANDED === true && (VigilStore.state.flags.BINDING_FAILS|0) >= 3"},
+  {"clickText": "What the fire decides"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "Walked into the Cold: the Provost"}, {"clickText": "The night, whole"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "help_flow"}, {"expect": "counted for you"},
+  {"eval": "({help: VigilStore.state.flags.WITH_HELP, fails: VigilStore.state.flags.BINDING_FAILS, ending: VigilStore.state.flags.ENDING})"}
+] }

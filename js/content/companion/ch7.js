@@ -4,8 +4,11 @@
    the Seer has the two cuts in the rim of the floor, and which socket each is in;
    the Binder has the Laws: a sigil begins in the scratch and runs sunwise, and names every word once.
    Verified by enumeration over 128 rings: all four pages give exactly one ring; drop the Listener and
-   four remain, drop the Seer and eight, drop the Binder and eight, drop the Reader and no word can be
-   named at all. */
+   four remain (two under the oath, which rotates the wall order away), drop the Seer and eight, drop
+   the Binder and eight. Drop the Reader and no word can be named — the Hearth's palette is name-only
+   and the walls are legible only here. Note that the shape-to-word lexicon is NOT private: book.js
+   prints all eight shapes beside their names on the Listener's Book page, so the Reader's necessity
+   rests on js/art/scenes-ch7.js drawing the wear on those walls and never the cut. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI, Shared = window.VigilShared;
@@ -16,7 +19,7 @@
   /* a copy of the two walls in js/content/ch7.js — the phone does not load the chapter file */
   const WEST = [{ shape: 'Spike', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: true }];
   const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }];
-  const SCRATCH = 1, NOTCH = 6;
+  const SCRATCH = 4, NOTCH = 1;
   const words = (items, end) => G.readLine(items, end === 'other' ? 'right' : 'left')
     .map(n => `<b>${n}</b>`).join('<br>');
   const law = (n, era, year, text, note) => `<div class="law ${era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${n} · ${era === 'F' ? 'Founders’ · Year 0' : 'Order’s · Year ' + year}</div><div class="txt">${UI.esc(text)}</div>${note ? `<div class="fine">${note}</div>` : ''}</div>`;
@@ -27,51 +30,60 @@
 
   /* The Listener's interval, drawn: two rungs of the ladder and the smallest climb there is.
      The dormitory lamp opened on +3. This one opens on +1. */
-  const climbOne = () => `<svg viewBox="0 0 200 96" style="width:170px;height:82px">
-    ${[0, 1, 2, 3, 4].map(i => `<line x1="30" y1="${84 - i * 16}" x2="86" y2="${84 - i * 16}" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`).join('')}
-    <circle cx="58" cy="84" r="7" fill="${SEA}"/><circle cx="58" cy="68" r="7" fill="${SEA}"/>
-    <path d="M110,84 L110,68" stroke="${SEA}" stroke-width="2"/><path d="M110,62 l-5,10 l10,0 Z" fill="${SEA}"/>
-    <text x="132" y="78" fill="${SEA}" font-size="18" ${F}>+1</text>
-    <text x="58" y="52" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="9" ${F}>second word</text>
+  const climbOne = () => `<svg viewBox="0 0 200 100" style="width:180px;height:90px">
+    ${[0, 1, 2, 3, 4].map(i => `<line x1="30" y1="${70 - i * 15}" x2="86" y2="${70 - i * 15}" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`).join('')}
+    <circle cx="58" cy="70" r="7" fill="${SEA}"/><circle cx="58" cy="55" r="7" fill="${SEA}"/>
+    <path d="M110,70 L110,55" stroke="${SEA}" stroke-width="2"/><path d="M110,49 l-5,10 l10,0 Z" fill="${SEA}"/>
+    <text x="128" y="66" fill="${SEA}" font-size="18" ${F}>+1</text>
+    <text x="100" y="94" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the smallest climb there is</text>
   </svg>`;
 
   /* The Seer's floor: eight sockets, numbered as the Hearth numbers them, and TWO cuts.
      No arrow, no direction, no rule — the Seer reports cuts, not meanings. */
   const ringCuts = () => {
-    const cx = 180, cy = 118, R = 82;
-    let s = `<svg viewBox="0 0 360 250"><rect width="360" height="250" fill="#000"/>`;
-    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fff" stroke-width="1.5"/>`;
+    const cx = 170, cy = 132, R = 76;
+    const at = (n, d) => { const a = ((n - 1) / 8 * 360 - 90) * Math.PI / 180; return [cx + Math.cos(a) * (R + d), cy + Math.sin(a) * (R + d)]; };
+    /* labels are placed by the mark's own bearing, so they stay inside the box wherever the cuts move */
+    const lab = (n, d) => { const a = ((n - 1) / 8 * 360 - 90) * Math.PI / 180, c = Math.cos(a), v = Math.sin(a);
+      return [(cx + c * (R + d)).toFixed(1), (cy + v * (R + d) + (Math.abs(v) > 0.9 ? (v > 0 ? 15 : -9) : 4)).toFixed(1),
+        c > 0.35 ? 'start' : c < -0.35 ? 'end' : 'middle']; };
+    let s = `<svg viewBox="0 0 360 260"><rect width="360" height="260" fill="#000"/>`;
+    s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fff" stroke-width="1.4"/>`;
     for (let i = 0; i < 8; i++) {
-      const a = (i / 8 * 360 - 90) * Math.PI / 180, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
-      const hot = (i + 1) === SCRATCH;
+      const [x, y] = at(i + 1, 0); const hot = (i + 1) === SCRATCH;
       s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="#000" stroke="${hot ? V : '#fff'}" stroke-width="${hot ? 2.5 : 1.4}"/>`;
       s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="${hot ? V : '#fff'}" font-size="12" ${F}>${i + 1}</text>`;
     }
-    const at = (n, d) => { const a = ((n - 1) / 8 * 360 - 90) * Math.PI / 180; return [cx + Math.cos(a) * (R + d), cy + Math.sin(a) * (R + d)]; };
-    const [sx, sy] = at(SCRATCH, 30);
-    s += `<g stroke="${V}" stroke-width="2.5" stroke-linecap="round"><path d="M${sx - 16},${sy + 4} L${sx + 16},${sy - 4}"/><path d="M${sx - 12},${sy + 10} L${sx + 12},${sy + 3}"/></g>`;
-    s += `<text x="${sx}" y="${sy - 12}" text-anchor="middle" fill="${V}" font-size="10" ${F}>a scratch — long, deliberate</text>`;
-    const [nx, ny] = at(NOTCH, 28);
-    s += `<g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M${nx - 6},${ny + 6} L${nx},${ny - 4} L${nx + 6},${ny + 6}"/></g>`;
-    s += `<text x="${nx - 4}" y="${ny + 20}" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="10" ${F}>a small notch</text>`;
-    s += `<text x="180" y="242" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">the floor-ring, as it was cut</text></svg>`;
+    const [sx, sy] = at(SCRATCH, 26), [slx, sly, sla] = lab(SCRATCH, 34);
+    s += `<g stroke="${V}" stroke-width="2.5" stroke-linecap="round"><path d="M${(sx - 17).toFixed(1)},${(sy + 3).toFixed(1)} L${(sx + 17).toFixed(1)},${(sy - 5).toFixed(1)}"/><path d="M${(sx - 13).toFixed(1)},${(sy + 10).toFixed(1)} L${(sx + 13).toFixed(1)},${(sy + 3).toFixed(1)}"/></g>`;
+    s += `<text x="${slx}" y="${sly}" text-anchor="${sla}" fill="${V}" font-size="10" ${F}>a scratch</text>`;
+    const [nx, ny] = at(NOTCH, 24), [nlx, nly, nla] = lab(NOTCH, 32);
+    s += `<g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"><path d="M${(nx - 7).toFixed(1)},${(ny + 7).toFixed(1)} L${nx.toFixed(1)},${(ny - 4).toFixed(1)} L${(nx + 7).toFixed(1)},${(ny + 7).toFixed(1)}"/></g>`;
+    s += `<text x="${nlx}" y="${nly}" text-anchor="${nla}" fill="rgba(255,255,255,.85)" font-size="10" ${F}>a small notch</text>`;
+    s += `<text x="180" y="252" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">two cuts in the rim, under the polish</text></svg>`;
     return s;
   };
 
-  /* The Binder's rule, drawn with NO socket numbers: which cut starts a sigil, and which way it runs.
-     Where the cuts actually are is the Seer's, so the ring here is unnumbered and the marks are placed
-     anywhere at all. */
+  /* The Binder's rule, drawn: which cut starts a sigil, and which way it runs from there.
+     THE GEOMETRY ENFORCES THE SEPARATION. An earlier version drew eight sockets on the Hearth's own
+     angular convention (i/8*360-90, socket 1 at the top, clockwise — js/puzzles/ring.js), and put the
+     scratch and the notch radially outside two of them. Held next to the Hearth's numbered wheel it read
+     off "the scratch is socket 1, the notch is socket 6", which is the Seer's whole page, and dropping
+     the Seer went from eight candidate rings to one. So: NO sockets at all here, and the two cuts sit at
+     angles no socket ever occupies (22.5 degrees off every one of eight, whatever the ring's rotation).
+     Where the cuts are is the Seer's. This page says only that one of them starts a sigil, and which
+     way the sigil then runs. The Prologue's lawRing does the same thing by rotating off the Hearth's
+     convention (companion/ch0.js). */
   const placingRule = () => `<svg viewBox="0 0 170 160" style="width:150px;height:141px">
-    <circle cx="85" cy="82" r="52" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
-    ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => { const a = (i / 8 * 360 - 90) * Math.PI / 180, x = 85 + Math.cos(a) * 52, y = 82 + Math.sin(a) * 52;
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.4"/>`; }).join('')}
-    <g stroke="${RED}" stroke-width="2.5" stroke-linecap="round"><path d="M77,14 L93,10"/><path d="M79,20 L91,17"/></g>
-    <text x="85" y="6" text-anchor="middle" fill="${RED}" font-size="9" ${F}>the scratch</text>
-    <g stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"><path d="M22,120 L28,112 L34,120"/></g>
-    <text x="20" y="136" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>a notch</text>
-    <path d="M104,36 a52,52 0 0 1 30,42" fill="none" stroke="${RED}" stroke-width="2.5"/>
-    <path d="M134,78 l-8,-4 l1,10 Z" fill="${RED}"/>
-    <text x="150" y="60" text-anchor="middle" fill="${RED}" font-size="9" ${F}>then on</text>
+    <circle cx="85" cy="80" r="52" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
+    <g stroke="${RED}" stroke-width="2.5" stroke-linecap="round"><path d="M104,19 L120,11"/><path d="M107,25 L122,18"/></g>
+    <text x="76" y="14" text-anchor="middle" fill="${RED}" font-size="9" ${F}>the scratch</text>
+    <g stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"><path d="M16,115 L22,103 L28,115"/></g>
+    <text x="26" y="129" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>a notch</text>
+    <path d="M129,36 a62,62 0 0 1 0,88" fill="none" stroke="${RED}" stroke-width="2.5"/>
+    <path d="M129,124 l-8,-5 l0,10 Z" fill="${RED}"/>
+    <text x="144" y="82" text-anchor="middle" fill="${RED}" font-size="9" ${F}>clockwise</text>
+    <text x="85" y="156" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the scratch starts it, then clockwise</text>
   </svg>`;
 
   /* Wren, under the chamber: four shadows away from the spark, and one toward it. No names but Wren's. */
@@ -163,8 +175,8 @@
         P.sight.push({ t: 'h', text: 'The two walls' });
         P.sight.push({ t: 'p', text: 'What the fire shows worn, you see cut. Four words on each wall, and together they make one phrase of eight.' });
         P.sight.push({ t: 'table', head: ['cut into the wall', 'from one end', 'from the other'], rows: [
-          [wallRow(WEST), words(WEST, 'one'), words(WEST, 'other')],
-          [wallRow(EAST), words(EAST, 'one'), words(EAST, 'other')],
+          [wallRow(WEST) + '<div class="fine">one wall</div>', words(WEST, 'one'), words(WEST, 'other')],
+          [wallRow(EAST) + '<div class="fine">the other</div>', words(EAST, 'one'), words(EAST, 'other')],
         ] });
         P.sight.push({ t: 'fine', text: 'a wall has two ends and no beginning' });
         P.sight.push({ t: 'p', text: '**Each wall says one of those two things, and never both.** Read all four rows out loud.' });
@@ -187,23 +199,20 @@
         P.sight.push({ t: 'h', text: 'Two cuts in the floor' });
         P.sight.push({ t: 'p', text: 'Under four hundred years of polish, the rim of the floor is cut in two places, by two different hands.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: ringCuts() });
-        P.sight.push({ t: 'p', text: 'A long, deliberate **scratch** at socket **1**. A small **notch** at socket **6**. Those are the numbers the Hearth shows.' });
-        P.sight.push({ t: 'p', text: 'Begin the phrase in the wrong socket and every word after it lands in the wrong socket too.' });
+        P.sight.push({ t: 'p', text: `A long, deliberate **scratch** at socket **${SCRATCH}**. A small **notch** at socket **${NOTCH}**. Those are the numbers the Hearth shows.` });
+        P.sight.push({ t: 'p', text: 'Begin in the wrong socket and every word after it lands wrong too.' });
         P.sight.push({ t: 'fine', text: 'Which of them matters is not yours to know — that is the Binder’s half of the job. Say what is cut, and where.' });
       }
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'The Law on the rim' });
         P.sight.push({ t: 'html', html: placingRule() });
-        P.sight.push({ t: 'fine', text: 'the scratch starts it' });
         P.sight.push({ t: 'html', html: `<div class="laws">${[
           law(1, 'F', 0, 'A sigil is read sunwise from the mark.', 'Sunwise is clockwise, the way the numbers count up. The mark is the <strong>scratch</strong>. A notch is only a signature.'),
           law(8, 'F', 0, 'A Great Sigil names every glyph once.', 'Eight sockets, eight words, no word twice.'),
         ].concat(knot ? [law(7, 'F', 0, 'A sigil sworn under KNOT begins at the sworn-to.', '<strong>You swore under KNOT, to the Chair.</strong> Build the ring, then turn it whole until the Chair’s word stands where the phrase began. Ask the Reader which word.')] : []).join('')}</div>` });
-        P.sight.push({ t: 'p', text: 'From the Order: where the phrase shows the cold word, that socket stays empty'
-          + (walkOn ? ' — unless four hands write it.' : '.') });
+        P.sight.push({ t: 'p', text: 'From the Order: where the phrase shows the cold word, that socket stays empty.' });
         P.sight.push({ t: 'p', text: '**Eight words, and no word twice.** Say that first.' });
-        P.sight.push({ t: 'p', text: 'Begin at the wrong cut, or count the wrong way round, and every word lands in the wrong socket.' });
         P.sight.push({ t: 'fine', text: 'You have no words and no numbers. Ask for both.' });
       }
 

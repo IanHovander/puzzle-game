@@ -11,7 +11,7 @@
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "one name out loud: Listener"}, {"wait": 20000},
   {"key": "Space"}, {"wait": 600}, {"shot": "barg_timeout"},
-  {"eval": "({listener: VigilStore.state.flags.BARGAIN_listener})"}, {"clickText": "Continue"},
+  {"assert": "VigilStore.state.flags.BARGAIN_listener === 'refused'"}, {"eval": "({listener: VigilStore.state.flags.BARGAIN_listener, timedout: VigilStore.state.flags.FINALE_BARGAIN_listener_timedout})"}, {"clickText": "Continue"},
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"expect": "one name out loud: Seer"}, {"click": "button.choice:has-text('Keep it')"},
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "barg_done"}, {"expect": "majority of hands"},
