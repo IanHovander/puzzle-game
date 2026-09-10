@@ -493,6 +493,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 
 </style>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='42' fill='%230b0a10' stroke='%23d4a94e' stroke-width='6'/><path d='M50 18 L58 42 L82 42 L62 56 L70 80 L50 66 L30 80 L38 56 L18 42 L42 42 Z' fill='%23d4a94e'/></svg>">
+<script>window.COMPANION_URL = "https://claude.ai/code/artifact/8f607ee5-620a-40fc-9d95-77d95baaac51";</script>
 </head>
 <body>
 <div id="app">
@@ -3189,7 +3190,12 @@ var qrcode = function() {
     Store.state.lastTick = Date.now(); ticking = true;
     if (!tickHandle) tickHandle = setInterval(() => {
       if (!ticking || document.hidden) { Store.state.lastTick = Date.now(); return; }
-      const now = Date.now(); Store.state.elapsedMs += now - Store.state.lastTick; Store.state.lastTick = now;
+      /* Clamped to one tick. The document.hidden guard above catches a backgrounded tab, but a CLOSED
+         LID does not set document.hidden -- the interval simply stops, and the first tick after wake
+         added the whole suspension in one go. A table that stops at Chapter VI and comes back next
+         Saturday without closing the tab was credited the entire week, and ch8 prints this number as
+         the last thing the game says about the night. */
+      const now = Date.now(); Store.state.elapsedMs += Math.min(now - Store.state.lastTick, 2000); Store.state.lastTick = now;
       if (Math.floor(Store.state.elapsedMs / 1000) % 15 === 0) Store.save();
     }, 1000);
   };
@@ -3980,7 +3986,13 @@ var qrcode = function() {
   function runEnd(scene, api) {
     Store.pauseTimer();
     if (scene.render) scene.render(dom.actions, api);
-    api.button(scene.button || 'Begin again', () => { Store.reset(); location.reload(); }, 'ghost');
+    /* This erases the save -- the one Chapter select and 'see another ending in twenty minutes' both
+       depend on -- and it sat unguarded next to two harmless buttons on the last screen of a two-hour
+       game, at midnight, in front of a tired table. 'Abandon game' in the Menu has always confirmed;
+       this is the same action and did not. */
+    api.button(scene.button || 'Begin again', async () => {
+      if (await UI.confirm('Erase this night and start over? The words, the choices and the ending all go.', { danger: true, ok: 'Erase it' })) { Store.reset(); location.reload(); }
+    }, 'ghost');
   }
 
   /* ---------- Hints ---------- */
@@ -4024,7 +4036,36 @@ var qrcode = function() {
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
+    const row3 = UI.el('div', { class: 'row' });
+    row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
+    box.appendChild(row3);
     const m = UI.modal(box, { title: 'The Hearth' });
+  };
+  /* THE RECOVERY THIS GAME DOCUMENTS AND DID NOT HAVE. Every attunement writes its mark into the save
+     (`Store.state.flags['CAST_' + code]`, a few lines up) and renders it exactly once, on the scene
+     that produced it -- `node tools/flag-map.js` reported CAST_ as "set but never read". Seven of the
+     nine chapters carry a mark (ch0 and ch1 have `cast: []`), and js/companion.js refuses a
+     re-attunement without one: "This word has a mark beside it on the Hearth. Enter it too."
+     So docs/HOST.md's instruction -- if a phone dies, open the Companion on another one, choose the
+     same seat and type the current word again -- was FALSE for seven chapters, and it is the recovery
+     path for the four likeliest disasters at a real table: a flat battery, a late arrival, a lost
+     phone, and stopping for a week. The only working recovery was Chapter select, which overwrites
+     the current scene and costs the table their place.
+     The spoiler gate is the one showChapterSelect already ships, copied deliberately rather than
+     invented: a chapter is named, and its word shown, once the table has been there. */
+  Game.showWords = function () {
+    const box = UI.el('div', { class: 'chapter-list' });
+    Game.chapters.forEach(ch => {
+      if (ch.hidden || !ch.code) return;
+      const reached = Store.state.visited.includes(ch.start);
+      const mark = Store.state.flags['CAST_' + ch.code];
+      const label = reached
+        ? `<strong>${UI.esc(ch.label || 'Chapter')}</strong> — ${UI.esc(ch.code)}${mark ? ' · <strong>' + UI.esc(mark) + '</strong>' : ''}`
+        : `${UI.esc(ch.label || 'Chapter')} — · · ·`;
+      box.appendChild(UI.el('p', { class: 'small' + (reached ? '' : ' dim'), html: label }));
+    });
+    box.appendChild(UI.el('p', { class: 'small', text: 'A word is shown once you have said it. To bring a phone back — a flat battery, a late arrival, a new phone — open the Companion on it, choose the same seat, and enter the word and the mark for the chapter you are in.' }));
+    const m = UI.modal(box, { title: 'Words of the night' });
   };
   /* A chapter's TITLE is a spoiler until the table gets there: from the first scene of the Prologue this
      list used to name the Ember Vault, the Whispering Gallery, the Oath, the Long Stair, the Bells of
@@ -7935,7 +7976,19 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
                         ceiling, so the Reader cannot be made harder to drop by choosing other words.
         no Listener 6 — the six orderings of the three words across slots 4, 1 and 2.
         no Seer     4 — one clockwise run of the three words per starting slot.
-        no Binder   4 — begin at the scratch or at the notch, clockwise or anticlockwise.
+        no Binder   4 — begin at the scratch or at the notch, clockwise or widdershins. BOTH bits are
+                        the Binder's, and it took two goes to make that true. This row was FALSE twice.
+                        First it was 1: the Binder's page here was word for word the Binder's PROLOGUE
+                        page, and the dormitory lamp is worked on the shared screen with the Binder
+                        required to say the rule aloud, so by Chapter III 'begin at the scratch, run
+                        clockwise' is table knowledge (ADVERSARIAL 11). Moving the mark to the notch
+                        fixed half of that and the row was STILL false, at 2 rather than 4, because the
+                        DIRECTION sits in the same four-line list on the same Prologue page and nothing
+                        in the game had ever shown a ring running the other way -- so three tries walked
+                        it with certainty: p 1.000 against a recorded 0.750.
+                        A Vigil ward is sealed behind its keeper and runs widdershins. That is on the
+                        Binder's page and nowhere else, ring.js's SUNWISE arrow is off, and the Hearth
+                        draws no cuts. Now the field is four and the Prologue answers neither bit.
                         THIS ROW WAS FALSE UNTIL THE INTEGRATE PASS, and it was false in a way no
                         reader of this chapter could see. The Binder's page here used to be, word for
                         word, the Binder's PROLOGUE page: begin at the scratch, a notch is only a
@@ -7959,7 +8012,9 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
      the Menu's "Replay scene" hands back in full, and a budget two clicks can refund is not a budget
      (ADVERSARIAL 7). Guessing blind, and drawing distinct boards, a three-role table gets through
      3/|field| of the time: no Reader 3/5, no Listener 3/6, no Seer and no Binder 3/4 — turned away
-     between one time in four and one time in two.
+     between one time in four and one time in two. Recomputed against the shipped
+     wardCheck in docs/PARTITION.md; if that table and this comment ever disagree, the table is the one
+     that was run and this is a copy (ADVERSARIAL 18).
      THE LADDER IS PART OF THE ANSWER SPACE, because a hint costs nothing. Enumerated against the
      shipped wardCheck (all four fields, every rung applied as a predicate):
         rung 1  re-partitions and names no coordinate:            5 / 6 / 4 / 4, unchanged
@@ -7989,7 +8044,26 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
      ch4's oath pair (OATH_SCRATCH 2, OATH_NOTCH 4) and tools/scripts/ch4-oath-check.js fails on the
      repeat, which is ADVERSARIAL 9 and is how this was caught. */
   const CUTS = { scratch: 1, notch: 4 };   // Seer: what is cut. Binder: which of them binds.
-  const RING = { 1: 'THORN', 2: 'KNOT', 4: 'ASH' };
+  /* WHICH WAY IT RUNS is the Binder's second bit, and it had to become one. Moving the mark to the
+     notch fixed only half of what the Prologue spends: the dormitory lamp is worked on the shared
+     screen and its answer settles BOTH the start AND the direction, and companion/ch0.js:134 teaches
+     'sunwise -- clockwise, the way the numbers count up' aloud, to the whole room, in the Binder's own
+     mouth. So with the start moved the Binder-less field was 2 boards, not 4, and three tries walked
+     it with certainty: p 1.000 against a recorded 0.750.
+     A Vigil ward is sealed by its keeper behind them, so it runs WIDDERSHINS -- back against the
+     count. That is on the Binder's page and nowhere else; ring.js would draw a SUNWISE arrow at the
+     hub and `showArrow: false` is what stops it, which tools/scripts/ch3.json asserts. The field is
+     four again and honestly four: two cuts to begin at, two ways to run, and the Prologue answers
+     neither for a ring of this class.
+     RING is DERIVED from CUTS and the direction, so the board cannot drift away from the rule the
+     Binder is given -- which is exactly how ch4's oath hint broke (ADVERSARIAL 10, 18). */
+  const WIDDERSHINS = true;
+  const RING = (() => {
+    const step = WIDDERSHINS ? -1 : 1, r = {};
+    let slot = CUTS.notch;
+    for (const w of ARCH) { r[slot] = w; slot = ((slot - 1 + step + 4) % 4) + 1; }
+    return r;
+  })();   // { 4: ASH, 3: THORN, 2: KNOT } -- and the scratch at slot 1 stays empty, being only wear
   /* wardCheck always returns true or a line, so ring.js's own onWrong never fires: the second-try nudge
      that suspects a player who has not spoken is appended here instead.
      WARD_TRIES is the budget, and it is in the save: a module-local `let` survives a Replay scene but
@@ -7997,9 +8071,20 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
      under-committed ones included, because ring.js's own `tries` counts every submission and compares it
      to maxTries: let the two drift apart and the widget can go cold at a count the card never mentioned. */
   const wardBudget = (s) => Math.max(1, 3 - (s.flags.WARD_TRIES | 0));
-  function wardCheck(m) {
+  /* An empty ring and a half-filled one are not attempts, and they are not charged. Every other ring in
+     the game already does this and says so on the line -- ch4's oath ('It is not closed, and it has not
+     cost you'), ch5's two gates ('Nothing frosts yet'), ch6's strip ('Not a reading yet') -- and this one
+     was missed, on the puzzle with the harshest losing branch in the chapter. It mattered less while a
+     reload handed the count back; moving WARD_TRIES into the save removed that accidental refund and left
+     a table able to lose the Tower door by pressing Close three times on an empty ring.
+     cfg.maxTries++ is how the other four keep the widget in step: js/puzzles/ring.js reads cfg.maxTries
+     live, AFTER check() has run, and its own `tries` local counts every submission -- so bumping the
+     ceiling here is what stops the two counters drifting apart. */
+  const UNDER = { none: 'Nothing in the ring, and the soot stays soot.', few: 'Three shapes are cut into the arch. Three words go in.' };
+  function wardCheck(m, cfg) {
     const line = wardReason(m);
     if (line === true) return true;
+    if (line === UNDER.none || line === UNDER.few) { if (cfg) cfg.maxTries++; return line + ' Nothing is spent.'; }
     const n = Store.inc('WARD_TRIES');
     return n >= 2 ? line + ' Wren, not helping: "Has everybody actually said their bit?"' : line;
   }
@@ -8008,13 +8093,16 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
      the shape of the hum — those are one phone each, and this text lands on the screen all four share. */
   function wardReason(m) {
     const placed = [1, 2, 3, 4].filter(i => m[i]);
-    if (!placed.length) return 'Nothing in the ring, and the soot stays soot.';
-    if (placed.length < 3) return 'Three shapes are cut into the arch. Three words go in.';
+    if (!placed.length) return UNDER.none;
+    if (placed.length < 3) return UNDER.few;
     if (placed.length > 3) return 'Three shapes, three words. A fourth is a different sigil, and the iron can tell.';
     if (placed.map(i => m[i]).slice().sort().join() !== ARCH.slice().sort().join()) return 'Those are not the three words cut over this door. The Reader has them.';
     const missing = [1, 2, 3, 4].find(i => !m[i]);          // three of four slots are always a run
-    if (missing === 4) return 'The three words, in a run, begun at slot 1. Nothing on this ring says it begins at slot 1.';
-    if (m[4] === RING[4] && m[1] === RING[1] && m[2] === RING[2]) return true;
+    /* There used to be a keyed line here for the board a table lays from the Prologue's rule -- 'begun at
+       slot 1. Nothing on this ring says it begins at slot 1.' It named the axis the missing Binder holds,
+       on the screen all four share, which is the whole of ADVERSARIAL 2. A wrong run now gets one line
+       whichever way it is wrong, so the Hearth cannot tell a Binder-less table which half to change. */
+    if ([1, 2, 3, 4].every(i => (m[i] || null) === (RING[i] || null))) return true;   // derived: see RING
     return 'The iron does not answer. Something under the soot disagrees with the sigil you have made.';
   }
 
@@ -8199,19 +8287,25 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           { text: 'Seer — what is cut under the ring.', cls: 'whisper' },
           { text: 'Binder — where a sigil begins. Then four hands.', cls: 'whisper' },
         ],
-        config: (s) => ({
+        config: (s) => {
+          const cfg = {
           title: 'THE THRESHOLD OF THE BELL TOWER',
           note: 'Wren, flat against the door: *Four slots in the soot, and a sigil to put in them. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And he will not stand there for more than three tries'
             + ((s.flags.WARD_TRIES | 0) ? ' — and he has counted ' + num(s.flags.WARD_TRIES | 0) + '.*' : '.*'),
           slots: 4, glyphs: glyphPalette(), allowEmpty: true, showArrow: false, marks: [],
-          check: wardCheck, maxTries: wardBudget(s),
+          check: (m) => wardCheck(m, cfg), maxTries: wardBudget(s),
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets.',
-        }),
+          };
+          return cfg;
+        },
         hints: [
           'Four answers, four people, and nobody has two. What the shapes say — the Reader. Which of them sounds first — the Listener. What is cut under the ring — the Seer. Where a sigil begins — the Binder.',
           'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So the only question is where the run begins, and that answer comes in two halves, on two phones.',
-          'ASH in slot 4, THORN in slot 1, KNOT in slot 2. Slot 3 stays empty. Then four hands.',
+          /* Derived, never typed out: a rung that restates the answer by hand is what broke ch4's oath
+             (ADVERSARIAL 18). tools/check-hints.js runs this text through wardCheck on every build. */
+          ARCH.map((w, i) => w + ' in slot ' + Object.keys(RING).find(k => RING[k] === w)).join(', ')
+            + '. Slot ' + [1, 2, 3, 4].find(i => !RING[i]) + ' stays empty. Then four hands.',
         ],
         /* The losing branch writes DOOR and SURRENDERED here, not only in ch3_surrender's `enter`: once the
            ring has resolved the puzzle is markSolved, and a table that opens the Menu at that moment and
@@ -10237,7 +10331,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
             { text: 'Pale blue lights are the Cold. Every hand off the keys.', cls: 'whisper' },
             { text: 'Two patterns. Each one says how many lights it needs. Fall short and a bell cracks, and the night goes on either way.', cls: 'whisper' },
           ];
-          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))}, take both keys.`, cls: 'whisper' });
+          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))} covers that lane too — one hand each, and never both at once.`, cls: 'whisper' });
           return out;
         },
         run: (box, api) => new Promise((resolve) => {
@@ -11317,6 +11411,11 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'code', art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.1, code: 'WREN',
         enter: (s) => { s.flags.WREN_SHOWN = true; Store.save(); }, /* the Epilogue skips its own WREN cast on the true path when this is set */
         cast: (s) => S.cast('WREN', S.pack(L.chapter('ch8').cast, Object.assign({}, s.flags, { ENDING: s.flags.ENDING | 0 }))),
+        /* Nine of the ten code scenes carry this; this one did not, and on ENDING 0 it IS the ch8
+           attunement -- WREN_SHOWN routes ch8_words past ch8_code -- so the four goodbye letters, which
+           burn themselves at 45-60s, arrived with no clock on the one ending the game is built for.
+           The four endings the table did NOT earn got 90 enforced seconds for the same letters. */
+        sightSeconds: 90,
         codeLabel: 'It is never written. Write it.',
         codeSub: 'Each phone shows one thing, then goes dark. **Your Sighting is spent. Look up.**',
         text: ['The eighth word. Every phone, now.'],
@@ -11376,8 +11475,12 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
             { speaker: 'Wren', text: 'It is alright. I knew. I wanted to hear what you would say.' },
             'The fire takes the shape of a door, and Wren goes through. Provost Marrow is left holding a grey thread.',
           ];
+          /* Not 'all four of you': a Fourfold vote that fell short lands here too, and one of you may
+             have sealed WALK. ch8_unsealed prints that token back two scenes later. */
           if (E === 3) return [
-            'Walked into the Cold: the Provost. Stayed: all four of you, and Wren.',
+            walkers(s).length
+              ? `Walked into the Cold: the Provost, and ${UI.list(walkers(s).map(nickOf))}. Stayed: ${UI.list(stayers(s).map(nickOf))}, and Wren.`
+              : 'Walked into the Cold: the Provost. Stayed: all four of you, and Wren.',
             { speaker: 'Provost Marrow', text: 'Then I go. I should have gone fourteen years ago.' },
             'She gives Wren the Chair\'s seal. The flame takes her.',
           ];
@@ -11525,7 +11628,16 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
 
   /* ---------- helpers ---------- */
   const ending = (s) => { const e = +(s.flags.ENDING || 0); return e >= 0 && e <= 4 ? e : 0; };
-  const walked = (s, r) => { const e = ending(s); if (e === 0) return true; if (e !== 1) return false; return s.flags['WALK_' + r.id] === 'WALK' && s.flags['BARGAIN_' + r.id] !== 'kept'; };
+  /* ENDING 3 is reached two ways (js/content/ch7.js computeEnding): the table REFUSED, in which case
+     nobody walked; or the table chose the Fourfold Walk and fewer than two of the four sealed WALK.
+     This helper used to answer "nobody walked" for both, so on the second path the Hearth named a
+     player a stayer -- and then ch8_unsealed read that same player's sealed token and printed "Would
+     walk into the fire." on their own card, two scenes later. The game contradicted itself, out loud,
+     about the one thing that player did in private, and it landed on whoever kept their word after
+     the others had not. The flags are only meaningful when the table actually voted, so FOURFOLD is
+     the condition, not the ending number. */
+  const sealedWalk = (s, r) => s.flags['WALK_' + r.id] === 'WALK' && s.flags['BARGAIN_' + r.id] !== 'kept';
+  const walked = (s, r) => { const e = ending(s); if (e === 0) return true; if (e === 1) return sealedWalk(s, r); if (e === 3 && s.flags.DECISION === 'FOURFOLD') return sealedWalk(s, r); return false; };
   const walkers = (s) => R.filter(r => walked(s, r)).map(r => r.nick);
   const stayers = (s) => R.filter(r => !walked(s, r)).map(r => r.nick);
   const kept = (s) => R.filter(r => s.flags['BARGAIN_' + r.id] === 'kept').map(r => r.nick);
@@ -11706,8 +11818,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
             voice,
           ];
           if (e === 3) return [
-            { text: 'Walked into the fire: **the Provost**.', cls: 'center' },
-            { text: `Stayed on the stones: **Wren, and ${UI.list(L.nicks)}**.`, cls: 'center' },
+            { text: `Walked into the fire: **the Provost**${walkers(s).length ? ', and **' + UI.list(walkers(s)) + '**' : ''}.`, cls: 'center' },
+            { text: `Stayed on the stones: **${UI.list(['Wren'].concat(stayers(s)))}**.`, cls: 'center' },
             { speaker: 'Provost Marrow', text: 'Then I go. I should have gone fourteen years ago.' },
             'Nobody argues. Everybody meant to.',
             voice,
@@ -12010,15 +12122,20 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
 
   function render() {
     UI.clear(body);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for four, in one sitting of about two hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
+    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for exactly four, in one sitting of about four hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
     body.appendChild(UI.el('p', { class: 'warn', text: 'Fair warning: at one clearly announced moment, the bells of Thornhallow will ring and all four of you will need quick hands on this keyboard. You will be told before it happens.' }));
 
     const seats = UI.el('div', { class: 'names' });
     Lore.roles.forEach((r, i) => {
       const lab = UI.el('label', { class: 'p' + i });
       lab.appendChild(UI.el('span', { text: r.name }));
+      /* r.what, not r.gift twice. The two spans are styled as different things (17px italic and 11px
+         dim) and were fed the same string, so the first screen four players ever read printed
+         'Glyph-Sight / Glyph-Sight' in two sizes. r.what -- WHAT / WHEN / WHERE / WHETHER -- is the
+         cleanest statement of the division of labour in the project and appeared nowhere the table
+         could see it. */
       lab.appendChild(UI.el('span', { class: 'seat-nick', text: r.gift }));
-      lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.gift }));
+      lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.what }));
       lab.appendChild(UI.el('span', { class: 'seat-key', html: `key <b>${UI.esc(Store.state.keys[i] === ' ' ? 'SPACE' : Store.state.keys[i])}</b>` }));
       seats.appendChild(lab);
     });

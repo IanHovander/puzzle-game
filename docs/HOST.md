@@ -4,7 +4,7 @@ This page contains no story spoilers. It tells you what to set up, what to expec
 
 ## What it is
 
-A cooperative story-puzzle game for four seats, played in one sitting. **Budget three hours and a quarter, and tell everyone that before you start.** A fast, quiet table finishes in a shade under two; a table that enjoys arguing takes four, and the arguing is the game. Four people is the design, but three can play it: two seats fit on one phone (choose the other seat and re-enter its word), and the game keeps them apart. One screen — the **Hearth** — runs the story, the puzzles and the group decisions. Each player also holds a phone — their **Companion** — showing information only they can see. Nobody can solve anything alone; the game is the conversation between the four of you.
+A cooperative story-puzzle game for exactly four people, played in one sitting. **Budget four hours, and tell everyone that before you start** — this is a long evening on purpose, not a filler. A fast, quiet table can be out in a shade over two; most tables take longer, because the arguing is the game. If you are a player short, two seats will fit on one phone (choose the other seat and re-enter its word) and the game keeps them apart — but four is how it is meant to be played. One screen — the **Hearth** — runs the story, the puzzles and the group decisions. Each player also holds a phone — their **Companion** — showing information only they can see. Nobody can solve anything alone; the game is the conversation between the four of you.
 
 If you enjoyed escape rooms, *Myst*, *Keep Talking and Nobody Explodes*, or the choice-and-consequence feel of *Detroit: Become Human*, this is that, in fantasy dress.
 
