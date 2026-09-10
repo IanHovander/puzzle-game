@@ -18,7 +18,7 @@
 
   function render() {
     UI.clear(body);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for four, in one sitting of about two hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
+    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for exactly four, in one sitting of about four hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
     body.appendChild(UI.el('p', { class: 'warn', text: 'Fair warning: at one clearly announced moment, the bells of Thornhallow will ring and all four of you will need quick hands on this keyboard. You will be told before it happens.' }));
 
     const seats = UI.el('div', { class: 'names' });

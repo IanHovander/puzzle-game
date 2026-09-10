@@ -2048,7 +2048,7 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           P.sight.push({ t: 'list', items: [
             'The dormitory lamp was Founders\u2019 brass, and a Founders\u2019 sigil begins at the **scratch**. **This is not one.**',
             'A Vigil ward is cut by the keeper sworn to it, and on a Vigil ward the keeper\u2019s mark **binds**. It begins at the **notch**. The scratch is the older cut, and down here the older cut is only wear.',
-            'The **first** word goes **in** the notched slot. Every word after it goes into the next slot clockwise, the way the numbers count up.',
+            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so every word after it goes into the previous slot — **widdershins, back against the count.** Above ground you have only ever seen a sigil run the other way. This is not above ground.',
             'When the count runs off the end it comes back to slot 1. **Any slot the words do not reach stays empty.**',
           ] });
           P.sight.push({ t: 'fine', text: 'A spare shape is not decoration. It is a different sign, and the iron can tell.' });
@@ -2341,8 +2341,14 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
         P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
         P.sight.push({ t: 'html', html: turnedBoard() });
         P.sight.push({ t: 'p', text: '**Whichever way up a board hangs, every book keeps its place.** Hung the other way up, it says the opposite word. Which way this one hangs is not yours to see.' });
-        P.sight.push({ t: 'p', text: '**A sigil begins at the scratch, and runs the way a clock counts** — the same rule as the lamp.' });
-        P.sight.push({ t: 'p', text: 'A notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
+        /* The qualifier is load-bearing and was added after ch3's ward gave the Binder a second class of
+           ring. Until then this page could say 'a sigil begins at the scratch' flat, because every ring in
+           the game obeyed it. ch3 now teaches that a VIGIL WARD begins at the notch instead -- so a Binder
+           holding both pages had two unconditional rules that contradict each other, and the wrong one
+           governs this ring, which is the only commit-once puzzle in the game. Naming the class here is what
+           lets the Binder tell which rule applies. tools/scripts/ch4-oath-check.js asserts it stays. */
+        P.sight.push({ t: 'p', text: 'The Provost\'s scroll is Founders\' work. It is not a Vigil ward like the Tower door — so **a sigil begins at the scratch, and runs the way a clock counts**, the same rule as the lamp.' });
+        P.sight.push({ t: 'p', text: 'On Founders\' work a notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
         P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
           ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not ever.'],
           ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],
@@ -3807,7 +3813,11 @@ window.CompanionContent.roleIntro = 'Sit left to right facing the Hearth: Reader
           });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
+          /* Sixteen times a night one player is told to raise the volume on a phone holding a fact the
+             other three must not have -- ch2's vault door is four notes, ch4's third shelf, ch5's two
+             gates. Headphones are the fix and nobody had said so. The second sentence stays: a silent
+             room, a flat speaker or a deaf player loses nothing, because the sound is always written. */
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Use headphones if you have them — what you hear is yours, not the table\'s. No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

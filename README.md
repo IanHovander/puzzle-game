@@ -2,7 +2,7 @@
 
 *Four fourth-year Wardens of Thornhallow, each with a different way of seeing, must get their friend Wren — the prophesied "one born of four" — through one night of politics, wards and bells to the Cold beneath their school, and decide, when the Hearth goes cold, who really has to walk in.*
 
-A cooperative story-puzzle game for **four seats**, in **one sitting of about three hours** (a fast table finishes in two; three people can cover four seats). One shared screen (the **Hearth**) runs the story, the puzzles and the group decisions; each player's phone (their **Companion**) shows what only they can see. It is an escape room, a *Myst* vault, a *Keep Talking* manual split four ways, and a *Detroit: Become Human* flowchart of the choices you made — in a fantasy of prophecy, houses and a chosen one.
+A cooperative story-puzzle game for **exactly four players**, in **one sitting of about four hours**. It is a long night on purpose: the puzzles need all four of you, and the arguing is the game. One shared screen (the **Hearth**) runs the story, the puzzles and the group decisions; each player's phone (their **Companion**) shows what only they can see. It is an escape room, a *Myst* vault, a *Keep Talking* manual split four ways, and a *Detroit: Become Human* flowchart of the choices you made — in a fantasy of prophecy, houses and a chosen one.
 
 No spoilers here. Read **[docs/HOST.md](docs/HOST.md)** to set up a night. Do not read `docs/DESIGN.md` unless you will never play.
 
