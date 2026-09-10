@@ -248,8 +248,14 @@
         P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
         P.sight.push({ t: 'html', html: turnedBoard() });
         P.sight.push({ t: 'p', text: '**Whichever way up a board hangs, every book keeps its place.** Hung the other way up, it says the opposite word. Which way this one hangs is not yours to see.' });
-        P.sight.push({ t: 'p', text: '**A sigil begins at the scratch, and runs the way a clock counts** — the same rule as the lamp.' });
-        P.sight.push({ t: 'p', text: 'A notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
+        /* The qualifier is load-bearing and was added after ch3's ward gave the Binder a second class of
+           ring. Until then this page could say 'a sigil begins at the scratch' flat, because every ring in
+           the game obeyed it. ch3 now teaches that a VIGIL WARD begins at the notch instead -- so a Binder
+           holding both pages had two unconditional rules that contradict each other, and the wrong one
+           governs this ring, which is the only commit-once puzzle in the game. Naming the class here is what
+           lets the Binder tell which rule applies. tools/scripts/ch4-oath-check.js asserts it stays. */
+        P.sight.push({ t: 'p', text: 'The Provost\'s scroll is Founders\' work. It is not a Vigil ward like the Tower door — so **a sigil begins at the scratch, and runs the way a clock counts**, the same rule as the lamp.' });
+        P.sight.push({ t: 'p', text: 'On Founders\' work a notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
         P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
           ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not ever.'],
           ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],

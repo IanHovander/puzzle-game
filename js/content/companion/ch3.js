@@ -263,7 +263,7 @@
           P.sight.push({ t: 'list', items: [
             'The dormitory lamp was Founders\u2019 brass, and a Founders\u2019 sigil begins at the **scratch**. **This is not one.**',
             'A Vigil ward is cut by the keeper sworn to it, and on a Vigil ward the keeper\u2019s mark **binds**. It begins at the **notch**. The scratch is the older cut, and down here the older cut is only wear.',
-            'The **first** word goes **in** the notched slot. Every word after it goes into the next slot clockwise, the way the numbers count up.',
+            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so every word after it goes into the previous slot — **widdershins, back against the count.** Above ground you have only ever seen a sigil run the other way. This is not above ground.',
             'When the count runs off the end it comes back to slot 1. **Any slot the words do not reach stays empty.**',
           ] });
           P.sight.push({ t: 'fine', text: 'A spare shape is not decoration. It is a different sign, and the iron can tell.' });

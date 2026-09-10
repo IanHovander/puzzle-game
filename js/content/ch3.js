@@ -256,7 +256,19 @@
                         ceiling, so the Reader cannot be made harder to drop by choosing other words.
         no Listener 6 — the six orderings of the three words across slots 4, 1 and 2.
         no Seer     4 — one clockwise run of the three words per starting slot.
-        no Binder   4 — begin at the scratch or at the notch, clockwise or anticlockwise.
+        no Binder   4 — begin at the scratch or at the notch, clockwise or widdershins. BOTH bits are
+                        the Binder's, and it took two goes to make that true. This row was FALSE twice.
+                        First it was 1: the Binder's page here was word for word the Binder's PROLOGUE
+                        page, and the dormitory lamp is worked on the shared screen with the Binder
+                        required to say the rule aloud, so by Chapter III 'begin at the scratch, run
+                        clockwise' is table knowledge (ADVERSARIAL 11). Moving the mark to the notch
+                        fixed half of that and the row was STILL false, at 2 rather than 4, because the
+                        DIRECTION sits in the same four-line list on the same Prologue page and nothing
+                        in the game had ever shown a ring running the other way -- so three tries walked
+                        it with certainty: p 1.000 against a recorded 0.750.
+                        A Vigil ward is sealed behind its keeper and runs widdershins. That is on the
+                        Binder's page and nowhere else, ring.js's SUNWISE arrow is off, and the Hearth
+                        draws no cuts. Now the field is four and the Prologue answers neither bit.
                         THIS ROW WAS FALSE UNTIL THE INTEGRATE PASS, and it was false in a way no
                         reader of this chapter could see. The Binder's page here used to be, word for
                         word, the Binder's PROLOGUE page: begin at the scratch, a notch is only a
@@ -280,7 +292,9 @@
      the Menu's "Replay scene" hands back in full, and a budget two clicks can refund is not a budget
      (ADVERSARIAL 7). Guessing blind, and drawing distinct boards, a three-role table gets through
      3/|field| of the time: no Reader 3/5, no Listener 3/6, no Seer and no Binder 3/4 — turned away
-     between one time in four and one time in two.
+     between one time in four and one time in two. Recomputed against the shipped
+     wardCheck in docs/PARTITION.md; if that table and this comment ever disagree, the table is the one
+     that was run and this is a copy (ADVERSARIAL 18).
      THE LADDER IS PART OF THE ANSWER SPACE, because a hint costs nothing. Enumerated against the
      shipped wardCheck (all four fields, every rung applied as a predicate):
         rung 1  re-partitions and names no coordinate:            5 / 6 / 4 / 4, unchanged
@@ -310,7 +324,26 @@
      ch4's oath pair (OATH_SCRATCH 2, OATH_NOTCH 4) and tools/scripts/ch4-oath-check.js fails on the
      repeat, which is ADVERSARIAL 9 and is how this was caught. */
   const CUTS = { scratch: 1, notch: 4 };   // Seer: what is cut. Binder: which of them binds.
-  const RING = { 1: 'THORN', 2: 'KNOT', 4: 'ASH' };
+  /* WHICH WAY IT RUNS is the Binder's second bit, and it had to become one. Moving the mark to the
+     notch fixed only half of what the Prologue spends: the dormitory lamp is worked on the shared
+     screen and its answer settles BOTH the start AND the direction, and companion/ch0.js:134 teaches
+     'sunwise -- clockwise, the way the numbers count up' aloud, to the whole room, in the Binder's own
+     mouth. So with the start moved the Binder-less field was 2 boards, not 4, and three tries walked
+     it with certainty: p 1.000 against a recorded 0.750.
+     A Vigil ward is sealed by its keeper behind them, so it runs WIDDERSHINS -- back against the
+     count. That is on the Binder's page and nowhere else; ring.js would draw a SUNWISE arrow at the
+     hub and `showArrow: false` is what stops it, which tools/scripts/ch3.json asserts. The field is
+     four again and honestly four: two cuts to begin at, two ways to run, and the Prologue answers
+     neither for a ring of this class.
+     RING is DERIVED from CUTS and the direction, so the board cannot drift away from the rule the
+     Binder is given -- which is exactly how ch4's oath hint broke (ADVERSARIAL 10, 18). */
+  const WIDDERSHINS = true;
+  const RING = (() => {
+    const step = WIDDERSHINS ? -1 : 1, r = {};
+    let slot = CUTS.notch;
+    for (const w of ARCH) { r[slot] = w; slot = ((slot - 1 + step + 4) % 4) + 1; }
+    return r;
+  })();   // { 4: ASH, 3: THORN, 2: KNOT } -- and the scratch at slot 1 stays empty, being only wear
   /* wardCheck always returns true or a line, so ring.js's own onWrong never fires: the second-try nudge
      that suspects a player who has not spoken is appended here instead.
      WARD_TRIES is the budget, and it is in the save: a module-local `let` survives a Replay scene but
@@ -318,9 +351,20 @@
      under-committed ones included, because ring.js's own `tries` counts every submission and compares it
      to maxTries: let the two drift apart and the widget can go cold at a count the card never mentioned. */
   const wardBudget = (s) => Math.max(1, 3 - (s.flags.WARD_TRIES | 0));
-  function wardCheck(m) {
+  /* An empty ring and a half-filled one are not attempts, and they are not charged. Every other ring in
+     the game already does this and says so on the line -- ch4's oath ('It is not closed, and it has not
+     cost you'), ch5's two gates ('Nothing frosts yet'), ch6's strip ('Not a reading yet') -- and this one
+     was missed, on the puzzle with the harshest losing branch in the chapter. It mattered less while a
+     reload handed the count back; moving WARD_TRIES into the save removed that accidental refund and left
+     a table able to lose the Tower door by pressing Close three times on an empty ring.
+     cfg.maxTries++ is how the other four keep the widget in step: js/puzzles/ring.js reads cfg.maxTries
+     live, AFTER check() has run, and its own `tries` local counts every submission -- so bumping the
+     ceiling here is what stops the two counters drifting apart. */
+  const UNDER = { none: 'Nothing in the ring, and the soot stays soot.', few: 'Three shapes are cut into the arch. Three words go in.' };
+  function wardCheck(m, cfg) {
     const line = wardReason(m);
     if (line === true) return true;
+    if (line === UNDER.none || line === UNDER.few) { if (cfg) cfg.maxTries++; return line + ' Nothing is spent.'; }
     const n = Store.inc('WARD_TRIES');
     return n >= 2 ? line + ' Wren, not helping: "Has everybody actually said their bit?"' : line;
   }
@@ -329,13 +373,16 @@
      the shape of the hum — those are one phone each, and this text lands on the screen all four share. */
   function wardReason(m) {
     const placed = [1, 2, 3, 4].filter(i => m[i]);
-    if (!placed.length) return 'Nothing in the ring, and the soot stays soot.';
-    if (placed.length < 3) return 'Three shapes are cut into the arch. Three words go in.';
+    if (!placed.length) return UNDER.none;
+    if (placed.length < 3) return UNDER.few;
     if (placed.length > 3) return 'Three shapes, three words. A fourth is a different sigil, and the iron can tell.';
     if (placed.map(i => m[i]).slice().sort().join() !== ARCH.slice().sort().join()) return 'Those are not the three words cut over this door. The Reader has them.';
     const missing = [1, 2, 3, 4].find(i => !m[i]);          // three of four slots are always a run
-    if (missing === 4) return 'The three words, in a run, begun at slot 1. Nothing on this ring says it begins at slot 1.';
-    if (m[4] === RING[4] && m[1] === RING[1] && m[2] === RING[2]) return true;
+    /* There used to be a keyed line here for the board a table lays from the Prologue's rule -- 'begun at
+       slot 1. Nothing on this ring says it begins at slot 1.' It named the axis the missing Binder holds,
+       on the screen all four share, which is the whole of ADVERSARIAL 2. A wrong run now gets one line
+       whichever way it is wrong, so the Hearth cannot tell a Binder-less table which half to change. */
+    if ([1, 2, 3, 4].every(i => (m[i] || null) === (RING[i] || null))) return true;   // derived: see RING
     return 'The iron does not answer. Something under the soot disagrees with the sigil you have made.';
   }
 
@@ -520,19 +567,25 @@
           { text: 'Seer — what is cut under the ring.', cls: 'whisper' },
           { text: 'Binder — where a sigil begins. Then four hands.', cls: 'whisper' },
         ],
-        config: (s) => ({
+        config: (s) => {
+          const cfg = {
           title: 'THE THRESHOLD OF THE BELL TOWER',
           note: 'Wren, flat against the door: *Four slots in the soot, and a sigil to put in them. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And he will not stand there for more than three tries'
             + ((s.flags.WARD_TRIES | 0) ? ' — and he has counted ' + num(s.flags.WARD_TRIES | 0) + '.*' : '.*'),
           slots: 4, glyphs: glyphPalette(), allowEmpty: true, showArrow: false, marks: [],
-          check: wardCheck, maxTries: wardBudget(s),
+          check: (m) => wardCheck(m, cfg), maxTries: wardBudget(s),
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets.',
-        }),
+          };
+          return cfg;
+        },
         hints: [
           'Four answers, four people, and nobody has two. What the shapes say — the Reader. Which of them sounds first — the Listener. What is cut under the ring — the Seer. Where a sigil begins — the Binder.',
           'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So the only question is where the run begins, and that answer comes in two halves, on two phones.',
-          'ASH in slot 4, THORN in slot 1, KNOT in slot 2. Slot 3 stays empty. Then four hands.',
+          /* Derived, never typed out: a rung that restates the answer by hand is what broke ch4's oath
+             (ADVERSARIAL 18). tools/check-hints.js runs this text through wardCheck on every build. */
+          ARCH.map((w, i) => w + ' in slot ' + Object.keys(RING).find(k => RING[k] === w)).join(', ')
+            + '. Slot ' + [1, 2, 3, 4].find(i => !RING[i]) + ' stays empty. Then four hands.',
         ],
         /* The losing branch writes DOOR and SURRENDERED here, not only in ch3_surrender's `enter`: once the
            ring has resolved the puzzle is markSolved, and a table that opens the Menu at that moment and

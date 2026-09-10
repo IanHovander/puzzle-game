@@ -3,7 +3,7 @@
   {"wait": 80000},
   {"wait": 1200}, {"key": "Space"}, {"wait": 800}, {"expect": "Nobody answers"}, {"shot": "ch3_ward_timedout"},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.TOWER_DOOR_timedout,f.DOOR||null,f.SURRENDERED||null]})()"},
-  {"slots": [[1, "ASH"], [2, "THORN"], [3, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "begun at slot 1"},
+  {"slots": [[1, "ASH"], [2, "THORN"], [3, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"_": "the Hearth must not tell a Binder-less table WHICH half of their guess to change: a wrong run gets the same line whichever way it is wrong (ADVERSARIAL 2)"}, {"expect": "The iron does not answer"}, {"expectNot": "begun at slot"}, {"expectNot": "slot 1."},
   {"slots": [[2, "ASH"], [3, "THORN"], [4, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "iron does not answer"},
   {"expectNot": "notch"}, {"expectNot": "cut under slot"}, {"expectNot": "wrong way round the ring"},
   {"eval": "window.VigilStore.state.flags.WARD_TRIES"},

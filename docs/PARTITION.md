@@ -28,7 +28,7 @@ ch0_lamp (free retries, tutorial) | 1 | 4 | 2 | 4 | 4 [2 if clockwise is public]
 ch1_vote (2 asks, ONE commit) | 1 of 28 | 2 -> 0.500 | 2 -> 0.500 | 8 -> 0.125 | 3 -> 0.333 ; no pages 28 -> 0.036
 ch2_door (ONE count) | 1 | 72 -> 0.014 | 24 -> 0.042 | 22 -> 0.045 | 3 -> 0.333
 ch3_grid (12 turns, 11 after a bell) | — | both seams inside 2 wasted turns 4/64 -> 0.063 | 412 of 3,995 -> 0.103 | 0.103 plus a coin at each seam | 824 believed safe / 412 real -> 0.500
-ch3_fight (3 tries, in the save) | 1 | 5 -> 0.600 | 6 -> 0.500 | 4 -> 0.750 | 4 -> 0.750 RECORDED / 2 -> 1.000 HONEST (see the blocking finding)
+ch3_fight (3 tries, in the save) | 1 | 5 -> 0.600 | 6 -> 0.500 | 4 -> 0.750 | 4 -> 0.750 (honest since the ward was made to run widdershins: both the start AND the direction are the Binder's, and the Prologue spends neither for a ring of that class)
 ch4_shelf (ONE pull) | 1 | 360 -> 0.003 | 360 -> 0.003 | 2 -> 0.500 | 2 -> 0.500 ; Seer+Binder both gone 3 -> 0.333
 ch4_secrets (3/3/2/2 per corner) | one corner per role; the Seer's tapestry is two ordinals = 16 against 2 tries -> 0.125 (and it feeds LAW0, which ch5 gate 2 reads)
 ch4_oath (ONE closing) | 2 winners | 32 -> 0.063 | 12 -> 0.167 | 8 -> 0.250 | 8 -> 0.250
@@ -51,9 +51,11 @@ WORST PAIR per puzzle (smallest field the two remaining pages reach): ch1 1 boar
 - **`ch7_sigil` has no try limit at all**, so every drop row is p = 1.000 and the only real cost is
   time: 90 seconds without the Listener, 420 without the Seer or the Binder, out of a 900-second
   night. This is `ADVERSARIAL.md` OPEN 2, now with numbers attached.
-- **`ch3_fight`'s Binder row is recorded as 4 boards and is honestly 2**, because the direction a
-  sigil runs is taught aloud in the Prologue and worked on the shared screen. Recorded p 0.750,
-  honest p 1.000.
+- **`ch3_fight`'s Binder row was wrong twice, in two different ways.** First it was 1 board, not 4:
+  the Binder's page was word for word their Prologue page. Moving the ring's mark to the notch fixed
+  half of that and the row was still wrong, at 2 -- because the *direction* a sigil runs is taught in
+  the same four-line list, aloud, in the Binder's own mouth. Each correction made it look fixed. It
+  is 4 now because a Vigil ward runs widdershins, which is on one page only.
 - **`ch1_vote`'s worst pair is a loser, not a coin flip.** With the Reader and the Seer both gone the
   remaining pages reach exactly one board and it is wrong: p = 0, not p = 1.
 - **`ch6`'s two reaction rounds are the strongest partition in the game.** All eighteen drop-a-page

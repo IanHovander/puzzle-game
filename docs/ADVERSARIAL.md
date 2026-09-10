@@ -9,7 +9,7 @@ blocking findings, and both are now checked by a tool rather than by a reader.
 
 Nineteen patterns, every one of them taken from a real defect in this game, with the chapter it was
 found in. They share a shape: **each is invisible from inside the chapter it lives in.** A reviewer
-reading one chapter against its own sources will pass all seventeen. That is why they are written down.
+reading one chapter against its own sources will pass all twenty. That is why they are written down.
 
 Two of them (13 and 16) are not about the game at all. They are about how the checking goes wrong,
 and they are the ones to read first.
@@ -230,6 +230,27 @@ VEIL EMBER but sits in Chapter II where only THORN and KNOT have been given out.
 threshold is measured, not chosen: over all 8! = 40,320 arrangements of the eight glyphs on an
 eight-slot ring, read from every slot in both directions, a run of three turns up by chance in 15.9%
 of them, a run of four in 2.5%, and a run of seven -- which is what ch7 had -- in 0.04%.
+
+## 20. A leak closed for three roles, paid for by the four-role table
+Closing ch3's Binder leak gave that player a rule about a CLASS of ring: "a Vigil ward is cut by the
+keeper sworn to it, and the keeper's mark binds -- it begins at the notch." One chapter later ch4's
+page still said, flatly and unconditionally, "a sigil begins at the scratch; a notch is only a
+maker's mark." Both sentences are absolute, they contradict each other, and neither named what
+distinguished the rings they applied to. So the Binder arrived at the oath -- the only commit-once
+puzzle in the game, `maxTries: 1`, no refund for a full lawful wrong board -- holding two rules and
+no way to tell which governed the scroll in front of them. The drop-a-role table looked BETTER after
+the fix (ch4's Binder-less row went back to 8 boards, p 0.250) while the table that actually turns
+up, with all four seats filled, had been handed a coin flip on a puzzle whose loss writes three
+cross-chapter flags. The existing guard asserted that the two pages DIFFER, and passed throughout.
+CHECK: a fix that partitions information more finely must be read from the seat that holds ALL the
+pieces, not only from the seats that are missing one. Two questions catch it: after this change, can
+the four-role table still reach the answer by a rule they were actually given -- and does any rule
+this fix introduces contradict one an earlier chapter stated without qualification? Where a chapter
+carves out an exception, every page that states the general rule has to name the class it applies
+to, and a guard that checks two pages are different is not the same as a guard that checks a player
+can tell which one to use. This is the mirror of pattern 11: 11 is a seat that is free because an
+earlier chapter gave its fact away, 20 is a seat that is *unwinnable* because a later chapter took
+its fact back.
 
 ## OPEN 2 — SETTLED. The retry economy in the last two chapters
 *Taken with ch6, ch7 and ch8 editable at once, which is the condition the open note said it needed.*

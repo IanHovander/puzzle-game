@@ -526,10 +526,10 @@ node tools/run.js chN_start --shots /tmp/shots       # add --flags / --set to re
 ## Before the checklist: read docs/ADVERSARIAL.md
 
 The checklist below is what a chapter must pass. `docs/ADVERSARIAL.md` is how a chapter that passes it
-still turns out to be broken -- seventeen patterns, each taken from a real defect in this game, each one
-invisible from inside the chapter it lives in. Four of them (5, 13, 16, 17) are about how the checking itself goes
+still turns out to be broken -- twenty patterns, each taken from a real defect in this game, each one
+invisible from inside the chapter it lives in. Five of them (5, 13, 16, 17, 20) are about how the checking itself goes
 wrong. A chapter is not done because it passes the checklist; it is done when somebody has tried the
-seventeen and failed to get in.
+twenty and failed to get in.
 
 ## Checklist
 

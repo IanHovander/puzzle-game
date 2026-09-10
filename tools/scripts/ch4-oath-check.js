@@ -87,10 +87,27 @@ assert(c3 && !(s4 === +c3[1] && n4 === +c3[2]),
 {
   const c4page = fs.readFileSync(path.join(root, 'js/content/companion/ch4.js'), 'utf8');
   const c3page = fs.readFileSync(path.join(root, 'js/content/companion/ch3.js'), 'utf8');
-  assert(/A sigil begins at the scratch, and runs the way a clock counts\*\*\s*—\s*the same rule as the lamp/.test(c4page),
+  assert(/a sigil begins at the scratch, and runs the way a clock counts\*\*/.test(c4page),
     "the Binder's oath page still says this ring begins at the scratch");
   assert(/begins at the \*\*notch\*\*/.test(c3page),
     "ch3's ward page still says THAT ring begins at the notch — which is the only reason the sentence above is worth anything");
+  /* THE ASSERTION THAT WAS MISSING, and its absence cost a real defect. The two sentences above are
+     contradictory unconditional rules about what a notch means, and this ring is the only commit-once
+     puzzle in the game -- so once ch3 introduced a second CLASS of ring, a Binder holding both pages
+     had no way to tell which rule governed the scroll in front of them, and the fix that closed a
+     three-role leak in ch3 handed the FOUR-role Binder a coin flip here. Asserting that the two pages
+     differ is not enough: each has to name the class it applies to. */
+  const APOS = "(?:\\\\'|\\\\u2019|\u2019|')";   // the pages are JS source: ' is escaped, \u2019 is written out
+  assert(new RegExp('Founders' + APOS + ' work').test(c4page) && /not a Vigil ward/.test(c4page),
+    "the oath page names the CLASS of ring, so the Binder can tell which of the two rules applies");
+  assert(new RegExp('Founders' + APOS + '\\s*(brass|sigil)').test(c3page),
+    "and ch3's ward page names its class too, rather than simply contradicting the other page");
+  /* Direction is the Binder's SECOND bit at the Tower, and it only became one this pass: the Prologue
+     teaches 'sunwise -- clockwise' aloud, in the Binder's own mouth, so until ch3's ward ran
+     widdershins the Binder-less field there was 2 boards and three tries walked it. If this sentence
+     goes, that seat is half free again and no other check would notice. */
+  assert(/widdershins/.test(c3page),
+    "ch3's ward page still teaches the direction the Prologue did not spend");
   const ch3cuts = /CUTS = \{ scratch: (\d), notch: (\d) \}/.exec(fs.readFileSync(path.join(root, 'js/content/ch3.js'), 'utf8'));
   assert(ch3cuts && !(+ch3cuts[1] === s4 && +ch3cuts[2] === n4),
     `and ch3's cut pair (scratch ${ch3cuts && ch3cuts[1]}, notch ${ch3cuts && ch3cuts[2]}) is still not this ring's (scratch ${s4}, notch ${n4})`);
