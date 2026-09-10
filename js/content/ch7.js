@@ -704,6 +704,11 @@
         type: 'code', art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.1, code: 'WREN',
         enter: (s) => { s.flags.WREN_SHOWN = true; Store.save(); }, /* the Epilogue skips its own WREN cast on the true path when this is set */
         cast: (s) => S.cast('WREN', S.pack(L.chapter('ch8').cast, Object.assign({}, s.flags, { ENDING: s.flags.ENDING | 0 }))),
+        /* Nine of the ten code scenes carry this; this one did not, and on ENDING 0 it IS the ch8
+           attunement -- WREN_SHOWN routes ch8_words past ch8_code -- so the four goodbye letters, which
+           burn themselves at 45-60s, arrived with no clock on the one ending the game is built for.
+           The four endings the table did NOT earn got 90 enforced seconds for the same letters. */
+        sightSeconds: 90,
         codeLabel: 'It is never written. Write it.',
         codeSub: 'Each phone shows one thing, then goes dark. **Your Sighting is spent. Look up.**',
         text: ['The eighth word. Every phone, now.'],
@@ -763,8 +768,12 @@
             { speaker: 'Wren', text: 'It is alright. I knew. I wanted to hear what you would say.' },
             'The fire takes the shape of a door, and Wren goes through. Provost Marrow is left holding a grey thread.',
           ];
+          /* Not 'all four of you': a Fourfold vote that fell short lands here too, and one of you may
+             have sealed WALK. ch8_unsealed prints that token back two scenes later. */
           if (E === 3) return [
-            'Walked into the Cold: the Provost. Stayed: all four of you, and Wren.',
+            walkers(s).length
+              ? `Walked into the Cold: the Provost, and ${UI.list(walkers(s).map(nickOf))}. Stayed: ${UI.list(stayers(s).map(nickOf))}, and Wren.`
+              : 'Walked into the Cold: the Provost. Stayed: all four of you, and Wren.',
             { speaker: 'Provost Marrow', text: 'Then I go. I should have gone fourteen years ago.' },
             'She gives Wren the Chair\'s seal. The flame takes her.',
           ];

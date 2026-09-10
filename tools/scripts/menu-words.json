@@ -1,0 +1,67 @@
+{
+ "start": "ch4_start",
+ "set": "",
+ "viewport": {
+  "width": 1280,
+  "height": 720
+ },
+ "steps": [
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "_": "seed the night: the table has walked into ch0..ch2 and is now in ch4. CAST_ marks are what every attunement already writes into the save."
+  },
+  {
+   "eval": "(function(){var s=window.VigilStore.state;['ch0_start','ch1_start','ch2_start'].forEach(function(id){if(s.visited.indexOf(id)<0)s.visited.push(id)});s.flags['CAST_KNOT']='7Q2';window.VigilStore.save();return s.visited.length})()"
+  },
+  {
+   "click": "#menu"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "clickText": "Words of the night"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "_": "a chapter the table HAS walked into shows its word"
+  },
+  {
+   "expect": "KINDLE"
+  },
+  {
+   "expect": "THORN"
+  },
+  {
+   "_": "and ch2's mark, which is what a replacement phone needs and what the game never showed twice"
+  },
+  {
+   "expect": "KNOT"
+  },
+  {
+   "expect": "7Q2"
+  },
+  {
+   "_": "a chapter it has NOT reached shows dots and nothing else -- the gate showChapterSelect already ships"
+  },
+  {
+   "assert": "(function(){var m=[].slice.call(document.querySelectorAll('.modal,.sheet,[class*=modal]')).map(function(e){return e.innerText}).join(' ');return !/CROWN|WREN/.test(m)})()"
+  },
+  {
+   "assert": "(function(){var m=[].slice.call(document.querySelectorAll('.modal,.sheet,[class*=modal]')).map(function(e){return e.innerText}).join(' ');return (m.match(/\u00b7 \u00b7 \u00b7/g)||[]).length >= 3})()"
+  },
+  {
+   "eval": "(function(){var m=document.querySelector('.modal,.sheet,[class*=modal]');return m?m.innerText.split('\\n').filter(Boolean).slice(0,12):'NO MODAL'})()"
+  }
+ ]
+}

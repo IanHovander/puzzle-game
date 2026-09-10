@@ -4,7 +4,7 @@ This page contains no story spoilers. It tells you what to set up, what to expec
 
 ## What it is
 
-A cooperative story-puzzle game for exactly four people, played in one sitting of about two hours (hard cap ~2h15). One screen — the **Hearth** — runs the story, the puzzles and the group decisions. Each player also holds a phone — their **Companion** — showing information only they can see. Nobody can solve anything alone; the game is the conversation between the four of you.
+A cooperative story-puzzle game for four seats, played in one sitting. **Budget three hours and a quarter, and tell everyone that before you start.** A fast, quiet table finishes in a shade under two; a table that enjoys arguing takes four, and the arguing is the game. Four people is the design, but three can play it: two seats fit on one phone (choose the other seat and re-enter its word), and the game keeps them apart. One screen — the **Hearth** — runs the story, the puzzles and the group decisions. Each player also holds a phone — their **Companion** — showing information only they can see. Nobody can solve anything alone; the game is the conversation between the four of you.
 
 If you enjoyed escape rooms, *Myst*, *Keep Talking and Nobody Explodes*, or the choice-and-consequence feel of *Detroit: Become Human*, this is that, in fantasy dress.
 
@@ -50,9 +50,17 @@ Sit in a row facing the screen, left to right: **the Reader, the Listener, the S
 
 ## Hints and time
 
-Every puzzle has a hint bell (*Hint*, top right) with three tiers: which phone holds the missing piece; the rule you need; the answer. Hints cost nothing but pride, and the game keeps a discreet count. If a puzzle is running long, the bell pulses on its own. A comfortable night is about two hours; if you are enjoying the arguments, take longer.
+Most puzzles have a hint bell (*Hint*, top right) with three tiers: which phone holds the missing piece; the rule you need; **and then the answer, in full**. Hints cost nothing but pride, and the game keeps a discreet count. If a puzzle is running long, the bell pulses on its own. The bell is lit by the ladder, not by the scene, so a few scenes have none — they are the ones that do not need one.
 
-The Hearth saves after every scene. Closing the laptop or the tab is fine: the title screen offers *Resume*. Phones remember their pages too. If a phone dies, open the Companion on another one, choose the same seat, and type the current word again.
+Three things this game guarantees, which are worth saying out loud at the start:
+
+- **You cannot lose it.** Every branch continues. There is no game-over and no wrong turn that ends the night — only different endings.
+- **Every hint ladder ends in the answer.** If the table is stuck and no longer enjoying it, the fire will simply tell you.
+- **Every sound is also written down.** Each Companion tune prints what it plays, so a silent room, a broken speaker or a deaf player costs nothing. Ear-Sight can be held by someone who cannot hear.
+
+The Hearth saves after every scene. Closing the laptop or the tab is fine: the title screen offers *Resume*. Phones remember their pages too.
+
+**If a phone dies, or someone arrives late, or you want a fifth person to take a seat:** open the Companion on the new phone, choose the seat, and enter the chapter's word — and, from Chapter II onwards, the **mark** printed beside it. Both are in the Hearth's menu under **Words of the night**, which lists every word the table has already said and withholds the ones it has not. That panel is the recovery tool; you should not need *Chapter select*, which jumps the story and loses your place.
 
 ## If something goes wrong
 

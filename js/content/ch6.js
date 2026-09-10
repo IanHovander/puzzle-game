@@ -511,7 +511,7 @@
             { text: 'Pale blue lights are the Cold. Every hand off the keys.', cls: 'whisper' },
             { text: 'Two patterns. Each one says how many lights it needs. Fall short and a bell cracks, and the night goes on either way.', cls: 'whisper' },
           ];
-          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))}, take both keys.`, cls: 'whisper' });
+          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))} covers that lane too — one hand each, and never both at once.`, cls: 'whisper' });
           return out;
         },
         run: (box, api) => new Promise((resolve) => {

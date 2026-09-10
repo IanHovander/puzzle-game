@@ -165,12 +165,29 @@ const ringOK = (m) => ring.check(m) === true;
 const LADDER = ['ASH', 'THORN', 'KNOT', 'EMBER', 'WELL', 'VEIL', 'CROWN'];   // COLD is the rest, not a rung
 const board = (seq, start, dir) => { const m = { 1: null, 2: null, 3: null, 4: null }; let s = start; for (const w of seq) { m[s] = w; s = dir > 0 ? (s % 4) + 1 : ((s + 2) % 4) + 1; } return m; };
 const perms = (a) => a.length < 2 ? [a] : a.flatMap((x, i) => perms(a.filter((_, j) => j !== i)).map(p => [x, ...p]));
-const SEQ = ['ASH', 'THORN', 'KNOT'], SCRATCH = 4, NOTCH = 2;
+/* The cuts and the direction are DERIVED, not typed. They were typed until this pass -- SCRATCH = 4,
+   NOTCH = 2 -- which was ch3's pair two reworks ago, and every field below assumed clockwise. That is
+   ADVERSARIAL 10 inside the very check written to catch it: the literals were right by coincidence,
+   then the ward moved twice and the model went on enumerating a puzzle the game no longer ships.
+   The direction is read from the BINDER'S PAGE rather than from ch3.js, on purpose. The invariant
+   that matters is not "the ring runs the way ch3.js says" -- that is a file agreeing with itself. It
+   is "the ring accepts exactly what the Binder is TOLD", so the page is the source and the ring is
+   what gets checked against it. Change the page and this model follows; change the ring alone and
+   the assertions below go red, which is the direction the coupling has to run. */
+const SEQ = ['ASH', 'THORN', 'KNOT'];
+const C3PAGE = fs.readFileSync(path.join(root, 'js/content/companion/ch3.js'), 'utf8');
+const WARD_DIR = /widdershins/.test(C3PAGE) ? -1 : +1;
+const C3SRC = fs.readFileSync(path.join(root, 'js/content/ch3.js'), 'utf8');
+const C3CUTS = eval('(' + C3SRC.match(/const CUTS = (\{[^}]*\})/)[1] + ')');
+const SCRATCH = C3CUTS.scratch, NOTCH = C3CUTS.notch;
 const triples = LADDER.slice(0, LADDER.length - 2).map((_, i) => LADDER.slice(i, i + 3));   // every +1,+1 contour
 const fields = {
-  'no Reader': triples.map(t => board(t, SCRATCH, 1)),
-  'no Listener': perms(SEQ).map(p => board(p, SCRATCH, 1)),
-  'no Seer': [1, 2, 3, 4].map(st => board(SEQ, st, 1)),
+  /* Each field is what the REMAINING pages can still build. The Reader holds the words, the Listener
+     the order, the Seer where the cuts are, the Binder which cut binds AND which way it runs -- so
+     only the Binder-less field varies the direction, and the other three inherit it. */
+  'no Reader': triples.map(t => board(t, NOTCH, WARD_DIR)),
+  'no Listener': perms(SEQ).map(p => board(p, NOTCH, WARD_DIR)),
+  'no Seer': [1, 2, 3, 4].map(st => board(SEQ, st, WARD_DIR)),
   'no Binder': [[SCRATCH, 1], [SCRATCH, -1], [NOTCH, 1], [NOTCH, -1]].map(([st, d]) => board(SEQ, st, d)),
 };
 const expect = { 'no Reader': 5, 'no Listener': 6, 'no Seer': 4, 'no Binder': 4 };
@@ -230,10 +247,18 @@ for (const [scene, pats] of Object.entries(forbidden)) {
   const lay = (start, dir) => { const m = {}; let s = start; for (const w of ARCH_ORDER) { m[s] = w; s = dir > 0 ? (s % 4) + 1 : (s - 2 + 4) % 4 + 1; } return m; };
   const takes = (m) => { const snap = JSON.parse(JSON.stringify(win.VigilStore.state.flags)); const r = ring.check(m); win.VigilStore.state.flags = snap; return r === true; };
 
-  assert(takes(lay(cuts.notch, +1)),
-    `the ward takes the run begun at the NOTCH (slot ${cuts.notch}), clockwise — which is the Binder's page and nothing else`);
+  /* WIDDERSHINS, and this check went red for a pass because it predated that. Moving the ward's mark
+     to the notch closed only half the Prologue's gift: companion/ch0.js teaches the DIRECTION in the
+     same four-line list, aloud, in the Binder's own mouth, so with the start moved the Binder-less
+     field was 2 boards and three tries walked it. A Vigil ward is sealed behind its keeper and runs
+     back against the count. Both bits are the Binder's now, and BOTH assertions below have to hold:
+     the one that says the ward opens, and the two that say the Prologue's rule does not open it. */
+  assert(takes(lay(cuts.notch, -1)),
+    `the ward takes the run begun at the NOTCH (slot ${cuts.notch}), widdershins — which is the Binder's page and nothing else`);
   assert(!takes(lay(cuts.scratch, +1)),
     `the ward REFUSES the run begun at the scratch, clockwise — the rule the Prologue's lamp taught the whole room, which must not open this door`);
+  assert(!takes(lay(cuts.notch, +1)),
+    `the ward REFUSES the run begun at the notch, CLOCKWISE — half the Prologue's rule is not enough, and this is the board that made the Binder-less field 2 rather than 4`);
 
   /* and the field is four again, with one winner: the seat costs something */
   let f = 0, w = 0;

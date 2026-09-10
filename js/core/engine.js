@@ -346,7 +346,13 @@
   function runEnd(scene, api) {
     Store.pauseTimer();
     if (scene.render) scene.render(dom.actions, api);
-    api.button(scene.button || 'Begin again', () => { Store.reset(); location.reload(); }, 'ghost');
+    /* This erases the save -- the one Chapter select and 'see another ending in twenty minutes' both
+       depend on -- and it sat unguarded next to two harmless buttons on the last screen of a two-hour
+       game, at midnight, in front of a tired table. 'Abandon game' in the Menu has always confirmed;
+       this is the same action and did not. */
+    api.button(scene.button || 'Begin again', async () => {
+      if (await UI.confirm('Erase this night and start over? The words, the choices and the ending all go.', { danger: true, ok: 'Erase it' })) { Store.reset(); location.reload(); }
+    }, 'ghost');
   }
 
   /* ---------- Hints ---------- */
@@ -390,7 +396,36 @@
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
+    const row3 = UI.el('div', { class: 'row' });
+    row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
+    box.appendChild(row3);
     const m = UI.modal(box, { title: 'The Hearth' });
+  };
+  /* THE RECOVERY THIS GAME DOCUMENTS AND DID NOT HAVE. Every attunement writes its mark into the save
+     (`Store.state.flags['CAST_' + code]`, a few lines up) and renders it exactly once, on the scene
+     that produced it -- `node tools/flag-map.js` reported CAST_ as "set but never read". Seven of the
+     nine chapters carry a mark (ch0 and ch1 have `cast: []`), and js/companion.js refuses a
+     re-attunement without one: "This word has a mark beside it on the Hearth. Enter it too."
+     So docs/HOST.md's instruction -- if a phone dies, open the Companion on another one, choose the
+     same seat and type the current word again -- was FALSE for seven chapters, and it is the recovery
+     path for the four likeliest disasters at a real table: a flat battery, a late arrival, a lost
+     phone, and stopping for a week. The only working recovery was Chapter select, which overwrites
+     the current scene and costs the table their place.
+     The spoiler gate is the one showChapterSelect already ships, copied deliberately rather than
+     invented: a chapter is named, and its word shown, once the table has been there. */
+  Game.showWords = function () {
+    const box = UI.el('div', { class: 'chapter-list' });
+    Game.chapters.forEach(ch => {
+      if (ch.hidden || !ch.code) return;
+      const reached = Store.state.visited.includes(ch.start);
+      const mark = Store.state.flags['CAST_' + ch.code];
+      const label = reached
+        ? `<strong>${UI.esc(ch.label || 'Chapter')}</strong> — ${UI.esc(ch.code)}${mark ? ' · <strong>' + UI.esc(mark) + '</strong>' : ''}`
+        : `${UI.esc(ch.label || 'Chapter')} — · · ·`;
+      box.appendChild(UI.el('p', { class: 'small' + (reached ? '' : ' dim'), html: label }));
+    });
+    box.appendChild(UI.el('p', { class: 'small', text: 'A word is shown once you have said it. To bring a phone back — a flat battery, a late arrival, a new phone — open the Companion on it, choose the same seat, and enter the word and the mark for the chapter you are in.' }));
+    const m = UI.modal(box, { title: 'Words of the night' });
   };
   /* A chapter's TITLE is a spoiler until the table gets there: from the first scene of the Prologue this
      list used to name the Ember Vault, the Whispering Gallery, the Oath, the Long Stair, the Bells of

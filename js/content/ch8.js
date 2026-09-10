@@ -73,7 +73,16 @@
 
   /* ---------- helpers ---------- */
   const ending = (s) => { const e = +(s.flags.ENDING || 0); return e >= 0 && e <= 4 ? e : 0; };
-  const walked = (s, r) => { const e = ending(s); if (e === 0) return true; if (e !== 1) return false; return s.flags['WALK_' + r.id] === 'WALK' && s.flags['BARGAIN_' + r.id] !== 'kept'; };
+  /* ENDING 3 is reached two ways (js/content/ch7.js computeEnding): the table REFUSED, in which case
+     nobody walked; or the table chose the Fourfold Walk and fewer than two of the four sealed WALK.
+     This helper used to answer "nobody walked" for both, so on the second path the Hearth named a
+     player a stayer -- and then ch8_unsealed read that same player's sealed token and printed "Would
+     walk into the fire." on their own card, two scenes later. The game contradicted itself, out loud,
+     about the one thing that player did in private, and it landed on whoever kept their word after
+     the others had not. The flags are only meaningful when the table actually voted, so FOURFOLD is
+     the condition, not the ending number. */
+  const sealedWalk = (s, r) => s.flags['WALK_' + r.id] === 'WALK' && s.flags['BARGAIN_' + r.id] !== 'kept';
+  const walked = (s, r) => { const e = ending(s); if (e === 0) return true; if (e === 1) return sealedWalk(s, r); if (e === 3 && s.flags.DECISION === 'FOURFOLD') return sealedWalk(s, r); return false; };
   const walkers = (s) => R.filter(r => walked(s, r)).map(r => r.nick);
   const stayers = (s) => R.filter(r => !walked(s, r)).map(r => r.nick);
   const kept = (s) => R.filter(r => s.flags['BARGAIN_' + r.id] === 'kept').map(r => r.nick);
@@ -254,8 +263,8 @@
             voice,
           ];
           if (e === 3) return [
-            { text: 'Walked into the fire: **the Provost**.', cls: 'center' },
-            { text: `Stayed on the stones: **Wren, and ${UI.list(L.nicks)}**.`, cls: 'center' },
+            { text: `Walked into the fire: **the Provost**${walkers(s).length ? ', and **' + UI.list(walkers(s)) + '**' : ''}.`, cls: 'center' },
+            { text: `Stayed on the stones: **${UI.list(['Wren'].concat(stayers(s)))}**.`, cls: 'center' },
             { speaker: 'Provost Marrow', text: 'Then I go. I should have gone fourteen years ago.' },
             'Nobody argues. Everybody meant to.',
             voice,
