@@ -4,7 +4,8 @@
   {"key": "Space"}, {"shot": "c_start"}, {"expect": "went tang instead of tong"},
   {"assert": "window.VigilStore.state.flags.PRECRACKED === true"},
   {"assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1"},
-  {"assert": "document.querySelector('.art-layer svg') && document.querySelector('.art-layer').innerHTML.indexOf('stroke=\"#06050a\"') > -1"},
+  {"_note": "the newest layer, not the first: two layers coexist during the crossfade. One cracked bell, drawn, on the frame the prose says a bell went tang. artParams carries the count into setArt's memo key -- ch6_start is drawn BEFORE its own enter() seeds PRECRACKED, so bellParams reads STAIR as well.",
+   "assert": "((([...document.querySelectorAll('.art-layer')].pop()||{}).innerHTML||'').match(/stroke=\"#06050a\"/g)||[]).length === 1"},
   {"eval": "({ PRECRACKED: window.VigilStore.state.flags.PRECRACKED, CRACKED: window.VigilStore.state.flags.BELLS_CRACKED })"},
   {"clickText": "The Provost"}, {"wait": 800}, {"key": "Space"}, {"expect": "Hands on your keys"}
 ] }

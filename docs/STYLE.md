@@ -46,12 +46,18 @@ These are cross-chapter contracts. Breaking one breaks another agent's chapter o
 
 `UI.fitBox` then silently shrinks the type one pixel at a time toward a floor of `max(14, 0.64 × base)`, and at ≤88 % adds `.tight`, which cuts padding 22/28 → 16/22 and paragraph margins 14 → 9px. **You never see this while writing. The room sees it as smaller type on a TV.** Shrinking is the warning; overflow is the failure.
 
-Measured, `node tools/scan-fit.js ch0 ch1`:
+Measured, `node tools/scan-fit.js ch0 ch1 ch2 ch3` (re-run after the whole-game sweep; the old table
+here recorded a 14 px floor and a `ch1_vote` overflow that no longer exist, and it did not list
+`ch3_start`, which shrinks at 1280 × 720):
 
-| viewport | ch0 + ch1 (24 scenes) |
+| viewport | ch0–ch3 |
 |---|---|
-| 1280 × 720 | 2 shrunk (`ch0_stone` 21→20, `ch1_vote` 18→15), **overflowing: none** |
-| 1152 × 648 | 1 shrunk (`ch0_stone` 21→18), `ch1_vote` overflows by 2.9 px at the 14 px floor |
+| 1280 × 720 | 2 shrunk (`ch0_stone` 21→20, `ch3_start` 21→18), **overflowing: none** |
+| 1152 × 648 | 3 shrunk (`ch0_stone` 21→18, `ch2_door` 18→17, `ch2_top` 21→20), **overflowing: none** |
+
+`scan-fit` also measures the flow-chart panel every chapter ends on, and the enlarged copy behind
+"tap to enlarge". Both are held to the same 17 px floor as the prose; a cut node label is a hard
+failure at any size.
 
 **(settled)** One reading proposed "no shrink, no overflow at 1152 × 648" as the green build. The reference chapters do not pass that. The real gate is:
 
@@ -59,7 +65,7 @@ Measured, `node tools/scan-fit.js ch0 ch1`:
 - **R1.2 — Stretch check.** `node tools/scan-fit.js chN --w 1152 --h 648` may overflow **at most one** scene, by **under 5 px**. Anything worse is a rewrite, not a CSS tweak.
 - **R1.3** A prose scene displays **≤ 6 paragraphs and ≤ 150 words on any one branch**. ch0/ch1 prose scenes run 62–151 words. Count the *worst* branch of a `text: (s) => [...]`, not the average.
 - **R1.4** A puzzle brief (`text` on a `type:'puzzle'` scene, which renders in a 44vh box and cannot shrink below 17px) is **≤ 65 words and ≤ 6 paragraphs, each ≤ 18 words**. Calibrated against the 17px floor, not the old 14px one: `ch1_vote` at 8 paragraphs / 86 words overflowed by 84px once the floor was raised, and `ch2_door` at 7 paragraphs by 14px. Both now fit at full size. Four of those paragraphs are the four role prompts, so the brief has room for two lines of its own — one to say what the puzzle is, one to say what a wrong answer costs. Everything else belongs in the rule card.
-- **R1.5 — Chapter prose budget: 1,100–1,600 words.** Count it with `node tools/prose-count.js chN` — that tool is the authority, and `node tools/prose-count.js` with no argument prints every chapter. As it stands: ch0 1,092 · ch1 1,396 · ch2 2,061 · ch3 2,284 · ch4 2,280 · ch5 2,270 · ch6 2,328 · ch7 3,533 · ch8 1,569. Most chapters must lose 30–45% of their words; ch7 must lose more than half. `node tools/prose-count.js chN` also breaks the chapter down by scene, worst first, and marks any scene over the 150-word cap.
+- **R1.5 — Chapter prose budget: 1,100–1,600 words.** Count it with `node tools/prose-count.js chN` — that tool is the authority, and `node tools/prose-count.js` with no argument prints every chapter. As it stands, every chapter is inside the budget: ch0 1,101 · ch1 1,349 · ch2 1,500 · ch3 1,519 · ch4 1,593 · ch5 1,595 · ch6 1,526 · ch7 1,592 · ch8 1,598. (The figures above this line were the pre-rework ones and are kept nowhere; re-read them from the tool.) `node tools/prose-count.js chN` also breaks the chapter down by scene, worst first, and marks any scene over the 150-word cap.
 
 Chapter-local CSS is a legitimate part of the fit budget. `ch1.js` shrinks `.table-area` to `min(380px, 50vh)` with a `@media (max-height: 820px)` step to `min(300px, 42vh)`, and un-monospaces `.pz-status` / `.pz-note` so the rule card reads as prose. Copy that pattern; namespace it to your chapter.
 
@@ -326,13 +332,31 @@ ch0 is the same shape: the Seer reports **two** cuts and is told which one matte
 | rung | job | ch0_lamp | ch1_vote |
 |---|---|---|---|
 | 1 | **Re-partition.** Who owns what. Gives away nothing. No jargon at all. | "Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder." | "Four questions, four people: who is pledged (Reader), who is still talking (Listener), who cannot be moved at all (Seer), who is sworn to whom (Binder)." |
-| 2 | **The insight, in the abstract.** Names the trick with no coordinates. | "Two words, and the hum climbs three steps between them… there is more than one cut under the brass — the Binder knows which kind starts a sigil." | "You start at two, you need five, you get two asks. So one ask has to carry two votes — the Binder knows which one." |
+| 2 | **The insight, in the abstract.** Names the trick with no coordinates. | "Two words, and the hum between them says which of the two is spoken first. The Listener has that step. And there is more than one cut under the brass — the Binder knows which kind starts a sigil." | "Nine seats, five needed, and two asks. One of the seats you can reach does not vote alone. Which one is the Binder's to say." |
 | 3 | **The answer, literally, plus the commit step.** | "ASH in slot 3, EMBER in slot 4. The other two stay empty. **Then four hands.**" | "Seat 1 and Seat 7. Seat 1 brings Seat 2 with her. With the Chair and Seat 3, that is five." |
+
+*(Both rung 2s were rewritten in the whole-game sweep and this table was re-read out of the shipped
+ladders afterwards. The old ch0 rung stated the Listener's measurement and named their page; the old
+ch1 rung quoted the Reader's and the Binder's page sentences. A worked example in a style guide is a
+copy like any other, and this one had drifted — see docs/ADVERSARIAL.md 18.)*
 
 - **R10.22 — Exactly three rungs.** ch3_grid has four, of which the last two are both answers. Fix that.
 - **R10.23 — Rung 3 always includes the ritual/commit action**, so a table that reveals the answer still performs the puzzle.
 - **R10.24 — Hints are pushed, not begged for.** Set `par` to roughly one mark per rung: ch0 `par: [3, 6]`, ch1 `par: [3, 4.5, 6]`. The engine pulses the bell and toasts.
 - **R10.25 — A clock never hard-fails before the ladder is spent.** `ch1_vote` has `timer: 360` (= the last par mark). `onTimeout` does **not** lose the puzzle: it sets `hintsUsed.ch1_vote = 3` (the whole ladder), flashes the bell, plays `boom`, and prints the stall line; `check()` consumes the stall flag once and returns non-final. The clock is a scene beat plus a hint unlock, never a guillotine.
+- **R10.27 — Rung 3 is GENERATED from the constants, not typed.** This is the rule that would have
+  prevented five of the fifteen blocking findings in the whole-game sweep on its own. A last rung
+  written by hand is a second copy of the answer, and in ch4 it had drifted onto the board the ring
+  keys as its *named wrong answer*, on a `maxTries: 1` puzzle whose loss is read by three later
+  chapters. Build it: `` ringRung(want) ``, `` OATH_WORD_SLOTS.map(i => `${SLOTS[i]} in slot ${i}`) ``.
+  Where the shape genuinely cannot be generated, `node tools/check-hints.js` must cover it — it puts
+  the rung through the puzzle's own `check()`/`accept()` at every flag state the scene reads, and it
+  runs inside `check-content.js`. A ladder it reports as `n/a` is a ladder nothing is checking.
+- **R10.28 — A tutorial spends the rule it teaches.** A mechanic worked on the shared screen is public
+  for the rest of the game, and a later chapter that prices a seat on it is over-valuing that seat —
+  ch3's Tower ward gave the Binder a page that was word for word the Binder's Prologue page, and its
+  Binder-less field was one board at p = 1.000 against a recorded 0.250. A later chapter holds an
+  EXCEPTION to the taught rule, not the rule. See docs/ADVERSARIAL.md 11.
 - **R10.26 — No motor-skill tips or options-menu adverts in the ladder.** ch6's rung 1 is a "press faster" tip and rung 2 advertises the slow-bells toggle; neither re-partitions the roles, because that puzzle is not partitioned. Partition it, or accept that it is a reflex round and give it a `note` and a `practice` pass instead of a hint ladder.
 
 ### 10.7 An attunement scene immediately before the puzzle
@@ -512,10 +536,10 @@ seventeen and failed to get in.
 A chapter ships when every line is true.
 
 **Fit and length**
-- [ ] `node tools/scan-fit.js chN --w 1280 --h 720` → `overflowing: none`, ≤ 2 scenes shrunk, none below 15 px
+- [ ] `node tools/scan-fit.js chN --w 1280 --h 720` → `overflowing: none`, ≤ 2 scenes shrunk, none below 17 px (the floor is 17, not 15)
 - [ ] `node tools/scan-fit.js chN --w 1152 --h 648` → ≤ 1 scene overflowing, by < 5 px
 - [ ] chapter prose 1,100–1,600 words
-- [ ] no scene branch over 150 words or 6 paragraphs; no puzzle brief over 90 words / 8 lines
+- [ ] no scene branch over 150 words or 6 paragraphs; no puzzle brief over 65 words / 6 lines (R1.4 — the checklist used to say 90/8 and contradict its own rule)
 - [ ] every scene ≤ ~8 s of typewriter time
 
 **Sentences**
@@ -555,6 +579,10 @@ A chapter ships when every line is true.
 - [ ] every wrong option has a keyed line naming the clause that stopped it; impossible actions are `locked` with a `lockedText`; a failed commit prints an arithmetic receipt
 - [ ] one decoy, tempting on one role's page, disarmed in one sentence on a **different** role's page, costing one budgeted resource
 - [ ] exactly 3 hints: re-partition (no jargon) / abstract insight / literal answer + commit step; `par` ≈ one mark per rung
+- [ ] **rung 3 is generated from the constants** (R10.27); if it cannot be, `node tools/check-hints.js` reports this ladder as checked, not `n/a`
+- [ ] **each role's fact greps clean against every EARLIER chapter** — Hearth text, art, wrong-answer lines, and every other role's Companion page, the Prologue's tutorial included (R10.28, ADVERSARIAL 11)
+- [ ] the drop-a-role table in the comment was re-derived against the SHIPPED predicate this pass, not copied forward
+- [ ] a wrong answer costs a resource that is in `Store.state.flags`, so a reload and a Menu → Replay scene cannot refund it (ADVERSARIAL 7)
 - [ ] any timer unlocks the full ladder on expiry and never loses the puzzle
 - [ ] failure semantics chosen: retry-with-escalation, or commit-once with a flag, a `Store.note`, and a written losing branch. Never a dead end, never a silent re-prompt
 
@@ -579,6 +607,14 @@ A chapter ships when every line is true.
 - [ ] chapter-local CSS namespaced to `chN`; shared CSS and JS untouched
 
 **Green build**
-- [ ] `node tools/check-content.js` clean
+- [ ] `node tools/check-content.js` clean — it now folds in `check-hints.js` (every ladder's last rung
+      against the shipped predicate, and the chapter-word oracle), the hint-bell/ladder invariant, the
+      `showArrow` invariant, the cast-width limit and the Epilogue's closing claim
+- [ ] `node tools/flag-map.js --assert` → `flag contract holds`; a NEW cross-chapter flag is declared
+      in `tools/flag-contract.js` in the same commit that creates it
 - [ ] `node tools/play.js` passes for the main path and every written branch
+- [ ] **mutation-tested**: flip each load-bearing constant this chapter added and confirm the suite
+      goes red. A guard that cannot fail is not a guard (ADVERSARIAL 5)
+- [ ] `node tools/play.js tools/scripts/full-true.json` — and if another chapter is in flight, say so
+      rather than reporting the result as yours (ADVERSARIAL 16)
 - [ ] every scene loads with zero console errors

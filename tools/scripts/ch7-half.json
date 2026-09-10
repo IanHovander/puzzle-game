@@ -11,7 +11,7 @@
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "half_bargains_done"}, {"expect": "Reader broke the Envoy's word to his face"}, {"clickText": "What comes of it"},
   {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"expect": "Eight sockets"},
-  {"slots": [[1, "WELL"], [2, "CROWN"], [3, null], [4, "THORN"], [5, "KNOT"], [6, "VEIL"], [7, "EMBER"], [8, "ASH"]]},
+  {"slots": [[1, "WELL"], [2, "ASH"], [3, "VEIL"], [4, "CROWN"], [5, null], [6, "KNOT"], [7, "EMBER"], [8, "THORN"]]},
   {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"},
   {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"clickText": "The Binding"},
   {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"keys": "acm/"}, {"wait": 7000}, {"keys": "acm/"}, {"wait": 2400}, {"key": "Space"}, {"wait": 500}, {"clickText": "What the fire decides"},

@@ -26,7 +26,14 @@
     .ch8-counts { display: flex; flex-direction: column; gap: 10px; padding: 4px 0; }
     .ch8-count { margin: 0; font-size: clamp(17px, 2.6vh, 20px); line-height: 1.35; color: var(--ink); opacity: 0; animation: fadeUp .5s ease forwards; }
     .ch8-count b { font-family: var(--display); font-size: 1.4em; color: var(--gold-2); letter-spacing: .04em; }
-    .ch8-map svg.night-map { width: 100%; height: auto; max-height: 34vh; }
+    /* The Map of the Night is embedded here as a THUMBNAIL, and it is the one place in the game where
+       its labels render below the 17px floor. That is deliberate and it is not a loss: the nine place
+       names are re-drawn immediately underneath, at full size, along the KNOT route this scene exists
+       to show. The readable copy of the map is the MAP button, which opens it unscaled at 17px
+       (js/core/map.js, proved by tools/scripts/map-check.json).
+       34vh was 7px too tall at 1152x648 once the sheet went to two rows -- measured, panel 466px
+       against 473px of content. 30vh leaves 19px in hand. */
+    .ch8-map svg.night-map { width: 100%; height: auto; max-height: 30vh; }
     .ch8-knot { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
     .ch8-knot svg { width: min(260px, 100%); max-height: 26vh; height: auto; overflow: visible; }
     .ch8-knot .ch8-route path.trace { stroke-width: 1.5; stroke-dasharray: 40; stroke-dashoffset: 40; animation: ch8draw 2s ease-out forwards; }
@@ -72,7 +79,11 @@
   const kept = (s) => R.filter(r => s.flags['BARGAIN_' + r.id] === 'kept').map(r => r.nick);
   const broken = (s) => R.filter(r => s.flags['BARGAIN_' + r.id] === 'broken').map(r => r.nick);
   const listOr = (arr, none) => arr.length ? UI.list(arr) : none;
-  const TRUTH = { reader: 'DONTKNOW', listener: 'NO', seer: 'TELL', binder: 'DONTKNOW' };
+  /* The laundry's truth map, from js/content/lore.js -- one table, not a copy. This is only the
+     FALLBACK: ch3 writes TRUTHS and `truths()` below prefers the flag. It still matters, because the
+     fallback runs on a chapter-select jump straight to the Epilogue, and a second copy that disagreed
+     with ch3's would have been wrong exactly there and nowhere a playthrough looks. */
+  const TRUTH = L.whisperTruth;
   const truths = (s) => s.flags.TRUTHS != null ? +s.flags.TRUTHS : R.filter(r => s.flags['WHISPER_' + r.id] === TRUTH[r.id]).length;
   const clues = (s) => s.flags.CLUES != null ? +s.flags.CLUES : 0;
   /* null when the clock never ran, so the sentence that carries it can drop out rather than print
@@ -154,6 +165,21 @@
     { text: (s) => s.flags.CLUES_HELP ? 'Four clues in the bell-chamber, and the fire helped. You caught {n}.' : 'Four clues in the bell-chamber. You caught {n}.', n: (s) => clues(s) },
     { text: 'Four questions in the laundry. Wren got {n} true answers.', n: (s) => truths(s) },
     { text: 'Three bells to keep whole. You cracked {n}.', n: (s) => +(s.flags.BELLS_CRACKED || 0) },
+    /* THE SETTLEMENT OF docs/ADVERSARIAL.md OPEN 2, and the half neither ch6 nor ch7 could take.
+       Both of the last two chapters priced a wrong answer as a RECORDED cost rather than a losing
+       branch, and both said the same thing in their own notes: a recorded cost is only real once the
+       Epilogue reads it. Until this row, nothing did -- ch6's STONE_MISREAD and ch7's SIGIL_COLD were
+       both chapter-local, and OPEN 2's own candidate list called them "a recorded cost that ch8's
+       ending already prints", which was not true of either.
+       ONE row, not two, and one number, not two: the prophecy stone and the Great Sigil are the same
+       act -- reading a thing back to the fire -- so they are priced in one currency, said out loud
+       here, once. Two rows would be two currencies again, which is the mistake ADVERSARIAL 14 names.
+       The stone's losing branch rides the same sentence as a swapped clause; ch7's Binding slips keep
+       their own line one scene earlier (ch7.js, ch7_ending) because a slip is a hand, not an answer. */
+    { text: (s) => s.flags.STONE_TOLD
+        ? 'The stone and the Sigil. You read them back wrong {n} times, and Marrow read the stone for you.'
+        : 'The stone and the Sigil. You read them back wrong {n} times.',
+      n: (s) => (s.flags.STONE_MISREAD | 0) + (s.flags.SIGIL_COLD | 0) },
     { text: 'You asked the fire for {n} hints.', n: (s) => +(s.flags.hintsTotal || 0) },
     { text: 'You wrote the last word with {n}.', n: (s) => midnightLeft(s), if: (s) => midnightLeft(s) != null },
     { text: 'The night took you {n}.', n: () => Store.elapsedText() },
@@ -258,11 +284,22 @@
       },
       ch8_years: {
         title: 'Years later', art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
-        text: [
+        /* WREN_TRUST reads here, and this is the only place in the game it is read. It is written four
+           times -- ch1.js:213 when the nine vote Wren away, ch3.js:235 on every bell, ch3.js:444 for a
+           true answer in the laundry, ch3.js:478 when the captain is given the boy -- and until this
+           pass `node tools/flag-map.js` printed it "set but never read", which it had been since it
+           was written. ch3's owner made the writes honest in this sweep and said plainly that giving
+           it a consumer was a cross-chapter decision it could not take alone; this is that decision.
+           It is ONE swapped clause, not a branch: the aggregate says whether the child came out of the
+           night trusting these four, and the only thing it is allowed to change is how long Wren takes
+           to come back. Everything after the first sentence is the same on both paths, because it is
+           true on both. */
+        text: (s) => [
           'Four unremarkable people, in a house that is too small for all of them, every winter. They argue about what the ring looked like, and never settle it.',
           'The Reader keeps a letter in the drawer by the bed. It is one line of glyphs. The Reader cannot read it, and will not have it translated.',
           'They would do it again. They say so, every winter, at the point in the evening when it becomes true.',
-          'Wren visits. Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that the Listener cannot hear, and does not need to.',
+          ((s.flags.WREN_TRUST | 0) >= 0 ? 'Wren visits.' : 'Wren visits, in the end.')
+            + ' Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that the Listener cannot hear, and does not need to.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -430,16 +467,30 @@
       ch8_words: {
         type: 'custom', art: 'ch8_dawn', mood: 'wonder', fx: 'motes', speed: 22,
         text: [
-          { text: 'The words that woke your phones tonight — THORN, KNOT, VEIL, EMBER, ASH, WELL, CROWN — were the Great Sigil in wall order. The eighth glyph is never written. You wrote it twice: once in the dormitory, when it was a dare, and once just now.', cls: 'omen' },
+          /* THIS LINE USED TO BE AN ORACLE, and it is the reason the Great Sigil's phrase moved.
+             It read: '... were the Great Sigil in wall order.' That was TRUE — ch7's phrase was
+             THORN KNOT VEIL EMBER ASH WELL CROWN, which is the attunement word of ch1..ch7 in
+             chapter order (js/content/lore.js) — and being true is exactly what was wrong with it:
+             every player types all seven into the Hearth over the evening, one per chapter, so the
+             Finale's whole phrase, in its whole order, had been public since Chapter I, and this
+             sentence was the game admitting it. ch7's walls were rebuilt around a phrase that is not
+             the chapter words (KNOT EMBER THORN WELL ASH VEIL CROWN COLD), and making this line true
+             again by re-ordering it would only re-arm the oracle. So the payoff keeps everything that
+             was true and drops the one clause that was a key: the seven ARE every writeable glyph,
+             each exactly once, and the eighth is the rest. Enumerated: js/content/lore.js's ch1..ch7
+             words as a set are identical to VigilGlyphs.ORDER minus COLD, and neither KINDLE (ch0)
+             nor WREN (ch8) is a glyph. tools/check-hints.js now fails any answer that reads four or
+             more consecutive chapter words, so the shape cannot come back anywhere in the game. */
+          { text: 'The words that woke your phones tonight — THORN, KNOT, VEIL, EMBER, ASH, WELL, CROWN — are every glyph that can be written, each of them once. The eighth is the rest. The rest is never carved. You wrote it twice: once in the dormitory, when it was a dare, and once just now.', cls: 'omen' },
         ],
         run: (box, api) => new Promise((resolve) => {
-          const words = ['THORN', 'KNOT', 'VEIL', 'EMBER', 'ASH', 'WELL', 'CROWN'];
+          const words = L.chapters.slice(1, 8).map(c => c.word);   // derived, never retyped: these are the seven the phones were given
           const row = UI.el('div', { class: 'ch8-words' });
           words.forEach((w, i) => { const c = UI.el('div', { class: 'ch8-w', html: `${G.svg(w, { size: 44, color: '#f2d27a' })}<span>${w}</span><small>${UI.esc(L.chapters[i + 1].label)}</small>` }); c.style.animationDelay = (0.4 + i * 0.35) + 's'; row.appendChild(c); });
           const cold = UI.el('div', { class: 'ch8-w cold', html: `${G.svg('COLD', { size: 44, color: '#4fb3bf' })}<span>WREN</span><small>never written</small>` }); cold.style.animationDelay = '3.4s'; row.appendChild(cold);
-          box.appendChild(UI.el('div', { class: 'pz-title', text: 'THE GREAT SIGIL, IN WALL ORDER' }));
+          box.appendChild(UI.el('div', { class: 'pz-title', text: 'SEVEN THAT CAN BE WRITTEN, AND ONE THAT CANNOT' }));
           box.appendChild(row);
-          box.appendChild(UI.el('p', { class: 'small', text: 'KINDLE, in the dormitory, was only a lamp. Everything after it was the wall.' }));
+          box.appendChild(UI.el('p', { class: 'small', text: 'KINDLE, in the dormitory, was only a lamp. It is not a glyph, and neither is the last one.' }));
           words.forEach((w, i) => setTimeout(() => { if (api.alive()) Audio.note(G.MIDI[w], 1.2, 0.14); }, 400 + i * 350));
           api.button('The last word', () => resolve(ending(api.state) === 0 && api.state.flags.WREN_SHOWN ? 'ch8_flow' : 'ch8_code'), 'primary');
         }),

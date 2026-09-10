@@ -1,0 +1,20 @@
+{ "start": "ch1_start", "viewport": {"width": 1280, "height": 720}, "steps": [
+  {"_": "THE MAP OF THE NIGHT. Two properties, and neither could be seen before this pass."},
+  {"_": "1. an unreached chapter's PICTOGRAM must not be drawn: the map used to draw all nine from the Prologue"},
+  {"eval": "void(window.VigilMap.show())"}, {"wait": 500},
+  {"assert": "document.querySelectorAll('.map-box .night-map').length === 1"},
+  {"eval": "JSON.stringify({panels: document.querySelectorAll('.night-map rect[rx=\"6\"]').length, labels: Array.from(document.querySelectorAll('.night-map text')).map(t=>t.textContent)})"},
+  {"_": "started at ch1_start, so only the Great Hall has been reached: it is named, and the other eight folds are sealed"},
+  {"expect": "The Great Hall"},
+  {"assert": "Array.from(document.querySelectorAll('.night-map text')).filter(t => t.textContent === '· · ·').length === 8"},
+  {"expectNot": "The bell-chamber"}, {"expectNot": "The Long Stair"}, {"expectNot": "The Cold"}, {"expectNot": "Dawn"}, {"expectNot": "THE SHEET TURNS"},
+  {"_": "the ch6 bell, the ch5 stair, the ch7 cold circle and the ch8 sun are the four most telling icons: none of their path data may be in the sheet"},
+  {"assert": "(function(){var m=document.querySelector('.night-map').innerHTML; return ['M-10,6 L-10,0','M-16,12 L-16,6','M-16,8 L16,8'].every(function(d){return m.indexOf(d)<0});})()"},
+  {"_": "2. every label renders at or above the 17px floor, and the sheet is not scaled down to get there"},
+  {"assert": "(function(){var svg=document.querySelector('.night-map');var r=svg.getBoundingClientRect();var vb=svg.viewBox.baseVal;var k=r.width/vb.width;return Array.from(svg.querySelectorAll('text')).every(function(t){return parseFloat(getComputedStyle(t).fontSize)*k >= 16.9;});})()"},
+  {"eval": "(function(){var svg=document.querySelector('.night-map');var r=svg.getBoundingClientRect();var vb=svg.viewBox.baseVal;var k=r.width/vb.width;var sz=Array.from(svg.querySelectorAll('text')).map(function(t){return +(parseFloat(getComputedStyle(t).fontSize)*k).toFixed(2)});return JSON.stringify({rendered:[Math.round(r.width),Math.round(r.height)],scale:+k.toFixed(3),smallestText:Math.min.apply(null,sz),largestText:Math.max.apply(null,sz)});})()"},
+  {"_": "and the sheet fits its box: nothing clipped sideways, nothing past the bottom of the modal"},
+  {"assert": "(function(){var svg=document.querySelector('.night-map');var box=document.querySelector('.map-box');return svg.getBoundingClientRect().width <= box.getBoundingClientRect().width + 1;})()"},
+  {"assert": "document.querySelector('.modal').getBoundingClientRect().bottom <= window.innerHeight + 1"},
+  {"log": true}
+] }

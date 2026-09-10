@@ -1,0 +1,16 @@
+{ "_what": "The third count the Hearth prints — the school's drill, dials one to four in the order the door hums. It is the count a Binder-less table reaches for, and it is why the Binder's fork is three wide instead of two. The door spends its one count on it and the table crawls in.",
+  "start": "ch2_attune", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"expect": "KNOT"}, {"clickText": "All phones are ready"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400},
+  {"expect": "one to four"}, {"expect": "older than this floor"},
+  {"click": ".dialseq .dial-face >> nth=0"}, {"click": ".palette-grid .glyph:has-text(\"THORN\")"},
+  {"click": ".dialseq .dial-face >> nth=1"}, {"click": ".palette-grid .glyph:has-text(\"KNOT\")"},
+  {"click": ".dialseq .dial-face >> nth=2"}, {"click": ".palette-grid .glyph:has-text(\"VEIL\")"},
+  {"click": ".dialseq .dial-face >> nth=3"}, {"click": ".palette-grid .glyph:has-text(\"EMBER\")"},
+  {"shot": "ch2_door_drill"}, {"clickText": "Try the door"}, {"wait": 400}, {"expect": "remembers the count"},
+  {"wait": 1400}, {"key": "Space"}, {"wait": 400},
+  {"expect": "the way the school drills it"}, {"expect": "a drill is not a Law"}, {"expect": "on your hands and knees"},
+  {"expect": "The count has been called"},
+  {"assert": "VigilStore.state.choices.CH2_DOOR === 'crawled'"},
+  {"clickText": "Into the vault"}, {"wait": 800}, {"key": "Space"}, {"log": true}
+] }

@@ -9,8 +9,11 @@
   try { (document.head || document.body).appendChild(Object.assign(document.createElement('style'), { textContent: `
     #widget.ch6-bells .react-meter { display: none; }
     #widget.ch6-bells .beat-counter { display: none; }
+    /* There was a rule here hiding .orb-chain in the dark round. It could never fire: a chain is only
+       built for kind 'brace' or 'all' (js/puzzles/reaction.js:50) and ROUND3 is singles and Cold only.
+       Gone, and tools/scripts/ch6.json now asserts the chain count is 0 during the dark round, so the
+       day somebody puts a chord in ROUND3 the suite says so instead of a stylesheet silently coping. */
     #widget.ch6-bells .lanes { height: min(34vh, 260px); }
-    #widget.ch6-bells .lanes.dark ~ .orb-chain { display: none; }
     #widget.ch6-dark .lanes { margin-top: 46px; }
     .ch6-rule { display: flex; gap: 18px; justify-content: center; align-items: center; flex-wrap: wrap; margin: 2px 0 0; font-family: var(--display); font-size: 13px; letter-spacing: .06em; color: var(--ink-dim); }
     .ch6-rule span { display: inline-flex; align-items: center; gap: 6px; }
@@ -143,6 +146,27 @@
   const tempo = (s, bpm) => bpm * (s.flags.SLOW_BELLS ? 0.8 : 1);
   const win = (s, ms) => Math.round(ms * (s.flags.SLOW_BELLS ? 1.5 : 1));
   const crackedNow = (s) => Math.max(s.flags.BELLS_CRACKED | 0, s.flags.PRECRACKED ? 1 : 0);
+  /* EVERY scene whose backdrop hangs the four bells must pass this, and the reason is a defect that
+     shipped: js/core/engine.js setArt keys its memo on `name + JSON.stringify(params)` and returns
+     early when the key repeats. Six scenes share 'ch6_lid' and five share 'ch6_chamber', so with no
+     artParams the chamber was drawn once, whole, and never again — ch6_held said "one hanging silent
+     with its wound" over four undamaged bells for every table that cracked one in a round. Moving the
+     count into the memo key is the whole fix (ch3.js:560, ch4.js:428 and ch5.js:520 already do this).
+     A crack that happens WITHIN a scene redraws through crackBell() below, which calls Game.setArt. */
+  const bellParams = (s) => ({ cracked: Math.max(crackedNow(s), s.flags.STAIR === 'COLLAPSE' ? 1 : 0) });
+  /* STAIR is read as well as the count because the engine sets the art BEFORE the scene's enter()
+     runs (engine.js:95, then :96): on the first frame of ch6_start, a stair that came down in ch5
+     has not yet seeded PRECRACKED, and a params object saying 0 would hide the wound the very next
+     paragraph describes. js/art/scenes-ch6.js keeps the same fallback for any caller passing none. */
+  /* The one place a bell is ever cracked. Charges the flag, keeps the cap, and repaints the backdrop
+     so the picture and the prose can never disagree again. */
+  function crackBell(s, artName) {
+    const before = crackedNow(s);
+    Store.set('BELLS_CRACKED', Math.min(3, before + 1));
+    const after = crackedNow(Store.state);
+    if (after !== before && artName && window.Game && Game.setArt) { try { Game.setArt(artName, { cracked: after }); } catch (e) {} }
+    return after !== before;
+  }
   const WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   const readings = (n) => (n === 1 ? 'one wrong reading' : (WORDS[n] || n) + ' wrong readings');
   const widgetClass = (cls, on) => { const w = document.getElementById('widget'); if (w) w.classList.toggle(cls, !!on); };
@@ -199,7 +223,7 @@
   function litCfg(s) {
     const beatMs = 60000 / tempo(s, 88);
     const v = volunteerLane(s);
-    ruleCard([['press', 'press on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold — every hand off'], [null, 'seven lights in ten holds']]);
+    ruleCard([['press', 'your own key, on the line'], ['chord', 'joined lights, one breath — count yourselves in'], ['cold', 'blue is the Cold — every hand off'], [null, 'seven lights in ten holds']]);
     return {
       title: 'THE PATTERN' + (s.flags.SLOW_BELLS ? ' · SLOW' : ''), laneNames: L.nicks,
       events: evenEvents(ROUND1, beatMs), fallMs: 1800, windowMs: win(s, 380), braceWindowMs: win(s, 320),
@@ -209,20 +233,57 @@
   function darkCfg(s) {
     const beatMs = 60000 / tempo(s, 60);
     beatOverlay(beatMs, 32);
-    ruleCard([[null, 'the Hearth counts the beats'], [null, 'the Listener calls each number'], ['press', 'your number — ring next beat'], ['cold', 'not yours — hands off'], [null, 'eight in ten holds']]);
+    ruleCard([[null, 'the Hearth counts the beats'], [null, 'the Listener calls each number'], ['press', 'your number — ring on the NEXT beat, never on the word'], ['cold', 'not on your list — hands off'], [null, 'eight in ten holds']]);
     return {
       title: 'THE DARK PATTERN' + (s.flags.SLOW_BELLS ? ' · SLOW' : ''),
       laneNames: L.nicks.map((k, i) => i === 1 ? 'Voice' : k),
       events: beatEvents(ROUND3, beatMs), fallMs: 1800, windowMs: win(s, 520), braceWindowMs: win(s, 420),
       target: 0.8, noFail: true, damage: 0.03, deadLanes: [1], dark: true, pulse: false,
-      hideScore: true,   // reaction.js writes a live hits/total; in the dark round that is ground truth per event
+      /* reaction.js writes a live hits/total; in the dark round that is ground truth per event.
+         Say plainly what this does NOT close: reaction.js:59 paints the responsible lane green for a
+         hit and red for a miss on every event, and css/puzzles.css:81-82 gives each a 40px inset
+         glow that `.lanes.dark` does not touch (it hides only .orb, css/puzzles.css:155). So the
+         per-event verdict is on the shared screen whatever this flag says, and hiding the running
+         total buys legibility, not secrecy. It stays because the round is honest about being a
+         reflex round (ADVERSARIAL 15), not because it keeps a secret. */
+      hideScore: true,
     };
   }
-  /* A round is scored, never lost: BELLS_CRACKED is a cost carried into ch7, not a dead end. */
+  /* A round is scored, never lost: BELLS_CRACKED is a cost carried into ch7, not a dead end.
+
+     WALKING AWAY FROM A ROUND USED TO BE FREE, and that was the round's real defect. The score was
+     written only here, when the widget resolved, while reaction.js keeps hits/misses/health in locals
+     (reaction.js:37) — and round one shows a live `hits / total` on the HUD. A table thirty seconds
+     into a losing round could read "7 / 24", take Menu -> Replay scene (or simply reload and Resume),
+     and get a fresh round with the pattern already known, for nothing. The pattern is a fixed string
+     at a fixed tempo, so the second run is the same round with the answers in hand.
+     So the round is now charged where it is actually abandoned: roundEnter() below runs in the
+     scene's `enter`, and a SECOND arrival at a round that never resolved cracks a bell on the spot.
+     It cannot double-charge — the engine marks a resolved puzzle solved (engine.js:203) and will not
+     re-run the widget, so re-entry only ever happens on an abandoned attempt — and BELLS_R{n}_SEEN is
+     a Store flag, not a local, because Resume and paste-a-save both reload (ADVERSARIAL 7).
+     The live score STAYS on round one. It is the reflex feedback the round is made of, and now that
+     the tell costs the same as the failure it was a tell for, reading it is honest information rather
+     than an exploit. */
+  function roundEnter(n, artName) {
+    return (s) => {
+      if (s.flags['BELLS_R' + n + '_PASS']) return;
+      const seen = s.flags['BELLS_R' + n + '_SEEN'] | 0;
+      Store.set('BELLS_R' + n + '_SEEN', seen + 1);
+      if (seen > 0 && !s.flags['BELLS_R' + n + '_CRACK']) {
+        Store.set('BELLS_R' + n + '_CRACK', true);
+        Store.set('BELLS_R' + n + '_ABANDONED', true);
+        crackBell(s, artName);
+      }
+    };
+  }
+  /* One line, only on the branch where it happened, so the room is told what the walk-away cost. */
+  const abandonedLine = (s, n) => s.flags['BELLS_R' + n + '_ABANDONED']
+    ? [{ text: 'A pattern left half-rung. Above you a bell took the Cold instead.', cls: 'whisper' }] : [];
   function roundSolve(n) {
     return (s, r) => {
       Store.set('BELLS_R' + n + '_HITS', r.hits); Store.set('BELLS_R' + n + '_TOTAL', r.total); Store.set('BELLS_R' + n + '_PASS', !!r.passed);
-      if (!r.passed) { Store.set('BELLS_CRACKED', Math.min(3, crackedNow(s) + 1)); Store.set('BELLS_R' + n + '_CRACK', true); }
+      if (!r.passed && !s.flags['BELLS_R' + n + '_CRACK']) { Store.set('BELLS_R' + n + '_CRACK', true); crackBell(s, 'ch6_lid'); }
     };
   }
   /* The widget scores decisions, not strikes: a Cold answered by keeping still counts as much as a bell
@@ -246,7 +307,13 @@
      One reply per role per answer, plus one clause of laundry callback when the laundry answer was the
      one Wren remembers. (Twelve keyed variants was 138 words for the four lines a table ever sees.) */
   const W = (s, role) => s.flags['WHISPER_' + role];
-  const TRUTH = { listener: 'NO', seer: 'TELL', reader: 'DONTKNOW', binder: 'DONTKNOW' };
+  /* There was a copy of the laundry truth map here, and ch6_held recomputed TRUTHS from it. It is
+     gone. The map is written three times in three chapters that may not edit each other (ch3.js:440,
+     ch8.js:75), the number is computed twice and printed once, and ch6's copy did nothing but
+     OVERWRITE the value ch3 had already written correctly — so the only thing it could ever do was
+     go stale and be wrong. ch3 writes TRUTHS at the laundry (ch3.js:443) and ch8 prefers the flag
+     over its own fallback (ch8.js:76). The real fix is one map in lore.js beside L.tokens.whisper,
+     which no chapter agent may make alone; this at least removes the copy that could disagree. */
   const RIGHT = { seer: 'toward', listener: 'none', reader: 'hollow', binder: 'none' };
   const REPLY = {
     seer: { yes: 'Toward it.', no: 'Look down, some time when I am not standing here.' },
@@ -299,9 +366,21 @@
        drop the Listener   ->      8
        drop the Seer       ->      8
        drop the Binder     ->     12
-       worst pair (Listener + Binder) 64 · (Reader + Binder) 3,064
-     Every one of those fields contains the answer, so no drop-a-role table is dead-ended, and every
-     one is bigger than the three bells a table can crack looking for it.
+       worst pair (Listener + Binder) 64 · (Reader + Binder) 3,064 · (Reader + Seer) 2,048
+     Every one of those fields contains the answer, so no drop-a-role table is dead-ended.
+     RE-DERIVED A THIRD TIME for the adversarial pass, from the shipped glyphs.js lexicon and the
+     STONE and BURNT below, counting distinct boards rather than parameter tuples. Every figure above
+     reproduces exactly (1 · 192 · 8 · 8 · 12 · 64 · 3,064 · 2,048 · 262,144 raw · 111,752 unpaged).
+     The sweep reported 256 / 8 / 16 / 8 for the four single drops and called three of them wrong;
+     that model gives the Listener the START CUT as a parameter. It is not one. The Listener's page
+     (companion/ch6.js restFig) carries no cut number at all — it says only that the lap ENDS on a
+     silence, i.e. that the last word read is the one with no note — so the start is derived from that
+     constraint together with the shapes, the orientations and the direction, and drops out differently
+     for every hypothesis about them. That is precisely why the Listener's fact is worth three bits
+     rather than one, and it is why dropping the Seer costs 8 and not 16: with the shapes known, only
+     one burnt cut can carry the silence, which pins its orientation and leaves three free.
+     What the fields were NOT bigger than was the retry budget, because there wasn't one. See
+     ch6_strip's maxTries.
      No keyed wrong-answer line touches ANY single-drop field: the only keyed line answers the school's
      own reading, which the Listener's fact rules out, so it cannot split a field for a table that is
      missing a page. (The two boards it does key are reachable only when the Listener AND the Binder
@@ -362,7 +441,7 @@
       { id: 'ch6_ask_hush', label: said('listener'), col: 3, row: 1, kind: 'choice' },
       { id: 'ch6_ask_bookmoth', label: said('reader'), col: 3, row: 2, kind: 'choice' },
       { id: 'ch6_ask_knot', label: said('binder'), col: 3, row: 3, kind: 'choice' },
-      { id: 'ch6_strip', label: '"I know, Mum." — the stone', col: 4, row: 1 },
+      { id: 'ch6_strip', label: f.STONE_TOLD ? 'The stone, read to you' : '"I know, Mum." — the stone', col: 4, row: 1 },
       { id: 'ch6_walk', label: 'The Fourfold Walk', col: 5, row: 0, kind: 'end', secret: true, when: (st) => !!st.flags.WALK_UNLOCKED },
       { id: 'ch7_start', label: 'One Born of Four', col: 5, row: 2, secret: true },
     ];
@@ -381,7 +460,7 @@
     scenes: {
       /* ---------- the bell-chamber ---------- */
       ch6_start: {
-        art: 'ch6_chamber', mood: 'tense', fx: 'ash', sfx: 'step', flame: 0.22,
+        art: 'ch6_chamber', artParams: bellParams, mood: 'tense', fx: 'ash', sfx: 'step', flame: 0.22,
         title: 'The bell-chamber',
         // PRECRACKED must be seeded before the count is taken, or a fallen stair cracks a bell in the prose and in no flag.
         enter: (s) => { if (s.flags.PRECRACKED == null && s.flags.STAIR === 'COLLAPSE') Store.set('PRECRACKED', true); Store.set('BELLS_CRACKED', crackedNow(s)); widgetClass('ch6-bells', false); widgetClass('ch6-dark', false); },
@@ -400,7 +479,7 @@
         next: 'ch6_marrow', button: 'The Provost',
       },
       ch6_marrow: {
-        art: 'ch6_lid', mood: 'dread', fx: 'ash', flame: 0.2,
+        art: 'ch6_lid', artParams: bellParams, mood: 'dread', fx: 'ash', flame: 0.2,
         text: [
           'Provost Marrow kneels at the middle of the lid, where the bell-ropes meet an iron ring. Chalk. Salt. Her seal pressed into the iron.',
           'The lid shivers. Frost blooms out of the rivets and is gone. All four bells hum with it.',
@@ -411,7 +490,7 @@
         next: 'ch6_attune', button: 'Attune',
       },
       ch6_attune: {
-        type: 'code', art: 'ch6_lid', mood: 'dread', fx: 'ash', flame: 0.2,
+        type: 'code', art: 'ch6_lid', artParams: bellParams, mood: 'dread', fx: 'ash', flame: 0.2,
         text: [
           { text: 'Cut into the rim of the lid, worn nearly smooth: a word, and a mark beside it.', cls: 'whisper' },
           { text: 'Open the Companion. Take your seat. Type the word and the mark.', cls: 'whisper' },
@@ -422,7 +501,7 @@
       },
       /* ---------- the ready screen ---------- */
       ch6_ready: {
-        type: 'custom', art: 'ch6_chamber', mood: 'tense', fx: 'ash', flame: 0.2,
+        type: 'custom', art: 'ch6_chamber', artParams: bellParams, mood: 'tense', fx: 'ash', flame: 0.2,
         title: 'Before anything counts',
         enter: () => { widgetClass('ch6-bells', false); widgetClass('ch6-dark', false); },
         text: (s) => {
@@ -456,17 +535,30 @@
         }),
       },
       ch6_practice: {
-        type: 'puzzle', puzzle: 'reaction', art: 'ch6_chamber', mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_practice', replayable: true,
+        type: 'puzzle', puzzle: 'reaction', art: 'ch6_chamber', artParams: bellParams, mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_practice', replayable: true,
         text: ['Eight lights, nothing counted. Two of them are the pale blue of the Cold. Every hand off for those.'],
-        hints: [
-          'Four keys, one each. Nobody presses another player\'s.',
-          'Two lights joined by a bar are a chord: those hands together, inside a breath.',
-          'Pale blue is the Cold. Every hand off the keys until it is past.',
-        ],
+        /* NO HINT LADDER, and the three rounds are the same: R10.26's other branch, the one ch7's
+           Binding already took (ch7.js:501). Three reasons, and the first is decisive.
+           (a) OPENING THE LADDER COSTS THE ROUND. reaction.js drives the pattern from
+               requestAnimationFrame + performance.now() (reaction.js:99, :134) with no pause hook, so
+               the modal takes four hands off the keys while the lights keep falling. A hint you
+               cannot afford to read is not a hint.
+           (b) NOTHING ANNOUNCED IT. The other seven widgets pulse #hint after two wrong tries
+               (ring.js:89, answer.js:44, grid.js:105 and so on); reaction.js has no such call and
+               these scenes had no `par`, so the bell never rang for them at all.
+           (c) THE RUNGS WERE NOT ANSWERS. All three restated the rule card, and round three's went
+               further and named the partition's cardinality — "three lists, six numbers each" — which
+               is the one thing that lets a lane with no page play. Measured off ch6.js's own model: a
+               page-less lane told nothing scores 18 of 24 against a pass mark of 20 by every strategy
+               there is, and is told "six each, disjoint" it picks six of the twelve unclaimed numbers
+               and passes on 262 of the 924 subsets, 28.4%. The last rung sold the round.
+           What the rungs were actually carrying — one key each, a chord is one breath, blue is hands
+           off, ring on the beat and never on the word — is on the rule card below, on screen for the
+           whole round, which is where R10.1 says it belongs. */
         enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', false); },
         config: (s) => {
           const v = volunteerLane(s);
-          ruleCard([['press', 'press on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold']]);
+          ruleCard([['press', 'your own key, on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold — hands off']]);
           return { practice: true, laneNames: L.nicks, events: evenEvents(PRACTICE, 60000 / tempo(s, 80)), fallMs: 1800, windowMs: win(s, 380), braceWindowMs: win(s, 320), deadLanes: v != null ? [v] : [], pulse: false };
         },
         solvedText: (s, r) => [`${r.hits} of ${r.total}. Nothing counted.`, { text: 'Now the real one.', cls: 'whisper' }],
@@ -474,18 +566,14 @@
       },
       /* ---------- the lit pattern ---------- */
       ch6_round1: {
-        type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_round1',
-        enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', false); },
-        text: [
+        type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', artParams: bellParams, mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_round1',
+        enter: (s) => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', false); roundEnter(1, 'ch6_lid')(s); },
+        text: (s) => [
           'Provost Marrow presses her seal into the iron. The lid answers with a low note that is none of the bells.',
           { speaker: 'Provost Marrow', text: 'Chords now. Together means *together* — every hand inside a breath, or the bell does not sound.' },
           { text: 'Twenty-four lights. Eight of them are the Cold.', cls: 'whisper' },
-        ],
-        hints: [
-          'Four hands, one key each. A chord needs every hand it joins.',
-          'It is the chords that fail. One hand late loses the bell. Count yourselves in, out loud.',
-          'A third of the lights are the Cold. Hammer the keys and you ring all eight of them.',
-        ],
+        ].concat(abandonedLine(s, 1)),
+        /* No ladder — see the note on ch6_practice. */
         config: litCfg,
         onSolve: roundSolve(1),
         solvedText: roundText('Seven in ten', ['The pattern holds. The frost at the rivets stops a hand\'s breadth from her knees and goes no further.', { speaker: 'Provost Marrow', text: 'Good. Do not get proud. The last one is the Founders\' own, and they did not ring it by sight.' }],
@@ -493,7 +581,7 @@
         next: 'ch6_tieoff', button: 'The last pattern',
       },
       ch6_tieoff: {
-        art: 'ch6_chamber', mood: 'dread', fx: 'ash', flame: 0.16,
+        art: 'ch6_chamber', artParams: bellParams, mood: 'dread', fx: 'ash', flame: 0.16,
         enter: () => { widgetClass('ch6-bells', false); widgetClass('ch6-dark', false); },
         text: (s) => {
           const v = volunteerLane(s);
@@ -513,14 +601,11 @@
         next: 'ch6_round3', button: 'Ring it blind',
       },
       ch6_round3: {
-        type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', mood: 'dread', fx: 'void', flame: 0.15, puzzleId: 'ch6_round3',
-        enter: () => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); },
-        text: ['Thirty-two beats at sixty to the minute. Nothing falls that you can see.'],
-        hints: [
-          'The beat is the Hearth\'s. Every number is the Listener\'s. Which numbers are bells is on three other pages, one list each.',
-          'The call comes one beat early, so a hand has time to arrive. Ring on the beat, never on the word.',
-          'Three lists, six numbers each, and no number is on two of them. Ring your own six, on the beat after yours is called.',
-        ],
+        type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', artParams: bellParams, mood: 'dread', fx: 'void', flame: 0.15, puzzleId: 'ch6_round3',
+        enter: (s) => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', true); roundEnter(3, 'ch6_lid')(s); },
+        text: (s) => ['Thirty-two beats at sixty to the minute. Nothing falls that you can see.'].concat(abandonedLine(s, 3)),
+        /* No ladder — see the note on ch6_practice. The old rung 3 named the partition's cardinality,
+           which took a page-less lane from a certain 18 to a 28.4% pass. */
         config: darkCfg,
         onSolve: roundSolve(3),
         solvedText: roundText('Eight in ten', ['The last bell goes on ringing after your hands have left the keys, and the lid under your feet stops beating.', 'The chamber comes back a little at a time. The beam. The bells. Marrow kneeling in chalk gone from white to gold.'],
@@ -529,11 +614,10 @@
       },
       /* ---------- held, and the Second Asking ---------- */
       ch6_held: {
-        art: 'ch6_lid', mood: 'sorrow', fx: 'ash', flame: 0.15,
+        art: 'ch6_lid', artParams: bellParams, mood: 'sorrow', fx: 'ash', flame: 0.15,
         enter: (s) => {
           widgetClass('ch6-bells', false); widgetClass('ch6-dark', false);
           Store.set('CLUES', 0);
-          Store.set('TRUTHS', ['reader', 'listener', 'seer', 'binder'].filter(r => W(s, r) === TRUTH[r]).length);
           const c = s.flags.BELLS_CRACKED | 0;
           Store.note(c ? `The Bells held with ${c === 1 ? 'one bell' : c + ' bells'} cracked.` : 'The Bells held, and not one bell cracked.');
         },
@@ -595,7 +679,7 @@
         ],
       },
       ch6_iknow: {
-        art: 'ch6_lid', mood: 'sorrow', fx: 'ash', flame: 0.14,
+        art: 'ch6_lid', artParams: bellParams, mood: 'sorrow', fx: 'ash', flame: 0.14,
         enter: () => { Store.note('Marrow said aloud what came out of the fire.'); },
         text: (s) => {
           const c = s.flags.CLUES | 0;
@@ -624,8 +708,35 @@
       },
       ch6_strip: {
         type: 'puzzle', puzzle: 'ring', art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.12, puzzleId: 'ch6_strip', par: [3, 5, 7],
-        text: [
-          'Eight cuts. The fire took four. A wrong reading cracks a bell, and you will want that bell later.',
+        /* THE READING BUDGET. Four readings, and then the stone is read for you.
+           Until this pass the stone had no maxTries at all, and its only cost stopped being charged
+           after the third cracked bell — a ceiling a table can ARRIVE at (ch5's collapsed stair seeds
+           one, each bell round can spend one). So a table missing a page faced a field of 8 or 12
+           boards, submitted them one after another, and after the third wrong reading paid nothing
+           whatever. Field against budget, re-derived (see the enumeration above STONE):
+             pages at the table   distinct boards   readings to be certain   passes within 4
+             all four                          1                        1              always
+             no Binder                        12                       12         4/12 = 33%
+             no Listener                       8                        8         4/8  = 50%
+             no Seer                           8                        8         4/8  = 50%
+             no Reader                       192                      192          4/192 = 2%
+           A four-handed table needs one reading and never meets the budget; a three-handed table now
+           has to be right rather than patient. This is HALF of ADVERSARIAL.md OPEN 2 and it is the
+           half that can be taken inside one chapter: the budget bites, but running out of it still
+           opens the Walk, because WALK_UNLOCKED is read by ch7 (ch7.js:49, :276) and printed by ch8,
+           and a ch6 agent may not decide on its own what losing costs there. What running out DOES
+           cost is recorded in STONE_TOLD, said by Marrow, printed in ch6_open and in the ledger, and
+           left where ch7/ch8 can spend it if the Integrate phase decides they should.
+           The budget itself is on the ring's config below, where ring.js reads it. */
+        text: (s) => [
+          /* R1.4: six paragraphs, none over 18 words. The cost clause is CONDITIONAL because the
+             card used to state a price the game could not charge — a table arriving with three
+             bells already cracked (ch5's stair, both rounds lost) was told each wrong reading
+             cracked one, and none did. Marrow's own failure line has always said the truth; the
+             brief now says it too, before the first reading rather than after it. */
+          crackedNow(s) < 3
+            ? 'Eight cuts, four burnt. Four readings, and a wrong one cracks a bell you need later.'
+            : 'Eight cuts, four burnt. Four readings, and no bell left to pay for a wrong one.',
           { text: 'Reader — what the four burnt cuts were.', cls: 'whisper' },
           { text: 'Listener — where the line ends.', cls: 'whisper' },
           { text: 'Seer — which way each burnt cut was struck.', cls: 'whisper' },
@@ -642,21 +753,25 @@
            Resume and paste-a-save both call location.reload(), and Chapter V shipped a cost a refresh
            erased. Uncapped, it is said aloud in the failure line with its running total, it changes
            what Marrow says when the Walk opens, and it is printed in the chapter's ledger.
-           Be plain about the limit: from the fourth wrong reading the price is a permanent record and
-           a diminished ending to the scene, not a fifth cracked bell, because there is no fourth bell
-           and no other currency this chapter may spend without editing ch7 or ch8.
-           A board with fewer than six words is not a reading and costs nothing at all
-           (R10.19: under-commitment is coached, not punished). */
+           Beyond the third cracked bell the money runs out and the BUDGET is what still bites: the
+           fourth wrong reading is the last reading, whatever it costs in bells.
+           A board with fewer than six words is not a reading and costs nothing at all, and does not
+           spend a try either (R10.19: under-commitment is coached, not punished). */
         const price = () => {
           const st = Store.state;
           const n = (st.flags.STONE_MISREAD | 0) + 1;                 // NOT a local: the game reloads on Resume
           Store.set('STONE_MISREAD', n);
-          if (crackedNow(st) < 3) { Store.set('BELLS_CRACKED', crackedNow(st) + 1); return { n: n, line: ' Above you a bell takes the wrong word, and cracks.' }; }
-          return { n: n, line: ` No bell left to crack. Marrow says it out loud instead. ${readings(n)}, and the stone keeps the count.` };
+          const left = 4 - n;
+          const tail = left > 0 ? ` ${left === 1 ? 'One reading left.' : left + ' readings left.'}` : '';
+          /* no art name: ch6_stonefoot hangs no bells, so there is nothing for a repaint to change
+             and a crossfade of the same picture on every wrong reading is only a flicker. The count
+             reaches the screen again at ch6_flow, which is the chamber. */
+          if (crackBell(st, null)) return { n: n, line: ' Above you a bell takes the wrong word, and cracks.' + tail };
+          return { n: n, line: ` No bell left to crack. Marrow says it out loud instead. ${readings(n)}, and the stone keeps the count.` + tail };
         };
-        return {
+        const cfg = {
           title: 'THE FOOT OF THE STONE',
-          note: 'The Provost, not looking up: *Eight cuts round the foot, and a ring has no first. Every cut says one word standing up and its other upside down. The school starts at the **mark** and reads up the count, leaving the cold word **empty**. Slot 1 is the first word you read.*',
+          note: 'The Provost, not looking up: *Eight cuts round the foot, and a ring has no first. Every cut says one word standing up and its other upside down. The school starts at the **mark** and reads up the count, leaving the cold word **empty**. Slot 1 is the first word you read. You have **four readings**.*',
           html: footStrip(),
           slots: 8, layout: 'strip', glyphs: glyphPalette(), allowRepeat: true, allowEmpty: true,
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to read it aloud',
@@ -670,29 +785,48 @@
           check: (m) => {
             const got = []; for (let i = 1; i <= 8; i++) got.push(m[i] || null);
             if (same(got, TURNED)) return true;
-            if (got.filter(Boolean).length < 6) return 'Not a reading yet. Six words at least, and then read it aloud.';
+            /* An unfinished board must not spend a try, and ring.js counts a try for every check that
+               is not `true`. So it is refunded here, on the one branch that costs nothing. */
+            if (got.filter(Boolean).length < 6) { cfg.maxTries++; return 'Not a reading yet. Six words at least, and then read it aloud.'; }
             const cost = price();
             if (same(got, NAIVE) || same(got, SCHOOL)) return 'From the mark, the way the cuts count up: four hundred years of school. The strip stays cold.' + cost.line;
             return (cost.n >= 2 ? 'The stone does not answer. Wren, quietly: "Has everybody actually said their bit?"'
               : 'The stone does not answer. Frost feathers across the strip and it clears.') + cost.line;
           },
-        }; },
+          /* The budget is spent in STONE_MISREAD, not in ring.js's local `tries`, because Resume and
+             paste-a-save both call location.reload() and a budget a refresh refills is not a budget
+             (ADVERSARIAL 7 — Chapter V shipped exactly that). ring.js counts every check that is not
+             `true`, so the under-committed branch above hands its try back. */
+          maxTries: Math.max(1, 4 - (Store.state.flags.STONE_MISREAD | 0)),
+        };
+        return cfg; },
         hints: [
           'Four things, four people, nobody has two. What the burnt cuts were — the Reader. Where the line ends — the Listener. Which way each was struck — the Seer. The older Law — the Binder.',
           'A ring has no first cut, so something must say where the lap ends. Somebody here can hear it. And the school is not the only way to read a cut.',
-          'Slot 1 KNOT, 2 CROWN, 3 ASH, 4 WELL, 5 VEIL, 6 EMBER, 7 ASH, 8 COLD. Then four hands.',
+          /* GENERATED, never typed. ch4 shipped a rung 3 that had drifted from the board the puzzle
+             accepts, on a maxTries:1 puzzle, and a table that spent its last resort lost the oath.
+             TURNED is the board check() accepts; this sentence is that board and cannot disagree with
+             it. tools/scripts/ch6-stone-check.js asserts as much without a browser. */
+          () => TURNED.map((g, i) => (i === 0 ? 'Slot 1 ' : (i + 1) + ' ') + g).join(', ') + '. Then four hands.',
         ],
-        onSolve: (s) => {
+        onSolve: (s, r) => {
+          const told = !!(r && r.failed);
           Store.set('WALK_UNLOCKED', true); Store.set('LAW0', true);
+          if (told) Store.set('STONE_TOLD', true);
           if ((s.hintsUsed.ch6_strip || 0) >= 3) { Store.set('CLUES_HELP', true); Store.note('You read the stone with help.'); }
           const mis = s.flags.STONE_MISREAD | 0;
-          Store.note('You read the prophecy stone the way it was carved. The Fourfold Walk is open.' + (mis ? ` It took ${readings(mis)} first.` : ''));
+          Store.note(told
+            ? `You spent four readings and the Provost read the stone for you. The Fourfold Walk is open, and the stone keeps the count.`
+            : 'You read the prophecy stone the way it was carved. The Fourfold Walk is open.' + (mis ? ` It took ${readings(mis)} first.` : ''));
         },
-        solvedText: [
-          'Four hands. Above you the Hearth flares white for the space of a breath, and the strip reads itself aloud.',
-          'KNOT · CROWN · ASH · WELL · VEIL · EMBER · ASH · COLD',
-          { text: '"Four, as one, go down with fire. What is kept stays behind. The fire is the hollow they left."', cls: 'omen' },
-        ],
+        solvedText: (s, r) => (r && r.failed
+          ? [{ speaker: 'Provost Marrow', text: 'Four readings. Stop. Hands off it — I have had four hundred years of this stone and you have had five minutes.' },
+             'She kneels at the foot, puts one thumb in the first burn, and reads it the way the Founders cut it.']
+          : ['Four hands. Above you the Hearth flares white for the space of a breath, and the strip reads itself aloud.'])
+          .concat([
+            'KNOT · CROWN · ASH · WELL · VEIL · EMBER · ASH · COLD',
+            { text: '"Four, as one, go down with fire. What is kept stays behind. The fire is the hollow they left."', cls: 'omen' },
+          ]),
         next: 'ch6_open', button: 'What it means',
       },
       ch6_open: {
@@ -703,24 +837,44 @@
           const mis = s.flags.STONE_MISREAD | 0;
           return [
             'Four went down. Not one born of four — four, as one. The fire is only what they left behind.',
+            /* WHY THE FIRE IS GOING OUT, said out loud, once, here. The Prologue opens with it ("it
+               has never once gone out — except one night, fourteen years ago"), ch5.js:250 has Marrow
+               state it flat ("the fire is going out"), and until this pass no chapter answered it:
+               two chapter owners flagged it in this sweep and neither could take it, because the
+               answer has to agree with ch6's reveal (the fire IS the Founders) AND with ch8's endings
+               (ch8.js:266 "for the first time in four hundred years it is not holding anything shut",
+               ch8.js:311 "four hundred years of fire, again, from a spark"). It invents nothing: the
+               fire is four people, four people is a finite amount of fire, and that is the whole of
+               it. It goes in Marrow's mouth at the one beat where the stone has just said what the
+               fire is, and it says nobody is to blame, which is the chapter's own line about Wren. */
+            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is the whole answer to why it is going out. Nobody did anything wrong. It was only ever four people.' },
             { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
             { text: 'The road four people walk together, not one.', cls: 'whisper' },
             { text: 'Binder — the struck Law is back in your Book.', cls: 'whisper' },
-            mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
+            /* STONE_TOLD is the losing branch of the reading budget, and this is where it is SAID.
+               docs/ADVERSARIAL.md OPEN 2 is settled across ch6, ch7 and ch8 together: the last two
+               chapters price a wrong answer as a record rather than a loss, the Walk still opens, and
+               the one cross-chapter bite is that ch7's night starts two minutes short (ch7.js,
+               nightFor). Marrow names that here, in the chapter that charged it, in the mouth of the
+               person who charged it -- a swapped clause, not an added section. */
+            s.flags.STONE_TOLD
+              ? { speaker: 'Provost Marrow', text: 'And I read it, not you. That is two minutes you will want at the bottom. Walk anyway.' }
+              : mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
             { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
           ].filter(Boolean);
         },
         next: 'ch6_flow', button: 'The night moves on',
       },
       ch6_flow: {
-        type: 'flow', art: 'ch6_chamber', mood: 'hearth', fx: 'ash', flame: 0.12,
+        type: 'flow', art: 'ch6_chamber', artParams: bellParams, mood: 'hearth', fx: 'ash', flame: 0.12,
         enter: (s) => { Game.scenes.ch6_flow.flow = buildFlow(s); },
         text: ['The bells. The Asking. The stone, read at last from the side the fire had covered.', { text: 'Next: the Cold. Pass the keyboard by name.', cls: 'small' }],
         flowTitle: 'Chapter VI — the paths you walked',
         stats: (s) => {
           const c = s.flags.BELLS_CRACKED | 0, mis = s.flags.STONE_MISREAD | 0;
           const bells = c === 0 ? 'The four bells came through whole' : c === 1 ? 'One bell is cracked' : (c === 2 ? 'Two' : 'Three') + ' bells are cracked';
-          const read = mis ? `, and the stone took ${readings(mis)}` : '';
+          const read = s.flags.STONE_TOLD ? `, and the stone was read to you after ${readings(mis)}`
+            : mis ? `, and the stone took ${readings(mis)}` : '';
           return `${bells}${read}. You gave Wren **${s.flags.CLUES | 0}** of the four answers Wren already had. Hints so far: ${s.flags.hintsTotal || 0}.`;
         },
         next: 'ch7_start', button: 'The Finale',

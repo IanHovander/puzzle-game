@@ -73,15 +73,15 @@
    "slots": [
     [
      1,
-     "EMBER"
+     "CROWN"
     ],
     [
      3,
-     "WELL"
+     "KNOT"
     ],
     [
      4,
-     "VEIL"
+     "WELL"
     ]
    ]
   },
@@ -100,16 +100,16 @@
   {
    "slots": [
     [
-     1,
-     "WELL"
+     2,
+     "CROWN"
     ],
     [
-     3,
-     "EMBER"
+     4,
+     "KNOT"
     ],
     [
      5,
-     "VEIL"
+     "WELL"
     ]
    ]
   },
@@ -156,19 +156,19 @@
    "slots": [
     [
      1,
-     "CROWN"
-    ],
-    [
-     2,
-     "KNOT"
+     "ASH"
     ],
     [
      3,
-     "WELL"
+     "CROWN"
     ],
     [
      4,
-     "ASH"
+     "KNOT"
+    ],
+    [
+     5,
+     "WELL"
     ]
    ]
   },
@@ -188,23 +188,23 @@
    "slots": [
     [
      1,
-     "CROWN"
-    ],
-    [
-     2,
-     "KNOT"
-    ],
-    [
-     3,
-     "WELL"
-    ],
-    [
-     4,
      "ASH"
     ],
     [
-     5,
+     2,
      "COLD"
+    ],
+    [
+     3,
+     "CROWN"
+    ],
+    [
+     4,
+     "KNOT"
+    ],
+    [
+     5,
+     "WELL"
     ]
    ]
   },
@@ -262,7 +262,7 @@
   {
    "type": [
     "#widget input.field",
-    "3534"
+    "32573443"
    ]
   },
   {

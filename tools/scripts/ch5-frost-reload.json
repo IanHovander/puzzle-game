@@ -1,7 +1,7 @@
 {
  "start": "ch5_gate1",
  "set": "OATH=1,DOOR=BLUFF",
- "_what": "The frost ledger is a flag, not a variable: two frosts, a page reload (the Resume and paste-a-save paths both call location.reload), and the stair still charges for them.",
+ "_what": "The frost ledger is a flag, not a variable, AND the flag is spent. One frost, a page reload (the Resume and paste-a-save paths both call location.reload), and then ONE more wrong board is enough to close the gate -- because the budget after the reload is 1, not 2. Replace Math.max(1, GATE_TRIES - frost) with a constant and this is the script that goes red: the second board still leaves a try in hand, the ring does not go cold, and 'four hundred years old' never prints. Every other frost script stayed green under that mutation.",
  "steps": [
   {
    "key": "Space"
@@ -13,15 +13,15 @@
    "slots": [
     [
      2,
-     "WELL"
+     "KNOT"
     ],
     [
      4,
-     "VEIL"
+     "WELL"
     ],
     [
      5,
-     "EMBER"
+     "CROWN"
     ]
    ]
   },
@@ -50,18 +50,21 @@
    "assert": "VigilStore.state.flags.GATE1_FROST === 1"
   },
   {
+   "assert": "Game.scenes.ch5_gate1.config(VigilStore.state).maxTries === 1"
+  },
+  {
    "slots": [
     [
      1,
-     "WELL"
+     "CROWN"
     ],
     [
      3,
-     "EMBER"
+     "KNOT"
     ],
     [
-     5,
-     "VEIL"
+     4,
+     "WELL"
     ]
    ]
   },
@@ -69,22 +72,34 @@
    "clickText": "Close the sigil"
   },
   {
-   "wait": 1200
+   "wait": 500
   },
   {
-   "keys": "acm/"
+   "assert": "document.querySelector('#widget .pz-row .btn.primary').disabled === true"
   },
   {
-   "wait": 1800
+   "wait": 1400
+  },
+  {
+   "wait": 1500
   },
   {
    "key": "Space"
   },
   {
-   "wait": 400
+   "wait": 600
   },
   {
-   "expect": "forget it was ever shut"
+   "shot": "reload_forced"
+  },
+  {
+   "expect": "four hundred years old"
+  },
+  {
+   "expect": "a flight closer"
+  },
+  {
+   "assert": "VigilStore.state.flags.GATE1_FROST === 2"
   },
   {
    "clickText": "On down"
@@ -111,19 +126,19 @@
    "slots": [
     [
      1,
-     "CROWN"
-    ],
-    [
-     2,
-     "KNOT"
+     "ASH"
     ],
     [
      3,
-     "WELL"
+     "CROWN"
     ],
     [
      4,
-     "ASH"
+     "KNOT"
+    ],
+    [
+     5,
+     "WELL"
     ]
    ]
   },
@@ -175,7 +190,7 @@
   {
    "type": [
     "#widget input.field",
-    "3534"
+    "32573443"
    ]
   },
   {
@@ -200,6 +215,9 @@
    "key": "Space"
   },
   {
+   "expect": "cost you time"
+  },
+  {
    "clickText": "Ready"
   },
   {
@@ -212,10 +230,10 @@
    "wait": 300
   },
   {
-   "expect": "40 heartbeats"
+   "expect": "25 heartbeats"
   },
   {
-   "expect": "cost you 5"
+   "expect": "cost you 20"
   },
   {
    "click": ".btn.choice >> nth=2"

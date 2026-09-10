@@ -175,10 +175,20 @@
   const permute = (a) => a.length <= 1 ? [a] : a.reduce((acc, x, i) => acc.concat(permute(a.slice(0, i).concat(a.slice(i + 1))).map(p => [x].concat(p))), []);
   const OATH_ORDER = permute(OATH_WORDS).filter(p => G.GLYPHS[p[1]].step - G.GLYPHS[p[0]].step === OATH_FIRST_STEP);
   const OATH_SLOTS = (() => { const m = {}; OATH_ORDER[0].forEach((w, i) => { m[(OATH_SCRATCH - 1 + i) % 4 + 1] = w; }); return m; })();
-  const OATH_WORD_SLOTS = [0, 1, 2].map(i => (OATH_SCRATCH - 1 + i) % 4 + 1);   // 4, 1, 2 — THORN, ASH, WELL
-  const OATH_LOCK_SLOT = [1, 2, 3, 4].filter(i => !OATH_SLOTS[i])[0];           // 3
+  const OATH_WORD_SLOTS = [0, 1, 2].map(i => (OATH_SCRATCH - 1 + i) % 4 + 1);   // 2, 3, 4 — THORN, ASH, WELL
+  const OATH_LOCK_SLOT = [1, 2, 3, 4].filter(i => !OATH_SLOTS[i])[0];           // 1
   /* The board a table that begins at the notch builds instead: the same three words, one slot on. */
   const OATH_NOTCH_SLOTS = (() => { const m = {}; OATH_ORDER[0].forEach((w, i) => { m[(OATH_NOTCH - 1 + i) % 4 + 1] = w; }); return m; })();
+  /* The last hint rung, read off the board the check accepts — the pattern at js/content/ch7.js:490,
+     so "Reveal the answer (last resort)" can never drift from the constants. It had drifted: the rung
+     still dictated the pre-move board (words in 4, 1, 2, lock in 3) after OATH_SCRATCH moved from 4 to
+     2, which is byte-for-byte OATH_NOTCH_SLOTS — the board this ring keys as its named wrong answer.
+     The ring is maxTries: 1 and does not refund a full, lawful, wrong board, so a table that spent its
+     last resort and typed what the fire told it lost the oath and wrote OATH 0 / OATH_KNOT false /
+     REFUSED_OATH true into ch5, ch7 and ch8. tools/check-hints.js and tools/scripts/ch4-oath-check.js
+     both put this string back through the shipped check() now, so it cannot ship wrong again. */
+  const oathAnswerRung = () => OATH_WORD_SLOTS.map(i => `${OATH_SLOTS[i]} in slot ${i}`).join(', then ')
+    + `. The lock goes in slot ${OATH_LOCK_SLOT}: ${OATH_LOCKS.join(' or ')}. Close it, and four hands.`;
 
   /* The receipt the one closing printed, kept for ch4_refused: a commit-once puzzle resolves the
      moment it fails, so the line under the ring is on screen for an instant. ch1 prints its reasons on
@@ -186,6 +196,19 @@
   let oathReceipt = '';
 
   const CORNER = { desk: 'The desk — the Reader', bell: 'The mantel — the Listener', tapestry: 'The tapestry — the Seer', chair: 'The chair — the Binder' };
+  /* The journal, in one place: the Hearth draws these two lines in the older alphabet and the last
+     hint rung quotes them, so the picture and the answer cannot separate. They had: the rung quoted
+     the journal as FOURTEEN YEARS, a phrase that exists nowhere else in this game (a leftover from
+     docs/DESIGN.md:168), while the desk requires SLEEPS and WINDOW — so a table that spent the whole
+     ladder and typed what the fire gave it burnt one of three tries and, with the desk shut, never
+     set LETTER_READ. The same rung offered 'the fourth of them' for the tapestry, which normalises to
+     THEFOURTHOFTHEM and is in no corner's list either.
+     The other three corners keep their accepted words as literals inside accept(), where
+     tools/check-hints.js can extract and run them: it puts every phrase of the last rung through the
+     shipped accept() of all four corners on every run of tools/check-content.js, which is the guard
+     that was missing. A constant lifted out of accept() is invisible to that tool and would quietly
+     drop the corner from its coverage — a shadow constant costs more here than it saves. */
+  const JOURNAL_LINES = ['IT SLEEPS WITH THE WINDOW OPEN.', 'IT LAUGHS AT MY JOKES.'];
   /* The one line each corner leaves behind, printed once when found and again if the corner is reopened. */
   const FOUND = {
     desk: { text: 'It sleeps with the window open. It laughs at my jokes.', cls: 'letter' },
@@ -195,8 +218,16 @@
   };
   /* Every corner has a budget and a written consequence: spend it and the corner shuts for the night,
      the way ch1's vote is called once. The two corners that ask for a transcription get three tries,
-     because a slip of the finger is not a wrong answer; the two that ask for a short claim get two. */
+     because a slip of the finger is not a wrong answer; the two that ask for a short claim get two.
+     The ledger is a flag per corner and NOT a local of run(): it used to be `const shut = {}` inside
+     the scene, so Menu -> Replay scene rebuilt it and handed all four budgets back while the Hearth
+     went on printing 'guess at a corner and it shuts for the night'. Two guesses per re-entry, and a
+     Seer-less or Binder-less table could buy a corner outright — and TAPESTRY feeds LAW0, which ch5's
+     second gate reads. TRIED_<corner> counts tries actually spent, so a corner that has been half
+     spent stays half spent across a re-entry rather than being all-or-nothing. */
   const TRIES = { desk: 3, bell: 3, tapestry: 2, chair: 2 };
+  const spent = (id) => F()['TRIED_' + id] | 0;
+  const budget = (id) => Math.max(0, TRIES[id] - spent(id));
   const SHUT = {
     desk: { text: 'The letters will not come. Wren shuts the journal.', cls: 'small' },
     bell: { text: 'Struck again, the bell gives nothing but bell.', cls: 'small' },
@@ -377,7 +408,9 @@
         hints: [
           'Four answers, four people, nobody has two. What the books say, the Reader. What order, the Listener. Which end is marked, the Seer. What that does to a book, the Binder.',
           'Two of you hold what this board does to a book. One can see which way it is hanging. One knows what that costs a word. Neither of you can say it alone.',
-          'Pull books 2, 5, 4 and 1, in that order. Then press Pull.',
+          /* read off SHELF_ANSWER, which is pullsFor() of the four constants — the shelf's rung is one
+             constant away from the oath's failure mode, and nothing was reading it back */
+          () => `Pull books ${SHELF_ANSWER.slice(0, 3).join(', ')} and ${SHELF_ANSWER[3]}, in that order. Then press Pull.`,
         ],
         onSolve: (s, r) => { Store.note(r && r.failed ? 'The false shelf beat you. Wren kicked it in.' : 'You opened the false shelf in the Provost\'s study.'); },
         solvedText: (s, r) => (r && r.failed)
@@ -401,7 +434,9 @@
         hints: [
           'Four corners, four Sightings. Words at the desk. A voice at the bell. Old paint on the tapestry. A thread on the chair.',
           'Nothing here is guessed. If a corner will not open, the page that opens it has not spoken.',
-          'The journal: FOURTEEN YEARS. IT LAUGHS AT MY JOKES. The bell: the Envoy, and THROUGH IT. The tapestry: four, and the fourth of them. The chair: grey, and not yet. Then stop searching.',
+          () => `The journal: ${JOURNAL_LINES.join(' ')} The bell: the envoy, and through it. `
+            + 'The tapestry: the fourth carries, the second reaches back. '
+            + 'The chair: grey, and red — not tied yet. Then stop searching.',
         ],
         run: (box, api) => new Promise((resolve) => {
           const f = F();   // a live reference: Store.set mutates this object in place
@@ -414,7 +449,11 @@
           row.appendChild(leave);
           wrap.appendChild(count); wrap.appendChild(room); wrap.appendChild(panel); wrap.appendChild(row); box.appendChild(wrap);
           let finished = false;
-          const shut = {};   // a corner whose budget is spent: it does not re-prompt (R10.20)
+          const lightBell = () => { try { const h = document.getElementById('hint'); if (h) h.classList.add('attention'); } catch (e) { /* headless */ } };
+          /* answer.js lights the bell on the second wrong answer, which for a two-try corner is the
+             same click that shuts it — the invitation to ask arriving after the thing it was for is
+             over. This lights it when one try is left, whatever the budget, and records the spend. */
+          const charge = (id, base) => (v, tries) => { const n = base + tries; Store.set('TRIED_' + id, n); if (n === TRIES[id] - 1) lightBell(); return null; };
           /* runCustom does not honour par, so the two hint marks are hand-rolled: 6 minutes and 8. */
           const parTimers = [setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire stirs. It has something to whisper, if you ask.', 3200); Audio.sfx('chime'); }, 6 * 60000),
             setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire dims a little. Ask it.', 3200); }, 8 * 60000)];
@@ -441,21 +480,22 @@
             if (id === 'desk') {
               head(CORNER.desk);
               if (f.JOURNAL) { para(panel, [FOUND.desk]); back(); return; }
-              if (shut.desk) { para(panel, [SHUT.desk]); back(); return; }
+              if (!budget('desk')) { para(panel, [SHUT.desk]); back(); return; }
               para(panel, ['Her journal, under the primer, open at a page in the old letters.']);
-              panel.appendChild(UI.el('div', { html: runeBlock(['IT SLEEPS WITH THE WINDOW OPEN.', 'IT LAUGHS AT MY JOKES.'], { height: (typeof window !== 'undefined' && window.innerHeight < 760) ? 32 : 40 }) }));
+              panel.appendChild(UI.el('div', { html: runeBlock(JOURNAL_LINES, { height: (typeof window !== 'undefined' && window.innerHeight < 760) ? 32 : 40 }) }));
               para(panel, [{ text: 'Reader — read it out, letter by letter. Both lines.', cls: 'whisper' }]);
               const r = await window.VigilAnswer.build(panel, {
                 fields: [{ label: 'the first line', placeholder: 'six words', len: 40, plain: true }, { label: 'the second line', placeholder: 'five words', len: 40, plain: true }],
                 accept: (v) => /SLEEPS/.test(v[0]) && /WINDOW/.test(v[0]) && /LAUGHS/.test(v[1]) && /JOKES/.test(v[1]),
-                wrongText: 'That is not what it says. Reader — letter by letter, and both lines.', submitText: 'Read it', successText: 'Read.', maxTries: TRIES.desk,
+                onWrong: charge('desk', spent('desk')),
+                wrongText: 'That is not what it says. Reader — letter by letter, and both lines.', submitText: 'Read it', successText: 'Read.', maxTries: budget('desk'),
               }, api);
               if (!api.alive()) return;
-              if (r && r.failed) { shut.desk = true; Store.note('The journal went back under the primer, unread.'); reveal(CORNER.desk, [SHUT.desk]); return; }
+              if (r && r.failed) { Store.note('The journal went back under the primer, unread.'); reveal(CORNER.desk, [SHUT.desk]); return; }
               Store.set('JOURNAL', true); Store.note('The Reader read the Provost\'s journal.');
               const out = [FOUND.desk];
               out.push(wren({ speaker: 'Wren', text: 'She writes *it*. And then she writes that.' }, { speaker: 'Wren', text: 'She wrote *it*.' }));
-              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s sheet was read at last.'); out.push({ text: 'The grey smear you took below comes clear. It is in your **Book** now.', cls: 'whisper' }); }
+              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s sheet was read at last.'); out.push({ text: 'The grey smear you took below comes clear. It will be in your **Book** from here on.', cls: 'whisper' }); }
               reveal(CORNER.desk, out); Audio.sfx('reveal'); return;
             }
 
@@ -463,16 +503,22 @@
             if (id === 'bell') {
               head(CORNER.bell);
               if (f.MEMORY) { para(panel, [FOUND.bell]); back(); return; }
-              if (shut.bell) { para(panel, [SHUT.bell]); back(); return; }
+              if (!budget('bell')) { para(panel, [SHUT.bell]); back(); return; }
               para(panel, ['A small bell, older than the mantel. Struck, it says back the last thing said near it — to an Ear only.',
                 { text: 'Listener — who else was in this room, and how she answered.', cls: 'whisper' }]);
               const r = await window.VigilAnswer.build(panel, {
                 fields: [{ label: 'the other voice', placeholder: 'a name', len: 16 }, { label: 'her last two words', placeholder: 'two words', len: 20 }],
-                accept: [['VANE', 'LORDVANE', 'ENVOY', 'THEENVOY'], ['THROUGHIT']],
-                wrongText: 'The bell hums and says it again. Listener — word for word.', submitText: 'Say it back', successText: 'Said.', maxTries: TRIES.bell,
+                /* One accept function, not the per-field array this corner used to carry. answer.js
+                   marks only the failing input (js/puzzles/answer.js:41), so on the one screen the
+                   whole room is watching the Hearth shook exactly the field that was wrong — and the
+                   name is nearly free, since Lord Vane is spoken on the Hearth in ch1. That turned a
+                   blended three-try search over a name and a phrase into two independent ones. */
+                accept: (v) => ['VANE', 'LORDVANE', 'ENVOY', 'THEENVOY'].indexOf(v[0]) >= 0 && v[1] === 'THROUGHIT',
+                onWrong: charge('bell', spent('bell')),
+                wrongText: 'The bell hums and says it again. Listener — word for word.', submitText: 'Say it back', successText: 'Said.', maxTries: budget('bell'),
               }, api);
               if (!api.alive()) return;
-              if (r && r.failed) { shut.bell = true; Store.note('The bell was struck once too often and went quiet.'); reveal(CORNER.bell, [SHUT.bell]); return; }
+              if (r && r.failed) { Store.note('The bell was struck once too often and went quiet.'); reveal(CORNER.bell, [SHUT.bell]); return; }
               Store.set('MEMORY', true); Store.note('The Listener heard what the bell on the mantel kept.');
               reveal(CORNER.bell, [FOUND.bell, 'Far below, the Hearth gutters, and steadies.',
                 wren({ speaker: 'Wren', text: 'She never says things like that to my face. Only to Envoys.' }, { speaker: 'Wren', text: 'Through *it*. She said through it.' })]);
@@ -483,21 +529,26 @@
             if (id === 'tapestry') {
               head(CORNER.tapestry);
               if (f.TAPESTRY) { para(panel, [FOUND.tapestry]); back(); return; }
-              if (shut.tapestry) { para(panel, [SHUT.tapestry]); back(); return; }
+              if (!budget('tapestry')) { para(panel, [SHUT.tapestry]); back(); return; }
               para(panel, ['The picture this school hangs in every hall: a fire, and one small figure walking into it. Painted over older paint.',
-                { text: 'Seer — the count, and which of them carries something.', cls: 'whisper' }]);
-              /* Not "how many children": the Hearth announced four-as-one in Chapter II and no-child is
-                 the question the chapter is built on, so both halves of the old answer were the room's
-                 first guess. Which figure has something in its hand is on the Seer's plate and nowhere
-                 else. One accept function, not a per-field list, so a half-right guess confirms nothing
-                 and the corner cannot be walked one field at a time. */
+                { text: 'Seer — which of them carries, and which reaches back.', cls: 'whisper' }]);
+              /* Under the paint: four walk in, the FOURTH carries the cold glyph, and the SECOND has
+                 turned and reached back for something that is not there. Both are on the Seer's plate
+                 (js/content/companion/ch4.js) and on no other surface, and the reveal art draws both
+                 (js/art/scenes-ch4.js foundersWalking).
+                 Neither field is the count. The Hearth announced four-as-one in Chapter II
+                 (ch2.js:289) and no-child is the question the chapter is built on, so the count was
+                 the room's first guess and the Seer's seat was one ordinal wide against two tries.
+                 Two ordinals is sixteen. One accept function, not a per-field list, so a half-right
+                 guess confirms nothing and the corner cannot be walked one field at a time. */
               const r = await window.VigilAnswer.build(panel, {
-                fields: [{ label: 'how many walk in', placeholder: 'a number', len: 8 }, { label: 'and which of them carries', placeholder: 'first, second…', len: 12 }],
-                accept: (v) => ['FOUR', '4'].indexOf(v[0]) >= 0 && ['FOURTH', 'THEFOURTH', 'FOURTHONE', 'LAST', 'THELAST', 'LASTONE'].indexOf(v[1]) >= 0,
-                wrongText: 'The cloth keeps its paint. Seer — the count and the figure, together.', submitText: 'Say what is under it', successText: 'Said.', maxTries: TRIES.tapestry,
+                fields: [{ label: 'which of them carries', placeholder: 'first, second…', len: 12 }, { label: 'and which reaches back', placeholder: 'first, second…', len: 12 }],
+                accept: (v) => ['FOURTH', 'THEFOURTH', 'FOURTHONE', 'LAST', 'THELAST', 'LASTONE'].indexOf(v[0]) >= 0 && ['SECOND', 'THESECOND', 'SECONDONE'].indexOf(v[1]) >= 0,
+                onWrong: charge('tapestry', spent('tapestry')),
+                wrongText: 'The cloth keeps its paint. Seer — both figures, together.', submitText: 'Say what is under it', successText: 'Said.', maxTries: budget('tapestry'),
               }, api);
               if (!api.alive()) return;
-              if (r && r.failed) { shut.tapestry = true; Store.note('Nobody would scrape the tapestry on a guess.'); reveal(CORNER.tapestry, [SHUT.tapestry]); return; }
+              if (r && r.failed) { Store.note('Nobody would scrape the tapestry on a guess.'); reveal(CORNER.tapestry, [SHUT.tapestry]); return; }
               UI.clear(panel); head(CORNER.tapestry);
               await scrape(panel); if (!api.alive()) return;
               Store.set('TAPESTRY', true); Store.note('The Seer scraped the tapestry and found four.');
@@ -512,19 +563,23 @@
             if (id === 'chair') {
               head(CORNER.chair);
               if (f.GREY) { para(panel, [FOUND.chair]); back(); return; }
-              if (shut.chair) { para(panel, [SHUT.chair]); back(); return; }
+              if (!budget('chair')) { para(panel, [SHUT.chair]); back(); return; }
               para(panel, ['Her chair by the fire, still warm. Nothing in it.',
-                { text: 'Binder — her thread\'s colour, and whether yours is tied.', cls: 'whisper' }]);
-              /* The second field is no longer a fourth colour word: two colours is a pair a table can
-                 walk through, and the state of a thread is Thread-Sight and nothing else. One accept
-                 function again, so the widget lights both fields together. */
+                { text: 'Binder — her thread to Wren, and hers to you four.', cls: 'whisper' }]);
+              /* The second field was a yes/no — NOTYET, NOT, NOTTIED, UNTIED, NO and nothing else —
+                 so two tries covered it twice over and the corner was really one field wide
+                 (ADVERSARIAL 12, a window wider than the budget). It now wants the second thread's
+                 colour AND its state, which is the same line of the Binder's page and is still
+                 Thread-Sight and nothing else. One accept function, so the widget lights both fields
+                 together and a half-right guess confirms nothing. */
               const r = await window.VigilAnswer.build(panel, {
-                fields: [{ label: 'to Wren, the colour', placeholder: 'a colour', len: 12 }, { label: 'to you four — tied yet?', placeholder: 'two words', len: 14 }],
-                accept: (v) => ['GREY', 'GRAY'].indexOf(v[0]) >= 0 && ['NOTYET', 'NOT', 'NOTTIED', 'UNTIED', 'NO'].indexOf(v[1]) >= 0,
-                wrongText: 'Nothing in the chair answers. Binder — the colour, then the state.', submitText: 'Say what you see', successText: 'Seen.', maxTries: TRIES.chair,
+                fields: [{ label: 'to Wren, the colour', placeholder: 'a colour', len: 12 }, { label: 'to you four, colour and state', placeholder: 'a colour, and…', len: 22 }],
+                accept: (v) => ['GREY', 'GRAY'].indexOf(v[0]) >= 0 && /^RED/.test(v[1]) && /NOT|UNTIED/.test(v[1]),
+                onWrong: charge('chair', spent('chair')),
+                wrongText: 'Nothing in the chair answers. Binder — hers to Wren, then hers to you.', submitText: 'Say what you see', successText: 'Seen.', maxTries: budget('chair'),
               }, api);
               if (!api.alive()) return;
-              if (r && r.failed) { shut.chair = true; Store.note('The threads in the study went dark before the Binder could name them.'); reveal(CORNER.chair, [SHUT.chair]); return; }
+              if (r && r.failed) { Store.note('The threads in the study went dark before the Binder could name them.'); reveal(CORNER.chair, [SHUT.chair]); return; }
               Store.set('GREY', true); Store.note('The Binder saw the grey thread.');
               const out = [FOUND.chair];
               if (f.ORIEL) {
@@ -576,26 +631,56 @@
         config: () => {
           const mine = {};   // slots filled so far (re-placing a slot does not move the keyboard on)
           /* Enumerated over all 3393 legal boards (four slots, each empty or one of eight words, no
-             repeats), against this very check, by a throwaway that loads glyphs.js and this file and calls cfg.check.
-             Accepted: exactly 2 — ASH/WELL/KNOT/THORN and ASH/WELL/EMBER/THORN by slot 1/2/3/4. Both
-             are right; the lock is the story fork, not a right answer. Of the rest, 1432 hold COLD and
-             1121 are not full: those are refused and refunded below, so the ring costs a try only for
-             a full, lawful, wrong board — 838 of them.
+             repeats), against this very check, by node tools/scripts/ch4-oath-check.js, which loads
+             glyphs.js and this file and calls cfg.check. It prints the accepted set rather than
+             asserting a written-down one, so no sentence here can drift from it: today
+                 3393 legal boards, 2 accepted
+                      KNOT/THORN/ASH/WELL          <- slot 1/2/3/4
+                      EMBER/THORN/ASH/WELL
+             Both are right; the lock is the story fork, not a right answer. Of the rest, 1432 hold
+             COLD and 1121 are not full: those are refused and refunded below, so the ring costs a try
+             only for a full, lawful, wrong board — 838 of them, 840 paid boards in all.
              ONE closing, as the plate says (a refused board is refunded, so under-commitment and COLD
              never spend it). Miss it and the oath goes unsworn: the written ch4_refused branch, which
              the flow map and ch5 already read.
              No branch confirms a partial answer. The no-lock line fires for ANY three glyphs and an
              empty slot, so it cannot be used to test a rotation.
-             Paid boards each seat is left facing, and the odds on the one closing:
+             Paid boards each seat is left facing, and the odds on the one closing. Re-derived by
+             enumeration against this same check (a table's hypothesis is an ordered word triple, a
+             start slot, a direction and a lock; a seat is dropped by widening the axis it holds):
                all four                      2 boards, both winners     certain
-               drop the Reader              32 boards, 2 winners        0.06
-               drop the Listener            12 boards, 2 winners        0.17
-               drop the Seer                 8 boards, 2 winners        0.25   (four rotations)
-               drop the Binder               8 boards, 2 winners        0.25   (two cuts, four locks)
-               drop the Binder, blind on
-                 direction as well          16 boards, 2 winners        0.13
+               drop the Reader              32 boards, 2 winners        0.063
+               drop the Listener            12 boards, 2 winners        0.167
+               drop the Seer                 8 boards, 2 winners        0.250  (four rotations)
+               drop the Binder               8 boards, 2 winners        0.250  (two cuts x four locks)
+             THE BINDER'S ROW HAS BEEN 8 / 0.250, THEN 4 / 0.500, THEN 8 / 0.250 AGAIN, and the
+             history is worth keeping because none of it was arithmetic.
+               (a) 8 / 0.250 was what this file always claimed: two cuts to start at, four lawful
+                   locks. Correct on its face.
+               (b) The whole-game sweep proved it false. The Prologue does not merely SAY the
+                   Binder's rule, it WORKS it on the shared screen (companion/ch0.js:118 and :132
+                   against the lamp board at ch0.js:180), and the Binder is required to say it aloud
+                   to solve the lamp. Scratch-not-notch was table knowledge from the tutorial on, so
+                   a Binder-less table was not choosing between two cuts at all -- only a lock -- and
+                   the row was really 4 / 0.500. A coin, on a maxTries: 1 puzzle whose losing branch
+                   writes OATH, OATH_KNOT and REFUSED_OATH for ch5, ch7 and ch8. This file recorded
+                   that honestly and said it could not be repaired from inside ch4, which was true.
+               (c) It was repaired from OUTSIDE ch4, and not by touching the Prologue. ch3's Tower
+                   ward had the same defect far worse (its Binder-less field was ONE board), and the
+                   fix was to make that ward a Vigil ward that begins at the NOTCH. So the room now
+                   learns, one chapter before this one, that WHICH CUT STARTS A RING DEPENDS ON THE
+                   RING. The Binder's page here -- "a sigil begins at the scratch, and runs the way a
+                   clock counts, the same rule as the lamp" (companion/ch4.js:251) -- stopped being a
+                   restatement of public knowledge and became a fact again, and the row is 8 / 0.250.
+             Enumerated against the shipped cfg.check in scratchpad/prologue/oath.js, which reports
+             both states side by side: 4 boards / 0.500 if the room knows a ring starts at the
+             scratch, 8 / 0.250 if it only knows a ring starts at A CUT. COLD boards are not in the
+             field because check() refunds them.
+             The lesson, and it is now docs/ADVERSARIAL.md 11's corollary: a tutorial spends the rule
+             it teaches, and the chapter that gets the seat back is the one that introduces an
+             EXCEPTION -- not the tutorial, which must go on teaching.
              Hint 2 is free, so it is part of the answer space: it says only that the cuts differ and
-             that one of you keeps the rule, and none of the six rows above moves when it is read. */
+             that one of you keeps the rule, and none of the rows above moves when it is read. */
           const cfg = {
             title: 'THE OATH',
             note: 'The Provost, on her way out: *Three words go in the ring, then a lock. The lock is the **last** thing placed, and it is not written on the scroll — your Binder knows what the wax will take. You may close it **once**. Wax does not soften twice.*',
@@ -635,8 +720,8 @@
         },
         hints: [
           'Four answers, four people, nobody has two. The three words, the Reader. The step from the first to the second, the Listener. Every cut, the Seer. Where one starts and what may close it, the Binder.',
-          'A ring has no first, and there is more than one cut in this one. Which kind of cut starts a sigil is the Binder\'s rule. What the three words leave over takes the lock.',
-          'THORN in slot 4, then ASH in slot 1, then WELL in slot 2. The lock goes in slot 3: KNOT or EMBER. Close it, and four hands.',
+          'A ring has no first, and there is more than one cut in this one. Which kind of cut starts a sigil is the Binder\'s rule.',
+          oathAnswerRung,
         ],
         onSolve: (s, r) => {
           if (r && r.failed) {

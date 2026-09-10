@@ -1009,7 +1009,7 @@
    "wait": 1400
   },
   {
-   "expect": "in your Book now"
+   "expect": "in your Book from here on"
   },
   {
    "clickText": "Back to the room"
@@ -1065,13 +1065,13 @@
   {
    "type": [
     "#widget input.field >> nth=0",
-    "four"
+    "fourth"
    ]
   },
   {
    "type": [
     "#widget input.field >> nth=1",
-    "fourth"
+    "second"
    ]
   },
   {
@@ -1125,7 +1125,7 @@
   {
    "type": [
     "#widget input.field >> nth=1",
-    "not yet"
+    "red, not tied yet"
    ]
   },
   {
@@ -1289,16 +1289,16 @@
   {
    "slots": [
     [
-     1,
-     "WELL"
+     2,
+     "CROWN"
     ],
     [
-     3,
-     "EMBER"
+     4,
+     "KNOT"
     ],
     [
      5,
-     "VEIL"
+     "WELL"
     ]
    ]
   },
@@ -1351,23 +1351,23 @@
    "slots": [
     [
      1,
-     "CROWN"
-    ],
-    [
-     2,
-     "KNOT"
-    ],
-    [
-     3,
-     "WELL"
-    ],
-    [
-     4,
      "ASH"
     ],
     [
-     5,
+     2,
      "COLD"
+    ],
+    [
+     3,
+     "CROWN"
+    ],
+    [
+     4,
+     "KNOT"
+    ],
+    [
+     5,
+     "WELL"
     ]
    ]
   },
@@ -1425,7 +1425,7 @@
   {
    "type": [
     "#widget input.field",
-    "3534"
+    "32573443"
    ]
   },
   {
@@ -2129,7 +2129,7 @@
     ],
     [
      2,
-     "ASH"
+     "THORN"
     ],
     [
      3,
@@ -2137,23 +2137,23 @@
     ],
     [
      4,
-     "CROWN"
+     "ASH"
     ],
     [
      5,
-     null
+     "VEIL"
     ],
     [
      6,
-     "THORN"
+     "CROWN"
     ],
     [
      7,
-     "KNOT"
+     null
     ],
     [
      8,
-     "VEIL"
+     "KNOT"
     ]
    ]
   },
@@ -2557,7 +2557,7 @@
    "wait": 3800
   },
   {
-   "expect": "were the Great Sigil in wall order"
+   "expect": "are every glyph that can be written, each of them once"
   },
   {
    "clickText": "The last word"

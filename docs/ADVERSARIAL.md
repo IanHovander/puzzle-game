@@ -4,7 +4,10 @@
 two, because every defect below was found by attacking a chapter that had already been written to the
 style and had already passed its own review.
 
-Seventeen patterns, every one of them taken from a real defect in this game, with the chapter it was
+18 and 19 were added by the whole-game sweep; between them they accounted for six of its fifteen
+blocking findings, and both are now checked by a tool rather than by a reader.
+
+Nineteen patterns, every one of them taken from a real defect in this game, with the chapter it was
 found in. They share a shape: **each is invisible from inside the chapter it lives in.** A reviewer
 reading one chapter against its own sources will pass all seventeen. That is why they are written down.
 
@@ -87,6 +90,26 @@ CHECK: for every puzzle, take each role's exclusive fact and grep the earlier ch
 art, wrong-answer lines and every OTHER role's Companion page -- for the same rule. If an earlier chapter
 taught it, the seat is free and the puzzle needs a different axis, not better wording.
 Corollary: a rule the house protocol asks a player to SAY ALOUD is public from that moment on.
+THE WORST INSTANCE, found by the whole-game sweep and invisible to every one of the six chapter
+agents: ch3's Tower ward gave the Binder a page that was, WORD FOR WORD, the Binder's PROLOGUE page --
+begin at the scratch, a notch is only a maker's signature, run clockwise. The dormitory lamp is worked
+on the shared screen and cannot be solved without the Binder saying that rule out loud, and its
+answer ({3:ASH, 4:EMBER}, scratch at 3) resolves BOTH bits in front of everybody. Measured against the
+shipped `wardCheck`, a Binder-less table applying what the tutorial taught them faced a field of ONE
+board and took the door every time -- p = 1.000, where the chapter's own comment recorded four boards
+and p = 0.250. The seat was free for the whole of Chapter III.
+Note what this means for a TUTORIAL specifically: teaching a rule spends it. A tutorial that works a
+mechanic on the shared screen has made that mechanic public for the rest of the game, and every later
+chapter that prices a seat on it is over-valuing that seat. That is not a reason to weaken the
+tutorial; it is a reason for the later chapters to hold an EXCEPTION rather than the rule. ch3's ward
+is a Vigil ward and begins at the notch, and the accepted board did not move by a single word -- so a
+table that confidently applies the Prologue's rule now lays a full, lawful-looking WRONG board, which
+is the same shape ch0's own lamp, ch4's oath and ch7's Sigil already use.
+Two more instances from the same sweep, both in js/core rather than in a chapter, and both of the
+"lists all nine chapters" kind: the Menu printed every chapter's TITLE from the Prologue (seven things
+nobody had met, two of them the ending), and the Map of the Night gated its labels but drew every
+chapter's PICTOGRAM anyway -- the bell, the spiral stair, the crossed circle, the rising sun. Whatever
+enumerates the whole game is where this hides.
 
 ## 12. A guessable window narrower than the answer budget
 ch5's Founders' Count went from digits {2,3,4,5} (a permutation, solvable by elimination) to 3,5,3,4 --
@@ -95,14 +118,23 @@ tries is not a puzzle. The receipt ("the ward counts 3 digits true") then confir
 CHECK: for every puzzle, compare the size of the field the remaining roles can SEE against the number of
 submissions allowed. The field must be wider than the budget, and a partial-credit receipt narrows it.
 
-## Still open — carried into the improvement passes
-- ch5's Founders' Count: four digits, one per role, is a weak partition. Whatever the digits, a
-  drop-one table faces ten candidates for the missing digit and the ward allows three answers, and if
-  the digits sit in a narrow range the visible three reveal the window. Two agent rounds have patched
-  the digits and neither fixed the shape. It needs a different partition (one role holding an ordering
-  rather than a value, or an answer longer than the budget), not different numbers. p(3 roles) ~= 0.3.
-- ch4_secrets is 292 words of scene text against a 150 cap. It is four corner scenes sharing one scene
-  id, so the cap may not mean what the tool measures. Settle it rather than letting it slide.
+## Both of these are now CLOSED — kept for the record
+- **ch5's Founders' Count. Closed.** The open note was right that better digits could not save it: one
+  digit per role means a drop-one table always faces ten candidates against three answers, whatever
+  the digits are. So the ward stopped asking for one digit each and started asking each seat TWICE --
+  eight digits, typed as one number, in seat order, and the two counts on a page are counts of
+  different things, so neither gives the other. The receipt counts SEATS, not digit positions, which
+  was the other half of the defect: a per-position receipt confirmed on submission one every digit the
+  table already held. Measured against the shipped `accept()`: every drop-one row is now p = 0.030
+  against three answers, where two of them were 1.000. Stated honestly, the "it lies between the
+  others" heuristic is worth p = 0.115 on two of the four seats, because two pairs do sit inside the
+  span of the other three and it was not possible to put all four outside it.
+- **ch4_secrets' 292 words. Closed, and it was never a chapter defect.** `tools/prose-count.js` filed
+  every string by the nearest `key:` above it, so the four corners' typed answers, wrong-answer lines
+  and successTexts were all counted as the scene's own brief. The scene's text is 40 words. The
+  scanner now owns a key's whole value expression through a frame stack. The same bug had ch6_round1
+  at 82 words against a 65-word cap when its brief is 47. Every puzzle brief in the game now passes
+  R1.4 on its worst single branch, the widest being ch5_gate1 at 57.
 
 ## 13. Drop-a-role tested against the convenient strategy, not the real one
 ch6's round three was declared four-handed after testing exactly two strategies for a missing page,
@@ -155,13 +187,98 @@ cosmetic absence. Any predicate a chapter declares for another system to run mus
 tool, on a blank state and a full one -- a blank state is what catches `s.flags.X.y` on a flag no
 path has set yet, which is the shape most of these take.
 
-## OPEN 2 — the retry economy in the last two chapters (improvement pass, item 1)
-Both ch6's stone and ch7's Great Sigil have residual three-role fields (2 to 8 candidates) and no
-budget, so a three-role table walks them. Both chapters have argued themselves into the same corner
-honestly: ch6 has no fourth bell to crack, ch7's midnight was deliberately made non-punitive to
-satisfy "never a dead end", and neither may edit the other. The two are ONE decision -- what does
-losing cost in the last two chapters -- and it has to be taken across ch6, ch7 and ch8 together
-rather than inside any one of them. Candidates: a hard reading/commit budget whose losing branch
-leaves an existing cross-chapter flag false (WALK_UNLOCKED for the stone), or a recorded cost that
-ch8's ending already prints (COLD_HEARTH_ATTEMPTS, STONE_MISREAD). Do this once, for both, with all
-three chapters editable at the same time.
+## 18. The last rung is the answer, written out a second time, by hand
+The single most expensive pattern in this sweep: it accounted for five of the fifteen blocking
+findings on its own. `hints` rung 3 -- the rung the engine labels "Reveal the answer (last resort)"
+-- was, in 14 of 17 ladders, the accepted answer TYPED OUT AGAIN as a sentence. Nothing in the
+project had ever compared it to the answer the puzzle takes. In ch4 it had drifted: `OATH_SCRATCH`
+moved 4 -> 2 and the rung did not, so the rung named the board the ring keys as its *named wrong
+answer*, on a `maxTries: 1` puzzle. A table that spent its last resort and typed exactly what the
+fire told it LOST THE OATH PERMANENTLY, and the flags that loss writes (OATH, OATH_KNOT,
+REFUSED_OATH) are read by ch5, ch7 and ch8. ch4_secrets' rung quoted a journal line -- FOURTEEN YEARS
+-- that does not exist anywhere in the repository. Neither was reachable by any playthrough script,
+because every script places the CORRECT board.
+This is ADVERSARIAL 10 (a derived value shadowed by a hardcoded literal) with the worst possible
+blast radius, because the literal is the one thing a stuck table is promised it can trust.
+CHECK: `node tools/check-hints.js`, folded into `check-content.js`. It parses each ladder's last rung
+into the shape the widget resolves and puts it through the SHIPPED predicate, with `Store.state`
+swapped underneath, at every flag state the scene's config and rung actually read. Where a rung
+offers alternatives, every alternative must be accepted.
+BETTER THAN CHECKING IT: **generate the rung from the constants.** ch2, ch4, ch5, ch6 and ch7 now do
+(`ringRung(want)`, `oathAnswerRung()`), and a generated rung cannot drift at all.
+COROLLARY, and it is the general form: any sentence in a chapter that restates a value computed
+somewhere else is a copy, and every copy in this game has drifted at least once -- the hint rungs,
+the three stale slot comments in ch4, ch6's copy of ch3's truth map, ch7's `playHymn` (still playing
+the phrase from before the walls moved), the Reader's Book plinth order, the recorded drop-a-role
+tables. Derive it, or check it against the thing it copies. Never both-write it.
+
+## 19. An answer that is a sequence the whole game has already published
+ch7's Great Sigil shipped with the phrase THORN KNOT VEIL EMBER ASH WELL CROWN. That is the
+attunement word of ch1 through ch7 **in chapter order** (`js/content/lore.js`): every player types
+all seven into the Hearth over the evening, one per chapter. So the Finale's whole phrase, in its
+whole order, had been public since Chapter I -- and `ch8_words` ENDED THE GAME by pointing at the
+coincidence, which is how it was found. It was written as a payoff and it was a live oracle.
+The general shape is wider than one sequence: a puzzle's answer must be checked against everything
+the game itself publishes across chapters, not only against the other chapters' puzzles. The chapter
+codewords, the Book's worked examples, the Ladder, the flow-node labels and the Epilogue's own
+summaries are all published surfaces.
+CHECK: `tools/check-hints.js` compares every board the shipped predicate accepts -- every rotation
+and both directions, because a ring is a loop -- against the chapter-word sequence, and fails on a
+run of four or more whose words the table has ALREADY TYPED by that chapter. Both conditions are
+load-bearing. Without the "already typed" clause it fires on ch2's vault door, which reads THORN KNOT
+VEIL EMBER but sits in Chapter II where only THORN and KNOT have been given out. The four-word
+threshold is measured, not chosen: over all 8! = 40,320 arrangements of the eight glyphs on an
+eight-slot ring, read from every slot in both directions, a run of three turns up by chance in 15.9%
+of them, a run of four in 2.5%, and a run of seven -- which is what ch7 had -- in 0.04%.
+
+## OPEN 2 — SETTLED. The retry economy in the last two chapters
+*Taken with ch6, ch7 and ch8 editable at once, which is the condition the open note said it needed.*
+
+**The decision: in the last two chapters a wrong answer costs a RECORD, the record is one shared
+number, and the Epilogue reads it out. No losing branch in either chapter.**
+
+Both chapters had already argued themselves to the same place from opposite sides, and both were
+right. ch6 has no fourth bell to crack, so its cost runs out; ch7's midnight was deliberately built
+to be a beat and not a guillotine, because a four-hands reflex round at the last beat of a two-hour
+game must not be a wall. Both then wrote the same sentence in their own notes: *a recorded cost is
+only real once ch8 reads it* -- and neither could make that true alone. That was the whole of OPEN 2.
+
+What was done, in one edit across the three files:
+- **One row in `ch8.js`'s COUNTS**, reading `(STONE_MISREAD|0) + (SIGIL_COLD|0)`: *"The stone and the
+  Sigil. You read them back wrong {n} times."* ONE row and ONE number, not two of each: the prophecy
+  stone and the Great Sigil are the same act -- reading a thing back to the fire -- and pricing them
+  in two currencies is the mistake pattern 14 names. The stone's losing branch rides the same
+  sentence as a swapped clause, which is the shape `CLUES_HELP` already uses in the row above it.
+- **`STONE_TOLD` takes two minutes off ch7's night.** This is the one cross-chapter bite the decision
+  allows, and it is the thing neither chapter could do. The size is enumerated rather than chosen
+  (`scratchpad/open2/night.js`, against the shipped `sigilPrice`): at 900 s the night pays for six
+  cold rings, at 840 s still six, at 780 s five. So 120 s is the smallest cut that takes a ring off
+  the night, and it takes exactly one, against a widest single-drop field of eight. Marrow names it
+  in ch6 where it is charged, and the Sigil's rule card names it in ch7 where it bites.
+- **`SIGIL_COLD`, `STONE_MISREAD` and `STONE_TOLD` are declared cross-chapter** in
+  `tools/flag-contract.js`. Until this pass all three were chapter-local, and OPEN 2's own candidate
+  list described `COLD_HEARTH_ATTEMPTS` and `STONE_MISREAD` as "a recorded cost that ch8's ending
+  already prints", which was true of neither.
+- **The Binding's record was repaired and its budget was not.** `js/puzzles/binding.js` reset the
+  ring on four different slips and called `onAttempt` on only two, so the Epilogue printed "after 0
+  slips" after a table had slipped twice, and the card's promise that "a slip costs thirty seconds"
+  was false for half of them. Every reset now fires `onSlip`; `fail()` and the three-attempt budget
+  are untouched. The Binding stays priced at zero on purpose.
+
+Two candidates were considered and **rejected**, and the reasons matter more than the verdict:
+- *"The stone's losing branch leaves `WALK_UNLOCKED` false."* Rejected. That is not a worse ending,
+  it is the removal of the ending the whole game points at -- the title beat -- and it would fall
+  hardest on exactly the table that is already short a player, which is the opposite of what a
+  four-handed design should do. ch6's four-reading budget already does the load-bearing work: against
+  fields of 8, 12 and 192, a three-handed table usually loses the stone. What losing costs it is
+  Marrow reading it aloud, two minutes of night, and a sentence at dawn.
+- *"ch6's stone should take ch7's escalating `30 + 30n` shape."* Rejected. The two chapters spend
+  different currencies by design -- ch6 spends bells, ch7 spends the night -- and forcing one shape
+  on both is pattern 14 again from the other direction. What they now share is the record, which is
+  the right level to unify at.
+
+**Stated plainly, because it is a trade:** a sentence at dawn is a weaker cost than a lost puzzle.
+The bite in the last two chapters is deliberately soft, and the hard budgets (ch6's four readings,
+ch7's six rings) are what actually price a missing seat. If a later pass finds that tables do not
+feel the record at all, the next lever to pull is ch8, not ch6 or ch7: give the count a consequence
+in the ending text rather than a line in the tally.

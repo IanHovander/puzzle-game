@@ -30,6 +30,34 @@ accepted.forEach(m => console.log('    ', [1, 2, 3, 4].map(i => m[i] || '_').joi
 assert(boards.length === 3393, `3393 legal boards (got ${boards.length})`);
 assert(accepted.length >= 1 && accepted.length <= 2, `the ring accepts ${accepted.length} board(s)`);
 
+/* The last hint rung -- the one the engine labels "Reveal the answer (last resort)" and files under
+   the heading "Answer" (js/core/engine.js:349) -- put through the SAME cfg.check the ring uses. The
+   ring is maxTries: 1 and refunds only COLD and an unfilled board, so a rung that names a full,
+   lawful, wrong board spends the one closing and writes OATH 0 / OATH_KNOT false / REFUSED_OATH true
+   into ch5, ch7 and ch8. It did: after OATH_SCRATCH moved from 4 to 2 the rung kept the old board,
+   which is byte-for-byte the notch board this ring keys as its named wrong answer, and nothing in the
+   repo ever compared the rung to the check. Every lock the rung offers must be accepted. */
+const hints = win.Game.scenes.ch4_oath.hints;
+const rung = (() => { const h = hints[hints.length - 1]; return typeof h === 'function' ? h({ flags: {} }) : h; })();
+console.log('last rung:', rung);
+const words = [...rung.matchAll(/([A-Z]{3,})\s+in\s+slot\s+(\d)/g)].map(m => [+m[2], m[1]]);
+const lockM = /lock goes in slot (\d):\s*([A-Z]+(?:\s+or\s+[A-Z]+)*)/.exec(rung);
+assert(words.length === 3, `the rung names three words and their slots (got ${words.length})`);
+assert(!!lockM, 'the rung names the lock slot and what may go in it');
+if (words.length === 3 && lockM) {
+  const locks = lockM[2].split(/\s+or\s+/);
+  for (const L of locks) {
+    /* a fresh cfg per probe: check() refunds by mutating cfg.maxTries, and the enumeration above has
+       already spent 2553 refunds on this one */
+    const fresh = win.Game.scenes.ch4_oath.config({ flags: {} });
+    const m = {}; words.forEach(([slot, w]) => { m[slot] = w; }); m[+lockM[1]] = L;
+    const board = [1, 2, 3, 4].map(i => m[i] || '_').join('/');
+    assert(fresh.maxTries === 1, `the ring takes exactly one closing (maxTries ${fresh.maxTries})`);
+    assert(fresh.check(Object.assign({}, m)) === true, `the rung's board is one the ring accepts: ${board}`);
+    assert(fresh.maxTries === 1, `and the rung's board is not refunded: ${board} still costs the closing`);
+  }
+}
+
 /* The scratch and notch must not be Chapter III's pair, or a table that solved the Tower threshold
    already knows where this sigil begins and the Seer's seat is free. */
 const src = fs.readFileSync(path.join(root, 'js/content/ch4.js'), 'utf8');
@@ -47,3 +75,23 @@ assert(c3 && !(s4 === +c3[1] && n4 === +c3[2]),
    lives in the comment above the oath data in js/content/ch4.js, derived against this same shipped
    check(); what this file guards is the part a change can break silently: the size of the legal
    space, the number of winning boards, and the collision with Chapter III's cuts. */
+
+/* ---- the Binder's seat here depends on ch3 disagreeing with the Prologue ----
+   The Binder's page says "a sigil begins at the scratch ... the same rule as the lamp". That sentence
+   is worth a whole bit ONLY because the room has, one chapter earlier, met a ring that does not use
+   the lamp's rule: ch3's Tower ward is a Vigil ward and begins at the notch. Take that away and this
+   page is a restatement of what the Prologue worked on the shared screen, and the Binder-less field
+   here halves from 8 boards to 4 -- a coin, on a maxTries: 1 puzzle whose loss is read by ch5, ch7
+   and ch8. The dependency runs across three chapters and no chapter can see it, so it is asserted
+   here. (Measured both ways in scratchpad/prologue/oath.js.) */
+{
+  const c4page = fs.readFileSync(path.join(root, 'js/content/companion/ch4.js'), 'utf8');
+  const c3page = fs.readFileSync(path.join(root, 'js/content/companion/ch3.js'), 'utf8');
+  assert(/A sigil begins at the scratch, and runs the way a clock counts\*\*\s*—\s*the same rule as the lamp/.test(c4page),
+    "the Binder's oath page still says this ring begins at the scratch");
+  assert(/begins at the \*\*notch\*\*/.test(c3page),
+    "ch3's ward page still says THAT ring begins at the notch — which is the only reason the sentence above is worth anything");
+  const ch3cuts = /CUTS = \{ scratch: (\d), notch: (\d) \}/.exec(fs.readFileSync(path.join(root, 'js/content/ch3.js'), 'utf8'));
+  assert(ch3cuts && !(+ch3cuts[1] === s4 && +ch3cuts[2] === n4),
+    `and ch3's cut pair (scratch ${ch3cuts && ch3cuts[1]}, notch ${ch3cuts && ch3cuts[2]}) is still not this ring's (scratch ${s4}, notch ${n4})`);
+}

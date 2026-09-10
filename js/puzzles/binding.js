@@ -1,7 +1,8 @@
 /* The Binding: four notes, toggle-press (press to sound, press again to release). All four must sound within joinMs,
    hold together for holdMs (any early release dips the flame and restarts the hold), then release together within releaseMs.
-   cfg: { joinMs:1000, holdMs:6000, releaseMs:500, attempts:3, deadLanes:[idx], mutedCues:[idx], onAttempt(n, result) }
-   Resolves { success, attempts, releaseSpread } */
+   cfg: { joinMs:1000, holdMs:6000, releaseMs:500, attempts:3, deadLanes:[idx], mutedCues:[idx], onAttempt(n, result), onSlip(n, msg) }
+   onAttempt fires on the two resets that spend the attempt budget; onSlip fires on ALL FOUR resets,
+   which is what the Epilogue counts. Resolves { success, attempts, slips, releaseSpread } */
 (function () {
   'use strict';
   const UI = window.VigilUI, Input = window.VigilInput, Audio = window.VigilAudio;
@@ -26,12 +27,23 @@
       const joinMs = cfg.joinMs || 1000, holdMs = cfg.holdMs || 6000, releaseMs = cfg.releaseMs || 500, maxAttempts = cfg.attempts || 3;
       const active = (cfg.deadLanes || []).length ? [0, 1, 2, 3].filter(i => !(cfg.deadLanes || []).includes(i)) : [0, 1, 2, 3];
       let sounding = [false, false, false, false], onTimes = [null, null, null, null], offTimes = [null, null, null, null];
-      let phase = 'join', holdStart = null, attempts = 0, fill = 0, raf = null, done = false, voices = [], ignoreUntil = 0;
+      let phase = 'join', holdStart = null, attempts = 0, slips = 0, fill = 0, raf = null, done = false, voices = [], ignoreUntil = 0;
 
       function startVoice(i) { if (Audio.ready && Audio.ready() && !Audio.isMuted()) { /* sustained tone via repeated bell */ voices[i] = setInterval(() => Audio.note(NOTES[i], 1.2, 0.12), 900); Audio.note(NOTES[i], 1.2, 0.14); } }
       function stopVoice(i) { if (voices[i]) { clearInterval(voices[i]); voices[i] = null; } }
       function setLane(i, on) { lanes[i].classList.toggle('on', on); Input.setPadState(i, 'good', on); }
-      function resetAll(msg, cls) { ignoreUntil = performance.now() + 700; active.forEach(i => { sounding[i] = false; onTimes[i] = null; offTimes[i] = null; setLane(i, false); stopVoice(i); }); phase = 'join'; holdStart = null; fill = 0; flame.firstChild.style.width = '0%'; if (msg) { status.className = 'pz-status ' + (cls || ''); status.textContent = msg; } }
+      /* A SLIP AND AN ATTEMPT ARE DIFFERENT THINGS, and until this pass only one of them was counted.
+         Four things reset the ring: a hand coming back after letting go, joining too far apart,
+         letting go early, and releasing ragged. The first and last called fail(); the middle two
+         just reset and returned, so a table could slip twice and the Epilogue would still say
+         "after 0 slips" (reproduced by tools/scripts/ch7-alt2.json, which slips exactly twice).
+         The fix is NOT to route all four into fail(): fail() spends the three-attempt budget, and
+         ch7 prices the Binding at zero on purpose -- a four-hands reflex round at the last beat of a
+         two-hour game must not be a wall (js/content/ch7.js, the note at the foot of the file, and
+         docs/ADVERSARIAL.md's settled OPEN 2, where the currency of the last two chapters is the
+         RECORD rather than a loss). So the budget stays exactly as it was and the record becomes
+         true: every reset is one slip, counted once, here, where all four of them pass. */
+      function resetAll(msg, cls) { ignoreUntil = performance.now() + 700; active.forEach(i => { sounding[i] = false; onTimes[i] = null; offTimes[i] = null; setLane(i, false); stopVoice(i); }); phase = 'join'; holdStart = null; fill = 0; flame.firstChild.style.width = '0%'; if (msg) { status.className = 'pz-status ' + (cls || ''); status.textContent = msg; slips++; if (cfg.onSlip) cfg.onSlip(slips, msg); } }
 
       Input.activate(pads, (idx) => {
         if (done || !active.includes(idx)) return;
@@ -55,12 +67,12 @@
           if (phase === 'release' && active.every(i => !sounding[i])) {
             const ts = active.map(i => offTimes[i]); const spread = Math.max(...ts) - Math.min(...ts);
             const detail = active.map(i => `${window.VigilStore.state.names[i] || 'P' + (i + 1)} ${((offTimes[i] - Math.min(...ts)) / 1000).toFixed(2)}s`).join(' · ');
-            if (spread <= releaseMs) { done = true; Input.deactivate(); Audio.sfx('seal'); status.className = 'pz-status good'; status.textContent = `Released together (${(spread / 1000).toFixed(2)} s). The Binding holds.`; log.textContent = detail; flame.firstChild.style.width = '100%'; setTimeout(() => resolve({ success: true, attempts: attempts + 1, releaseSpread: spread }), 1400); }
+            if (spread <= releaseMs) { done = true; Input.deactivate(); Audio.sfx('seal'); status.className = 'pz-status good'; status.textContent = `Released together (${(spread / 1000).toFixed(2)} s). The Binding holds.`; log.textContent = detail; flame.firstChild.style.width = '100%'; setTimeout(() => resolve({ success: true, attempts: attempts + 1, slips, releaseSpread: spread }), 1400); }
             else { log.textContent = detail; resetAll(`Released ${(spread / 1000).toFixed(2)} s apart — it needs ${(releaseMs / 1000).toFixed(1)}. Count yourselves in: one, two, three, off.`, 'bad'); Audio.sfx('fail'); fail(); }
           }
         }
       });
-      function fail() { attempts++; if (cfg.onAttempt) cfg.onAttempt(attempts, false); if (attempts >= maxAttempts) { done = true; Input.deactivate(); status.className = 'pz-status bad'; status.textContent = cfg.failText || 'The fire will not take a fourth attempt. It flares, thin.'; setTimeout(() => resolve({ success: false, attempts }), 1400); } }
+      function fail() { attempts++; if (cfg.onAttempt) cfg.onAttempt(attempts, false); if (attempts >= maxAttempts) { done = true; Input.deactivate(); status.className = 'pz-status bad'; status.textContent = cfg.failText || 'The fire will not take a fourth attempt. It flares, thin.'; setTimeout(() => resolve({ success: false, attempts, slips }), 1400); } }
       function frame() { if (done) return; raf = requestAnimationFrame(frame); if (phase === 'hold') { fill = Math.min(1, (performance.now() - holdStart) / holdMs); flame.firstChild.style.width = (fill * 100) + '%'; if (fill >= 1 && !flame.classList.contains('ready')) { flame.classList.add('ready'); status.textContent = 'It has climbed. Now — together — let go.'; Audio.sfx('chime'); } } else { flame.classList.remove('ready'); } }
       raf = requestAnimationFrame(frame);
     });

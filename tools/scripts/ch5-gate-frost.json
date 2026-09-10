@@ -15,15 +15,15 @@
    "slots": [
     [
      2,
-     "WELL"
+     "KNOT"
     ],
     [
      4,
-     "VEIL"
+     "WELL"
     ],
     [
      5,
-     "EMBER"
+     "CROWN"
     ]
    ]
   },
@@ -45,16 +45,16 @@
   {
    "slots": [
     [
-     1,
-     "WELL"
+     2,
+     "CROWN"
     ],
     [
-     3,
-     "EMBER"
+     4,
+     "KNOT"
     ],
     [
      5,
-     "VEIL"
+     "WELL"
     ]
    ]
   },
@@ -104,19 +104,19 @@
    "slots": [
     [
      1,
-     "CROWN"
-    ],
-    [
-     2,
-     "KNOT"
+     "ASH"
     ],
     [
      3,
-     "WELL"
+     "CROWN"
     ],
     [
      4,
-     "ASH"
+     "KNOT"
+    ],
+    [
+     5,
+     "WELL"
     ]
    ]
   },
@@ -168,7 +168,7 @@
   {
    "type": [
     "#widget input.field",
-    "3534"
+    "32573443"
    ]
   },
   {

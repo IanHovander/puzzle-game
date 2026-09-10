@@ -114,13 +114,13 @@
     <rect width="360" height="240" fill="#000"/>
     <g transform="translate(180,118)">
       <circle r="66" fill="none" stroke="#fff" stroke-width="1.5"/>
-      ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 66).toFixed(1), y = (Math.sin(a) * 66).toFixed(1), hot = i === 3;
+      ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 66).toFixed(1), y = (Math.sin(a) * 66).toFixed(1), hot = i === 0;
         return `<circle cx="${x}" cy="${y}" r="16" fill="none" stroke="${hot ? '#a482e6' : '#fff'}" stroke-width="${hot ? 2.5 : 1.5}"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="${hot ? '#a482e6' : '#fff'}" font-size="12" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
     </g>
-    <g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"><path d="M292,112 L302,106 L302,118"/></g>
-    <text x="320" y="130" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="Cinzel,serif">a small notch</text>
-    <g stroke="#a482e6" stroke-width="2.5" stroke-linecap="round"><path d="M46,112 L84,106"/><path d="M48,120 L80,115"/></g>
-    <text x="66" y="140" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">a scratch — long, deliberate</text>
+    <g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"><path d="M68,112 L58,106 L58,118"/></g>
+    <text x="62" y="132" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="Cinzel,serif">a small notch</text>
+    <g stroke="#a482e6" stroke-width="2.5" stroke-linecap="round"><path d="M152,30 L208,24"/><path d="M154,38 L204,33"/></g>
+    <text x="180" y="16" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">a scratch — long, deliberate</text>
     <text x="180" y="232" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">two cuts, under the soot</text>
   </svg>`;
 
@@ -164,7 +164,7 @@
             [`${G.shapeSvg('Spike', false, { size: 38, color: '#f2d27a' })}<div class="fine">the laundry’s back wall</div>`, '<b>THORN</b>', '<b>WELL</b>'],
           ] });
           P.sight.push({ t: 'p', text: '**One shape, two words, and only one of them opens a seam.** Say both, out loud, for each.' });
-          P.sight.push({ t: 'fine', text: 'A word that is not the one costs Wren a turn out of twelve. There are only twelve.' });
+          P.sight.push({ t: 'fine', text: 'A word that is not the one costs Wren a turn — and a turn more for every guess that seam already remembers. The Hearth counts what is left.' });
           P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see. Ask the Seer, seam by seam.' });
         } else {
           P.sight.push({ t: 'h', text: 'The arch over the Tower door' });
@@ -214,13 +214,13 @@
           P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. The Listener counts stops along a round. Only you have both.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
           P.sight.push({ t: 'p', text: '**The west seam is scratched at its left end. The laundry’s back seam is scratched at its right.**' });
-          P.sight.push({ t: 'fine', text: 'Give the Reader the end before anybody speaks. A wrong word costs a turn out of twelve.' });
+          P.sight.push({ t: 'fine', text: 'Give the Reader the end before anybody speaks. A wrong word costs a turn, and more at a seam you have guessed at before.' });
           P.sight.push({ t: 'fine', text: 'What a shape says is not yours, and neither is what a cry costs. Say where things are, and stop.' });
         } else {
           P.sight.push({ t: 'h', text: 'Under the Tower door' });
           P.sight.push({ t: 'p', text: 'Four slots below the arch, black with soot. Two things are cut under them, and both were cut long before the soot.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
-          P.sight.push({ t: 'p', text: '**A long, deliberate scratch under slot 4. A small notch under slot 2.** The numbers are the ones the Hearth shows.' });
+          P.sight.push({ t: 'p', text: '**A small notch under slot 4. A long, deliberate scratch under slot 1.** The numbers are the ones the Hearth shows.' });
           P.sight.push({ t: 'fine', text: 'Which cut matters is not yours to know. That is the Binder’s half. Say what is cut, and where.' });
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
@@ -245,12 +245,29 @@
         } else {
           P.sight.push({ t: 'h', text: 'Where a sigil begins' });
           P.sight.push({ t: 'p', text: 'You are the only one on this stair who was ever taught this, and tonight it is three lines.' });
+          /* THE PROLOGUE SPENT THE OLD VERSION OF THIS PAGE. Until this pass these three lines were,
+             word for word, the Binder's Chapter 0 page -- begin at the scratch, a notch is only a
+             signature, run clockwise -- and the dormitory lamp is WORKED ON THE SHARED SCREEN with
+             the Binder required to say the rule out loud to solve it. ADVERSARIAL 11: a fact is
+             private only on its first use, and a rule the protocol asks a player to say aloud is
+             public from that moment. Measured against the shipped wardCheck
+             (scratchpad/prologue/binder.js): a Binder-less table applying what the lamp taught them
+             faced a field of ONE and won it every time -- p = 1.000, where the chapter's own comment
+             recorded four boards and p = 0.250. The seat was free.
+             So the ward stops being a Founders' sigil. The accepted board does not move a single
+             word -- ASH 4, THORN 1, KNOT 2, slot 3 empty, exactly as before, so every playthrough
+             script and full-true.json still hold -- but the two cuts have swapped slots and the mark
+             is the notch. A table that confidently applies the Prologue's rule now lays a full,
+             lawful-looking, WRONG board, which is the same shape ch0's own lamp, ch4's oath and ch7's
+             sigil all use: the guess a table makes without the missing seat has a cut under it. */
           P.sight.push({ t: 'list', items: [
-            'A sigil begins at the **scratch**. A notch is only a maker’s signature: it says somebody made this, and nothing else.',
-            'The **first** word goes **in** the scratched slot. Every word after it goes into the next slot clockwise, the way the numbers count up.',
+            'The dormitory lamp was Founders\u2019 brass, and a Founders\u2019 sigil begins at the **scratch**. **This is not one.**',
+            'A Vigil ward is cut by the keeper sworn to it, and on a Vigil ward the keeper\u2019s mark **binds**. It begins at the **notch**. The scratch is the older cut, and down here the older cut is only wear.',
+            'The **first** word goes **in** the notched slot. Every word after it goes into the next slot clockwise, the way the numbers count up.',
             'When the count runs off the end it comes back to slot 1. **Any slot the words do not reach stays empty.**',
           ] });
           P.sight.push({ t: 'fine', text: 'A spare shape is not decoration. It is a different sign, and the iron can tell.' });
+          P.sight.push({ t: 'fine', text: 'Say which cut binds **before** anybody places a word. The other three will start at the scratch, because that is what the lamp taught them, and they will be wrong.' });
           P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
         }
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });

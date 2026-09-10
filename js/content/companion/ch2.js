@@ -12,12 +12,12 @@
   /* One source of truth for the phone: the carving on each plinth, and the hole it was cut to stand in.
      Numbered the way the Hearth numbers plinths and dials. Keep in step with js/content/ch2.js. */
   const PLINTHS = [
-    { n: 1, shape: 'Crown', inv: true },    // EMBER
-    { n: 2, shape: 'Spike', inv: false },   // THORN
-    { n: 3, shape: 'Hook', inv: true },     // VEIL
+    { n: 1, shape: 'Spike', inv: false },   // THORN
+    { n: 2, shape: 'Hook', inv: true },     // VEIL
+    { n: 3, shape: 'Crown', inv: true },    // EMBER
     { n: 4, shape: 'Hook', inv: false },    // KNOT
   ];
-  const CUTFOR = [2, 3, 4, 1];              // plinth 1..4 -> the hole under that dial
+  const CUTFOR = [3, 4, 2, 1];              // plinth 1..4 -> the hole under that dial
   const laws = (ns) => `<div class="laws">${L.laws.filter(l => ns.includes(l.n)).sort((a, b) => ns.indexOf(a.n) - ns.indexOf(b.n)).map(l => `<div class="law ${l.era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${l.n} · ${l.era === 'F' ? "Founders' · Year 0" : "Order's · Year " + l.year}</div><div class="txt">${l.text}</div></div>`).join('')}</div>`;
 
   /* Under the antechamber: four plinths as they stand, and under the grey floor the four holes they were
@@ -111,7 +111,7 @@
           `<b>${G.read(p.shape, p.inv)}</b>`,
         ]) });
         P.sight.push({ t: 'fine', text: 'Two of them carry the same shape, one of the two upside down. That is the whole of the difference.' });
-        P.sight.push({ t: 'p', text: '**Four words: EMBER, THORN, VEIL, KNOT.** Say them out loud, with their numbers.' });
+        P.sight.push({ t: 'p', text: '**Four words: THORN, VEIL, EMBER, KNOT.** Say them out loud, with their numbers.' });
         P.sight.push({ t: 'fine', text: 'A word that is not one of these four is not a count. The door counts once.' });
         P.sight.push({ t: 'fine', text: 'And if a strip of three shapes turns up tonight, it reads two ways. From the left: *one went down alone and kept it.* From the other end: *four, as one, went through.*' });
         P.sight.push({ t: 'fine', text: 'Which dial each word belongs on is not on this page and never was. Ask.' });
@@ -141,10 +141,10 @@
         P.sight.push({ t: 'p', text: 'This floor is newer than the room. Under it, four holes are still cut in the old stone, one at each dial.' });
         P.sight.push({ t: 'p', text: 'Each hole was cut to fit one plinth and no other. Not one plinth is standing in the hole cut for it.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFloor });
-        P.sight.push({ t: 'p', text: '**Plinth 1 was cut for the hole at dial 2. Plinth 2 for dial 3. Plinth 3 for dial 4. Plinth 4 for dial 1.** Say all four out loud.' });
+        P.sight.push({ t: 'p', text: '**Plinth 1 was cut for the hole at dial 3. Plinth 2 for dial 4. Plinth 3 for dial 2. Plinth 4 for dial 1.** Say all four out loud.' });
         P.sight.push({ t: 'fine', text: 'A word set on the wrong dial is the whole count wrong, and the door counts once.' });
         P.sight.push({ t: 'fine', text: 'Behind the first plinth, at knee height, a hollow the rebuilders missed. The stone strip in it begins at its right-hand end, where the mark is cut.' });
-        P.sight.push({ t: 'fine', text: 'Whether the door goes by the holes or by the floor above them is not yours to say. Somebody here keeps the rules.' });
+        P.sight.push({ t: 'fine', text: 'Whether the door goes by these holes, by the floor above them or by the drill you were taught is not yours to say. Somebody here keeps the rules.' });
         P.wren.push({ t: 'h', text: 'Reaching' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underStair });
         P.wren.push({ t: 'p', text: 'In the dormitory it leaned toward the lamp and you called it the lamp. Down here there is no lamp, only a cold stone in a box that gives no light a shadow should want. ' + (lost ? 'Wren is meant to be on the dais, under guard.' : 'Wren is meant to be with the Provost.') + ' You are going to watch that shadow reach anyway. You already knew you would.' });
@@ -152,12 +152,13 @@
 
       /* ================= BINDER — which of the two rules is the older ================= */
       if (roleId === 'binder') {
-        P.sight.push({ t: 'h', text: 'Two rules, and which one binds' });
+        P.sight.push({ t: 'h', text: 'Three ways to count, and which one binds' });
         P.sight.push({ t: 'html', html: laws([13, 9, 3]) });
         P.sight.push({ t: 'p', text: 'Two of those say opposite things, and the third settles it. The newer one was written in 212 — the year this room was rebuilt and the statues were put back.' });
+        P.sight.push({ t: 'p', text: 'The third way is the one you were all taught in class: one, two, three, four, in the order it hums. **That is a drill, not a Law**, and it is younger than both of these.' });
         P.sight.push({ t: 'html', html: twoBands() });
-        P.sight.push({ t: 'p', text: '**The older binds.** A plinth faces the hole it was cut to stand in, not the dial it happens to stand over.' });
-        P.sight.push({ t: 'fine', text: 'Go by the floor and every word lands on the wrong dial. The door counts once.' });
+        P.sight.push({ t: 'p', text: '**The older Law binds.** A plinth faces the hole it was cut to stand in, not the dial it happens to stand over.' });
+        P.sight.push({ t: 'fine', text: 'Go by the floor, or by the drill, and every word lands on the wrong dial. The door counts once.' });
         P.sight.push({ t: 'fine', text: 'You cannot read a shape, hear a note, or see under a floor. Ask for all three.' });
         P.wren.push({ t: 'h', text: 'The same nothing' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'

@@ -1,9 +1,9 @@
-/* Companion — Chapter V: The Long Stair (ASH). One rule, two gates, one fact each, and no page holds
-   another's: the Reader has what each shape says, both ways; the Listener has the bell over each shape
-   and the slot its count names; the Seer has which end each carving is marked at and the three cuts in
-   each ring; the Binder has which kind of cut a sigil begins at HERE (not the scratch the room was
-   taught in the Prologue and Chapter IV -- these doors predate that Law), which way the count runs,
-   and whether the word nobody writes is written or left out. */
+/* Companion — Chapter V: The Long Stair (ASH). Four pages, one fact each, and no page holds another's:
+   the Reader has what each shape says, both ways up; the Listener has the bell over each shape and how
+   far it counts; the Seer has which end each carving is marked at and where the three cuts are; the
+   Binder has which kind of cut a sigil begins at HERE (not the scratch the room was taught in the
+   Prologue and Chapter IV -- these doors predate that Law), which way the count runs, and whether the
+   word nobody writes is written or left out. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -13,8 +13,14 @@
 
   /* The two carvings, exactly as js/content/ch5.js holds them (W1.items / W2.items), and the bells
      above them (W1.counts / W2.counts). The Hearth derives the accepted board from these; this page
-     only reports them. Marked ends and ring cuts are the Seer's and live on that page alone. */
-  const GATE1 = [{ shape: 'Crown', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: false }];
+     only reports them. Marked ends and ring cuts are the Seer's and live on that page alone.
+     THIS IS A COPY, and nothing in the engine compares the two: change W2.items or W2.counts on the
+     Hearth without changing them here and the gate cannot be solved by four hands at all -- it fails
+     as two frosts and a forced gate, which is a written branch, so every tool stays green.
+     tools/scripts/ch5-gate-check.js compares the four lists across the two files, and also checks
+     that W2.counts is a permutation of 1..5, which is what the cracked-bell line below promises.
+     The ring cuts are copied on the Seer's page (gateMarks) and are compared by the same script. */
+  const GATE1 = [{ shape: 'Crown', inv: true }, { shape: 'Hook', inv: true }, { shape: 'Spike', inv: false }];
   const GATE2 = [{ shape: 'Crown', inv: false }, { shape: 'Flame', inv: false }, { shape: 'Flame', inv: true }, { shape: 'Hook', inv: false }, { shape: 'Spike', inv: true }];
   const COUNTS1 = [3, 1, 5];
   const COUNTS2 = [2, 5, 1, 3, 4];
@@ -95,10 +101,10 @@
     <text x="265" y="26" text-anchor="middle" fill="#fff" font-size="10" ${F}>the silent gate</text>
     ${markedStrip(95, 40, 3, 'right')}
     ${markedStrip(265, 40, 5, 'left')}
-    ${ringCuts(95, 165, 52, 5, { 4: 'scratch', 2: 'notch', 5: 'chip' })}
-    ${ringCuts(265, 165, 52, 5, { 3: 'scratch', 5: 'notch', 2: 'chip' })}
-    <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 4, notch 2, chip 5</text>
-    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 3, notch 5, chip 2</text>
+    ${ringCuts(95, 165, 52, 5, { 3: 'scratch', 1: 'notch', 4: 'chip' })}
+    ${ringCuts(265, 165, 52, 5, { 5: 'scratch', 2: 'notch', 3: 'chip' })}
+    <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 3, notch 1, chip 4</text>
+    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 5, notch 2, chip 3</text>
     <text x="180" y="286" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">where each ring is cut, and which end is marked</text>
   </svg>`;
 
@@ -149,12 +155,15 @@
     <text x="180" y="30" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">shadows on the ledge, as they fall</text>
   </svg>`;
 
-  // Nine stones, two hollow.
+  /* Nine stones: three hollow (a dashed cavity), four cracked right through (the violet line), two
+     neither. The two counts are the Seer's pair in the Founders' Count, and nothing is both, so one
+     count cannot be got from the other. */
+  const HOLLOW = [2, 5, 7], CRACK = [0, 3, 4, 8];
   const stonesSvg = `<svg viewBox="0 0 360 250">
     <rect width="360" height="250" fill="#000"/>
-    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 50 + Math.floor(i / 3) * 75; const hollow = i === 2 || i === 5 || i === 7; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
-      return `<g transform="translate(${x},${y})"><path d="M${-rx},0 C${-rx},-${ry} ${-rx * 0.4},-${ry + 6} 0,-${ry} C${rx * 0.5},-${ry + 4} ${rx},-${ry * 0.6} ${rx},0 C${rx},${ry} ${rx * 0.3},${ry + 4} 0,${ry} C${-rx * 0.6},${ry + 2} ${-rx},${ry * 0.5} ${-rx},0 Z" fill="none" stroke="#fff" stroke-width="1.4"/>${hollow ? `<path d="M${-rx * 0.55},2 C${-rx * 0.5},-${ry * 0.5} ${-rx * 0.1},-${ry * 0.6} ${rx * 0.2},-${ry * 0.35} C${rx * 0.55},-${ry * 0.1} ${rx * 0.5},${ry * 0.5} ${rx * 0.1},${ry * 0.55} C${-rx * 0.3},${ry * 0.6} ${-rx * 0.55},${ry * 0.3} ${-rx * 0.55},2 Z" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".8"/>` : `${[0, 1, 2].map(k => `<path d="M${-rx * 0.6 + k * 12},${-ry * 0.5 + k * 8} l${rx * 0.9},${ry * 0.15}" stroke="#fff" stroke-width=".8" opacity=".35"/>`).join('')}`}<text y="${ry + 14}" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".6">${i + 1}</text></g>`; }).join('')}
-    <text x="180" y="244" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>solid stone hatches; a hollow shows its cavity</text>
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 50 + Math.floor(i / 3) * 75; const hollow = HOLLOW.indexOf(i) >= 0, crack = CRACK.indexOf(i) >= 0; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
+      return `<g transform="translate(${x},${y})"><path d="M${-rx},0 C${-rx},-${ry} ${-rx * 0.4},-${ry + 6} 0,-${ry} C${rx * 0.5},-${ry + 4} ${rx},-${ry * 0.6} ${rx},0 C${rx},${ry} ${rx * 0.3},${ry + 4} 0,${ry} C${-rx * 0.6},${ry + 2} ${-rx},${ry * 0.5} ${-rx},0 Z" fill="none" stroke="#fff" stroke-width="1.4"/>${hollow ? `<path d="M${-rx * 0.55},2 C${-rx * 0.5},-${ry * 0.5} ${-rx * 0.1},-${ry * 0.6} ${rx * 0.2},-${ry * 0.35} C${rx * 0.55},-${ry * 0.1} ${rx * 0.5},${ry * 0.5} ${rx * 0.1},${ry * 0.55} C${-rx * 0.3},${ry * 0.6} ${-rx * 0.55},${ry * 0.3} ${-rx * 0.55},2 Z" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".8"/>` : crack ? `<path d="M${-rx * 0.75},${-ry * 0.35} l${rx * 0.35},${ry * 0.55} l${-rx * 0.12},${ry * 0.3} l${rx * 0.55},${ry * 0.2}" fill="none" stroke="${VIOLET}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>` : `${[0, 1, 2].map(k => `<path d="M${-rx * 0.6 + k * 12},${-ry * 0.5 + k * 8} l${rx * 0.9},${ry * 0.15}" stroke="#fff" stroke-width=".8" opacity=".35"/>`).join('')}`}<text y="${ry + 14}" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".6">${i + 1}</text></g>`; }).join('')}
+    <text x="180" y="244" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>a cavity is dashed · a crack goes right through</text>
   </svg>`;
 
   /* ---------- Reader: nine worn glyphs, three read EMBER ---------- */
@@ -165,41 +174,51 @@
   </svg>`;
 
   /* ---------- Binder: five oaths, their locks named ---------- */
+  /* Four bind (a lock of KNOT or EMBER), three were sworn before the Law changed in Year 212 — the
+     Binder's pair. The two sets are not each other's opposite: the Keeper and the Chair bind and are
+     late, the Veil is early and does not bind. */
   const OATHS = [
-    { name: 'Oath of the Gate', line: ['THORN', 'ASH'], lock: 'KNOT' },
-    { name: 'Oath of the Keeper', line: ['WELL', 'EMBER'], lock: 'EMBER' },
-    { name: 'Oath of the Veil', line: ['ASH', 'THORN'], lock: 'VEIL' },
-    { name: 'Oath of the Well', line: ['WELL', 'ASH'], lock: 'KNOT' },
-    { name: 'Oath of the Chair', line: ['CROWN', 'THORN'], lock: 'EMBER' },
+    { name: 'the Gate', line: ['THORN', 'ASH'], lock: 'KNOT', year: 0 },
+    { name: 'the Keeper', line: ['WELL', 'EMBER'], lock: 'EMBER', year: 212 },
+    { name: 'the Veil', line: ['ASH', 'THORN'], lock: 'VEIL', year: 0 },
+    { name: 'the Well', line: ['WELL', 'ASH'], lock: 'KNOT', year: 0 },
+    { name: 'the Chair', line: ['CROWN', 'THORN'], lock: 'EMBER', year: 212 },
   ];
   const gl = (n, c) => G.svg(n, { size: 26, color: c || GOLD });
-  const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)} <b>${o.lock}</b></td></tr>`).join('')}</table>`;
+  const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock</th><th>sworn</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)} <b>${o.lock}</b></td><td>Year ${o.year}</td></tr>`).join('')}</table>`;
 
   /* ---------- the Founders' Count task ----------
-     Reader 3 (of nine worn shapes, three read EMBER) · Listener 5 (the lower bell of the peal) ·
-     Seer 3 (of nine stones, three are hollow) · Binder 4 (of five oaths, four are locked KNOT or
-     EMBER) -> 3534. The digits are deliberately NOT a permutation of one run: at 3,5,2,4 the set
-     was {2,3,4,5}, so any three roles could hand the fourth its digit by elimination and the
-     Hearth's four-digit ward fell to three phones. 3534 repeats a digit and skips one, so no
-     subset of three completes it, and the ward hears three answers only. */
+     Mere's ward asks each seat twice, and the Hearth takes eight digits as one number, in seat order:
+       Reader   3 2   of nine worn shapes, three read EMBER and two read CROWN
+       Listener 5 7   the lower bell of the peal strikes 5 times, the higher 7
+       Seer     3 4   of nine stones, three are hollow and four are cracked
+       Binder   4 3   of five oaths, four bind and three were sworn before Year 212
+     One digit a seat was the defect, not the digits. A table missing one phone had ten candidates
+     for the missing digit against a ward that hears three answers, and with 3,5,3,4 the missing digit
+     sat inside the span of the three still on the table for three seats out of four. Two digits a
+     seat makes that 100 candidates against three answers, and the two counts on a page are counts of
+     different things, so neither gives the other. The reasoning, the field sizes and the receipt are
+     in js/content/ch5.js above PAIRS. */
   const MATERIAL = {
-    reader: { q: 'Nine worn shapes on the newel, all standing as they were cut. **How many read EMBER?**', html: nineSvg },
-    listener: { q: 'A peal of two bells, one higher, one lower. **How many times does the *lower* bell strike?** Play it as often as you need.', html: null },
-    seer: { q: 'Nine stones in the under-layer of the landing. **How many are hollow?**', html: `<div class="blk-svg underlayer">${stonesSvg}</div>` },
-    binder: { q: 'Five oaths carved on the newel. An oath binds only if its lock — the last glyph — is KNOT or EMBER. **How many bind?**', html: oathsHtml },
+    reader: { q: 'Nine worn shapes on the newel, all standing as they were cut. **How many read EMBER? And how many read CROWN?**', html: nineSvg },
+    listener: { q: 'A peal of two bells, one higher, one lower. **How many times does the *lower* bell strike? And the higher?** Play it as often as you need.', html: null },
+    seer: { q: 'Nine stones in the under-layer of the landing. **How many are hollow? And how many are cracked right through?**', html: `<div class="blk-svg underlayer">${stonesSvg}</div>` },
+    binder: { q: 'Five oaths carved on the newel. An oath binds only if its lock — the last glyph — is KNOT or EMBER. **How many bind? And how many were sworn before Year 212?**', html: oathsHtml },
   };
   const PEAL = 'HLHLHHLHLHHL'; // lower bell strikes 5 times, the higher 7
   function playPeal(Audio) { Audio.init(); if (Audio.isMuted()) Audio.setMuted(false); PEAL.split('').forEach((c, i) => CA.later(() => Audio.note(c === 'H' ? 79 : 64, 0.9, c === 'H' ? 0.14 : 0.2), i * 480)); return PEAL.length * 480 + 600; }
 
   function countTask(roleId) {
     return { t: 'task', id: 'count', title: 'The Founders\' Count — 45 seconds', replayable: true, run: (box, api) => {
-      const key = 'ch5:count'; const prev = api.state.done[key];
+      const key = 'ch5:count'; const raw = api.state.done[key];
+      const prev = (raw == null || !/^\d\d$/.test(String(raw))) ? null : String(raw);
       let ctl = null;
       const mat = MATERIAL[roleId];
+      const said = 'Say them aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.';
       const idle = () => {
         UI.clear(box);
-        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: String(prev) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); }
-        else box.appendChild(UI.el('p', { class: 'fine', text: 'The Hearth will count 3, 2, 1, START. On START, press Start. You have forty-five seconds to find one digit.' }));
+        if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: prev[0] + ' ' + prev[1] })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your two digits. ' + said })); }
+        else box.appendChild(UI.el('p', { class: 'fine', text: 'The Hearth will count 3, 2, 1, START. On START, press Start. You have forty-five seconds to find two digits.' }));
         box.appendChild(UI.el('button', { class: 'btn primary big-btn', text: prev != null ? 'Count again' : 'Start', onclick: start }));
       };
       const start = () => {
@@ -211,13 +230,19 @@
         if (roleId === 'listener') { box.appendChild(UI.audioButton('Cup your ear — the peal', () => playPeal(api.audio))); const rv = UI.el('div', {}); box.appendChild(rv); rv.appendChild(UI.el('button', { class: 'btn small ghost', text: 'I cannot hear it — show the peal', onclick: () => { rv.innerHTML = `<div class="arrow-strip">${PEAL.split('').map(c => `<span class="step"><b>${c === 'H' ? '▲' : '▼'}</b>${c === 'H' ? 'high' : 'low'}</span>`).join('')}</div>`; } })); playPeal(api.audio); }
         const cd = UI.el('div', { class: 'cd', text: '45' }); box.appendChild(cd);
         ctl = UI.countdown(box, 45, (s) => { cd.textContent = s; });
-        ctl.promise.then(() => { cd.textContent = 'TIME — pick your digit'; });
-        box.appendChild(UI.el('p', { class: 'fine', text: 'Your digit:' }));
+        ctl.promise.then(() => { cd.textContent = 'TIME — pick your two digits'; });
+        const cap = UI.el('p', { class: 'fine', text: 'Your first digit:' });
+        box.appendChild(cap);
+        const got = [];
         const grid = UI.el('div', { class: 'pick-grid', style: { gridTemplateColumns: 'repeat(5, 1fr)' } });
-        for (let d = 0; d <= 9; d++) grid.appendChild(UI.el('div', { class: 'pk', text: String(d), onclick: () => { ctl.cancel(); api.state.done[key] = d; api.save(); api.audio.sfx('seal'); render(d); } }));
+        for (let d = 0; d <= 9; d++) grid.appendChild(UI.el('div', { class: 'pk', text: String(d), onclick: () => {
+          got.push(d); api.audio.sfx('seal');
+          if (got.length < 2) { cap.textContent = 'First digit ' + d + '. Now your second:'; return; }
+          ctl.cancel(); const pair = got.join(''); api.state.done[key] = pair; api.save(); render(pair);
+        } }));
         box.appendChild(grid);
       };
-      const render = (d) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: String(d) })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. Say it aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.' })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
+      const render = (pair) => { UI.clear(box); box.appendChild(UI.el('div', { class: 'big-digit', text: pair[0] + ' ' + pair[1] })); box.appendChild(UI.el('p', { class: 'fine', text: 'Sealed. ' + said })); box.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Count again', onclick: start })); };
       idle();
     } };
   }
@@ -288,8 +313,8 @@
       /* ===== SEER ===== */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the two gates' });
-        P.sight.push({ t: 'p', text: '**The first gate’s carving is marked at its right-hand end.** Its ring carries three cuts: a long scratch at **slot 4**, a notch at **slot 2**, a chip in the glaze at **slot 5**.' });
-        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Three cuts again: a scratch at **slot 3**, a notch at **slot 5**, a chip at **slot 2**.' });
+        P.sight.push({ t: 'p', text: '**The first gate’s carving is marked at its right-hand end.** Its ring carries three cuts: a long scratch at **slot 3**, a notch at **slot 1**, a chip in the glaze at **slot 4**.' });
+        P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Three cuts again: a scratch at **slot 5**, a notch at **slot 2**, a chip at **slot 3**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: gateMarks });
         P.sight.push({ t: 'fine', text: 'Counted from anywhere else on the ring, the right words in the right order still fail.' });
         P.sight.push({ t: 'fine', text: 'Somebody meant those cuts. Which one a sigil begins at, and what a marked end obliges, are not yours. Say what is cut, and where.' });

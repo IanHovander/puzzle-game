@@ -2,7 +2,7 @@
   "_what": "No page may hold another's fact, on either puzzle. THE STONE: the Reader has the four burnt shapes and never which way up, the Seer which way up and never a shape, the Listener where the lap ends and never a word, the Binder the two dated Laws and neither a shape nor a cut. THE DARK PATTERN: the Listener has the count and calls all twenty-four numbers and is told which are bells on none of them; the other three have SIX numbers each, no number on two lists, and every bell a single lane — so the union of two lists can never cover the third. This suite pins the six-number lists, because a list of eight with shared bells is the defect that made round three three-handed.",
   "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_reader_sight"},
-  {"expect": "What the fire ate"}, {"expect": "Cut 1 a flame"}, {"expect": "laid on their side"}, {"expect": "cracks a bell above you"},
+  {"expect": "What the fire ate"}, {"expect": "Cut 1 a flame"}, {"expect": "laid on their side"}, {"expect": "cracks a bell above you"}, {"expect": "Four readings, no more"},
   {"expectNot": "KNOT · CROWN · ASH · WELL · VEIL · EMBER · ASH · COLD"},
   {"expectNot": "point-up"}, {"expectNot": "counts down"}, {"expectNot": "right to left"},
   {"tab": "Speak"}, {"shot": "c6_reader_speak"}, {"expect": "Your bells"}, {"expect": "1 · 6 · 10 · 14 · 20 · 24"}, {"expect": "Say what you see. Never show your phone."},

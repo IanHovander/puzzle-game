@@ -1,12 +1,18 @@
 { "start": "ch0_start", "steps": [
-  {"key": "Space"}, {"shot": "ch0_start"}, {"clickText": "Look up"}, {"wait": 600}, {"key": "Space"}, {"shot": "ch0_stone"}, {"clickText": "The night before"},
+  {"key": "Space"}, {"shot": "ch0_start"}, {"clickText": "Look up"}, {"wait": 600}, {"key": "Space"}, {"shot": "ch0_stone"},
+  {"_": "no glyph geometry anywhere in the Prologue's art: ch0_stone used to draw Chapter VI's eight cuts in full"}, {"assert": "(function(){var S=VigilGlyphs.SHAPES;var d=Object.keys(S).map(function(k){return S[k].match(/d=\"([^\"]+)\"/)[1]});var art=['ch0_hearthfire','ch0_stone','ch0_dorm','ch0_lamp'].map(function(n){return VigilArt.render(n,{})}).join('');return d.every(function(x){return art.indexOf(x)<0})})()"},
+  {"expect": "Nobody alive has read the cuts"}, {"clickText": "The night before"},
   {"wait": 500}, {"key": "Space"}, {"clickText": "Claim the keys"}, {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_keys"},
   {"keys": "a"}, {"keys": "c"}, {"keys": "m"}, {"keys": "/"}, {"wait": 300}, {"keys": "acm/"}, {"wait": 1500},
   {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"shot": "ch0_practice"}, {"wait": 21000}, {"log": true}, {"clickText": "Continue"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "And you?"}, {"wait": 600}, {"key": "Space"}, {"clickText": "Carve it"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"type": ["#widget input.field", "wren"]}, {"clickText": "Carve"}, {"wait": 1500}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch0_attune"}, {"expect": "KINDLE"}, {"clickText": "All phones are ready"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_lamp"}, {"slots": [[3, "ASH"], [4, "EMBER"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch0_fourhands"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_lamp"},
+  {"_": "which way a sigil runs is the Binder's half of this ring: ring.js prints SUNWISE at the hub unless showArrow is false, and nothing could see it"},
+  {"expectNot": "SUNWISE"}, {"expectNot": "widdershins"},
+  {"assert": "document.querySelectorAll('#widget .wheel .slot').length === 4"},
+  {"slots": [[3, "ASH"], [4, "EMBER"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch0_fourhands"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch0_name"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch0_flow"}, {"expect": "the Idiots"}, {"log": true}
 ] }

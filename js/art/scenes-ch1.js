@@ -66,7 +66,10 @@
     // far wall and the Hearth's arch
     `<rect x="560" y="300" width="480" height="420" fill="#120d12"/><path d="M560,300 A240,240 0 0 1 1040,300" fill="#120d12"/>` +
     `<rect x="640" y="240" width="320" height="70" rx="4" fill="#211a20" stroke="#3a2c2c" stroke-width="3"/>` +
-    `<g opacity=".55">${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<g transform="translate(${670 + i * 37},275) scale(0.8)" style="color:#7a6a5a">${window.VigilGlyphs.shapeInner(['Flame', 'Flame', 'Crown', 'Hook', 'Spike', 'Flame', 'Crown', 'Hook'][i], [false, true, false, false, false, true, true, true][i])}</g>`).join('')}</g>` +
+    // The same eight cuts as the Prologue's slab and drawn the same way — as wear. This lintel used to
+    // carry Chapter VI's STONE in full at scale(0.8), and it is the art behind six ch1 scenes, ch1_vote
+    // among them. See the note above A.wornCuts in js/art/scenes-ch0.js for what that cost Chapter VI.
+    `<g transform="translate(670,275)" opacity=".55">${A.wornCuts(8, '#7a6a5a', 37, 0.8, 4409)}</g>` +
     A.fire(800, 700, 0.62, false) +
     bannerRow(false) +
     P.floorTiles(720, '#0b0910', 'rgba(255,255,255,0.04)') +

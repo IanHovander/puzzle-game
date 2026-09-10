@@ -253,7 +253,19 @@
    "shot": "ch8_words"
   },
   {
-   "expect": "were the Great Sigil in wall order"
+   "_": "ch8_words used to say the seven chapter words 'were the Great Sigil in wall order'. It was TRUE -- ch7's phrase was THORN KNOT VEIL EMBER ASH WELL CROWN, the attunement word of ch1..ch7 in order -- and being true is what was wrong with it: every player types all seven into the Hearth over the evening, so the Finale's whole phrase had been public since Chapter I. ch7's walls moved; this line must never claim an order again."
+  },
+  {
+   "expect": "are every glyph that can be written, each of them once"
+  },
+  {
+   "expect": "The eighth is the rest"
+  },
+  {
+   "expectNot": "wall order"
+  },
+  {
+   "expectNot": "in chapter order"
   },
   {
    "clickText": "The last word"

@@ -106,22 +106,55 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
 .countdown-num { position: absolute; right: 8px; top: -26px; font-family: var(--display); color: var(--gold-2); font-size: 16px; }
 .countdown.urgent .countdown-num { color: #ff8b8b; animation: pulse .5s infinite; }
 
-/* flowchart */
-.flowchart-wrap { overflow-x: auto; padding: 8px 0; }
-.flowchart { color: var(--gold); max-width: 100%; height: auto; }
+/* flowchart
+   The chart is laid out by js/core/ui.js in real CSS pixels -- one viewBox unit is one pixel -- so it
+   must never be scaled to fit. `max-width: 100%` used to do exactly that, and the scale factor was
+   the label size: 1160-1730px of chart squeezed into a 786px panel wrote its labels at 5.7-11.3px in
+   all nine chapters, under a 17px floor the game sets because it is read across a room. The chart now
+   sizes itself to the panel and scrolls sideways in the rare case that it still cannot fit. */
+.flowchart-wrap { overflow-x: auto; overflow-y: hidden; padding: 8px 0; scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.45) transparent; }
+.flowchart { color: var(--gold); max-width: none; height: auto; display: block; }
+/* The end-of-chapter panel takes as much of the width as the scene text can spare. At the old
+   380px/1fr split a nine-column chart had 786px, and no wrap of it clears the 17px floor without
+   running off the bottom instead; 240px for the text buys the chart another 140px and the two flow
+   scenes with the most columns stop overflowing at 1280x720. The text column is the smaller loss:
+   a flow scene's own text is one or two short lines. This belongs beside the other #panel rules in
+   css/hearth.css; it sits here with the rest of the flowchart because it exists only for the chart,
+   and it carries `body` so it outranks the rule loaded after this file. */
+body #panel:has(.flow-panel) { grid-template-columns: minmax(180px, 210px) 1fr; }
+body #panel:has(.flow-panel) #text { font-size: 18px; }
+/* A `1fr` grid track has an automatic minimum of its content's min-content width, and the chart no
+   longer shrinks to fit -- so without this the whole #panel grew to 1405px at a 1280px viewport and
+   the right-hand third of the flow panel was simply off the screen, unreachable, because nothing above
+   it scrolls. The column keeps its size and the chart scrolls inside its own wrapper. */
+body #panel:has(.flow-panel) #right { min-width: 0; }
+body #panel:has(.flow-panel) .flow-panel { max-width: 100%; }
 .fc-edge { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 1.5; color: rgba(255,255,255,0.2); }
 .fc-edge.on { stroke: var(--gold); color: var(--gold); stroke-width: 2.2; filter: drop-shadow(0 0 4px rgba(212,169,78,0.6)); }
 .fc-node rect, .fc-node path { fill: rgba(255,255,255,0.03); stroke: rgba(255,255,255,0.18); stroke-width: 1.2; }
 .fc-node.on rect, .fc-node.on path { fill: rgba(212,169,78,0.16); stroke: var(--gold); }
 .fc-node.end.on rect { fill: rgba(159,123,216,0.25); stroke: var(--violet); }
-.fc-node text { fill: rgba(233,226,210,0.72); font-family: var(--serif); font-size: 15px; }
+/* --fc-font is set on the svg by UI.flowchart: it is the real pixel size the chart was laid out for,
+   and the fallback is the floor, never below it. Choice diamonds used to be set two points smaller,
+   which put them under the floor first; they are the same size as everything else now. */
+.fc-node text { fill: rgba(233,226,210,0.72); font-family: var(--serif); font-size: var(--fc-font, 17px); }
 .fc-node.on text { fill: var(--ink); }
-.fc-node.choice text { font-size: 13.5px; }
 .flowchart-wrap.zoomable { cursor: zoom-in; }
 .flowchart-wrap.zoomable:hover .flowchart { filter: drop-shadow(0 0 14px rgba(212,169,78,0.25)); }
 .flow-zoom-hint { font-family: var(--display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-dim); text-align: right; padding-top: 4px; }
-.flowchart-wrap.big { overflow: auto; max-height: 76vh; max-width: min(1500px, 92vw); cursor: default; }
-.flowchart-wrap.big .flowchart { max-width: none; }
+.flowchart-wrap.big { overflow: auto; max-height: 78vh; max-width: none; cursor: default; }
+/* The enlarged chart needs to be an enlargement. css/hearth.css caps a wide modal at 980px, which is
+   narrower than the flow panel itself now that the panel takes the column -- so tapping to enlarge
+   made the chart no bigger and the extra room bought nothing. A modal that holds a chart gets the
+   screen. */
+body .modal.wide:has(.flowchart-wrap.big) { max-width: min(1600px, 96vw); padding: 20px 22px; }
+/* The Map of the Night is laid out in real pixels for the box it is going into (js/core/map.js), so
+   the box must HAVE a width before it is measured: a modal is max-width, not width, and an empty one
+   shrinks to its title. Nine place names at the 17px floor need about 1040px across five columns. */
+body .modal.wide:has(.map-box) { max-width: min(1120px, 96vw); padding: 20px 22px; }
+.map-box { width: min(1040px, calc(96vw - 60px)); overflow-x: auto; }
+.map-box .night-map { display: block; max-width: none; }
+.flow-panel { scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.45) transparent; }
 
 /* pads for 4-key input */
 .pads { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }

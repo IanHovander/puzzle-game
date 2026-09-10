@@ -19,7 +19,7 @@
        a wrong word into nothing and lets eight door words be guessed for free. The third bell already
        resets the board (grid.js, on maxTurns), and that reset is written down and costs the table. */
     body[data-chapter="ch3"] .grid-pz > .btn.ghost { display: none; }
-    /* Fit: the rule card is 53 words now, so the board gives the height back. */
+    /* Fit: the rule card is 68 words (71 with the hurt clause), so the board gives the height back. */
     body[data-chapter="ch3"] .grid-pz .grid-board svg { max-height: min(34vh, 320px); }
     body[data-chapter="ch3"] .grid-controls .btn { padding: 7px 4px; font-size: 13px; }
     body[data-chapter="ch3"] .ring-pz .wheel { width: min(34vh, 320px); height: min(34vh, 320px); }
@@ -55,6 +55,28 @@
        safe:['A1','B3']    unhurt 412 / 132 / 37 / 6   hurt 34 / 1
      With the laundry safe, a table that knew only the two door words and the word 'east' walked in on
      turn 3 and pushed east every turn: seen three times, through on turn 11, first run, no phones.
+     THE COSTS, and every one of them in Store.state.flags, so that a Resume, a pasted save code and the
+     Menu's "Replay scene" all keep them (ADVERSARIAL 7) and none of them stops charging (ADVERSARIAL 14):
+       the bell     CH3_BELLS counts every third bell, not only the first. The budget is twelve turns for
+                    the first run and one turn fewer for every bell, floored at eleven — enumerated: of the
+                    412 safe unhurt schedules 50 arrive on turn 11, and 4 of the 34 hurt ones, so eleven is
+                    where the corridors stop being winnable and the budget stops shrinking. A blind table
+                    pays for it: 412 of 3,995 schedules = 10.3% at twelve turns, 50 of 869 = 5.8% at eleven
+                    (hurt 34 of 1,257 = 2.7% -> 4 of 282 = 1.4%).
+       a sighting   costs 1 + CH3_BELLS turns, so the bell goes on charging after the budget has hit its
+                    floor, and the one strategy the turn count cannot see — walk into a patrol on purpose,
+                    read the room and the turn off grid.js's own sighting line, ring the bell, walk again —
+                    gets dearer every time it is used.
+       a seam       SEAM_A3B3 and SEAM_B3C3: the nth wrong word at one seam costs n turns, and the seam
+                    remembers across a bell, a re-entry and a reload. The Reader-less costing below is
+                    priced on that memory, and it used to live on a door object gridConfig rebuilt on entry.
+     THE LADDER IS PART OF THE FIELD, because a hint costs nothing. Rung 1 re-partitions. Rung 2 names no
+     room, no beat and no turn (guarded in tools/scripts/ch3-grid-check.js), so the 3,995 blind schedules
+     and the 412 safe ones below are exactly what they were before it was taken. Rung 3 is the route, and
+     it is the only rung that names a cell. The rung 2 that stood here until this pass gave the round
+     length (the Listener's) and the room nobody searches (the Binder's), which between them are the whole
+     plan — the only free parameter left is how many beats to sit in the laundry, and measured, that is
+     2 winners among 5 in-time exits: 10.3% -> 40% unhurt, and 2 among 3, 2.7% -> 67%, under WREN_HURT.
      Drop-a-role (honest numbers, not claims):
        no Listener — the Seer's map gives rooms but no timing. 3,995 schedules reach E5 inside twelve
                      turns and 412 of them are safe, so a blind pick wins 10.3% of the time, and the
@@ -68,9 +90,13 @@
                      nothing else on the table says the north corridor is watched. With the cry unknown
                      a table believes 824 schedules are safe and 412 are (hurt: 68 believed, 34 real).
                      Exactly half, and the wrong half is a sighting. A COSTED COIN FLIP.
-       no Reader   — eight words per seam, and a wrong word costs a turn. Surviving schedules by wasted
-                     turns (west+back): 0+0 412, 0+1 115, 1+1 34, 1+2 9, 2+2 1; hurt 0+0 34, 0+1 9,
-                     1+1 1. Guessing both seams inside two wasted turns succeeds 6 times in 64.
+       no Reader   — eight words per seam, and the nth wrong word at a seam costs n turns. Surviving
+                     schedules by wasted turns (west+back): 0+0 412, 1+0 114, 0+1 125, 1+1 34, 1+2 9,
+                     2+2 1; hurt 0+0 34, 0+1 9, 1+1 1. The right word sits uniformly among the eight, so
+                     a seam costs 0 turns 1 time in 8, 1 turn 1 time in 8, and 3 turns after that:
+                     guessing both seams inside two wasted turns succeeds 4 times in 64. (The 115 and the
+                     "6 times in 64" recorded here before were a flat one-turn-per-guess model, which is
+                     not what mkDoor has ever charged.)
      ============================================================================================ */
   const CELLS = ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'C1', 'B3', 'C2', 'C3', 'C4', 'D3', 'B5', 'C5', 'D5', 'E1', 'E2', 'E3', 'E4', 'E5'];
   const EDGES = [['A1', 'B1'], ['B1', 'C1'], ['A1', 'A2'], ['A2', 'A3'], ['A3', 'A4'], ['A4', 'A5'], ['A5', 'B5'], ['B5', 'C5'], ['C5', 'D5'], ['D5', 'E5'], ['E1', 'E2'], ['E2', 'E3'], ['E3', 'E4'], ['E4', 'E5'], ['C5', 'C4'], ['C4', 'C3'], ['C3', 'C2'], ['C3', 'D3'], ['D3', 'E3']];
@@ -94,20 +120,35 @@
      Binder's to name, not the Hearth's. */
   const LABELS = { A1: 'the gallery', E5: 'the tower door' };
 
+  /* Every cost in the corridors, read live out of the save. Nothing here is a module-local `let`: the
+     Menu hands "Replay scene" back at any moment, and js/core/engine.js re-evaluates `scene.config` on
+     every entry, so a counter held anywhere else is refunded by two clicks. */
+  const bells = () => Store.state.flags.CH3_BELLS | 0;
+  const turnBudget = () => Math.max(11, 12 - bells());          // floor: no safe schedule arrives sooner
+  const sightCost = () => 1 + bells();
+  /* The two seams' memories, written out rather than built from the key, so that a grep and
+     tools/flag-map.js both see the names. Both are ch3-local: no other chapter reads or writes either. */
+  const seamCount = (key) => (key === 'A3|B3' ? Store.state.flags.SEAM_A3B3 : Store.state.flags.SEAM_B3C3) | 0;
+  const seamWrong = (key) => { const n = seamCount(key) + 1; if (key === 'A3|B3') Store.set('SEAM_A3B3', n); else Store.set('SEAM_B3C3', n); return n; };
+  const NUM = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+  const num = (n) => NUM[n] || String(n);
+  const cap = (w) => w.charAt(0).toUpperCase() + w.slice(1);
+
   /* A hidden door.  grid.js reads `password` to compare, reads `wrongText` ONLY when the spoken word was
      wrong (one place, in move()), and writes `revealed` the moment a word is accepted, before Wren steps
      through. Both of those buy the chapter a turn on the near side: a wrong word costs a breath, and so
      does shouldering a heavy door with one arm. */
-  function mkDoor(password, prompt, wrong) {
-    const o = { password, prompt, _rev: false, _wrong: 0 };
+  function mkDoor(key, password, prompt, wrong) {
+    const o = { password, prompt, _rev: false };
     Object.defineProperty(o, 'revealed', { enumerable: true, get: () => o._rev, set: (v) => { o._rev = !!v; if (v) doorOpened(); } });
     Object.defineProperty(o, 'wrongText', { enumerable: true, get: () => {
       // grid.js sets the status to bad and then reads this; the deferred turn wipes the status, so write it again.
-      // The seam remembers across a bell, exactly as `revealed` does, so the field cannot be walked through.
-      o._wrong++;
-      const turns = o._wrong > 1 ? 2 : 1;
-      const tail = turns === 2 ? ' Two turns go with it — this seam has heard you guess before.' : ' A turn goes with it, and the rounds walk on.';
-      setTimeout(() => { const r = spendTurn(wrong + tail); if (turns === 2 && r && !r.ended) spendTurn(wrong + tail); }, 0);
+      // The nth wrong word at this seam costs n turns, and the count is in the save: gridConfig rebuilds
+      // these door objects on every scene entry, so an object field was a budget the Menu could refund.
+      const turns = seamWrong(key);
+      const tail = turns === 1 ? ' A turn goes with it, and the rounds walk on.'
+        : ' ' + cap(num(turns)) + ' turns go with it — this seam has heard you guess before.';
+      setTimeout(() => { for (let i = 0; i < turns; i++) { const r = spendTurn(wrong + tail); if (!r || r.ended) break; } }, 0);
       return wrong;
     } });
     return o;
@@ -122,7 +163,7 @@
     const status = widget.querySelector('.grid-pz .pz-status'), turnEl = widget.querySelector('.grid-pz .g-turn');
     const seen = !!(status && /sees Wren/.test(status.textContent));
     const turn = turnEl ? parseInt((turnEl.textContent.match(/\d+/) || ['0'])[0], 10) : 0;
-    if (seen || turn >= 12) return { spent: true, ended: true, status };
+    if (seen || turn >= turnBudget()) return { spent: true, ended: true, status };
     if (msg && status) { status.className = 'pz-status bad'; status.textContent = msg; }
     return { spent: true, ended: false, status };
   }
@@ -141,12 +182,17 @@
 
   const gridConfig = (s) => ({
     title: 'THE CORRIDORS — THE GALLERY TO THE TOWER',
-    note: 'The Provost, at the bell-rope: *Twelve turns. A turn is one room, or a wait. A patrol that ends a turn in Wren\'s room, or one doorway from it, has seen Wren. Wren runs all the way back to the gallery, and the count runs on. '
-      + (s.flags.WREN_HURT ? 'A hidden door costs a turn: a wrong word, or a one-handed shove. A seam you have already guessed at costs two.*' : 'A wrong word at a hidden door costs a turn, and a seam you have already guessed at costs two.*'),
+    /* Every number on this card is the number in force, not the number it started at: after a bell the
+       budget is eleven and a sighting is dearer, and a card that still said twelve would be a promise the
+       widget does not keep (R10.4 — a reader holding only the card must be able to compute any position). */
+    note: 'The Provost, at the bell-rope: *' + cap(num(turnBudget())) + ' turns. A turn is one room, or a wait. A patrol that ends a turn in Wren\'s room, or one doorway from it, has seen Wren. Wren runs all the way back to the gallery, and '
+      + (sightCost() === 1 ? 'a turn goes with it. ' : num(sightCost()) + ' turns go with it. ')
+      + (s.flags.WREN_HURT ? 'A hidden door costs a turn: a wrong word, or a one-handed shove. ' : 'A wrong word at a hidden door costs a turn. ')
+      + 'One turn more for every guess that seam already remembers.*',
     cols: 5, rows: 5, cells: CELLS, edges: EDGES,
     doors: {
-      'A3|B3': mkDoor(WORDS['A3|B3'], 'A seam in the west wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
-      'B3|C3': mkDoor(WORDS['B3|C3'], 'A seam in the laundry\'s back wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
+      'A3|B3': mkDoor('A3|B3', WORDS['A3|B3'], 'A seam in the west wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
+      'B3|C3': mkDoor('B3|C3', WORDS['B3|C3'], 'A seam in the laundry\'s back wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
     },
     start: 'A1', goal: 'E5', safe: ['A1'],   // the gallery, and nothing else: see the budget above
     revealPatrols: false,
@@ -156,11 +202,14 @@
     ],
     /* The world's reaction only. What the cry buys the Envoy, and for how long, is the Binder's page. */
     alarm: { cells: BOUGHT_ROOMS, turns: 3, text: 'A spyhole slides. A voice out of the lodge: "Here! The boy!" Somewhere east, boots stop walking.' },
-    maxTurns: 12,
+    get maxTurns() { return turnBudget(); },     // twelve, then one fewer per bell, floored at eleven
     labels: LABELS,
+    /* Read by grid.js one line BEFORE it calls onTimeout, so this bell is not counted yet: the terms
+       quoted here are next run's, computed at n + 1. */
     get timeoutText() {
-      const n = Store.state.flags.CH3_BELLS | 0;
-      return `The third bell, and Wren is not at the door. Far above, the Provost rings ${['a fourth', 'a fifth', 'a sixth'][Math.min(n, 2)] || 'another'}. Both rounds begin again from the top.`;
+      const n = bells();
+      const nth = ['a fourth', 'a fifth', 'a sixth'][Math.min(n, 2)] || 'another';
+      return `The third bell, and Wren is not at the door. Far above, the Provost rings ${nth}. Both rounds begin again from the top — ${num(Math.max(11, 11 - n))} turns in them now, and being seen costs ${num(2 + n)} of them.`;
     },
     successText: 'The Tower door. Wren flattens against it, grinning, out of breath.',
     /* Cumulative: a restart does not wipe the count. The turn matters more than the count — without it,
@@ -169,15 +218,21 @@
        Deferred, because this runs inside grid.js's move(). */
     onSpotted: () => {
       Store.inc('CH3_SPOTTED');
+      const cost = sightCost();
       // Keep grid.js's own line about who saw Wren and where: the deferred turn would otherwise wipe it.
       setTimeout(() => {
         const st = document.querySelector('#widget .grid-pz .pz-status');
         const seenLine = st ? st.textContent.trim() : '';
-        spendTurn((seenLine ? seenLine + ' ' : '') + 'Back in the gallery, breathing hard. The rounds did not wait for it.');
+        const tail = cost === 1 ? 'The rounds did not wait for it.' : `The rounds did not wait, and ${num(cost)} turns went with it.`;
+        for (let i = 0; i < cost; i++) { const r = spendTurn((seenLine ? seenLine + ' ' : '') + 'Back in the gallery, breathing hard. ' + tail); if (!r || r.ended) break; }
       }, 0);
     },
+    /* Every bell charges. WREN_SCARED is ch4's flag and means "the third bell rang with Wren still out",
+       so it is written once and never unwritten; the cost that keeps biting is CH3_BELLS itself, which
+       shortens the budget and raises the price of a sighting above. */
     onTimeout: () => {
-      if (!Store.state.flags.WREN_SCARED) { Store.set('WREN_SCARED', true); Store.inc('WREN_TRUST', -1); Store.note('The third bell rang with Wren still in the corridors.'); }
+      if (!Store.state.flags.WREN_SCARED) { Store.set('WREN_SCARED', true); Store.note('The third bell rang with Wren still in the corridors.'); }
+      Store.inc('WREN_TRUST', -1);
       Store.inc('CH3_BELLS');
     },
   });
@@ -187,7 +242,7 @@
 
         ARCH   = ['ASH','THORN','KNOT']   Reader — Flame, Spike and Hook, all standing up
         CLIMB  = [1, 1]                   Listener — each note one rung above the last
-        CUTS   = { scratch: 4, notch: 2 } Seer — two cuts under the ring, no arrow and no rule
+        CUTS   = { scratch: 1, notch: 4 } Seer — two cuts under the ring, no arrow and no rule
         LAW    = begin in the scratched slot, then one slot clockwise, wrapping; the rest stays empty (Binder)
 
      Enumerated: 4 slots, 8 glyph names, no repeats, empties allowed = 3,393 submittable states.
@@ -202,27 +257,72 @@
         no Listener 6 — the six orderings of the three words across slots 4, 1 and 2.
         no Seer     4 — one clockwise run of the three words per starting slot.
         no Binder   4 — begin at the scratch or at the notch, clockwise or anticlockwise.
+                        THIS ROW WAS FALSE UNTIL THE INTEGRATE PASS, and it was false in a way no
+                        reader of this chapter could see. The Binder's page here used to be, word for
+                        word, the Binder's PROLOGUE page: begin at the scratch, a notch is only a
+                        signature, run clockwise. The dormitory lamp is worked on the shared screen
+                        and its answer -- {3:ASH, 4:EMBER}, scratch at 3 -- resolves both of those
+                        bits in front of everybody, with the Binder required to say the rule aloud to
+                        solve it. So by Chapter III the rule is table knowledge (ADVERSARIAL 11), the
+                        Binder-less field was ONE board, and p was 1.000 rather than 0.250: the seat
+                        was free. Enumerated against the shipped wardCheck in
+                        scratchpad/prologue/binder.js.
+                        The fix keeps the accepted board to the letter and moves the RULE: the two
+                        cuts swapped slots and this ward begins at the NOTCH, because it is a Vigil
+                        ward and not a Founders' sigil. The row is 4 again, and better than 4 was:
+                        the board a table lays from the Prologue's rule is now a full lawful WRONG
+                        one, so the missing seat costs a try rather than nothing.
      No single drop leaves one. But four to six wrong sigils is nothing to a table that may submit for
-     ever, so `maxTries: 3` is the price: three cold rings and the captain takes Wren (ch3_surrender,
-     which already writes DOOR and SURRENDERED and has its own written branch). Guessing blind, a
-     three-role table is turned away between one time in four and one time in two. The hint bell lights
-     on the second wrong try and rung 3 is the literal answer, so a table that asks the fire is never
-     shut out. And no wrong line names a slot, a cut, a direction or the shape of the hum: the Hearth is
+     ever, so three tries is the price: three cold rings and the captain takes Wren (ch3_surrender, which
+     has its own written branch; onSolve writes DOOR and SURRENDERED the moment the ring goes cold, so a
+     detour through the Menu cannot skip past the scene that used to be the only writer). The count is WARD_TRIES,
+     in the save, and `maxTries` is what is left of it — the widget's own `tries` is a local `let` that
+     the Menu's "Replay scene" hands back in full, and a budget two clicks can refund is not a budget
+     (ADVERSARIAL 7). Guessing blind, and drawing distinct boards, a three-role table gets through
+     3/|field| of the time: no Reader 3/5, no Listener 3/6, no Seer and no Binder 3/4 — turned away
+     between one time in four and one time in two.
+     THE LADDER IS PART OF THE ANSWER SPACE, because a hint costs nothing. Enumerated against the
+     shipped wardCheck (all four fields, every rung applied as a predicate):
+        rung 1  re-partitions and names no coordinate:            5 / 6 / 4 / 4, unchanged
+        rung 2  names no slot, no cut and no direction:           5 / 6 / 4 / 4, unchanged
+        rung 3  is the answer. The bell lights on the second wrong try (ring.js:89) and rung 3 is free, so
+                a table that asks the fire is never shut out; tools/check-hints.js proves rung 3 is a board
+                wardCheck actually takes, which is the check that would have caught ch4's drifted oath.
+     The rung 2 that stood here until this pass — "one slot stays empty, and it is not the last one. The
+     count runs off the end of the ring and comes back to slot 1" — was the Seer's slot and the Binder's
+     wrap, and measured it cut the Seer-less and the Binder-less fields from 4 to 2: a free hint took
+     p(3 tries) from 0.750 to 1.000 in both, and the 25% it deleted is the captain taking Wren.
+     And no wrong line names a slot, a cut, a direction or the shape of the hum: the Hearth is
      the one screen all four can see, and four of the five keyed lines used to read out somebody's page.
      The mark sits at slot 4 so the count wraps: "it begins at slot 1", which the widget's own numbering
      suggests, is a wrong answer with its own line rather than the right one.
      ============================================================================================ */
   const ARCH = ['ASH', 'THORN', 'KNOT'];
-  const CUTS = { scratch: 4, notch: 2 };
+  /* The two cuts. They are the SEER's page and nothing on the Hearth draws them (the ring ships
+     marks: []), so this constant feeds no code -- it is the record of what companion/ch3.js draws and
+     says, and tools/scripts/ch3-grid-check.js now compares the two so they cannot drift apart.
+     They SWAPPED in the Integrate pass. See the note on the Binder's page in companion/ch3.js: the
+     scratch-is-the-mark rule was spent by the Prologue's dormitory lamp, in front of the whole room,
+     so this ward's Binder-less field was 1 and not 4. The mark here is the NOTCH, which is what the
+     Binder now holds; the accepted board (RING below) did not move.
+     The scratch sits on slot 1 -- the slot a guessing table starts at, and the slot ch0's lamp and
+     ch7's sigil both put their decoy cut on, for the same reason. It cannot be slot 2: that is
+     ch4's oath pair (OATH_SCRATCH 2, OATH_NOTCH 4) and tools/scripts/ch4-oath-check.js fails on the
+     repeat, which is ADVERSARIAL 9 and is how this was caught. */
+  const CUTS = { scratch: 1, notch: 4 };   // Seer: what is cut. Binder: which of them binds.
   const RING = { 1: 'THORN', 2: 'KNOT', 4: 'ASH' };
   /* wardCheck always returns true or a line, so ring.js's own onWrong never fires: the second-try nudge
-     that suspects a player who has not spoken is appended here instead. */
-  let wardTries = 0;
+     that suspects a player who has not spoken is appended here instead.
+     WARD_TRIES is the budget, and it is in the save: a module-local `let` survives a Replay scene but
+     not a reload, and ring.js's own `tries` survives neither. Every refused submission counts, the
+     under-committed ones included, because ring.js's own `tries` counts every submission and compares it
+     to maxTries: let the two drift apart and the widget can go cold at a count the card never mentioned. */
+  const wardBudget = (s) => Math.max(1, 3 - (s.flags.WARD_TRIES | 0));
   function wardCheck(m) {
     const line = wardReason(m);
     if (line === true) return true;
-    wardTries++;
-    return wardTries >= 2 ? line + ' Wren, not helping: "Has everybody actually said their bit?"' : line;
+    const n = Store.inc('WARD_TRIES');
+    return n >= 2 ? line + ' Wren, not helping: "Has everybody actually said their bit?"' : line;
   }
   /* Every line here may say only what is on the rule card, what the Hearth has already printed, or what
      the iron does. It may never name which slot is cut, which cut is which, which way the run goes, or
@@ -315,7 +415,7 @@
       ch3_grid: {
         type: 'puzzle', puzzle: 'grid', art: 'ch3_corridors', mood: 'dread', fx: 'dust',
         puzzleId: 'ch3_grid', par: [3, 5, 7], clearWidget: true,
-        enter: () => { Store.set('CH3_SPOTTED', 0); },
+        enter: (s) => { if (s.flags.CH3_SPOTTED == null) Store.set('CH3_SPOTTED', 0); },   // cumulative: a re-entry is not a clean sheet (ch1.js:92 is the pattern)
         text: [
           'A1 to E5, in the dark, past two patrols.',
           { text: 'Reader — the word cut over a hidden door.', cls: 'whisper' },
@@ -327,7 +427,7 @@
         config: gridConfig,
         hints: [
           'Four things, four people, and nobody has two. The word cut over a hidden door — the Reader. How far along their rounds the patrols are — the Listener. Where those rounds run, room by room — the Seer. Who is bought, and which room nobody searches — the Binder.',
-          'Both rounds are twelve turns long, and then they start again. So the question is not which way Wren goes. It is when Wren steps out of the room nobody searches.',
+          'A room is not safe or unsafe. It is safe on some beats and not on others, and the beats come round again. So the question is when to move, not which way — and no two of you can answer that between you. Ask for all four things before Wren moves.',
           (s) => s.flags.WREN_HURT
             ? 'A2, then A3. Speak the west word on turn 3, and the bad arm spends it, so Wren is in the laundry on turn 4. Wait once. The back seam spends turn 6. Then C3, D3, E3, E4, and the door on turn 11.'
             : 'A2, then A3, and speak the west word into the laundry on turn 3. Wait through turns 4, 5 and 6. The back seam on turn 7, then D3, E3, E4, and the door on turn 11.',
@@ -361,9 +461,11 @@
         badText: 'The fire does not know that word. The sealed word is four letters, and the phone shows it only after you choose.',
         stuckText: 'Wren, patient: "The four letters it gave you after you picked. Not before."',
         /* Writes WHISPER_reader, WHISPER_listener, WHISPER_seer and WHISPER_binder, plus TRUTHS.
-           ch6 and ch8 read all five verbatim; the values and the truth map may not change. */
+           ch8 reads all five; the values may not change. The truth map itself is L.whisperTruth in
+           js/content/lore.js -- it used to be written out here AND in ch8's fallback AND (until this
+           sweep) in ch6, three copies in three chapters that cannot edit one another. */
         onTokens: (values, s) => {
-          const truth = { reader: 'DONTKNOW', listener: 'NO', seer: 'TELL', binder: 'DONTKNOW' };
+          const truth = L.whisperTruth;
           let truths = 0;
           values.forEach((v, i) => { const r = L.roles[i].id; s.flags['WHISPER_' + r] = v; if (v === truth[r]) truths++; });
           s.flags.TRUTHS = truths;
@@ -410,7 +512,7 @@
         puzzleId: 'ch3_fight', par: [2, 3.5, 5], clearWidget: true,
         text: (s) => [
           s.flags.TOWER_DOOR_timedout
-            ? 'Nobody answers the captain. Wren turns to the door instead. Three shapes cut into the arch, and four sooty slots.'
+            ? 'Nobody answers. Wren turns to the door instead: three shapes cut into the arch, four sooty slots.'
             : 'Three shapes cut into the arch. Below them, four sooty slots.',
           { text: 'Every phone: **Pages**, and the word WARD.', cls: 'whisper' },
           { text: 'Reader — what the three shapes say.', cls: 'whisper' },
@@ -418,21 +520,27 @@
           { text: 'Seer — what is cut under the ring.', cls: 'whisper' },
           { text: 'Binder — where a sigil begins. Then four hands.', cls: 'whisper' },
         ],
-        config: () => ({
+        config: (s) => ({
           title: 'THE THRESHOLD OF THE BELL TOWER',
-          note: 'Wren, flat against the door: *Four slots in the soot, and a sigil to put in them. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And he will not stand there for more than three tries.*',
+          note: 'Wren, flat against the door: *Four slots in the soot, and a sigil to put in them. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And he will not stand there for more than three tries'
+            + ((s.flags.WARD_TRIES | 0) ? ' — and he has counted ' + num(s.flags.WARD_TRIES | 0) + '.*' : '.*'),
           slots: 4, glyphs: glyphPalette(), allowEmpty: true, showArrow: false, marks: [],
-          check: wardCheck, maxTries: 3,
+          check: wardCheck, maxTries: wardBudget(s),
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets.',
         }),
         hints: [
           'Four answers, four people, and nobody has two. What the shapes say — the Reader. Which of them sounds first — the Listener. What is cut under the ring — the Seer. Where a sigil begins — the Binder.',
-          'Three words and four slots, so one slot stays empty, and it is not the last one. The count runs off the end of the ring and comes back to slot 1.',
+          'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So the only question is where the run begins, and that answer comes in two halves, on two phones.',
           'ASH in slot 4, THORN in slot 1, KNOT in slot 2. Slot 3 stays empty. Then four hands.',
         ],
+        /* The losing branch writes DOOR and SURRENDERED here, not only in ch3_surrender's `enter`: once the
+           ring has resolved the puzzle is markSolved, and a table that opens the Menu at that moment and
+           presses "Replay scene" is shown "This ward has already been opened" and continued past the
+           surrender scene by engine.js:84, which calls a function `next` without the result and so reads
+           'ch3_flow'. That path used to leave DOOR unset, and ch4 and ch5 both branch on it. */
         onSolve: (s, r) => {
-          if (r && r.failed) { Store.set('WARD_COLD', true); Store.note('Three cold sigils at the Tower door, and the captain stopped waiting.'); return; }
+          if (r && r.failed) { Store.set('WARD_COLD', true); Store.set('DOOR', 'SURRENDERED'); Store.set('SURRENDERED', true); Store.note('Three cold sigils at the Tower door, and the captain stopped waiting.'); return; }
           Store.set('DOOR', 'FIGHT'); Store.note('You woke the threshold ward on the Tower door.');
         },
         solvedText: (s, r) => (r && r.failed) ? [

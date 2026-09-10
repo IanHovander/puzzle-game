@@ -5,6 +5,26 @@
   const nick = L.nick;
   const glyphPalette = () => G.names.map(n => ({ id: n, svg: G.inner(n), label: n }));
 
+  /* Chapter-local fit. The teaching ring is the widest board in the game — nine palette tiles, each
+     with a shape on it — and it is the one puzzle the room meets before it has learned that the panel
+     can be scrolled at all. Measured on the shipped build with `node tools/scan-fit.js ch0 --w 1152
+     --h 648`: "ch0_lamp: puzzle panel scrolls, 193px below the fold", and what was below it was the
+     Clear ring button, the bottom row of the palette and Close the sigil — every control for
+     correcting a misplacement and the only way to commit. The global step at 820px is not enough for
+     a ring this wide, so the Prologue takes a second one of its own. (ch1.js:15 does the same for the
+     table of nine seats.) */
+  if (document.head) document.head.appendChild(Object.assign(document.createElement('style'), { textContent: `
+    @media (max-height: 780px) {
+      body[data-chapter="ch0"] .ring-pz .wheel { width: min(31vh, 300px); height: min(31vh, 300px); }
+      body[data-chapter="ch0"] .ring-pz .wheel-wrap { gap: 12px; }
+      body[data-chapter="ch0"] .ring-pz .palette { min-width: 200px; flex-basis: 200px; }
+      body[data-chapter="ch0"] .ring-pz .palette-grid { gap: 6px; max-width: 340px; }
+      body[data-chapter="ch0"] .ring-pz .palette-grid .glyph { width: 62px; height: 66px; }
+      body[data-chapter="ch0"] .ring-pz .palette-grid .glyph svg { width: 34px; height: 34px; }
+      body[data-chapter="ch0"] .ring-pz .pz-note { font-size: 14px; line-height: 1.35; }
+    }
+  ` }));
+
   Game.addChapter({
     id: 'ch0', label: 'Prologue', title: 'The Night the Hearth Guttered', start: 'ch0_start', code: 'KINDLE',
     mood: 'hearth', fx: 'embers', art: 'ch0_hearthfire', flame: 1,
@@ -39,10 +59,10 @@
         art: 'ch0_stone', mood: 'hearth', fx: 'embers',
         text: [
           'Above the fire, cut into the stone, one sentence in a language nobody has spoken for four hundred years.',
-          'Every child here learns the school\'s translation. Every grown-up here argues about it.',
+          'Nobody alive has read the cuts. Every child here learns the school\'s translation, and every grown-up here argues about it.',
           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
           'You cannot walk into weather. The Cold is a place, and nobody will tell you where.',
-          { text: 'You will be shown this sentence again, when it matters. Nothing tonight needs writing down.', cls: 'small' },
+          { text: 'You will be shown this sentence again, when it matters, and closer than this. Nothing tonight needs writing down.', cls: 'small' },
           'Nobody agrees what the rest of it means. Everybody agrees who it is about.',
           { text: 'The masters come in the morning to argue about it. Tonight is only the night before.', cls: 'small' },
           'And tonight, for the first time in fourteen years, the Hearth is flickering.',
@@ -185,7 +205,7 @@
         }),
         hints: [
           'Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder.',
-          'Two words, and the hum climbs three steps between them. The Ladder in the Listener\'s Book turns that climb into an order. And there is more than one cut under the brass — the Binder knows which kind starts a sigil.',
+          'Two words, and the hum between them says which of the two is spoken first. The Listener has that step. And there is more than one cut under the brass — the Binder knows which kind starts a sigil.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
@@ -223,7 +243,7 @@
           { text: 'After each chapter the Hearth shows you every path — the ones you walked, and the ones you did not.', cls: 'small' },
         ],
         flowTitle: 'Prologue — the paths you walked',
-        stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**.`,
+        stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,
         next: 'ch1_start', button: 'The Vigil',
       },
     },
