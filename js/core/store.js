@@ -66,7 +66,12 @@
     Store.state.lastTick = Date.now(); ticking = true;
     if (!tickHandle) tickHandle = setInterval(() => {
       if (!ticking || document.hidden) { Store.state.lastTick = Date.now(); return; }
-      const now = Date.now(); Store.state.elapsedMs += now - Store.state.lastTick; Store.state.lastTick = now;
+      /* Clamped to one tick. The document.hidden guard above catches a backgrounded tab, but a CLOSED
+         LID does not set document.hidden -- the interval simply stops, and the first tick after wake
+         added the whole suspension in one go. A table that stops at Chapter VI and comes back next
+         Saturday without closing the tab was credited the entire week, and ch8 prints this number as
+         the last thing the game says about the night. */
+      const now = Date.now(); Store.state.elapsedMs += Math.min(now - Store.state.lastTick, 2000); Store.state.lastTick = now;
       if (Math.floor(Store.state.elapsedMs / 1000) % 15 === 0) Store.save();
     }, 1000);
   };

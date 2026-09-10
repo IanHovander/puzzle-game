@@ -1,14 +1,431 @@
-{ "start": "ch8_start", "steps": [
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WREN", "A48"]}, {"wait": 600}, {"shot": "c8_reader_fourfold"}, {"expect": "Ana"}, {"expect": "three shapes on a page"}, {"clickText": "Look up"}, {"wait": 2500}, {"shot": "c8_reader_burn"}, {"expect": "Your Sighting is spent."}, {"wait": 4500}, {"shot": "c8_reader_white"}, {"expect": "Look at the people at the table."}, {"eval": "document.body.classList.contains('ch8-white')"}, {"tab": "Wren"}, {"expect": "would do it again"}, {"eval": "document.body.classList.contains('ch8-white')"}, {"tab": "Speak"}, {"expect": "The night has been spoken"},
-  {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["WREN", "A48"]}, {"wait": 600}, {"shot": "c8_listener_fourfold"}, {"expect": "Ben"}, {"expect": "That one's mine"}, {"clickText": "Cup your ear"}, {"tab": "Book"}, {"expect": "The Ladder"},
-  {"companion": true}, {"role": "Seer", "name": "Cass"}, {"unlock": ["WREN", "A48"]}, {"wait": 600}, {"shot": "c8_seer_fourfold"}, {"expect": "Cass"}, {"expect": "the right way, at last"},
-  {"companion": true}, {"role": "Binder", "name": "Dev"}, {"unlock": ["WREN", "A48"]}, {"wait": 600}, {"shot": "c8_binder_fourfold"}, {"expect": "Dev"}, {"expect": "Red. Not grey."}, {"expect": "Law 0"}, {"expect": "WRITTEN"},
-  {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["WREN", "BUH"]}, {"wait": 400}, {"shot": "c8_listener_half_stay"}, {"expect": "You kept your Sight. You watched them go."},
-  {"eval": "window.Companion.state().answers['ch7:finale']='WALK_REFUSE'"}, {"click": ".back-row .btn"}, {"wait": 300}, {"unlock": ["WREN", "BUH"]}, {"wait": 600}, {"shot": "c8_listener_half_walk"}, {"expect": "That one's mine"}, {"tab": "Wren"}, {"expect": "Walker"},
-  {"eval": "window.Companion.state().answers['ch7:finale']='WALK_ACCEPT'"}, {"click": ".back-row .btn"}, {"wait": 300}, {"unlock": ["WREN", "BUH"]}, {"wait": 600}, {"shot": "c8_listener_half_ask"}, {"expect": "One thing first"}, {"clickText": "I kept it"}, {"wait": 600}, {"shot": "c8_listener_half_kept"}, {"expect": "You kept your Sight. You watched them go."}, {"expect": "Your key was the Envoy's."},
-  {"eval": "delete window.Companion.state().done['ch8:kept']"}, {"click": ".back-row .btn"}, {"wait": 300}, {"unlock": ["WREN", "BUH"]}, {"wait": 600}, {"clickText": "I broke it"}, {"wait": 600}, {"expect": "That one's mine"},
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WREN", "CG9"]}, {"wait": 600}, {"shot": "c8_reader_sealing"}, {"expect": "Reader. Eat something."}, {"eval": "document.body.classList.contains('ch8-dark')"},
-  {"companion": true}, {"role": "Binder", "name": "Dev"}, {"unlock": ["WREN", "DSV"]}, {"wait": 600}, {"shot": "c8_binder_keeper"}, {"expect": "Swear the next one to a person"}, {"expect": "RESTORED"}, {"tab": "Wren"}, {"expect": "The knot itself"},
-  {"companion": true}, {"role": "Seer", "name": "Cass"}, {"unlock": ["WREN", "EYZ"]}, {"wait": 600}, {"shot": "c8_seer_bargain"}, {"expect": "BY ORDER OF THE CROWN"}, {"expect": "Master Cass"},
-  {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["WREN", "ZZZ"]}, {"expect": "The mark is not right"}
-] }
+{
+ "start": "ch8_start",
+ "steps": [
+  {
+   "companion": true
+  },
+  {
+   "role": "Reader",
+   "name": "Ana"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "A48"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_reader_fourfold"
+  },
+  {
+   "expect": "Ana"
+  },
+  {
+   "expect": "A letter, in Wren's hand"
+  },
+  {
+   "expect": "three shapes on a page"
+  },
+  {
+   "clickText": "Look up"
+  },
+  {
+   "wait": 2500
+  },
+  {
+   "shot": "c8_reader_burn"
+  },
+  {
+   "expect": "Your Sighting is spent."
+  },
+  {
+   "wait": 4500
+  },
+  {
+   "shot": "c8_reader_white"
+  },
+  {
+   "expect": "Look at the people at the table."
+  },
+  {
+   "eval": "document.body.classList.contains('ch8-white')"
+  },
+  {
+   "tab": "Wren"
+  },
+  {
+   "expect": "would do it again"
+  },
+  {
+   "eval": "document.body.classList.contains('ch8-white')"
+  },
+  {
+   "tab": "Speak"
+  },
+  {
+   "expect": "The night has been spoken"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Listener",
+   "name": "Ben"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "A48"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_listener_fourfold"
+  },
+  {
+   "expect": "Ben"
+  },
+  {
+   "expect": "That one's mine"
+  },
+  {
+   "clickText": "Cup your ear"
+  },
+  {
+   "tab": "Book"
+  },
+  {
+   "expect": "The Ladder"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Seer",
+   "name": "Cass"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "A48"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_seer_fourfold"
+  },
+  {
+   "expect": "Cass"
+  },
+  {
+   "expect": "all five shadows fall away from the fire"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Binder",
+   "name": "Constantinopolis"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "A48"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_binder_fourfold"
+  },
+  {
+   "expect": "Constantinopolis"
+  },
+  {
+   "expect": "Red. Not grey."
+  },
+  {
+   "expect": "Law 0"
+  },
+  {
+   "expect": "WRITTEN"
+  },
+  {
+   "assert": "(function(){var t=document.querySelector('.ch8-thread text');var p=document.querySelector('.ch8-thread path.ch8-th');return t&&p&&(t.getBBox().x+t.getBBox().width) < p.getBBox().x;})()"
+  },
+  {
+   "assert": "document.querySelectorAll('#cmain h3').length === 1"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Listener",
+   "name": "Ben"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "BUH"
+   ]
+  },
+  {
+   "wait": 400
+  },
+  {
+   "shot": "c8_listener_half_stay"
+  },
+  {
+   "expect": "You kept your Sight. You watched them go."
+  },
+  {
+   "eval": "window.Companion.state().answers['ch7:finale']='WALK_REFUSE'"
+  },
+  {
+   "click": ".back-row .btn"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "unlock": [
+    "WREN",
+    "BUH"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_listener_half_walk"
+  },
+  {
+   "expect": "That one's mine"
+  },
+  {
+   "tab": "Wren"
+  },
+  {
+   "expect": "Walker"
+  },
+  {
+   "eval": "window.Companion.state().answers['ch7:finale']='WALK_ACCEPT'"
+  },
+  {
+   "click": ".back-row .btn"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "unlock": [
+    "WREN",
+    "BUH"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_listener_half_accept"
+  },
+  {
+   "expect": "That one's mine"
+  },
+  {
+   "expect": "It was written to you, not to your key."
+  },
+  {
+   "expectNot": "One thing first"
+  },
+  {
+   "expectNot": "did you break the bargain"
+  },
+  {
+   "expectNot": "I kept it. My key was dead."
+  },
+  {
+   "assert": "document.querySelectorAll('#cmain h3').length === 1"
+  },
+  {
+   "eval": "window.Companion.state().answers['ch7:finale']='STAY_ACCEPT'"
+  },
+  {
+   "click": ".back-row .btn"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "unlock": [
+    "WREN",
+    "BUH"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "expect": "You kept your Sight. You watched them go."
+  },
+  {
+   "expectNot": "One thing first"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Reader",
+   "name": "Ana"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "CG9"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_reader_sealing"
+  },
+  {
+   "expect": "The last thing Wren said to you"
+  },
+  {
+   "expect": "Reader. Eat something."
+  },
+  {
+   "eval": "document.body.classList.contains('ch8-dark')"
+  },
+  {
+   "wait": 12000
+  },
+  {
+   "assert": "document.querySelector('.ch8-fade').classList.contains('gone')"
+  },
+  {
+   "clickText": "Read it again"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "assert": "!document.querySelector('.ch8-fade').classList.contains('gone')"
+  },
+  {
+   "tab": "Wren"
+  },
+  {
+   "expect": "What you keep"
+  },
+  {
+   "expect": "nobody in the room could spell"
+  },
+  {
+   "expectNot": "Dark."
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Binder",
+   "name": "Dev"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "DSV"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_binder_keeper"
+  },
+  {
+   "expect": "Provost Marrow, before she goes"
+  },
+  {
+   "expectNot": "Ilsabet"
+  },
+  {
+   "expect": "Swear the next one to a person"
+  },
+  {
+   "expect": "RESTORED"
+  },
+  {
+   "tab": "Wren"
+  },
+  {
+   "expect": "The knot itself"
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Seer",
+   "name": "Cass"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "EYZ"
+   ]
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "c8_seer_bargain"
+  },
+  {
+   "expect": "Your posting"
+  },
+  {
+   "expect": "BY ORDER OF THE CROWN"
+  },
+  {
+   "expect": "Master Cass"
+  },
+  {
+   "tab": "Wren"
+  },
+  {
+   "expect": "The last thing you saw"
+  },
+  {
+   "expect": "shadow falling towards the fire"
+  },
+  {
+   "expectNot": "Nothing here."
+  },
+  {
+   "companion": true
+  },
+  {
+   "role": "Reader",
+   "name": "Ana"
+  },
+  {
+   "unlock": [
+    "WREN",
+    "ZZZ"
+   ]
+  },
+  {
+   "expect": "The mark is not right"
+  }
+ ]
+}

@@ -66,13 +66,21 @@
   Game.clock = (function () {
     let el = null, endAt = 0, iv = null, onZero = null, running = false;
     function ensure() { if (!el) { el = UI.el('span', { id: 'midnight', class: 'hidden' }); dom.timer.parentNode.insertBefore(el, dom.timer); } return el; }
-    function render() { const left = Math.max(0, endAt - Date.now()); const s = Math.ceil(left / 1000); el.textContent = 'MIDNIGHT ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); el.classList.toggle('urgent', s <= 60); Store.state.flags.MIDNIGHT_LEFT = s; if (left <= 0 && running) { running = false; clearInterval(iv); iv = null; Audio.sfx('boom'); if (onZero) onZero(); } }
+    /* MIDNIGHT_LEFT is written straight into flags here and, until this pass, never saved: the only
+       thing that ever put it on disk was Store.startTimer's fifteen-second heartbeat, so a reload
+       could hand back up to fifteen seconds -- and, worse, hand back a penalty charged in between.
+       ch7 prices its whole retry economy in this clock (js/content/ch7.js, sigilPrice), so a
+       refundable clock is ADVERSARIAL 7 in the Finale. Every discrete event saves now, and the
+       steady drain saves on a five-second grid, which bounds a reload's drift to five seconds of
+       elapsed night and none of any charge. Store.save() is a single localStorage write. */
+    let savedAt = 0;
+    function render(force) { const left = Math.max(0, endAt - Date.now()); const s = Math.ceil(left / 1000); el.textContent = 'MIDNIGHT ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); el.classList.toggle('urgent', s <= 60); Store.state.flags.MIDNIGHT_LEFT = s; const zero = left <= 0 && running; if (zero) { running = false; clearInterval(iv); iv = null; } if (force || zero || Math.abs(s - savedAt) >= 5) { savedAt = s; Store.save(); } if (zero) { Audio.sfx('boom'); if (onZero) onZero(); } }
     return {
-      start: (seconds, cb) => { ensure(); endAt = Date.now() + seconds * 1000; onZero = cb; running = true; el.classList.remove('hidden'); if (iv) clearInterval(iv); iv = setInterval(render, 250); render(); },
+      start: (seconds, cb) => { ensure(); endAt = Date.now() + seconds * 1000; onZero = cb; running = true; el.classList.remove('hidden'); if (iv) clearInterval(iv); iv = setInterval(render, 250); render(true); },
       resume: (cb) => { const s = Store.state.flags.MIDNIGHT_LEFT; if (s > 0) Game.clock.start(s, cb); },
-      penalty: (seconds) => { if (!running) return; endAt -= seconds * 1000; render(); UI.toast('Midnight comes ' + seconds + ' seconds closer.', 2200, 'bad'); },
-      bonus: (seconds) => { if (!running) return; endAt += seconds * 1000; render(); },
-      stop: () => { running = false; if (iv) clearInterval(iv); iv = null; if (el) el.classList.add('hidden'); },
+      penalty: (seconds) => { if (!running) return; endAt -= seconds * 1000; render(true); UI.toast('Midnight comes ' + seconds + ' seconds closer.', 2200, 'bad'); },
+      bonus: (seconds) => { if (!running) return; endAt += seconds * 1000; render(true); },
+      stop: () => { running = false; if (iv) clearInterval(iv); iv = null; if (el) el.classList.add('hidden'); Store.save(); },
       left: () => Math.max(0, Math.ceil((endAt - Date.now()) / 1000)),
       running: () => running,
     };
@@ -96,7 +104,15 @@
     if (scene.flame != null || ch.flame != null) Game.flame(scene.flame != null ? scene.flame : ch.flame);
     if (scene.enter) { try { scene.enter(Store.state); } catch (e) { console.error(e); } }
     if (scene.sfx) Audio.sfx(scene.sfx);
-    dom.hint.classList.toggle('hidden', !(scene.type === 'puzzle' || scene.hints));
+    /* The bell is lit by the LADDER, not by the scene's type. It used to be lit for every
+       type:'puzzle' scene, and six of them carry no hints array -- ch0_practice, ch0_carve
+       (which light it twice in the Prologue, before the scene that teaches what it is),
+       ch6_practice, ch6_round1, ch6_round3 (a reflex round gets a note and a practice pass
+       instead of a ladder, STYLE R10.26) and ch7_binding. Game.showHint returns silently on
+       all six, so the bell was a live control that did nothing. api.setHints is called from
+       exactly one place (`if (scene.hints)` below) and un-hides the bell itself, so nothing
+       that has a ladder loses it. */
+    dom.hint.classList.toggle('hidden', !scene.hints);
     dom.hint.classList.remove('attention');
 
     UI.clear(dom.text); UI.clear(dom.actions); UI.clear(dom.widget);
@@ -286,10 +302,25 @@
       flow.nodes.forEach(n => { if (n.when && n.when(Store.state)) done.add(n.id); });
       const wrap = UI.el('div', { class: 'flow-panel' });
       wrap.appendChild(UI.el('h3', { class: 'flow-title', text: (scene.flowTitle || (ch.title + ' — the paths you walked')) }));
-      wrap.appendChild(UI.flowchart(flow, done));
       const stats = typeof scene.stats === 'function' ? scene.stats(Store.state) : null;
-      if (stats) wrap.appendChild(UI.el('div', { class: 'flow-stats', html: UI.rich(stats) }));
+      /* The panel goes in EMPTY first and is measured, then filled. UI.flowchart now lays the chart out
+         in real pixels at the 17px type floor, so it has to be told how much room it has -- and the room
+         only exists once .flow-panel is in the DOM, because that is what widens the column
+         (css/theme.css, `#panel:has(.flow-panel)`). Measuring before appending would size every chart
+         to the narrow two-column width and put the type back under the floor. */
       dom.actions.appendChild(wrap);
+      /* the room the chart actually has: the panel's own box, less the title and the ledger under it */
+      /* The room the chart actually has. Height comes from the panel's computed max-height (css/hearth.css
+         caps .flow-panel at the viewport), not from clientHeight -- the panel is still empty at this
+         point, so clientHeight is the title and nothing else, and a chart sized against that comes out
+         half a screen too tall. */
+      const cap = parseFloat(getComputedStyle(wrap).maxHeight);
+      /* -22px: the panel is still empty when it is measured, so it has no vertical scrollbar yet, and
+         most charts make it scroll. Sizing to the full width put every chart 16px off the side. */
+      const avail = { w: Math.max(320, wrap.clientWidth - 22),
+        h: Math.max(200, (isFinite(cap) ? cap : window.innerHeight - 220) - wrap.firstChild.offsetHeight - (stats ? 62 : 0) - 26) };
+      wrap.appendChild(UI.flowchart(flow, done, { avail }));
+      if (stats) wrap.appendChild(UI.el('div', { class: 'flow-stats', html: UI.rich(stats) }));
     }
     api.button(scene.button || 'Onward', () => api.go(scene.next), 'primary');
   }
@@ -297,7 +328,16 @@
   async function runCustom(scene, api) {
     const box = UI.el('div', { class: 'widget-inner' }); dom.widget.appendChild(box);
     let next;
-    try { next = await scene.run(box, api); } catch (e) { console.error(e); }
+    const started = (() => { try { return scene.run(box, api); } catch (e) { console.error(e); return null; } })();
+    /* A custom scene need not build a widget -- ch7_cold puts one button in #actions and nothing else --
+       and an empty #widget still draws its panel: a 644x26px bordered box above the button, on the beat
+       where midnight goes out. Hide the panel while it is empty, and give the text back its full width;
+       the observer puts it back the moment the scene draws something. */
+    const fit = () => { const empty = !box.childNodes.length; dom.widget.classList.toggle('hidden', empty); dom.text.classList.toggle('narrow', !empty); };
+    fit();
+    const mo = typeof MutationObserver === 'function' ? new MutationObserver(fit) : null;
+    if (mo) mo.observe(box, { childList: true });
+    try { next = await started; } catch (e) { console.error(e); } finally { if (mo) mo.disconnect(); }
     if (!api.alive()) return;
     if (next === false) return; // scene handled navigation itself
     api.go(next || scene.next);
@@ -306,7 +346,13 @@
   function runEnd(scene, api) {
     Store.pauseTimer();
     if (scene.render) scene.render(dom.actions, api);
-    api.button(scene.button || 'Begin again', () => { Store.reset(); location.reload(); }, 'ghost');
+    /* This erases the save -- the one Chapter select and 'see another ending in twenty minutes' both
+       depend on -- and it sat unguarded next to two harmless buttons on the last screen of a two-hour
+       game, at midnight, in front of a tired table. 'Abandon game' in the Menu has always confirmed;
+       this is the same action and did not. */
+    api.button(scene.button || 'Begin again', async () => {
+      if (await UI.confirm('Erase this night and start over? The words, the choices and the ending all go.', { danger: true, ok: 'Erase it' })) { Store.reset(); location.reload(); }
+    }, 'ghost');
   }
 
   /* ---------- Hints ---------- */
@@ -350,16 +396,52 @@
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Copy save code', onclick: () => { const code = btoa(unescape(encodeURIComponent(JSON.stringify(Store.state)))); const ta = UI.el('textarea', { class: 'field plain', style: { height: '90px', fontSize: '12px', letterSpacing: '0', textTransform: 'none' } }); ta.value = code; box.appendChild(UI.el('p', { class: 'small', text: 'Paste this into another laptop\'s menu to continue there (elapsed time carries over).' })); box.appendChild(ta); ta.select(); try { navigator.clipboard.writeText(code); UI.toast('Save code copied.'); } catch (e) {} } }));
     row2.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Paste save code', onclick: async () => { const v = await UI.ask('Paste the save code:', '', { plain: true, ok: 'Load', maxlength: 100000 }); if (!v) return; try { const st = JSON.parse(decodeURIComponent(escape(atob(v.trim())))); if (!st || st.version !== 1) throw new Error('bad'); Store.state = Object.assign(Store.state, st); Store.save(); location.reload(); } catch (e) { UI.notice('That code is not a save for this game.'); } } }));
     box.appendChild(row2);
+    const row3 = UI.el('div', { class: 'row' });
+    row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
+    box.appendChild(row3);
     const m = UI.modal(box, { title: 'The Hearth' });
   };
+  /* THE RECOVERY THIS GAME DOCUMENTS AND DID NOT HAVE. Every attunement writes its mark into the save
+     (`Store.state.flags['CAST_' + code]`, a few lines up) and renders it exactly once, on the scene
+     that produced it -- `node tools/flag-map.js` reported CAST_ as "set but never read". Seven of the
+     nine chapters carry a mark (ch0 and ch1 have `cast: []`), and js/companion.js refuses a
+     re-attunement without one: "This word has a mark beside it on the Hearth. Enter it too."
+     So docs/HOST.md's instruction -- if a phone dies, open the Companion on another one, choose the
+     same seat and type the current word again -- was FALSE for seven chapters, and it is the recovery
+     path for the four likeliest disasters at a real table: a flat battery, a late arrival, a lost
+     phone, and stopping for a week. The only working recovery was Chapter select, which overwrites
+     the current scene and costs the table their place.
+     The spoiler gate is the one showChapterSelect already ships, copied deliberately rather than
+     invented: a chapter is named, and its word shown, once the table has been there. */
+  Game.showWords = function () {
+    const box = UI.el('div', { class: 'chapter-list' });
+    Game.chapters.forEach(ch => {
+      if (ch.hidden || !ch.code) return;
+      const reached = Store.state.visited.includes(ch.start);
+      const mark = Store.state.flags['CAST_' + ch.code];
+      const label = reached
+        ? `<strong>${UI.esc(ch.label || 'Chapter')}</strong> — ${UI.esc(ch.code)}${mark ? ' · <strong>' + UI.esc(mark) + '</strong>' : ''}`
+        : `${UI.esc(ch.label || 'Chapter')} — · · ·`;
+      box.appendChild(UI.el('p', { class: 'small' + (reached ? '' : ' dim'), html: label }));
+    });
+    box.appendChild(UI.el('p', { class: 'small', text: 'A word is shown once you have said it. To bring a phone back — a flat battery, a late arrival, a new phone — open the Companion on it, choose the same seat, and enter the word and the mark for the chapter you are in.' }));
+    const m = UI.modal(box, { title: 'Words of the night' });
+  };
+  /* A chapter's TITLE is a spoiler until the table gets there: from the first scene of the Prologue this
+     list used to name the Ember Vault, the Whispering Gallery, the Oath, the Long Stair, the Bells of
+     Thornhallow, One Born of Four and What the Fire Left Behind -- seven things nobody had met, and two
+     of them the ending. The list still shows every chapter, because it is the recovery tool and a host
+     has to be able to jump; it shows the number and withholds the name, the way the Map of the Night
+     already prints `· · ·` for a place the table has not walked into (js/core/map.js:31). */
   Game.showChapterSelect = function () {
     const box = UI.el('div', { class: 'chapter-list' });
     Game.chapters.forEach(ch => {
       if (ch.hidden) return;
       const reached = Store.state.visited.includes(ch.start);
-      box.appendChild(UI.el('button', { class: 'btn small' + (reached ? '' : ' ghost'), text: ch.label ? ch.label + ' — ' + ch.title : ch.title, onclick: () => { m.close(); Game.go(ch.start); } }));
+      const name = reached ? (ch.label ? ch.label + ' — ' + ch.title : ch.title) : (ch.label || 'Chapter') + ' — · · ·';
+      box.appendChild(UI.el('button', { class: 'btn small' + (reached ? '' : ' ghost'), text: name, onclick: () => { m.close(); Game.go(ch.start); } }));
     });
-    box.appendChild(UI.el('p', { class: 'small', text: 'Jumping ahead skips story and may leave choices unset. Use to recover from a mistake.' }));
+    box.appendChild(UI.el('p', { class: 'small', text: 'A chapter is named once you have been there. Jumping ahead skips story and may leave choices unset. Use to recover from a mistake.' }));
     const m = UI.modal(box, { title: 'Chapters' });
   };
   Game.showQR = function () {

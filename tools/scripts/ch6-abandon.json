@@ -1,0 +1,128 @@
+{
+ "start": "ch6_round1",
+ "set": "VOLUNTEER=0,PRECRACKED=false,BELLS_CRACKED=0,STAIR=HOLD,WHISPER_listener=NO,WHISPER_seer=TELL,WHISPER_reader=DONTKNOW,WHISPER_binder=DONTKNOW,TRUTHS=4",
+ "_what": "WALKING AWAY FROM A ROUND USED TO BE FREE. reaction.js keeps hits/misses/health in locals and round one paints a live 'hits / total' on the shared HUD, while BELLS_CRACKED was written only when the round RESOLVED. So a table thirty seconds into a losing round could read the score, take Menu -> Replay scene (or reload and Resume), and get a fresh run of the same fixed pattern at the same fixed tempo, for nothing -- and a cracked bell is the only currency this chapter carries into ch7 and ch8. The charge now happens where the round is abandoned, in the scene's enter(). This script abandons round one twice and proves: the first walk-away cracks a bell on the spot, the second does not double-charge, the picture behind the words changes with it (the artParams fix), and finishing the round afterwards does not hand the bell back.",
+ "steps": [
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "expect": "Twenty-four lights"
+  },
+  {
+   "expectNot": "A pattern left half-rung"
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.BELLS_CRACKED | 0) === 0 && (window.VigilStore.state.flags.BELLS_R1_SEEN | 0) === 1"
+  },
+  {
+   "_note": "the picture starts with four whole bells",
+   "assert": "((([...document.querySelectorAll('.art-layer')].pop()||{}).innerHTML||'').match(/stroke=\"#06050a\"/g)||[]).length === 0"
+  },
+  {
+   "wait": 6000
+  },
+  {
+   "shot": "a_midround"
+  },
+  {
+   "_note": "the live score is still there on round one, deliberately: it is the reflex feedback the round is made of, and it is no longer a tell worth acting on",
+   "assert": "document.querySelector('#widget .react-score') !== null"
+  },
+  {
+   "_note": "Menu -> Replay scene, which is exactly what Game.go(currentScene.id) does (engine.js:369)",
+   "eval": "void window.Game.go('ch6_round1'); 'Replay scene'",
+   "_note2": "void, and a string returned, on purpose: Game.go returns runPuzzle's promise, so an eval that returns it makes Playwright wait out the whole round instead of walking away from it -- which is the opposite of what this script is testing."
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "shot": "a_charged"
+  },
+  {
+   "expect": "A pattern left half-rung"
+  },
+  {
+   "assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1"
+  },
+  {
+   "assert": "window.VigilStore.state.flags.BELLS_R1_CRACK === true && window.VigilStore.state.flags.BELLS_R1_ABANDONED === true"
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.BELLS_R1_SEEN | 0) === 2"
+  },
+  {
+   "_note": "THE BLOCKING ONE: Game.setArt memoises on name+params, and every ch6_lid scene used to pass none -- so a bell that cracked mid-chapter never reached the picture. It does now.",
+   "assert": "((([...document.querySelectorAll('.art-layer')].pop()||{}).innerHTML||'').match(/stroke=\"#06050a\"/g)||[]).length === 1"
+  },
+  {
+   "_note": "a second walk-away must not charge a second bell: one round, one bell",
+   "eval": "void window.Game.go('ch6_round1'); 'Replay scene'",
+   "_note2": "void, and a string returned, on purpose: Game.go returns runPuzzle's promise, so an eval that returns it makes Playwright wait out the whole round instead of walking away from it -- which is the opposite of what this script is testing."
+  },
+  {
+   "wait": 1500
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1 && (window.VigilStore.state.flags.BELLS_R1_SEEN | 0) === 3"
+  },
+  {
+   "eval": "(() => { const KEYS=['a','c','m','/']; if (window.__auto) clearInterval(window.__auto); window.__auto = setInterval(() => { document.querySelectorAll('#widget .lane').forEach((lane, i) => { const hy = lane.clientHeight - 58; lane.querySelectorAll('.orb:not(.mimic)').forEach(o => { if (o.__hit) return; const y = parseFloat(o.style.top) + 23; if (Math.abs(y - hy) < 22) { o.__hit = true; window.dispatchEvent(new KeyboardEvent('keydown', { key: KEYS[i], code: 'Key' + KEYS[i].toUpperCase(), bubbles: true })); window.dispatchEvent(new KeyboardEvent('keyup', { key: KEYS[i], bubbles: true })); } }); }); }, 25); return 'auto-ringer on'; })()"
+  },
+  {
+   "waitFor": "#actions .btn.primary",
+   "timeout": 90000
+  },
+  {
+   "expect": "lights answered right"
+  },
+  {
+   "log": true
+  },
+  {
+   "eval": "clearInterval(window.__auto); 'auto-ringer off'"
+  },
+  {
+   "_note": "and the bell the walk-away cost is not handed back by finishing the round",
+   "assert": "window.VigilStore.state.flags.BELLS_CRACKED === 1"
+  },
+  {
+   "eval": "({ CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, SEEN: window.VigilStore.state.flags.BELLS_R1_SEEN, ABANDONED: window.VigilStore.state.flags.BELLS_R1_ABANDONED, PASS: window.VigilStore.state.flags.BELLS_R1_PASS, HITS: window.VigilStore.state.flags.BELLS_R1_HITS + '/' + window.VigilStore.state.flags.BELLS_R1_TOTAL })"
+  },
+  {
+   "clickText": "The last pattern"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "expect": "you are the voice"
+  },
+  {
+   "_note": "and the chamber, three scenes later, is still drawing the bell that cracked",
+   "assert": "((([...document.querySelectorAll('.art-layer')].pop()||{}).innerHTML||'').match(/stroke=\"#06050a\"/g)||[]).length === 1"
+  }
+ ]
+}

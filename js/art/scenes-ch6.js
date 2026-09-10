@@ -54,20 +54,33 @@
     s += `<circle cx="${cx}" cy="${cy}" r="${r * 0.6}" fill="#ff9a3c" opacity=".08"><animate attributeName="opacity" values=".08;.14;.07;.12;.08" dur="2.4s" repeatCount="indefinite"/></circle>`;
     return s + '</g>';
   }
-  /* How many bells hang wounded. The backdrop is drawn before a scene's enter() runs, so on the first frame
-     of the chamber BELLS_CRACKED may not have been seeded yet from a stair that came down: read the cause
-     as well as the count, or the prose says a bell is cracked and the picture shows four whole ones. */
-  const cracked = (i) => { try { const f = window.VigilStore.state.flags; return i < Math.max(f.BELLS_CRACKED | 0, (f.PRECRACKED || f.STAIR === 'COLLAPSE') ? 1 : 0); } catch (e) { return false; } };
+  /* How many bells hang wounded.
+     TWO hazards, and the second one shipped broken until this pass.
+     (a) The backdrop is drawn before a scene's enter() runs, so on the first frame of the chamber
+         BELLS_CRACKED may not have been seeded yet from a stair that came down: read the cause as
+         well as the count, or the prose says a bell is cracked and the picture shows four whole ones.
+     (b) js/core/engine.js setArt memoises on `name + JSON.stringify(params)` and returns early on a
+         repeat. Six ch6 scenes share 'ch6_lid' and five share 'ch6_chamber', and none of them used to
+         pass artParams -- so once the chamber had been drawn whole, a bell cracking in round one or
+         round three could never redraw it. ch6_held then read "one hanging silent with its wound"
+         over four undamaged bells. The count is therefore taken from the PARAMS when the scene passes
+         them (js/content/ch6.js gives every bell-bearing scene `artParams: bellParams`), and only
+         falls back to the live flags for a caller that passes none. */
+  const crackCount = (p) => {
+    if (p && p.cracked != null) return p.cracked | 0;
+    try { const f = window.VigilStore.state.flags; return Math.max(f.BELLS_CRACKED | 0, (f.PRECRACKED || f.STAIR === 'COLLAPSE') ? 1 : 0); } catch (e) { return 0; }
+  };
+  const cracked = (i, p) => i < crackCount(p);
 
   /* 1. the bell-chamber: four bells on a beam over the lid; the shaft above */
-  A.define('ch6_chamber', () => P.wrap(
+  A.define('ch6_chamber', (p) => P.wrap(
     P.sky('#06050a', '#14101a') +
     `<rect x="0" y="0" width="${W}" height="${H}" fill="#0c0a12"/>` +
     P.pillars(4, 700, 560, '#0a0810') +
     P.lightBeam(800, 150, 200, 560, '#7a4a22') +
     shaftMouth(800, 120, 110) +
     `<rect x="240" y="250" width="1120" height="34" fill="#1a1416"/><rect x="240" y="284" width="1120" height="8" fill="#0d0a0e"/>` +
-    [380, 660, 940, 1220].map((x, i) => bell(x, 292, 210, ['#2d2320', '#2a2426', '#2b2522', '#2c2325'][i], '#3a2f26', cracked(i))).join('') +
+    [380, 660, 940, 1220].map((x, i) => bell(x, 292, 210, ['#2d2320', '#2a2426', '#2b2522', '#2c2325'][i], '#3a2f26', cracked(i, p))).join('') +
     P.floorTiles(690, '#0b0910', 'rgba(255,255,255,0.03)') +
     lid(800, 780, 470, 95, true) +
     P.figures([{ x: 560, s: 0.9 }, { x: 640, s: 0.95 }, { x: 960, s: 0.95 }, { x: 1040, s: 0.9 }, { x: 800, s: 0.8, color: '#1e1626' }], 720, '#141018') +
@@ -95,12 +108,12 @@
   });
 
   /* 3. the lid, close: Marrow kneeling in a ring of chalk, the seal, frost at the rivets, bell-rims above */
-  A.define('ch6_lid', () => {
+  A.define('ch6_lid', (p) => {
     const cx = 800, cy = 620;
     let s = P.sky('#07060b', '#100d16');
     s += `<rect x="0" y="0" width="${W}" height="${H}" fill="#0b0911"/>`;
     s += P.lightBeam(800, -40, 180, 640, '#7a4a22');
-    s += [420, 690, 910, 1180].map((x, i) => `<g transform="translate(${x},-60)">${bell(0, 0, 250, ['#2d2320', '#2a2426', '#2b2522', '#2c2325'][i], '#3a2f26', cracked(i))}</g>`).join('');
+    s += [420, 690, 910, 1180].map((x, i) => `<g transform="translate(${x},-60)">${bell(0, 0, 250, ['#2d2320', '#2a2426', '#2b2522', '#2c2325'][i], '#3a2f26', cracked(i, p))}</g>`).join('');
     s += P.floorTiles(560, '#0b0910', 'rgba(255,255,255,0.03)');
     s += lid(cx, cy, 620, 150, true);
     // chalk ring and salt

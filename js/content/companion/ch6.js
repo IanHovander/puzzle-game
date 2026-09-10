@@ -57,6 +57,12 @@
   /* ---------- the stone ----------
      Cuts 1, 3, 5 and 7 are the four the fire took, and cut numbers are the only coordinates on any
      page — the Hearth's board, the art and all four Sight pages use the same 1 to 8. */
+  /* These three are pure functions of ch6.js's STONE and BURNT, computed with a pencil, because the
+     Companion is a separate page and cannot see the Hearth's chapter file. Nothing in the app checks
+     them against it, so `node tools/scripts/ch6-stone-check.js` does: it loads both files under a VM
+     stub and asserts BURNT_CUTS === BURNT+1, BURN_SHAPES === the burnt cuts' shapes, BURN_UP ===
+     their orientations, and that the Reader's and the Seer's sentences below say the same thing the
+     arrays do. Change either file and run it. */
   const BURNT_CUTS = [1, 3, 5, 7];
   const BURN_SHAPES = ['Flame', 'Crown', 'Spike', 'Crown'];   // Reader: WHAT was cut
   const BURN_UP = [true, true, true, false];                  // Seer: which way the chisel went in
@@ -150,7 +156,7 @@
     el.appendChild(UI.el('p', { class: 'fine', text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
   } });
 
-  const COST = 'A wrong reading cracks a bell above you, and a cracked bell is one you do not have later.';
+  const COST = 'Four readings, no more. A wrong one cracks a bell above you, and a cracked bell is one you do not have later.';
 
   C.chapters.push({
     id: 'ch6',
@@ -158,6 +164,14 @@
       const P = { sight: [], wren: [], speak: [] };
       const vol = ctx.flags.VOLUNTEER | 0; const volRole = vol >= 1 && vol <= 4 ? L.roles[vol - 1] : null; const isVol = !!(volRole && volRole.id === roleId);
       const laundry = ctx.answer('ch3', 'whisper');
+      /* DELIBERATE, and it reads out of ANOTHER chapter's cast on purpose: LAW0 is declared in ch5's
+         cast, bit 3 (js/content/lore.js:22), and ch6's own cast is [VOLUNTEER, PRECRACKED]
+         (lore.js:23), so a ch6 code alone cannot carry it. Scanning every stored attunement is how
+         this page learns whether Chapter V already put the struck Law back in the Book.
+         It is a display state and nothing else: BOTH branches give the Binder the same instruction —
+         down the count, every cut its other word, the cold word written in. law0 only decides whether
+         the Founders' card reads RESTORED or STRUCK, 212. A table whose phone has no ch5 code sees
+         STRUCK and reads the stone exactly the same way. */
       const law0 = !!(ctx.state.unlocked && Object.values(ctx.state.unlocked).some(u => u && u.flags && u.flags.LAW0));
       const neighbour = (l) => L.roles[[l - 1, l + 1, l - 2, l + 2].filter(x => x >= 0 && x < 4 && x !== l)[0]].nick;
 

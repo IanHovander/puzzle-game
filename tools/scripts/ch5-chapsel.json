@@ -1,0 +1,31 @@
+{
+ "start": "ch5_start",
+ "set": "OATH=1,DOOR=BLUFF",
+ "_what": "The frost ledger against the Menu, not against the save. ch5_start.enter zeroes GATE1_FROST, GATE2_FROST and COUNT_LOST, and the Menu's 'Chapter select' re-enters ch5_start on demand -- two clicks used to refund both gates' budgets, all three hearings of the Founders' Count and the stair timer computed from them. The reset is now first-entry only. Remove the three `== null` guards in ch5_start.enter and this script goes red on the last assert.",
+ "steps": [
+  {"key": "Space"},
+  {"assert": "VigilStore.state.flags.GATE1_FROST === 0 && VigilStore.state.flags.GATE2_FROST === 0 && VigilStore.state.flags.COUNT_LOST === 0"},
+  {"clickText": "Down"},
+  {"wait": 600}, {"key": "Space"},
+  {"clickText": "Read it"},
+  {"wait": 600}, {"key": "Space"},
+  {"clickText": "All phones are ready"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 400},
+  {"slots": [[2, "KNOT"], [4, "WELL"], [5, "CROWN"]]},
+  {"clickText": "Close the sigil"},
+  {"wait": 500}, {"wait": 1400},
+  {"assert": "VigilStore.state.flags.GATE1_FROST === 1"},
+  {"eval": "(VigilStore.set('COUNT_LOST', 2), VigilStore.set('GATE2_FROST', 1), 'two more counters spent')"},
+  {"clickText": "MENU"},
+  {"wait": 500},
+  {"clickText": "Chapter select"},
+  {"wait": 500},
+  {"shot": "chapsel"},
+  {"clickText": "Chapter V"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 300},
+  {"expect": "Midnight is an hour away"},
+  {"eval": "JSON.stringify({scene: VigilStore.state.scene, gate1: VigilStore.state.flags.GATE1_FROST, gate2: VigilStore.state.flags.GATE2_FROST, countLost: VigilStore.state.flags.COUNT_LOST})"},
+  {"assert": "VigilStore.state.flags.GATE1_FROST === 1 && VigilStore.state.flags.GATE2_FROST === 1 && VigilStore.state.flags.COUNT_LOST === 2"},
+  {"log": true}
+ ]
+}

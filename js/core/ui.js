@@ -197,14 +197,53 @@
   };
   UI.notice = function (text, opts) { opts = opts || {}; if (window.__autoDialog) return Promise.resolve(); return new Promise((resolve) => { const box = UI.el('div', { class: 'ask' }); box.appendChild(UI.el('p', { html: UI.rich(text) })); let m; box.appendChild(UI.el('div', { class: 'row' }, [UI.el('button', { class: 'btn primary', text: opts.ok || 'All right', onclick: () => { m.close(); resolve(); } })])); m = UI.modal(box, { title: opts.title || '', noClose: true, cls: 'ask-modal' }); }); };
 
-  /* Flowchart renderer.  spec = { nodes:[{id,label,col,row,kind}], edges:[[a,b]] , width?} ; done = Set of visited node ids */
+  /* Flowchart renderer.  spec = { nodes:[{id,label,col,row,kind}], edges:[[a,b]] } ; done = Set of visited node ids
+     opts = { avail:{w,h}, fontPx, plain, zoomTitle, colWidth, rowHeight }
+
+     THE TYPE FLOOR IS THE LAYOUT. This used to lay every chart out at a fixed 190px column and let
+     `.flowchart { max-width: 100% }` scale the result into whatever panel it landed in. The scale is
+     the label size: a 1730px chart in a 786px panel writes its 15px labels at 6.8px, and at 1152x648
+     at 5.7px, against a floor of 17px -- so every chapter ended on a picture the room could not read,
+     in all nine chapters, at every viewport measured. Scaling cannot be fixed by making the numbers
+     bigger, because effective size is fontSize x panelWidth / (cols x colWidth): only the ratio of
+     type to column matters, and the ratio was wrong.
+     So the chart is now laid out in REAL CSS PIXELS -- one viewBox unit is one pixel and the SVG is
+     never scaled down -- and the geometry is chosen to fit the panel it is actually going into, at a
+     type size that is the floor rather than the remainder. The node box is sized from the label, the
+     widest wrap that still fits wins, and a chart that cannot fit even at the tightest wrap scrolls
+     sideways in a panel that says so, instead of shrinking into a smear.
+     No chapter's flow data changes: nodes keep their col, row and label. */
   UI.flowchart = function (spec, doneSet, opts) {
     opts = opts || {};
-    const cw = opts.colWidth || 190, rh = opts.rowHeight || 72, nw = 160, nh = 44;
+    const F = opts.fontPx || 17;                       // the readability floor, in real screen pixels
     const cols = Math.max(...spec.nodes.map(n => n.col)) + 1, rows = Math.max(...spec.nodes.map(n => n.row)) + 1;
-    const W = cols * cw + 20, H = rows * rh + 20;
+    const availW = (opts.avail && opts.avail.w) || 0, availH = (opts.avail && opts.avail.h) || 0;
+    const gapX = Math.round(F * 0.85), gapY = Math.round(F * 0.8);   // the chart is tight on both axes; see the note above
+    /* A choice node is drawn as a chamfered hexagon rather than a true diamond. A diamond is only full
+       width across its middle, so its label had to be wrapped a third narrower than everything else,
+       and at the wraps this chart now needs that cost a word: ch1's "The hour before the bell" came out
+       as "The hour before the…". The hexagon reads as a decision just as clearly and gives the label
+       nearly the whole box. */
+    const charsFor = (n, chars) => n.kind === 'choice' ? Math.max(6, Math.round(chars * 0.9)) : chars;
+    /* Widest wrap first: a long label in few long lines reads better than the same label in a stack of
+       stubs, and only when that does not fit do we trade width for height. Height is weighted higher
+       because the panel scrolls down past the Continue button, and sideways it does not. */
+    let g = null;
+    for (const chars of [22, 20, 18, 16, 15, 14, 13, 12, 11, 10, 9, 8]) {
+      const cut = spec.nodes.filter(n => wrap(n.label, charsFor(n, chars)).cut).length;
+      const lines = Math.max(...spec.nodes.map(n => wrap(n.label, charsFor(n, chars)).length));
+      const nw = Math.round(chars * F * 0.56) + 10, nh = lines * Math.round(F * 1.15) + 12;
+      const cw = Math.max(opts.colWidth || 0, nw + gapX), rh = Math.max(opts.rowHeight || 0, nh + gapY);
+      const W = cols * cw + 20, H = rows * rh + 20;
+      /* A label that had to be cut is worth a lot of overflow: the chart is words, and a word lost is a
+         path the room cannot read at any size. */
+      const over = (availW ? Math.max(0, W - availW) : 0) + (availH ? Math.max(0, H - availH) * 1.5 : 0) + cut * 400;
+      if (!g || over < g.over) g = { chars, lines, nw, nh, cw, rh, W, H, over, cut };   // ties keep the widest wrap
+      if (!over) break;
+    }
+    const { nw, nh, cw, rh, W, H } = g;
     const pos = {}; spec.nodes.forEach(n => { pos[n.id] = { x: 10 + n.col * cw + (cw - nw) / 2, y: 10 + n.row * rh + (rh - nh) / 2 }; });
-    let s = `<svg class="flowchart" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+    let s = `<svg class="flowchart" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" style="--fc-font:${F}px">`;
     s += `<defs><marker id="fc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>`;
     for (const [a, b] of spec.edges) {
       const pa = pos[a], pb = pos[b]; if (!pa || !pb) continue;
@@ -216,28 +255,56 @@
       const p = pos[n.id]; const on = doneSet.has(n.id);
       const kind = n.kind || 'beat';
       s += `<g class="fc-node ${kind} ${on ? 'on' : 'off'}" transform="translate(${p.x},${p.y})">`;
-      if (kind === 'choice') s += `<path d="M${nw / 2},0 L${nw},${nh / 2} L${nw / 2},${nh} L0,${nh / 2} z"/>`;
+      if (kind === 'choice') { const c = Math.round(nh * 0.34); s += `<path d="M${c},0 L${nw - c},0 L${nw},${nh / 2} L${nw - c},${nh} L${c},${nh} L0,${nh / 2} z"/>`; }
       else if (kind === 'end') s += `<rect width="${nw}" height="${nh}" rx="${nh / 2}"/>`;
       else s += `<rect width="${nw}" height="${nh}" rx="6"/>`;
       const label = on || !n.secret ? n.label : '? ? ?';
-      const lines = wrap(label, kind === 'choice' ? 16 : 22);
-      lines.forEach((ln, i) => { s += `<text x="${nw / 2}" y="${nh / 2 + (i - (lines.length - 1) / 2) * 14 + 5}" text-anchor="middle">${UI.esc(ln)}</text>`; });
+      s += `<title>${UI.esc(label)}</title>`;   // the full label, for a chart that had to shorten one
+      /* One <text> per node with a <tspan> per line, not one <text> per line: a wrapped label then still
+         reads as one continuous string to anything walking the document (the playthrough scripts assert
+         on these labels), and it is one accessible run rather than three fragments. */
+      const lines = wrap(label, charsFor(n, g.chars));
+      const step = Math.round(F * 1.15), top = nh / 2 - (lines.length - 1) / 2 * step + Math.round(F * 0.35);
+      s += `<text x="${nw / 2}" y="${top}" text-anchor="middle">`;
+      /* the trailing space is collapsed away by SVG's default xml:space, so it costs nothing on screen
+         and keeps the wrapped label one readable string to a document walker */
+      lines.forEach((ln, i) => { s += `<tspan x="${nw / 2}"${i ? ` dy="${step}"` : ''}>${UI.esc(ln) + (i < lines.length - 1 ? ' ' : '')}</tspan>`; });
+      s += `</text>`;
       s += `</g>`;
     }
     s += `</svg>`;
     const wrapEl = UI.el('div', { class: 'flowchart-wrap', html: s });
+    wrapEl.dataset.fit = JSON.stringify({ W, H, chars: g.chars, lines: g.lines, cut: g.cut, font: F, availW, availH,
+      cutLabels: spec.nodes.filter(n => wrap(n.label, charsFor(n, g.chars)).cut).map(n => n.label) });
     if (!opts.plain) {
       wrapEl.classList.add('zoomable');
       wrapEl.title = 'Tap to enlarge';
+      /* The enlarged copy is LAID OUT AGAIN, not the same SVG shown bigger: the modal is wider than the
+         panel, so it can afford a wider wrap and fewer lines. Reusing the panel's markup is what left
+         the old zoom scrolling sideways by 812px -- the chart it enlarged had been built for a box it
+         was no longer in. Measure the modal first, then draw into it. */
       wrapEl.addEventListener('click', () => {
-        const big = UI.el('div', { class: 'flowchart-wrap big', html: s });
+        const big = UI.el('div', { class: 'flowchart-wrap big' });
         UI.modal(big, { title: opts.zoomTitle || 'The paths you walked', cls: 'wide', closeText: 'Close' });
+        const inner = UI.flowchart(spec, doneSet, { plain: true, fontPx: F, avail: { w: Math.max(320, big.clientWidth - 4), h: Math.max(240, big.clientHeight - 8) } });
+        big.appendChild(inner.firstChild);
       });
-      wrapEl.appendChild(UI.el('div', { class: 'flow-zoom-hint', text: 'Tap the chart to enlarge' }));
+      wrapEl.appendChild(UI.el('div', { class: 'flow-zoom-hint', text: W > availW && availW ? 'Drag the chart sideways · tap to enlarge' : 'Tap the chart to enlarge' }));
     }
     return wrapEl;
   };
-  function wrap(text, n) { const words = text.split(' '); const lines = []; let cur = ''; for (const w of words) { if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); } if (cur) lines.push(cur); return lines.slice(0, 3); }
+  /* Up to five lines -- one more than the old three, because a narrow wrap at a readable size needs the
+     room and a tall node is cheaper than a lost word. A label that still will not fit keeps its first
+     words and says so with an ellipsis rather than dropping them silently, and marks itself `cut` so
+     the layout chooser can pay almost anything to avoid it. The whole label is in the node's <title>. */
+  const WRAP_LINES = 5;
+  function wrap(text, n) {
+    const words = String(text).split(' '); const lines = []; let cur = '';
+    for (const w of words) { if ((cur + ' ' + w).trim().length > n && cur) { lines.push(cur); cur = w; } else cur = (cur + ' ' + w).trim(); }
+    if (cur) lines.push(cur);
+    if (lines.length <= WRAP_LINES) return lines;
+    const out = lines.slice(0, WRAP_LINES); out[WRAP_LINES - 1] = out[WRAP_LINES - 1].slice(0, Math.max(1, n - 1)) + '…'; out.cut = true; return out;
+  }
 
   /* Simple pluralize / list join */
   /* A button that plays something. onPlay() returns the phrase length in ms (or nothing); while it plays the button

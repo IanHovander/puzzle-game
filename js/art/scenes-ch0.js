@@ -27,10 +27,54 @@
     P.fog(600, 300, '#2a1a12', 0.35)
   ));
 
+  /* ---------- the sentence on the prophecy stone ----------
+     This row used to be Chapter VI's stone, drawn out: G.shapeInner over
+     ['Flame','Flame','Crown','Hook','Spike','Flame','Crown','Hook'] with
+     [false,true,false,false,false,true,true,true] — element for element the STONE array at
+     js/content/ch6.js, ninety minutes before Chapter VI burns four of those cuts off the board and
+     sells the missing four shapes to the Reader and their four orientations to the Seer.
+     Enumerated (scratchpad/ch012/stone-field.js, against the shipped STONE and BURNT):
+         the row the art drew is identical to ch6's STONE ............ true
+         cuts the fire takes ........................................ 1, 3, 5, 7
+         assignments of shape and orientation to those four cuts .... 4,096
+           knowing only the Reader's page (the four shapes) .......... 16
+           knowing only the Seer's page (the four orientations) ...... 256
+           knowing this picture ...................................... 1
+     In ch6's own board terms (ch6.js records them): drop the Reader 192, drop the Seer 8 — both
+     answered here, for free, by a photograph of the Prologue. The chapter's only currency is a bell
+     cracked per misreading, so a field of 1 is a chapter that costs nothing.
+     So the Hearth promises the sentence and does not print it, the way the lamp's collar does forty
+     lines below: what four hundred years of smoke left, not what was cut. Nothing here is a glyph —
+     no closed teardrop, no arrow over a bar, no hook, no crown — only grooves, chips and soot, seeded
+     so the stone is the same stone every night. tools/scripts/ch0.json and ch1.json assert that no
+     path from js/content/glyphs.js is drawn in this chapter's art (ch1 allows the one on the Chair's
+     banner, which is heraldry). */
+  function wornCuts(n, colour, gap, sc, seed) {
+    const r = A.rng(seed || 1707);
+    let out = '';
+    for (let i = 0; i < n; i++) {
+      const lean = (r() * 30 - 15).toFixed(1), h = (11 + r() * 7), bow = (r() * 9 - 4.5);
+      let g = `<g transform="translate(${(i * gap).toFixed(0)},0) scale(${sc})">`;
+      g += `<g transform="rotate(${lean})" fill="none" stroke="${colour}" stroke-linecap="round">`;
+      // the groove, in two strokes that do not meet: the middle of it is gone
+      g += `<path d="M${(-bow / 2).toFixed(1)},${(-h).toFixed(1)} q${bow.toFixed(1)},${(h * 0.45).toFixed(1)} ${(bow / 3).toFixed(1)},${(h * 0.62).toFixed(1)}" stroke-width="3.4" opacity="${(0.55 + r() * 0.3).toFixed(2)}"/>`;
+      g += `<path d="M${(bow / 3).toFixed(1)},${(h * 0.82).toFixed(1)} l${(r() * 4 - 2).toFixed(1)},${(h * 0.5).toFixed(1)}" stroke-width="2.8" opacity="${(0.35 + r() * 0.3).toFixed(2)}"/>`;
+      // a chip across it, and sometimes one that stops short
+      g += `<path d="M${(-6 - r() * 4).toFixed(1)},${(r() * 8 - 4).toFixed(1)} l${(9 + r() * 5).toFixed(1)},${(r() * 6 - 3).toFixed(1)}" stroke-width="2.4" opacity="${(0.25 + r() * 0.3).toFixed(2)}"/>`;
+      if (r() > 0.35) g += `<path d="M${(2 + r() * 3).toFixed(1)},${(-h * 0.6).toFixed(1)} l${(r() * 5 - 1).toFixed(1)},${(4 + r() * 4).toFixed(1)}" stroke-width="2" opacity=".3"/>`;
+      g += '</g>';
+      // soot: what the fire has been doing to the foot of it for four hundred years
+      for (let k = 0; k < 3; k++) g += `<ellipse cx="${(r() * 24 - 12).toFixed(1)}" cy="${(r() * 28 - 9).toFixed(1)}" rx="${(4 + r() * 7).toFixed(1)}" ry="${(3 + r() * 5).toFixed(1)}" fill="#0d0a0c" opacity="${(0.1 + r() * 0.18).toFixed(2)}"/>`;
+      out += g + '</g>';
+    }
+    return out;
+  }
+  A.wornCuts = wornCuts;
+
   A.define('ch0_stone', () => P.wrap(
     P.sky('#0a0810', '#1a0f0a') +
     `<rect x="380" y="120" width="840" height="300" rx="6" fill="#1d1619" stroke="#3a2c2c" stroke-width="4"/>` +
-    `<g opacity=".9">${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<g transform="translate(${470 + i * 94},250) scale(1.9)" style="color:#7a6a5a">${window.VigilGlyphs.shapeInner(['Flame', 'Flame', 'Crown', 'Hook', 'Spike', 'Flame', 'Crown', 'Hook'][i], [false, true, false, false, false, true, true, true][i])}</g>`).join('')}</g>` +
+    `<g transform="translate(470,250)" opacity=".9">${wornCuts(8, '#7a6a5a', 94, 1.9)}</g>` +
     `<text x="800" y="380" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="22" font-family="Cinzel,serif" letter-spacing="6">THE ORDER'S READING</text>` +
     fire(800, 900, 1.6, false) +
     `<rect x="0" y="520" width="${W}" height="${H - 520}" fill="url(#stonefog)"/><defs><linearGradient id="stonefog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3c" stop-opacity="0"/><stop offset="1" stop-color="#ff9a3c" stop-opacity=".55"/></linearGradient></defs>`

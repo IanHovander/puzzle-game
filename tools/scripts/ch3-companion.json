@@ -18,13 +18,20 @@
   {"expectNot": "porter"}, {"expectNot": "what it sees"},
   {"tab": "Wren"}, {"expect": "shadow"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "What do you see"},
   {"click": ".blk-choice .opt >> nth=0"}, {"wait": 400}, {"expect": "65SY"},
-  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "scratch under slot 4"}, {"expect": "notch"}, {"shot": "c3_seer_ward"},
+  {"_": "the two cuts SWAPPED in the Integrate pass: the ward begins at the notch, because the Prologue's lamp spent scratch-is-the-mark in front of the whole room"},
+  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "notch under slot 4"}, {"expect": "scratch under slot 1"}, {"shot": "c3_seer_ward"},
+  {"_": "the Seer reports cuts and never their meaning: no rule and no direction on this page"},
+  {"expectNot": "begins at"}, {"expectNot": "clockwise"}, {"expectNot": "binds"},
 
   {"companion": true}, {"role": "Binder"}, {"unlock": ["VEIL", "E4Z"]}, {"shot": "c3_binder_sight"},
   {"expect": "Bess"}, {"expect": "paid to shout"}, {"expect": "since the Hall, are you"}, {"expect": "Ask for all three"},
   {"expect": "buys four rooms: B5, C5, D5 and C4"}, {"expect": "that turn and three after it"}, {"expectNot": "that beat and three"},
   {"tab": "Wren"}, {"expect": "not looked at"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "really the one"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "8JM9"}, {"shot": "c3_binder_token"},
-  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "Where a sigil begins"}, {"expect": "comes back to slot 1"}, {"shot": "c3_binder_ward"},
+  {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "Where a sigil begins"}, {"expect": "comes back to slot 1"},
+  {"_": "THE SEAT. This page used to be the Binder's PROLOGUE page word for word -- begin at the scratch, a notch is only a signature -- and the dormitory lamp is worked on the shared screen, so the rule was table knowledge and the Binder-less field was one board at p=1.000. The ward is a Vigil ward and begins at the NOTCH; the accepted board did not move."},
+  {"expect": "begins at the notch"}, {"expect": "This is not one"},
+  {"expectNot": "A sigil begins at the scratch"},
+  {"shot": "c3_binder_ward"},
   {"tab": "Book"}, {"expect": "STRUCK"}
 ] }

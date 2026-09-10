@@ -1,0 +1,43 @@
+{
+ "start": "ch8_start",
+ "set": "ENDING=3,DECISION=FOURFOLD,WALK_UNLOCKED=true,WALK_reader=WALK,WALK_listener=STAY,WALK_seer=STAY,WALK_binder=STAY,OATH=1,CLUES=3,TRUTHS=2,BELLS_CRACKED=1,MIDNIGHT_LEFT=300,hintsTotal=4",
+ "viewport": {
+  "width": 1280,
+  "height": 720
+ },
+ "steps": [
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "_": "THE READER SEALED WALK. ENDING 3 is reached two ways -- the table REFUSED, or it chose the Fourfold Walk and fewer than two sealed WALK. On the second path the Hearth used to print 'Stayed on the stones: Wren, and Reader, Listener, Seer, Binder' -- naming the one player who kept their word as a stayer -- and then ch8_unsealed printed 'Would walk into the fire.' on that same player's card two scenes later."
+  },
+  {
+   "expect": "Walked into the fire"
+  },
+  {
+   "expect": "Reader"
+  },
+  {
+   "_": "and the roll-call must not put the Reader among the stayers"
+  },
+  {
+   "assert": "!/Stayed on the stones:.*Reader/.test(document.getElementById('text').innerText)"
+  },
+  {
+   "_": "the three who stayed are still named"
+  },
+  {
+   "assert": "/Stayed on the stones:.*Listener/.test(document.getElementById('text').innerText)"
+  },
+  {
+   "eval": "(function(){var t=document.getElementById('text').innerText;return t.split('\\n').filter(function(l){return /Walked into the fire|Stayed on the stones/.test(l)})})()"
+  }
+ ]
+}

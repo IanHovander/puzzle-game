@@ -1,34 +1,62 @@
-{ "start": "ch7_sigil", "flags": "WALK_UNLOCKED,OATH_KNOT", "steps": [
+{ "start": "ch7_sigil", "flags": "WALK_UNLOCKED,OATH_KNOT",
+  "_what": "The Great Sigil's leak guard and its budget guard, sworn. It fails if (a) the Hearth prints any of the four private facts, (b) any two cold rings are answered differently -- the five boards below are a notch start, a widdershins run, notch AND widdershins together (the combination the old keyed list left out, so it was the one the Hearth named by being different), a repeated word (Law 8, which allowRepeat exists to keep the Binder's), and the two walls the wrong way round -- (c) a cold ring is not charged, or is charged a flat rate, or is refunded by a reload, or (d) hint rung 2 says the Listener's climb or the Binder's Law 8, or rung 3 drifts from the constants.",
+  "steps": [
   {"wait": 800}, {"key": "Space"}, {"wait": 700}, {"shot": "v_sigil"},
-  {"expect": "MIDNIGHT"}, {"expect": "Eight sockets. Two walls, four words each, one phrase"}, {"expect": "Either wall may speak first"}, {"expect": "sworn ring is built"},
-  {"expectNot": "SUNWISE"}, {"expectNot": "names every word once"}, {"expectNot": "scratch"}, {"expectNot": "notch"}, {"expectNot": "one rung"}, {"expectNot": "smallest climb"}, {"expectNot": "clockwise"},
+  {"expect": "MIDNIGHT"}, {"expect": "Eight sockets, one phrase, two walls of four words"}, {"expect": "Either wall may speak first"}, {"expect": "sworn ring is built"}, {"expect": "A cold ring costs a minute, the next more"},
+  {"expectNot": "SUNWISE"}, {"expectNot": "names every word once"}, {"expectNot": "eight different words"}, {"expectNot": "scratch"}, {"expectNot": "notch"}, {"expectNot": "one rung"}, {"expectNot": "smallest climb"}, {"expectNot": "clockwise"}, {"expectNot": "widdershins"},
   {"eval": "({wallSvgInWidget: document.querySelectorAll('#widget .inscription-svg').length, roleLines: ['Reader —','Listener —','Seer —','Binder —'].filter(t=>document.body.innerText.includes(t)).length})"},
 
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "sockets spoken for"}, {"expectNot": "one silence"},
-  {"assert": "Game.clock.left() > 885"},
+  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "sockets spoken for"},
+  {"assert": "Game.clock.left() > 885 && !VigilStore.state.flags.SIGIL_COLD"},
 
-  {"slots": [[1, "CROWN"], [2, null], [3, "THORN"], [4, "KNOT"], [5, "VEIL"], [6, "EMBER"], [7, "ASH"], [8, "WELL"]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "signature"},
-  {"assert": "Game.clock.left() < 880"},
+  {"slots": [[1, "CROWN"], [2, null], [3, "KNOT"], [4, "EMBER"], [5, "THORN"], [6, "WELL"], [7, "ASH"], [8, "VEIL"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300},
+  {"assert": "(window.__L=window.__L||[]).push(document.querySelector('.ring-pz .pz-status').textContent.trim()) > 0"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 1 && Game.clock.left() < 845 && Game.clock.left() > 800"},
 
-  {"slots": [[1, "EMBER"], [2, "THORN"], [3, null], [4, "CROWN"], [5, "KNOT"], [6, "VEIL"], [7, "WELL"], [8, "ASH"]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "smallest climb"},
-  {"eval": "document.querySelectorAll('.wheel .slot.filled').length"},
+  {"slots": [[1, "WELL"], [2, "THORN"], [3, "EMBER"], [4, "KNOT"], [5, null], [6, "CROWN"], [7, "VEIL"], [8, "ASH"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300},
+  {"assert": "(window.__L=window.__L||[]).push(document.querySelector('.ring-pz .pz-status').textContent.trim()) > 0"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 2 && Game.clock.left() < 755 && Game.clock.left() > 690"},
 
-  {"slots": [[3, "ASH"]]}, {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "Two sockets say the same word"}, {"expectNot": "Ask the Binder"}, {"expectNot": "may not do twice"}, {"expectNot": "the Law on the rim"},
+  {"slots": [[1, "CROWN"], [2, "VEIL"], [3, "ASH"], [4, "WELL"], [5, "THORN"], [6, "EMBER"], [7, "KNOT"], [8, null]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300},
+  {"assert": "(window.__L=window.__L||[]).push(document.querySelector('.ring-pz .pz-status').textContent.trim()) > 0"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 3 && Game.clock.left() < 635"},
 
-  {"slots": [[1, "KNOT"], [2, "THORN"], [3, null], [4, "CROWN"], [5, "WELL"], [6, "ASH"], [7, "EMBER"], [8, "VEIL"]]},
-  {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "the laying of them is not"}, {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "which way"}, {"expectNot": "sunwise"},
+  {"slots": [[8, "ASH"]]},
+  {"clickText": "Close the sigil"}, {"wait": 1300},
+  {"assert": "(window.__L=window.__L||[]).push(document.querySelector('.ring-pz .pz-status').textContent.trim()) > 0"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 4"},
+  {"expectNot": "Two sockets say the same word"}, {"expectNot": "does not turn"}, {"expectNot": "the words are right"},
+  {"expectNot": "Ask the Binder"}, {"expectNot": "Ask the Listener"}, {"expectNot": "which cut"}, {"expectNot": "smallest climb"}, {"expectNot": "eight different words"},
 
-  {"slots": [[1, "WELL"], [2, "CROWN"], [3, null], [4, "THORN"], [5, "KNOT"], [6, "VEIL"], [7, "EMBER"], [8, "ASH"]]},
+  {"assert": "window.__L.length === 4 && new Set(window.__L.map(t => t.split(' Wren,')[0])).size === 1 && window.__L.filter(t => / Wren,/.test(t)).length === 3"},
+  {"eval": "window.__L[0]"},
+
+  {"slots": [[1, "WELL"], [2, "ASH"], [3, "VEIL"], [4, "CROWN"], [5, null], [6, "KNOT"], [7, "EMBER"], [8, "THORN"]]},
   {"clickText": "Close the sigil"}, {"wait": 1300}, {"expect": "You swore to somebody"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 5"},
+  {"eval": "({left: Game.clock.left(), flag: VigilStore.state.flags.MIDNIGHT_LEFT, cold: VigilStore.state.flags.SIGIL_COLD})"},
+  {"assert": "VigilStore.state.flags.MIDNIGHT_LEFT < 340 && VigilStore.state.flags.MIDNIGHT_LEFT > 120"},
+
+  {"eval": "(setTimeout(function(){location.reload();},50), 'reloading')"},
+  {"wait": 3500}, {"waitFor": ".wheel"},
+  {"assert": "VigilStore.state.flags.SIGIL_COLD === 5"},
+  {"assert": "VigilStore.state.flags.MIDNIGHT_LEFT < 340"},
+  {"assert": "Game.clock.running() && Game.clock.left() < 340"},
+  {"eval": "({afterReload: VigilStore.state.flags.MIDNIGHT_LEFT, cold: VigilStore.state.flags.SIGIL_COLD, running: Game.clock.running()})"},
 
   {"click": "#hint"}, {"wait": 400}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 400}, {"shot": "v_hints"},
-  {"expect": "nobody has two"}, {"expect": "smallest climb"}, {"expect": "EMBER 1, ASH 2, WELL 3, CROWN 4, empty 5, THORN 6, KNOT 7, VEIL 8"}, {"clickText": "Back to the ward"}, {"wait": 500},
+  {"expect": "nobody has two"}, {"expect": "Four decisions"}, {"expect": "which wall speaks first"},
+  {"expectNot": "smallest climb"}, {"expectNot": "eight different words"}, {"expectNot": "one rung"},
+  {"expect": "EMBER 1, THORN 2, WELL 3, ASH 4, VEIL 5, CROWN 6, empty 7, KNOT 8"},
+  {"assert": "(VigilStore.state.flags.hintsTotal|0) === 3 && VigilStore.state.hintsUsed.ch7_sigil === 3"},
+  {"clickText": "Back to the ward"}, {"wait": 500},
 
-  {"slots": [[1, "EMBER"], [2, "ASH"], [3, "WELL"], [4, "CROWN"], [5, null], [6, "THORN"], [7, "KNOT"], [8, "VEIL"]]},
+  {"slots": [[1, "EMBER"], [2, "THORN"], [3, "WELL"], [4, "ASH"], [5, "VEIL"], [6, "CROWN"], [7, null], [8, "KNOT"]]},
   {"clickText": "Close the sigil"}, {"wait": 1400}, {"expect": "Every word, once"},
   {"assert": "!!document.querySelector('.fourhands > .btn.small.ghost')"},
   {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"expect": "plays itself through the floor"},
-  {"eval": "({left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running(), hints: VigilStore.state.hintsUsed.ch7_sigil})"}
+  {"eval": "({left: VigilStore.state.flags.MIDNIGHT_LEFT, running: Game.clock.running(), hints: VigilStore.state.hintsUsed.ch7_sigil, cold: VigilStore.state.flags.SIGIL_COLD})"}
 ] }

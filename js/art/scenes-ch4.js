@@ -47,8 +47,13 @@
     for (let i = 0; i < 4; i++) {
       const px = w * (0.14 + i * 0.16), pb = fb, sc = h / 300;
       s += `<g transform="translate(${px},${pb}) scale(${sc})">`;
-      s += `<path d="M-16,0 L-11,-80 L11,-80 L16,0 Z" fill="${ink}"/><circle cx="0" cy="-94" r="13" fill="${ink}"/>`;
-      s += `<path d="M10,-72 L34,-52" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`; // reaching arm
+      s += `<path d="M-16,0 L-11,-80 L11,-80 L16,0 Z" fill="${ink}"/><circle cx="${i === 1 ? -4 : 0}" cy="-94" r="13" fill="${ink}"/>`;
+      /* The second has turned: her arm goes back the way they came, for something that is not there.
+         The fourth carries the cold glyph. Those two figures are the whole of the Seer's corner in
+         ch4_secrets -- the count is not asked for, because the Hearth printed it in Chapter II. */
+      s += i === 1
+        ? `<path d="M-10,-72 L-34,-52" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`
+        : `<path d="M10,-72 L34,-52" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`;
       if (i === 3) s += `<g transform="translate(46,-56) scale(1.4)" style="color:${cold}">${G().shapeInner('Flame', true)}</g>`;
       s += `</g>`;
     }

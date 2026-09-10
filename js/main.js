@@ -25,8 +25,13 @@
     Lore.roles.forEach((r, i) => {
       const lab = UI.el('label', { class: 'p' + i });
       lab.appendChild(UI.el('span', { text: r.name }));
+      /* r.what, not r.gift twice. The two spans are styled as different things (17px italic and 11px
+         dim) and were fed the same string, so the first screen four players ever read printed
+         'Glyph-Sight / Glyph-Sight' in two sizes. r.what -- WHAT / WHEN / WHERE / WHETHER -- is the
+         cleanest statement of the division of labour in the project and appeared nowhere the table
+         could see it. */
       lab.appendChild(UI.el('span', { class: 'seat-nick', text: r.gift }));
-      lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.gift }));
+      lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.what }));
       lab.appendChild(UI.el('span', { class: 'seat-key', html: `key <b>${UI.esc(Store.state.keys[i] === ' ' ? 'SPACE' : Store.state.keys[i])}</b>` }));
       seats.appendChild(lab);
     });

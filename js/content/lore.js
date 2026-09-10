@@ -34,6 +34,14 @@
     hold:    ['YES', 'NO'],
     finale:  ['WALK_ACCEPT', 'WALK_REFUSE', 'STAY_ACCEPT', 'STAY_REFUSE', 'ACCEPT', 'REFUSE', 'WALK', 'STAY'],
   };
+  /* WHICH of each whisper pair is the true answer. This lived in ch3 (which writes TRUTHS) and,
+     separately, in ch8 (whose `truths()` falls back to recomputing it when TRUTHS is unset -- a
+     chapter-select jump, or a save from before ch3 wrote it). ch6 kept a third copy until the sweep
+     deleted it. Three copies of one four-entry table, in three chapters that may not edit each other,
+     and nothing compared them: docs/ADVERSARIAL.md 18's corollary. It belongs here, next to the pair
+     it selects from, and tools/check-content.js asserts every value is one of that role's two tokens.
+     Renaming or re-valuing any of these changes what the Epilogue counts. */
+  L.whisperTruth = { reader: 'DONTKNOW', listener: 'NO', seer: 'TELL', binder: 'DONTKNOW' };
   L.channel = (beat, roleId) => 'hf:' + beat + ':' + roleId;
   /* Finale token value set depends only on cast flags (both sides compute it identically). Returns null when no token is needed. */
   L.finaleValues = (flags) => {

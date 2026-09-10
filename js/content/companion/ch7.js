@@ -3,12 +3,17 @@
    the Listener has how the phrase opens — the second word is one rung above the first;
    the Seer has the two cuts in the rim of the floor, and which socket each is in;
    the Binder has the Laws: a sigil begins in the scratch and runs sunwise, and names every word once.
-   Verified by enumeration over 128 rings: all four pages give exactly one ring; drop the Listener and
-   four remain (two under the oath, which rotates the wall order away), drop the Seer and eight, drop
-   the Binder and eight. Drop the Reader and no word can be named — the Hearth's palette is name-only
-   and the walls are legible only here. Note that the shape-to-word lexicon is NOT private: book.js
-   prints all eight shapes beside their names on the Listener's Book page, so the Reader's necessity
-   rests on js/art/scenes-ch7.js drawing the wear on those walls and never the cut. */
+   Verified by enumeration over 128 rings — tools/scripts/ch7-sigil-check.js, run against the shipped
+   check(): all four pages give exactly one ring; drop the Listener and four remain (two under the
+   oath, which rotates the wall order away), drop the Seer and eight, drop the Binder and eight. Drop
+   the Reader and no word can be named — the Hearth's palette is name-only and the walls are legible
+   only here. Note that the shape-to-word lexicon is NOT private: book.js prints all eight shapes
+   beside their names on the Listener's Book page, so the Reader's necessity rests on
+   js/art/scenes-ch7.js drawing the wear on those walls and never the cut.
+   The walls moved this pass: the first four words used to be Chapter II's vault-door answer in
+   Chapter II's order, which is also the worked example on the Listener's permanent Book page. The
+   same check script now compares both walls, both readings of each, and the phrase against every
+   ordered sequence the game prints where more than one seat can read it. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI, Shared = window.VigilShared;
@@ -16,10 +21,12 @@
   const V = '#a482e6', GOLD = '#f2d27a', SEA = '#4fb3bf', RED = '#d96b4a';
   const F = 'font-family="Cinzel,serif"';
 
-  /* a copy of the two walls in js/content/ch7.js — the phone does not load the chapter file */
-  const WEST = [{ shape: 'Spike', inv: false }, { shape: 'Hook', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: true }];
-  const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Flame', inv: true }];
-  const SCRATCH = 4, NOTCH = 1;
+  /* a copy of the two walls in js/content/ch7.js — the phone does not load the chapter file.
+     KEEP IN STEP WITH js/content/ch7.js:WEST/EAST/SCRATCH/NOTCH; tools/scripts/ch7-sigil-check.js
+     compares the two files and fails if they drift. */
+  const WEST = [{ shape: 'Hook', inv: false }, { shape: 'Crown', inv: true }, { shape: 'Spike', inv: false }, { shape: 'Spike', inv: true }];
+  const EAST = [{ shape: 'Flame', inv: false }, { shape: 'Hook', inv: true }, { shape: 'Crown', inv: false }, { shape: 'Flame', inv: true }];
+  const SCRATCH = 6, NOTCH = 1;
   const words = (items, end) => G.readLine(items, end === 'other' ? 'right' : 'left')
     .map(n => `<b>${n}</b>`).join('<br>');
   const law = (n, era, year, text, note) => `<div class="law ${era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${n} · ${era === 'F' ? 'Founders’ · Year 0' : 'Order’s · Year ' + year}</div><div class="txt">${UI.esc(text)}</div>${note ? `<div class="fine">${note}</div>` : ''}</div>`;
@@ -68,12 +75,24 @@
      THE GEOMETRY ENFORCES THE SEPARATION. An earlier version drew eight sockets on the Hearth's own
      angular convention (i/8*360-90, socket 1 at the top, clockwise — js/puzzles/ring.js), and put the
      scratch and the notch radially outside two of them. Held next to the Hearth's numbered wheel it read
-     off "the scratch is socket 1, the notch is socket 6", which is the Seer's whole page, and dropping
+     off "the scratch is on this socket, the notch on that one", which is the Seer's whole page, and dropping
      the Seer went from eight candidate rings to one. So: NO sockets at all here, and the two cuts sit at
      angles no socket ever occupies (22.5 degrees off every one of eight, whatever the ring's rotation).
      Where the cuts are is the Seer's. This page says only that one of them starts a sigil, and which
      way the sigil then runs. The Prologue's lawRing does the same thing by rotating off the Hearth's
-     convention (companion/ch0.js). */
+     convention (companion/ch0.js).
+     THE ANGLE BETWEEN THE TWO MARKS, checked this pass and deliberately left alone. The marks sit 221
+     degrees apart, which rounds to five sockets, and five sockets is also how far apart the cuts
+     really are — so the obvious next move is to break that too. It cannot be broken and it does not
+     need to be. It cannot: on an eight-fold ring, if BOTH marks are half-way between sockets (which
+     is what keeps either from being read off as a socket number) then the angle between them is
+     always a whole multiple of 45 degrees, so "no mark on a socket" and "no whole number of sockets
+     between the marks" are mutually exclusive, and the first is the one worth having. It does not
+     need to be: the separation relates the two cuts to each other and says nothing about where
+     either one is, and the page that matters here — the Seer-less field, eight start sockets — is
+     eight because nobody knows which socket the scratch is in. Knowing the two cuts are five apart
+     leaves all eight. tools/scripts/ch7-companion.json asserts the invariant that IS load-bearing:
+     every mark in this drawing is more than 15 degrees off every one of the eight socket bearings. */
   const placingRule = () => `<svg viewBox="0 0 170 160" style="width:150px;height:141px">
     <circle cx="85" cy="80" r="52" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
     <g stroke="${RED}" stroke-width="2.5" stroke-linecap="round"><path d="M104,19 L120,11"/><path d="M107,25 L122,18"/></g>
@@ -190,7 +209,7 @@
         P.sight.push({ t: 'p', text: 'Every room tonight sang a piece of the Hymn. You have still never heard the whole of it. You have heard how it starts.' });
         P.sight.push({ t: 'audio', label: 'The first two notes', strip: CA.strip([1]), play: (A) => CA.playSteps(A, [1]), text: '**The second note is one rung above the first.** The smallest climb there is.' });
         P.sight.push({ t: 'html', html: climbOne() });
-        P.sight.push({ t: 'p', text: 'So **the phrase opens by climbing one rung**, and nothing else the walls can say opens like that.' });
+        P.sight.push({ t: 'p', text: 'So **the phrase opens by climbing one rung**. Almost nothing these walls can say opens like that — say it out loud before anybody places a word.' });
         P.sight.push({ t: 'p', text: 'Pick the wrong pair of readings and the ring is a different one. It will not sing.' });
         P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Every room is tuned differently, so you only ever hear how far the tune steps. You will need the Reader.' });
       }

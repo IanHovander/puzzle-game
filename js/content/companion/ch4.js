@@ -33,9 +33,32 @@
     return `<svg viewBox="0 0 ${x + 8} ${h + 6}" style="height:${opts.height || 48}px;width:auto;max-width:100%;color:${opts.color || '#e0b04a'};display:block;margin:6px auto">${s}</svg>`;
   }
 
-  /* The Reader's permanent pages: the primer from Chapter IV on, and Mere's sheet once it has been
-     rubbed. Both live in the Book, not on the Sight page — a permanent reference is never re-printed.
-     The ch4 flags are read off the ch4 unlock itself, so the Book keeps them once the table has moved on. */
+  /* The Reader's permanent pages: the primer from Chapter IV on, and Mere's sheet, translated, once
+     the Reader has actually read it. Both live in the Book, not on the Sight page — a permanent
+     reference is never re-printed. The ch4 flags are read off the ch4 unlock itself, so the Book
+     keeps them once the table has moved on.
+     The sheet waits for Chapter V. It used to appear the instant EMBER was typed, three scenes before
+     the study is searched, and it says 'We were four' and 'came up grey' — the first field of the
+     Seer's corner and the first field of the Binder's, in English, on the Reader's phone. The gate
+     that belongs here is LETTER_READ (js/content/ch4.js sets it at the desk, and its own line
+     promises the Book), but no Companion page can see a flag that is not cast, so the nearest honest
+     gate is the next chapter's unlock: the study is over by then and the sheet costs the table
+     nothing.
+     THE ASK FOR 'ONE MORE CAST BIT ON ch4' CANNOT BE GRANTED, and it is written down here so that
+     nobody spends an afternoon on it. Two independent reasons, both measured:
+       1. A cast is issued at the CHAPTER CODE SCENE. ch4's is ch4_attune, and it runs before
+          ch4_shelf and long before the desk — so at the moment the cast is computed LETTER_READ has
+          not been written by anything and is false on every path. No ch4 cast bit could ever carry
+          it. The flag it could carry is LETTER (the rubbing was taken, in ch2), which is bit 0, and
+          which is what this page already reads.
+       2. The format is six data bits, hard. js/content/shared.js packs `data &= 63` and
+          `v = data | (check << 6)` into three base-32 symbols = 15 bits, so six data bits and nine
+          of checksum. ch4 uses bits 0..5 and ch5 uses bits 0..5: both are FULL. A seventh bit is not
+          merely unavailable, it is silently dropped — Shared.cast('EMBER', 64) round-trips to 0 with
+          a valid checksum. tools/check-content.js now fails on any cast spec that reaches past bit 5,
+          so that trap cannot be walked into.
+     If this page must one day read LETTER_READ exactly, the bit belongs to ch5's cast, not ch4's,
+     and something in ch5's six would have to give it up. */
   const mereText = '"We were four. I offered to go alone and was refused. One was never asked. We wrote the cold glyph with four hands, and came up grey. — Mere, who kept the fire, after."';
   C.bookExtras.push((roleId, ctx) => {
     if (roleId !== 'reader' || ctx.maxChapter < 4) return [];
@@ -45,7 +68,7 @@
       { t: 'p', text: 'Twenty-four letters, each with its modern letter written beside it in the Provost\'s hand. No **Q** and no **X**. A plain substitution: slow, and yours.' },
       { t: 'key', items: OLD_ALPHA.split('').map(ch => ({ svg: runeGlyph(ch, 34), label: ch })) },
     ];
-    if (u.flags && u.flags.LETTER) {
+    if (u.flags && u.flags.LETTER && ctx.maxChapter >= 5) {
       out.push({ t: 'h', text: 'Mere\'s sheet, from the niche below' });
       out.push({ t: 'letter', text: mereText });
     }
@@ -81,12 +104,15 @@
     // B — under the paint: four walking in, no child
     s += `<rect x="14" y="102" width="332" height="96" fill="none" stroke="#fff" stroke-width="1.2"/>`;
     s += `<g stroke="#fff" fill="none" stroke-width="1.4">${[0, 1, 2].map(i => `<path d="M${292 + i * 12},190 C${286 + i * 12},166 ${294 + i * 12},152 ${300 + i * 12},134 C${306 + i * 12},152 ${314 + i * 12},166 ${304 + i * 12},190"/>`).join('')}</g>`;
+    /* Two figures do something the others do not: the fourth carries, the second reaches back the way
+       they came. Both are the Seer's corner of the study, and they are on no other surface — the
+       count is not, and never was: the Hearth said 'four, as one, went through' in Chapter II. */
     for (let i = 0; i < 4; i++) {
-      const x = 62 + i * 44;
-      s += `<g transform="translate(${x},190)"><path d="M-7,0 L-5,-34 L5,-34 L7,0 Z" fill="#fff"/><circle cx="0" cy="-40" r="5" fill="#fff"/><path d="M5,-30 L16,-22" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-3,0 L-24,5 L4,0 Z" fill="#fff" opacity=".4"/>`
+      const x = 62 + i * 44, back = i === 1;
+      s += `<g transform="translate(${x},190)"><path d="M-7,0 L-5,-34 L5,-34 L7,0 Z" fill="#fff"/><circle cx="${back ? -2 : 0}" cy="-40" r="5" fill="#fff"/><path d="${back ? 'M-5,-30 L-16,-22' : 'M5,-30 L16,-22'}" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-3,0 L-24,5 L4,0 Z" fill="#fff" opacity=".4"/>`
         + (i === 3 ? `<g transform="translate(24,-26) scale(0.62)" style="color:#a482e6">${G.shapeInner('Flame', true)}</g>` : '') + `</g>`;
     }
-    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">four walk in, no child — the fourth carries something</text>`;
+    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">four walk in, no child — the fourth carries, the second reaches back</text>`;
     // C — the scroll's ring, and the two cuts in it
     s += `<g transform="translate(110,278)" stroke="#fff" fill="none" stroke-width="1.4"><circle r="40"/>`;
     s += [0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 40).toFixed(1), y = (Math.sin(a) * 40).toFixed(1); return `<circle cx="${x}" cy="${y}" r="11"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif" stroke="none">${i + 1}</text>`; }).join('');
@@ -208,7 +234,7 @@
         P.sight.push({ t: 'p', text: 'The shelf board, the tapestry, and the scroll on the desk. All three have something under them.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
         P.sight.push({ t: 'fine', text: 'Three cuts, and nothing else cut anywhere in the room. **The two in the scroll\'s ring are not the same kind.**' });
-        P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say how many walk into the fire, and which of them has something in his hand.' });
+        P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say which of them has something in his hand, and which of them reaches back.' });
         P.sight.push({ t: 'fine', text: 'What a cut obliges is not yours — one kind starts a sigil and one does not, and that is the Binder\'s. Say where they are, and stop.' });
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
@@ -222,8 +248,14 @@
         P.sight.push({ t: 'h', text: 'Two rules, and two threads' });
         P.sight.push({ t: 'html', html: turnedBoard() });
         P.sight.push({ t: 'p', text: '**Whichever way up a board hangs, every book keeps its place.** Hung the other way up, it says the opposite word. Which way this one hangs is not yours to see.' });
-        P.sight.push({ t: 'p', text: '**A sigil begins at the scratch, and runs the way a clock counts** — the same rule as the lamp.' });
-        P.sight.push({ t: 'p', text: 'A notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
+        /* The qualifier is load-bearing and was added after ch3's ward gave the Binder a second class of
+           ring. Until then this page could say 'a sigil begins at the scratch' flat, because every ring in
+           the game obeyed it. ch3 now teaches that a VIGIL WARD begins at the notch instead -- so a Binder
+           holding both pages had two unconditional rules that contradict each other, and the wrong one
+           governs this ring, which is the only commit-once puzzle in the game. Naming the class here is what
+           lets the Binder tell which rule applies. tools/scripts/ch4-oath-check.js asserts it stays. */
+        P.sight.push({ t: 'p', text: 'The Provost\'s scroll is Founders\' work. It is not a Vigil ward like the Tower door — so **a sigil begins at the scratch, and runs the way a clock counts**, the same rule as the lamp.' });
+        P.sight.push({ t: 'p', text: 'On Founders\' work a notch is only a maker\'s mark. It says somebody made this, and nothing about where to start. What the three words leave over is where the lock goes.' });
         P.sight.push({ t: 'table', head: ['a lock', 'and what it costs'], rows: [
           ['<b>KNOT</b>', 'It cannot be untied. Not by you, not by her, not ever.'],
           ['<b>EMBER</b>', 'It can be reconsidered later, if there turns out to be a later.'],

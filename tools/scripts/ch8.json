@@ -1,16 +1,316 @@
-{ "start": "ch8_start",
-  "set": "ENDING=0,WREN_SHOWN=true,DECISION=FOURFOLD,WALK_UNLOCKED=true,WALK_reader=WALK,WALK_listener=WALK,WALK_seer=WALK,WALK_binder=WALK,BARGAIN_seer=broken,CLUES=4,TRUTHS=2,BELLS_CRACKED=1,MIDNIGHT_LEFT=222,VOLUNTEER=3,STAIR=HOLD,WHISPER_reader=DONTKNOW,WHISPER_listener=LOUD,WHISPER_seer=TELL,WHISPER_binder=YES,GROUP_NAME=the Idiots,hintsTotal=5",
-  "steps": [
-  {"key": "Space"}, {"wait": 300}, {"shot": "ch8_start"}, {"expect": "Walked into the fire: Reader, Listener, Seer and Binder"}, {"clickText": "What the fire left behind"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_e0"}, {"expect": "grey-eyed and ordinary"}, {"clickText": "Dawn"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"expect": "first true thing"}, {"clickText": "Years later"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_years"}, {"expect": "would do it again"}, {"clickText": "The whole night"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"shot": "ch8_night"}, {"expect": "only the Listener knows"}, {"clickText": "Onward"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_unseal"}, {"expect": "Unseal what each of you chose in the dark?"}, {"click": ".btn.choice >> nth=0"}, {"wait": 600}, {"key": "Space"}, {"clickText": "Continue"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"clickText": "Unseal Reader"}, {"wait": 300}, {"clickText": "Unseal Listener"}, {"wait": 300}, {"clickText": "Unseal Seer"}, {"wait": 300}, {"clickText": "Unseal Binder"}, {"wait": 500}, {"shot": "ch8_unsealed"}, {"expect": "said yes to the stair"}, {"expect": "broke it in the room"}, {"clickText": "Onward"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 5500}, {"shot": "ch8_map"}, {"expect": "IT IS THE GLYPH KNOT"}, {"clickText": "The numbers"},
-  {"wait": 700}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_stats"}, {"expect": "3:42 to spare"}, {"expect": "Seer"}, {"expect": "the Idiots"}, {"clickText": "One more thing"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 3800}, {"shot": "ch8_words"}, {"expect": "were the Great Sigil in wall order"}, {"clickText": "The last word"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 300}, {"shot": "ch8_flow"}, {"expect": "The Fourfold Walk"}, {"clickText": "Sit with it"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "ch8_end"}, {"expect": "Sit with it."}, {"expect": "BEGIN AGAIN"}, {"log": true}
-] }
+{
+ "start": "ch8_start",
+ "set": "ENDING=0,WREN_SHOWN=true,DECISION=FOURFOLD,WALK_UNLOCKED=true,WALK_reader=WALK,WALK_listener=WALK,WALK_seer=WALK,WALK_binder=WALK,BARGAIN_seer=broken,OATH=1,CLUES=4,TRUTHS=2,BELLS_CRACKED=1,MIDNIGHT_LEFT=222,VOLUNTEER=3,STAIR=HOLD,WHISPER_reader=DONTKNOW,WHISPER_listener=LOUD,WHISPER_seer=TELL,WHISPER_binder=YES,GROUP_NAME=the Idiots,hintsTotal=5",
+ "viewport": {
+  "width": 1280,
+  "height": 720
+ },
+ "steps": [
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "ch8_start"
+  },
+  {
+   "expect": "Walked into the fire: Reader, Listener, Seer and Binder"
+  },
+  {
+   "clickText": "What the fire left behind"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "ch8_e0"
+  },
+  {
+   "expect": "grey-eyed and ordinary"
+  },
+  {
+   "clickText": "Years later"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "ch8_years"
+  },
+  {
+   "expect": "would do it again"
+  },
+  {
+   "clickText": "The whole night"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 4600
+  },
+  {
+   "shot": "ch8_night"
+  },
+  {
+   "expect": "the dormitory"
+  },
+  {
+   "expect": "the Cold"
+  },
+  {
+   "expect": "You found the two that carried them"
+  },
+  {
+   "expect": "an oath you swore to a fourteen-year-old"
+  },
+  {
+   "expect": "The Seer stayed behind to hold it"
+  },
+  {
+   "expect": "each of you answered alone"
+  },
+  {
+   "expectNot": "The route: KNOT"
+  },
+  {
+   "expectNot": "The eighth glyph"
+  },
+  {
+   "expectNot": "the laundry, the stair, the fire"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "Four boxes, still sealed"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "ch8_unseal"
+  },
+  {
+   "expect": "Unseal what each of you chose in the dark?"
+  },
+  {
+   "click": ".btn.choice >> nth=0"
+  },
+  {
+   "wait": 600
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "clickText": "Continue"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Unseal Reader"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Unseal Listener"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Unseal Seer"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "clickText": "Unseal Binder"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "shot": "ch8_unsealed"
+  },
+  {
+   "expect": "Would walk into the fire."
+  },
+  {
+   "expect": "and then broke it"
+  },
+  {
+   "expectNot": ";"
+  },
+  {
+   "expectNot": "On the stair"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "Onward"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 4200
+  },
+  {
+   "shot": "ch8_map"
+  },
+  {
+   "expect": "IT IS THE GLYPH KNOT"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "The numbers"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 2600
+  },
+  {
+   "shot": "ch8_stats"
+  },
+  {
+   "expect": "the Idiots"
+  },
+  {
+   "expect": "Four clues in the bell-chamber"
+  },
+  {
+   "expect": "Three bells to keep whole"
+  },
+  {
+   "expect": "3:42 to spare"
+  },
+  {
+   "expect": "The night took you"
+  },
+  {
+   "expectNot": "The fire also remembers"
+  },
+  {
+   "assert": "(function(){var w=document.getElementById('widget');return w.scrollHeight <= w.clientHeight + 1;})()"
+  },
+  {
+   "clickText": "One more thing"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 3800
+  },
+  {
+   "shot": "ch8_words"
+  },
+  {
+   "_": "ch8_words used to say the seven chapter words 'were the Great Sigil in wall order'. It was TRUE -- ch7's phrase was THORN KNOT VEIL EMBER ASH WELL CROWN, the attunement word of ch1..ch7 in order -- and being true is what was wrong with it: every player types all seven into the Hearth over the evening, so the Finale's whole phrase had been public since Chapter I. ch7's walls moved; this line must never claim an order again."
+  },
+  {
+   "expect": "are every glyph that can be written, each of them once"
+  },
+  {
+   "expect": "The eighth is the rest"
+  },
+  {
+   "expectNot": "wall order"
+  },
+  {
+   "expectNot": "in chapter order"
+  },
+  {
+   "clickText": "The last word"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 300
+  },
+  {
+   "shot": "ch8_flow"
+  },
+  {
+   "expect": "The night ended in the Fourfold Walk"
+  },
+  {
+   "expectNot": "clues"
+  },
+  {
+   "clickText": "Sit with it"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "shot": "ch8_end"
+  },
+  {
+   "expect": "Sit with it."
+  },
+  {
+   "expect": "BEGIN AGAIN"
+  },
+  {
+   "log": true
+  }
+ ]
+}

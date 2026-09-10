@@ -14,6 +14,16 @@
     body[data-chapter="ch1"] .seat { font-size: 11px; }
     body[data-chapter="ch1"] .table-area { margin-top: 26px; width: min(380px, 50vh); height: min(380px, 50vh); }
     @media (max-height: 820px) { body[data-chapter="ch1"] .table-area { margin-top: 8px; width: min(276px, 39vh); height: min(276px, 39vh); } }
+    /* A second step, for a laptop in a window. Measured at 1152x648 before it: the seats panel ran
+       64px past the fold and 'Call the vote' was the half of it the room could not see (scan-fit, and
+       scratchpad/ch012/probe.js element by element: note 120 + table 253 + status 20 + row 46 = 552
+       against a 512px box). The nine seats are laid out in percentages, so the table shrinks whole. */
+    @media (max-height: 700px) {
+      body[data-chapter="ch1"] .table-area { margin-top: 4px; width: min(214px, 33vh); height: min(214px, 33vh); }
+      body[data-chapter="ch1"] .seats-pz .pz-note { font-size: 14px; line-height: 1.34; }
+      body[data-chapter="ch1"] .seat { width: 54px; height: 54px; font-size: 10px; }
+      body[data-chapter="ch1"] .seat-banner svg { width: 18px; height: 18px; }
+    }
   ` }));
 
   /* ---------- the nine seats ----------
@@ -30,6 +40,14 @@
   const BLOCKED = ['orrin'];                              // Seer: a soldier of the Envoy stands behind that chair
   const BOUGHT = ['vey', 'tarn'];                         // Seer: Crown coin, cushion and sleeve
   const FOLLOWS = { quill: 'sorrel', hallan: 'orrin' };   // Binder: the two sworn threads
+  /* The budget, in one place. Everything that says "two" says it from here — the widget's cap, the
+     Chair's rule card and hint 2 — because the number is the puzzle. Brute-forced over the live
+     tally() (scratchpad/ch012/ch1-asks.js): of the 28 askable pairs exactly ONE reaches five keeps,
+     {sorrel, oriel}; at a cap of 3 there are 6 winning triples out of 56, and a table with no Binder
+     can simply ask all three Masters it can reach ({sorrel, quill, oriel}) and win with certainty,
+     which is the Binder's whole seat in this chapter. tools/scripts/ch1.json asserts the cap on the
+     board, because nothing else in the suite can see it. */
+  const ASKS = 2, ASKS_WORD = ['no', 'one', 'two', 'three', 'four'][ASKS];
   function tally(selected) {
     const asked = (id) => selected.includes(id) && id !== 'marrow' && !DEAF.includes(id) && !BLOCKED.includes(id) && !BOUGHT.includes(id);
     const v = {};
@@ -146,12 +164,12 @@
       ch1_vote: {
         type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
         text: [
-          { text: 'The board shows numbers, not names. Say your one thing out loud before anybody crosses the floor.', cls: 'whisper' },
+          { text: 'Numbers, not names — say your one thing first.', cls: 'whisper' },
           { text: 'Reader — who is already pledged.', cls: 'whisper' },
           { text: 'Listener — who is still talking about it.', cls: 'whisper' },
           { text: 'Seer — who cannot be moved by anybody.', cls: 'whisper' },
           { text: 'Binder — who is sworn to whom.', cls: 'whisper' },
-          { text: 'Then ask two, and call the vote. It is called once.', cls: 'whisper' },
+          { text: 'Then ask ' + ASKS_WORD + '. The vote is called once.', cls: 'whisper' },
         ],
         config: () => {
           /* The bell is narrative (design §5 Ch1): at 6:00 the Provost stalls the count and the last hint tier fires.
@@ -159,12 +177,16 @@
           let stall = false;
           const STALL = 'The bell. The Provost rises and does not call the vote: "The Chair has not finished hearing the Masters." She is stalling for you.';
           return {
-            title: 'THE HOUR BEFORE THE BELL', center: 'the Hearth', startAngle: 20, max: 2, timer: 360, submitText: 'Call the vote',
-            note: 'The Chair reads out the rule: *Five of nine keeps the child. You may ask **two** Masters. A Master you ask votes **KEEP** — unless they will not hear you, you cannot reach them, or the Crown has paid them. A Master sworn to another votes as that Master does, unless you ask them yourself. Everyone else votes **SEND**.*',
+            title: 'THE HOUR BEFORE THE BELL', center: 'the Hearth', startAngle: 20, max: ASKS, timer: 360, submitText: 'Call the vote',
+            note: 'The Chair reads out the rule: *Five of nine keeps the child. You may ask **' + ASKS_WORD + '** Masters. A Master you ask votes **KEEP** — unless they will not hear you, you cannot reach them, or the Crown has paid them. A Master sworn to another votes as that Master does, unless you ask them yourself. Everyone else votes **SEND**.*',
             timeoutText: STALL,
             onTimeout: () => {
               stall = true;
-              if ((Store.state.hintsUsed.ch1_vote || 0) < 3) { Store.state.hintsUsed.ch1_vote = 3; Store.save(); }
+              /* The bell hands over all three rungs. engine.js counts hintsTotal only on the hint
+                 button, so a grant that skips it is three free rungs that six chapter ledgers and the
+                 pause menu never see. Count what we give. */
+              const had = Store.state.hintsUsed.ch1_vote || 0;
+              if (had < 3) { Store.state.hintsUsed.ch1_vote = 3; Store.inc('hintsTotal', 3 - had); Store.save(); }
               const bell = document.getElementById('hint'); if (bell) bell.classList.add('attention');
               window.VigilAudio.sfx('boom');
             },
@@ -183,7 +205,7 @@
         },
         hints: [
           'Four questions, four people: who is pledged (Reader), who is still talking (Listener), who cannot be moved at all (Seer), who is sworn to whom (Binder).',
-          'You start at two, you need five, you get two asks. So one ask has to carry two votes — the Binder knows which one.',
+          'Nine seats, five needed, and ' + ASKS_WORD + ' asks. One of the seats you can reach does not vote alone. Which one is the Binder\'s to say.',
           'Seat 1 and Seat 7. Seat 1 brings Seat 2 with her. With the Chair and Seat 3, that is five.',
         ],
         onSolve: (s, r) => {

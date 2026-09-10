@@ -1,0 +1,145 @@
+{
+ "start": "ch3_door",
+ "steps": [
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 400
+  },
+  {
+   "expect": "Seventy-five heartbeats"
+  },
+  {
+   "wait": 80000
+  },
+  {
+   "wait": 1200
+  },
+  {
+   "key": "Space"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "expect": "Nobody answers"
+  },
+  {
+   "shot": "ch3_ward_timedout"
+  },
+  {
+   "eval": "(function(){var f=window.VigilStore.state.flags;return [f.TOWER_DOOR_timedout,f.DOOR||null,f.SURRENDERED||null]})()"
+  },
+  {
+   "_": "UNDER-COMMITMENT IS NOT AN ATTEMPT. Every other ring in the game refunds an unfinished sigil and says so (R10.19): ch4's oath 'it has not cost you', ch5's two gates 'Nothing frosts yet', ch6's strip 'Not a reading yet'. This one charged for it, and moving WARD_TRIES into the save removed the reload that used to hand it back -- so a table could lose the Tower door by pressing Close three times on an empty ring."
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.WARD_TRIES|0) === 0"
+  },
+  {
+   "_": "an empty ring"
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "expect": "Nothing is spent"
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.WARD_TRIES|0) === 0"
+  },
+  {
+   "_": "one word, then two: still fewer than three, still not charged"
+  },
+  {
+   "slots": [
+    [
+     1,
+     "ASH"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "expect": "Three words go in"
+  },
+  {
+   "expect": "Nothing is spent"
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.WARD_TRIES|0) === 0"
+  },
+  {
+   "slots": [
+    [
+     2,
+     "THORN"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 700
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.WARD_TRIES|0) === 0"
+  },
+  {
+   "_": "and the widget's own ceiling moved with it -- ring.js reads cfg.maxTries live and counts every submission, so without the bump it would go cold at a count the rule card never mentioned. Three refunded submissions must leave the card saying nothing about a count."
+  },
+  {
+   "expectNot": "he has counted"
+  },
+  {
+   "_": "NOW a full lawful WRONG board: three words, wrong run. That is an attempt, and it costs exactly one."
+  },
+  {
+   "slots": [
+    [
+     1,
+     "ASH"
+    ],
+    [
+     2,
+     "THORN"
+    ],
+    [
+     3,
+     "KNOT"
+    ]
+   ]
+  },
+  {
+   "clickText": "Close the sigil"
+  },
+  {
+   "wait": 900
+  },
+  {
+   "assert": "(window.VigilStore.state.flags.WARD_TRIES|0) === 1"
+  },
+  {
+   "_": "and the refusal names no axis the missing Binder holds"
+  },
+  {
+   "expectNot": "begun at slot"
+  },
+  {
+   "eval": "(function(){return {WARD_TRIES: window.VigilStore.state.flags.WARD_TRIES|0}})()"
+  }
+ ]
+}

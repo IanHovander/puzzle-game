@@ -75,7 +75,13 @@
       const gl = [['WREN', n >= 4 ? 'the Vigil roll spells it WRENN in the older alphabet: *the hollow of a bell; the space that rings*' : 'the child\'s name. Written on the dormitory door in the older alphabet, which you have not learned.']];
       // Plinth order, not the order the vault door wants, and not before the door is behind them:
       // this entry used to name the door's own answer sequence from the scene before the puzzle.
-      if (n >= 3) gl.push(['THE FOUNDERS\' GLYPHS', 'plinth 1 \u2014 EMBER \u00b7 plinth 2 \u2014 THORN \u00b7 plinth 3 \u2014 VEIL \u00b7 plinth 4 \u2014 KNOT (from the vault door)']);
+      /* The plinth order, hand-copied out of Chapter II. It moved: ch2's CUTFOR was [2,3,4,1], which
+         is the floor turned one sunwise -- the single idiom a Seer-less table reaches for, and the
+         shipped answer was that guess, so a recorded 1-in-23 was really 1-in-3. CUTFOR is [3,4,2,1]
+         now and WORDS moved with it (js/content/ch2.js:88), so this line was the Reader's permanent
+         Book contradicting the Reader's own Chapter II page from Chapter III onward. It is gated
+         n >= 3, so it was never visible during ch2 itself, which is why nothing caught it. */
+      if (n >= 3) gl.push(['THE FOUNDERS\' GLYPHS', 'plinth 1 \u2014 THORN \u00b7 plinth 2 \u2014 VEIL \u00b7 plinth 3 \u2014 EMBER \u00b7 plinth 4 \u2014 KNOT (from the vault door)']);
       blocks.push({ t: 'list', items: gl.map(([k, v]) => `**${k}** — ${v}`) });
       blocks.push({ t: 'h', text: 'The Older Alphabet' });
       blocks.push(n >= 4 ? { t: 'p', text: 'Learned from the Provost\'s primer (Chapter IV). A simple substitution: each old letter is the modern letter shown beside it on the primer page.' } : { t: 'fine', text: '*Locked — "You have not learned it yet."*' });

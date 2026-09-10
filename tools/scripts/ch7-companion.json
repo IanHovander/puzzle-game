@@ -13,7 +13,7 @@
   {"tab": "Speak"}, {"click": ".blk-choice .opt:has-text('STAY')"}, {"click": ".blk-choice .opt:has-text('ACCEPT')"}, {"clickText": "Seal both"}, {"wait": 600}, {"expect": "ZHHT"},
 
   {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_seer_sight"},
-  {"expect": "Two cuts in the floor"}, {"expect": "scratch"}, {"expect": "notch"}, {"expect": "socket 4"}, {"expect": "socket 1"},
+  {"expect": "Two cuts in the floor"}, {"expect": "scratch"}, {"expect": "notch"}, {"expect": "socket 6"}, {"expect": "socket 1"},
   {"expectNot": "THORN"}, {"expectNot": "turned"}, {"expectNot": "sunwise"}, {"expectNot": "clockwise"},
   {"tab": "Wren"}, {"expect": "shadow"},
 

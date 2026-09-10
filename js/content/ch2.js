@@ -47,25 +47,53 @@
        WORDS    the word cut into each plinth                                    Reader
        CUTFOR   the hole under the older floor each plinth was cut to stand in   Seer
        CONTOUR  the steps the door hums from one word to the next                Listener
-       Law 3    where two rules disagree the older binds, so holes not floor     Binder
+       Law 3    a drill is not a Law, and where two Laws disagree the older binds   Binder
 
-     Brute-forced over every believable committed count (an ordered four turns, four different dials, each
-     glyph from the palette of eight: 4! x 8^4 = 98,304). A subset's candidates are the counts consistent
-     with the pages it holds.
+     THREE ways to count this door, and the Hearth prints all three, because a fork of two on a
+     commit-once puzzle is a coin: the dial a plinth stands over (Law 9, Order's, 212), the dial it was
+     cut for (Law 13, Founders', Year 0) and the drill the school has taught since that floor was laid —
+     one, two, three, four, in the order the door hums. Dating them is the Binder's whole seat.
+
+     Brute-forced over every believable committed count — an ordered four turns, four different dials,
+     four different words from the palette of eight, 4! x 8P4 = 40,320 — by
+     scratchpad/ch012/ch2-field.js, which first reproduced this comment's previous table exactly
+     (1 / 72 / 24 / 23 / 2, pairs 48 / 24 / 552 / 72 / 72 / 576 / 72). A subset's candidates are the
+     counts consistent with the pages it holds:
        all four ......... 1      drop the Reader .. 72     drop the Listener . 24
-       drop the Seer .... 23     drop the Binder ... 2
-       Reader+Seer 48 · Reader+Listener 24 · Seer+Listener 72 · Listener+Binder 72 · Reader+Binder 552 ·
-       Reader alone 576 · Listener alone 72 · Seer or Binder alone 98,304.
+       drop the Seer .... 22     drop the Binder ... 3
+       Reader+Seer 70 · Reader+Listener 24 · Seer+Listener 72 · Listener+Binder 72 · Reader+Binder 552 ·
+       Reader alone 576 · Listener alone 72 · Seer or Binder alone 40,320.
+     (The old note said 98,304 for those last two: 4! x 8^4, which counts counts that repeat a word.
+     Four plinths carry four different words and the room can see that, so the honest space is 8P4.)
+
+     Two things those numbers used to hide.
+     (a) The Binder's fork was two counts against one commit — a coin, on the chapter's only puzzle.
+         The drill is the third, and it is the one the room's own schooling proposes, so a Binder-less
+         table now guesses at 1 in 3 and knows it is guessing.
+     (b) CUTFOR was [2, 3, 4, 1] — FLOOR turned by exactly one sunwise. A uniform sunwise offset is the
+         only kind of offset this game ever shows a table (companion/ch0.js:134 teaches the word out
+         loud and ring.js draws the arrow on every ring), so a Seer-less table looking for structure
+         had four candidates, three once the Binder ruled out the floor, and the shipped answer was the
+         one the Prologue drilled: a recorded 1-in-23 that was really 1-in-3. CUTFOR is now [3, 4, 2, 1]
+         — not a rotation of [1, 2, 3, 4], not its own inverse, and still a derangement, so no member of
+         the guessable family is the answer and the Seer has to be heard.
+         THE COUNT THE DOOR ACCEPTS DID NOT MOVE. The word -> hole map is frozen (EMBER 2, THORN 3,
+         VEIL 4, KNOT 1); WORDS was permuted with CUTFOR, so which word is cut on which plinth changed
+         and the committed answer did not. Every script that opened this door still opens it.
+         Hand-off: js/content/companion/book.js:78 hard-copies the old plinth order into the Reader's
+         permanent Book and is not a file this pass may edit. It must become
+         'plinth 1 — THORN · plinth 2 — VEIL · plinth 3 — EMBER · plinth 4 — KNOT (from the vault door)'.
      G.orderingsMatching(WORDS, CONTOUR) returns exactly one ordering, so the answer is unique.
-     The door counts ONCE, so none of those subsets can search: the Binder's two are a coin flip, and the
-     one the room is pointing at is the wrong one. */
-  const WORDS = ['EMBER', 'THORN', 'VEIL', 'KNOT'];       // Reader   — plinth 1..4
-  const CUTFOR = [2, 3, 4, 1];                             // Seer     — plinth 1..4 -> the hole it was cut for
+     The door counts ONCE, so none of those subsets can search. */
+  const WORDS = ['THORN', 'VEIL', 'EMBER', 'KNOT'];        // Reader   — plinth 1..4
+  const CUTFOR = [3, 4, 2, 1];                             // Seer     — plinth 1..4 -> the hole it was cut for
   const CONTOUR = [1, 3, -2];                              // Listener — up one, up three, down two
   const FLOOR = [1, 2, 3, 4];                              // public   — the dial each plinth stands over
   const ORDER = G.orderingsMatching(WORDS, CONTOUR)[0];    // THORN, KNOT, VEIL, EMBER
   /* dial 3 -> THORN, dial 1 -> KNOT, dial 4 -> VEIL, dial 2 -> EMBER */
   const ANSWER = ORDER.map(g => ({ dial: String(CUTFOR[WORDS.indexOf(g)]), glyph: g }));
+  /* public — the drill: the four words on dials 1..4, in the order the door hums */
+  const DRILL = ORDER.map((g, i) => ({ dial: String(i + 1), glyph: g }));
 
   /* A count, judged. Pure: hand it the turns and nothing else. */
   function judge(turns) {
@@ -76,9 +104,10 @@
     const at = (map) => (g) => String(map[WORDS.indexOf(g)]);
     const onHoles = !strange && gs.every((g, i) => ds[i] === at(CUTFOR)(g));
     const onFloor = !strange && gs.every((g, i) => ds[i] === at(FLOOR)(g));
+    const onDrill = !strange && turns.every((t, i) => t.dial === DRILL[i].dial);
     const ordered = gs.join() === ORDER.join();
     const ok = turns.every((t, i) => t.dial === ANSWER[i].dial && t.glyph === ANSWER[i].glyph);
-    return { form: 'count', strange, onHoles, onFloor, ordered, ok };
+    return { form: 'count', strange, onHoles, onFloor, onDrill, ordered, ok };
   }
 
   /* What the door gives back. Each line names the clause that stopped it. Free lines cost nothing. */
@@ -87,6 +116,7 @@
     short: 'The door hears what you have given it, and lets it go. A count is four, one word to each dial.',
     twice: 'Two of those turns are the same dial. One word to a dial, and there are four dials.',
     floor: 'Every word went to the dial its own plinth stands over. That is the newer rule. The lintel was cut before this floor was laid.',
+    drill: 'One, two, three, four, the way the school drills it. The school has drilled it since the floor was laid, and a drill is not a Law.',
     order: 'The right words on the right dials, and the door heard them in an order it has never hummed.',
     dialmap: 'The four right words, and at least one of them on a dial no plinth was ever cut to face.',
     one: 'One of those words is cut into no plinth in this room.',
@@ -100,7 +130,9 @@
 
   /* The niche strip, left to right: Spike-inverted, Crown-inverted, Hook-inverted. No mark on the Hearth.
      From the left it reads WELL, EMBER, VEIL; from its mark at the right, KNOT, CROWN, THORN.
-     ch7 quotes the second reading verbatim — do not change this array. */
+     (This used to say ch7 quotes the second reading verbatim and must not be changed. It does not:
+     grep for KNOT, CROWN, THORN outside this file returns docs/DESIGN.md:139 and nothing else. The
+     array is ch2's own, and the sentence it reads is the one ch2_strip prints eight lines below.) */
   const STRIP = [{ shape: 'Spike', inv: true }, { shape: 'Crown', inv: true }, { shape: 'Hook', inv: true }];
 
   /* A sheet in an alphabet nobody at the table has learned: unreadable on purpose. Deterministic scribble. */
@@ -120,7 +152,7 @@
         { id: 'ch2_door', label: 'The door that counts once', col: 1, row: 1, kind: 'choice' },
         { id: 'ch2_counted', label: 'It counted you', col: 2, row: 0, secret: true, when: () => Store.chose('CH2_DOOR', 'counted') },
         { id: 'ch2_crawled', label: 'It stopped counting. You crawled in', col: 2, row: 2, secret: true, when: () => Store.chose('CH2_DOOR', 'crawled') },
-        { id: 'ch2_niche_found', label: "Mere's niche, behind the first plinth", col: 3, row: 0, kind: 'choice', when: () => Store.chose('CH2_NICHE', 'mere') },
+        { id: 'ch2_niche_found', label: "Mere's niche, behind the first plinth", col: 3, row: 0, kind: 'choice', secret: true, when: () => Store.chose('CH2_NICHE', 'mere') },
         { id: 'ch2_strip', label: 'Read from its mark: four went through', col: 4, row: 0, secret: true, when: () => Store.chose('CH2_STRIP', 'right') },
         { id: 'ch2_rubbing', label: 'The Reader took a rubbing', col: 4, row: 2, secret: true, when: (s) => !!s.flags.LETTER },
         { id: 'ch2_ember', label: 'The Cold Ember, the bricked arch', col: 3, row: 1 },
@@ -193,16 +225,16 @@
       ch2_door: {
         type: 'puzzle', puzzle: 'dialseq', art: 'ch2_antechamber', mood: 'tense', fx: 'dust', puzzleId: 'ch2_door', par: [3, 4.5, 6],
         text: [
-          { text: 'Four turns, one order. Say your one thing out loud before anybody touches a dial.', cls: 'whisper' },
+          { text: 'Four turns, one order. Say your one thing before anybody touches a dial.', cls: 'whisper' },
           { text: 'Reader — the word cut into each plinth.', cls: 'whisper' },
           { text: 'Listener — the order the door hums.', cls: 'whisper' },
           { text: 'Seer — which hole each plinth was cut for.', cls: 'whisper' },
-          { text: 'Binder — which of the two rules is older.', cls: 'whisper' },
-          { text: 'The door counts once. A wrong count is not the end of the night.', cls: 'small' },
+          { text: 'Binder — which of the three counts binds.', cls: 'whisper' },
+          { text: 'One count only. A wrong one does not end the night.', cls: 'small' },
         ],
         config: () => ({
           title: "THE FOUNDERS' DOOR",
-          note: 'The Reader reads the lintel aloud: *Four plinths, four dials. Each plinth\'s word goes on the dial that plinth **faces**. Turn all four dials, one word each, in the order the door hums. The door counts **once**.*',
+          note: 'The Reader reads the lintel: *Four plinths, four dials. Turn all four, one word each, in the order the door hums. The door counts **once**.* Three rules say which dial a word goes on: the dial its plinth **stands over**, the dial it was **cut for**, or **one to four** in turn. Only one is older than this floor.',
           html: '<div class="ch2-count" id="ch2-count">One count. It has not been called yet.</div>',
           dials: [1, 2, 3, 4].map(n => ({ id: String(n), label: String(n) })),
           glyphs: glyphPalette(), maxTurns: 4,
@@ -216,9 +248,11 @@
           },
         }),
         hints: [
-          'Four things, four people, and nobody has two. The words — the Reader. The order — the Listener. Which hole each plinth was cut for — the Seer. Which rule is older — the Binder.',
-          'There are two rules about which dial a plinth faces, and they were written four hundred years apart. Only one of you can date them.',
-          'Dial 3 to THORN. Then dial 1 to KNOT. Then dial 4 to VEIL. Then dial 2 to EMBER. Then press *Try the door*.',
+          'Four things, four people, and nobody has two. The words — the Reader. The order — the Listener. Which hole each plinth was cut for — the Seer. Which of the three counts binds — the Binder.',
+          'Three ways to count this door, and the room can see all three. Which one the door was cut to obey is a question of dates, and only one of you can date them.',
+          /* Generated, never written out twice: ch4's oath is what a hand-copied last rung costs on a
+             puzzle that commits once. tools/check-hints.js puts this string back through check(). */
+          'Dial ' + ANSWER.map(a => a.dial + ' to ' + a.glyph).join('. Then dial ') + '. Then press *Try the door*.',
         ],
         onSolve: (s, r) => {
           const j = judge((r && r.turns) || []);
@@ -232,7 +266,7 @@
             { text: 'THORN, KNOT, VEIL, EMBER. *A gate. Together. Hidden. Kept.* That is all it ever said.', cls: 'small' },
             { text: 'Four words, four holes, one order, and the older rule. Nobody at this table had two of them.', cls: 'small' },
           ]; }
-          const why = j.onFloor ? DOOR.floor : (j.onHoles && !j.ordered) ? DOOR.order
+          const why = j.onFloor ? DOOR.floor : j.onDrill ? DOOR.drill : (j.onHoles && !j.ordered) ? DOOR.order
             : j.strange === 1 ? DOOR.one : j.strange > 1 ? DOOR.some
             : !j.strange ? DOOR.dialmap : DOOR.other;
           receipt(true, why);
@@ -384,7 +418,7 @@
             + ', and ' + (s.flags.EMBER_LOST
               ? ((s.flags.SORREL && Store.chose('CH2_STAIR', 'ember')) ? 'the Ember went to the Convocation.' : 'the Ember is at the bottom of the stair.')
               : 'the Ember came up.');
-          return `${door} ${niche} ${end}`;
+          return `${door} ${niche} ${end} Hints so far: ${s.flags.hintsTotal || 0}.`;
         },
         next: 'ch3_start', button: 'The Whispering Gallery',
       },

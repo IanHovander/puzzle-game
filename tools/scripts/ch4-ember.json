@@ -1,6 +1,6 @@
 { "start": "ch4_secrets", "steps": [
   {"key": "Space"}, {"wait": 400},
-  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"type": ["#widget input.field >> nth=0", "gray"]}, {"type": ["#widget input.field >> nth=1", "untied"]}, {"clickText": "Say what you see"}, {"wait": 1400}, {"expect": "letter she never sent"}, {"expect": "never named to you"}, {"expectNot": "Convocation"}, {"shot": "ch4em_chair"}, {"clickText": "Back to the room"},
+  {"click": ".ch4-hot[data-id=\"chair\"]"}, {"wait": 400}, {"type": ["#widget input.field >> nth=0", "gray"]}, {"type": ["#widget input.field >> nth=1", "red untied"]}, {"clickText": "Say what you see"}, {"wait": 1400}, {"expect": "letter she never sent"}, {"expect": "never named to you"}, {"expectNot": "Convocation"}, {"shot": "ch4em_chair"}, {"clickText": "Back to the room"},
   {"wait": 400}, {"clickText": "Stop searching"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expectNot": "So. The Seer."}, {"click": ".btn.choice >> nth=0"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400},

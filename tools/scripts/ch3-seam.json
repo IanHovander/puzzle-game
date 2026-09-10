@@ -1,0 +1,13 @@
+{ "start": "ch3_grid", "steps": [
+  {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"expect": "One turn more for every guess that seam already remembers"},
+  {"clickText": "South"}, {"clickText": "South"}, {"expect": "Turn 2 of 12"},
+  {"dialog": "THORN"}, {"clickText": "East"}, {"wait": 600}, {"expect": "A turn goes with it"}, {"expect": "Turn 3 of 12"},
+  {"dialog": "EMBER"}, {"clickText": "East"}, {"wait": 700}, {"expect": "Two turns go with it"}, {"expect": "Turn 5 of 12"}, {"shot": "ch3_seam_second"},
+  {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.SEAM_A3B3,f.SEAM_B3C3||null]})()"},
+  {"click": "#menu"}, {"clickText": "Replay scene"}, {"wait": 900}, {"key": "Space"}, {"wait": 700}, {"expect": "Turn 0 of 12"},
+  {"clickText": "South"}, {"clickText": "South"}, {"expect": "Turn 2 of 12"},
+  {"dialog": "VEIL"}, {"clickText": "East"}, {"wait": 800}, {"expect": "Three turns go with it"}, {"expect": "Turn 5 of 12"}, {"shot": "ch3_seam_after_replay"},
+  {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.SEAM_A3B3,f.CH3_BELLS||0]})()"},
+  {"dialog": "CROWN"}, {"clickText": "East"}, {"wait": 600}, {"expect": "Turn 6 of 12"},
+  {"log": true}
+] }

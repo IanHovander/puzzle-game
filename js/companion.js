@@ -197,7 +197,11 @@
           });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
+          /* Sixteen times a night one player is told to raise the volume on a phone holding a fact the
+             other three must not have -- ch2's vault door is four notes, ch4's third shelf, ch5's two
+             gates. Headphones are the fix and nobody had said so. The second sentence stays: a silent
+             room, a flat speaker or a deaf player loses nothing, because the sound is always written. */
+          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Use headphones if you have them — what you hear is yours, not the table\'s. No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

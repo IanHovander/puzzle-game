@@ -4,6 +4,8 @@
   {"click": ".seat:has-text(\"Dunmere\")"}, {"click": ".seat:has-text(\"Harrowden\")"},
   {"waitFor": ".pz-status:has-text(\"stalling for you\")", "timeout": 30000}, {"wait": 1500}, {"shot": "ch1_vote_stall"},
   {"eval": "({hint: VigilStore.state.hintsUsed.ch1_vote, filled: document.querySelectorAll('.seat.filled').length, lost: VigilStore.state.flags.VOTE_LOST})"},
+  {"_": "the bell hands over all three rungs; engine.js only counts hintsTotal on the hint button, so the grant has to count itself or six ledgers under-report it"},
+  {"assert": "VigilStore.state.hintsUsed.ch1_vote === 3 && VigilStore.state.flags.hintsTotal === 3"},
   {"click": "#hint"}, {"wait": 400}, {"shot": "ch1_vote_stall_hint"}, {"expect": "Seat 1 and Seat 7"}, {"clickText": "Back to the ward"}, {"wait": 300},
   {"click": ".seat:has-text(\"Harrowden\")"}, {"click": ".seat:has-text(\"Sable\")"}, {"clickText": "Call the vote"}, {"wait": 500}, {"expect": "Five of nine. Wren stays."},
   {"wait": 1800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"}, {"wait": 800}, {"key": "Space"}, {"expect": "Five to four"},

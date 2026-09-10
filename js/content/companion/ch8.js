@@ -1,4 +1,14 @@
-/* Companion — Epilogue (WREN·cast). The last page each phone shows, by ending, by the phone's own finale token, by first name. */
+/* Companion — Epilogue (WREN·cast). Four parallel private goodbyes, not four complementary facts:
+   the Reader gets three shapes to keep and not read, the Listener the heartbeat that was never there,
+   the Seer the shadow drawn the right way at last, the Binder the thread with something on the far
+   end of it. There is nothing to solve, so R11.11's union-sufficiency test does not apply and a
+   missing phone costs that player their letter and blocks nothing.
+   Branches: ENDING (the cast), the phone's own ch7 finale token, and the player's first name. The
+   phone is NEVER asked a question about the night -- the ch8 cast is three bits of ENDING and
+   lore.js is frozen, so where the phone cannot know, the page says something true either way.
+   DELIBERATE, DO NOT 'FIX': the E=0 Seer under-layer draws FIVE shadows falling away from the fire,
+   Wren's included, against docs/CONVENTIONS.md §4. That inversion is the payoff of the Seer's
+   running anomaly from ch0 to ch7, and the caption says so. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -50,9 +60,10 @@
     .ch8-seal-crown svg { width: 150px; height: 150px; }
     .ch8-seal-crown .ch8-decree { font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-top: 8px; line-height: 1.9; }
     .ch8-darkline { font-family: var(--hand); font-size: 22px; color: var(--ink); text-align: center; padding: 28px 8px; animation: fadeUp 1.5s ease both; }
-    .ch8-kept-row { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 12px; }
-    .ch8-fade { transition: opacity 5s ease 4s; }
+    .ch8-fade { transition: opacity 5s ease 9s; }
     .ch8-fade.gone { opacity: 0.08; }
+    body.companion.ch8-dark .btn { color: #e9e2d2; border-color: rgba(233,226,210,0.35); background: rgba(255,255,255,0.04); }
+    .ch8-readagain { margin-top: 22px; }
   ` }));
 
   /* keep a body class only while a given element is on the page */
@@ -94,7 +105,7 @@
         `<text x="180" y="168" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
         fig(70, 70, 'Reader', [38, 44]) + fig(70, 170, 'Listener', [38, 196]) + fig(290, 70, 'Seer', [322, 44]) + fig(290, 170, 'Binder', [322, 196]) +
         fig(180, 44, 'Wren', [180, 14], '#a482e6') +
-        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">five shadows, all falling away from the fire. The right way, at last.</text></svg>`;
+        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">all five shadows fall away from the fire. At last.</text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">You look at walls like they owe you money. Look at this one. I drew it. It's not very good.</p>` +
         `<div class="blk-svg underlayer">${under}</div>` +
@@ -103,9 +114,14 @@
     },
     binder: (ctx) => {
       const name = firstName(ctx);
-      const thread = `<svg viewBox="0 0 360 120"><text x="40" y="66" fill="#e9e2d2" font-size="20" font-family="Cinzel,serif">${esc(name)}</text><text x="320" y="66" text-anchor="end" fill="#a482e6" font-size="20" font-family="Cinzel,serif">Wren</text>` +
-        `<path class="ch8-th" d="M${Math.min(150, 44 + name.length * 13)},60 C 200,20 220,100 262,60" stroke="#d96b4a" stroke-width="3" fill="none" stroke-linecap="round"/>` +
-        `<circle cx="${Math.min(150, 44 + name.length * 13)}" cy="60" r="3" fill="#d96b4a"/><circle cx="262" cy="60" r="3" fill="#d96b4a"/></svg>`;
+      /* The name is boxed by textLength rather than positioned by name.length, and both ends of
+         the thread are fixed: a name of any length is squeezed into 20..140 and can never reach the
+         thread's start at x=158. The old x = min(150, 44 + name.length * 13) clamped at eight
+         characters and then ran the name straight through the knot. */
+      const nameW = Math.max(24, Math.min(120, name.length * 12));
+      const thread = `<svg viewBox="0 0 360 120"><text x="20" y="66" fill="#e9e2d2" font-size="20" font-family="Cinzel,serif" textLength="${nameW}" lengthAdjust="spacingAndGlyphs">${esc(name)}</text><text x="340" y="66" text-anchor="end" fill="#a482e6" font-size="20" font-family="Cinzel,serif">Wren</text>` +
+        `<path class="ch8-th" d="M158,60 C 200,20 220,100 268,60" stroke="#d96b4a" stroke-width="3" fill="none" stroke-linecap="round"/>` +
+        `<circle cx="158" cy="60" r="3" fill="#d96b4a"/><circle cx="268" cy="60" r="3" fill="#d96b4a"/></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">You tie everyone to everyone and call it kindness. You looked for mine all night. It wasn't that there wasn't one. It's that there wasn't a <em>me</em> on the other end to tie it to. There is now.</p>` +
         `<div class="ch8-thread">${thread}</div>` +
@@ -151,13 +167,20 @@
     } };
   }
 
-  /* a page that goes dark after its line is read */
+  /* A page that goes dark after its line is read. The four SEALING_LINEs are 27-31 words, which is
+     ten seconds of reading, and the fade used to begin at 5.5s and finish at 10.5s with no way back
+     -- a slow reader lost Wren's last words to them and had to switch tabs to get them again. The
+     fade now begins at 10.5s, and the button is there for as long as the page is. */
   function darkBlock(html) {
     return { t: 'custom', render: (el) => {
       const w = UI.el('div', { class: 'ch8-fade', html });
       el.appendChild(w);
       bodyClassWhile(w, 'ch8-dark');
-      setTimeout(() => { if (w.isConnected) w.classList.add('gone'); }, 1500);
+      const dim = () => setTimeout(() => { if (w.isConnected) w.classList.add('gone'); }, 1500);
+      el.appendChild(UI.el('button', { class: 'btn small ghost ch8-readagain', text: 'Read it again', onclick: () => {
+        w.style.transition = 'none'; w.classList.remove('gone'); void w.offsetWidth; w.style.transition = ''; dim();
+      } }));
+      dim();
     } };
   }
 
@@ -165,7 +188,7 @@
     reader: 'The Reader. Eat something. And read the name on the door tomorrow — you\'ll be able to. That was always going to be the price of learning it.',
     listener: 'The Listener. It was never a fault in you. Nothing was there. You listened anyway. That\'s the whole of what you are.',
     seer: 'The Seer. You were right about the wall, and the floor, and me. Stop looking at things like they owe you money. Some of them are paid up.',
-    binder: 'The Binder. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once; I\'m not there to watch, so it\'s safe.',
+    binder: 'The Binder. Tie the others to each other. Tight. Then go and be tied to someone yourself, for once. I\'m not there to watch, so it\'s safe.',
   };
   const oathSworn = (ctx) => { try { const u = ctx.state.unlocked && ctx.state.unlocked.ch5; if (!u || !u.flags || u.flags.OATH == null) return null; return +u.flags.OATH > 0; } catch (e) { return null; } };
   const KEEPER_LINE = {
@@ -175,7 +198,7 @@
     binder: 'The oath you swore tonight was to a Chair. Swear the next one to a person. Wren will need at least one of you to have done that.',
   };
   const STAY_LINE = {
-    reader: 'The wall still reads. You will teach the next the Reader what the shapes say, and never tell them which of the shapes you cannot look at.',
+    reader: 'The wall still reads. You will teach the next Reader what the shapes say, and never tell them which of the shapes you cannot look at.',
     listener: 'Every heart in the room, still. All but one, still. You will listen for it every day and it will never be there, and it will not be a fault.',
     seer: 'Every shadow in the room, still. Four fall away from the fire. One falls toward it. It always will.',
     binder: 'Every thread in the room, still. Between you and the ones who walked: red, and thin, and held.',
@@ -192,62 +215,69 @@
       const name = firstName(ctx);
       const walked = walkedHere(ctx);
       P.speak.push({ t: 'fine', text: 'Nothing to speak. The night has been spoken.' });
-      /* The one who held the stair: what the thread recorded, shown to that player alone (design: 'you let go twice; nobody knew'). */
+      /* The one who held the stair: what the thread recorded, shown to that player alone. It is held
+         back and appended at the foot of whatever Wren page the ending built, as a `fine` line, so
+         that page keeps exactly one {t:'h'} (R11.5) instead of growing a second section. */
+      let stairFine = null;
       try {
         const u6 = ctx.state.unlocked && ctx.state.unlocked.ch6; const vol = u6 && u6.flags ? +u6.flags.VOLUNTEER : 0;
         const seat = ['reader', 'listener', 'seer', 'binder'].indexOf(roleId) + 1;
         if (vol && vol === seat) {
           const th = ctx.state.thread || { letGo: 0 }; const n = th.letGo | 0;
-          P.wren.push({ t: 'h', text: 'The thread' });
-          P.wren.push({ t: 'p', text: n === 0 ? 'You held the stair, and you never let go. Nobody will ever know that but you.' : `You held the stair. You let go ${n === 1 ? 'once' : n === 2 ? 'twice' : n + ' times'}; the thread frayed and held anyway. Nobody knew. Nobody needs to.` });
+          stairFine = n === 0 ? 'You held the stair, and you never let go. Nobody will ever know that but you.'
+            : `You held the stair. You let go ${n === 1 ? 'once' : n === 2 ? 'twice' : n + ' times'}. The thread frayed and held anyway. Nobody knew. Nobody needs to.`;
         }
       } catch (e) {}
 
       if (E === 0) {
         /* THE FOURFOLD WALK: every phone gets the goodbye */
+        P.sight.push({ t: 'h', text: 'A letter, in Wren\'s hand' });
         P.sight.push(goodbyeBlock(roleId));
         P.wren.push({ t: 'h', text: 'What you keep' });
         P.wren.push({ t: 'p', text: { reader: 'Three shapes on a page, in a drawer. You will argue every winter about what the ring looked like, and lose, and not mind.', listener: 'A house that is too quiet, you will say, and mean the opposite. A pulse in a throat you can see and cannot hear and do not need to.', seer: 'A floor that is a floor. A wall that is a wall. Four friends whose shadows you will never check again, and one visitor who comes through doors sideways.', binder: 'Nothing between any of you but air, and it holds. It has never not held.' }[roleId] });
         P.wren.push({ t: 'fine', text: `You would do it again, ${name}. You will say so every winter, at the point in the evening when it becomes true.` });
       } else if (E === 1) {
-        /* THE HALF-WALK: walkers get the goodbye; stayers kept their Sight. A phone whose token ACCEPTED the Envoy's word
-           cannot know by itself whether that bargain was kept in the room (a kept key is dead: its owner stayed), so it asks once. */
+        /* THE HALF-WALK. The phone knows its own finale token and nothing else: the ch8 cast is three
+           bits of ENDING and lore.js is frozen, so a phone that took the Envoy's word cannot be told
+           whether that word was kept in the room. It used to ASK -- a two-button quiz about the
+           player's own bookkeeping, in jargon, on the last screen of the game, which is precisely the
+           procedural meta-question R5.4 says to retire. It does not ask any more.
+           Instead the letter goes to every phone whose token said WALK, and one extra sentence
+           covers the case where a kept key stayed dark. The Hearth has already named the walkers and
+           the stayers out loud, two scenes back, in front of everybody -- that is where a player
+           finds out, and it costs nobody Wren's goodbye. */
         const tok = ctx.answer('ch7', 'finale');
         const acceptedTok = typeof tok === 'string' && /_ACCEPT$/.test(tok);
-        const keptKey = 'ch8:kept';
-        const keptKnown = ctx.state.done[keptKey];
-        const askKept = acceptedTok && walked === true && keptKnown === undefined;
-        const stayer = walked !== true || (acceptedTok && keptKnown === true);
-        if (askKept) {
-          P.sight.push({ t: 'h', text: 'One thing first' });
-          P.sight.push({ t: 'p', text: 'In the room, when the Hearth named you *bound by the Envoy\'s word* — did you break the bargain, or keep it? The fire knows; this page does not.' });
-          P.sight.push({ t: 'custom', render: (el, cx) => {
-            const row = UI.el('div', { class: 'ch8-kept-row' });
-            const pick = (v) => () => { cx.state.done[keptKey] = v; cx.save(); try { window.Companion.showChapter('ch8', 'sight'); } catch (e) {} };
-            row.appendChild(UI.el('button', { class: 'btn', text: 'I broke it. My key was free.', onclick: pick(false) }));
-            row.appendChild(UI.el('button', { class: 'btn ghost', text: 'I kept it. My key was dead.', onclick: pick(true) }));
-            el.appendChild(row);
-          } });
-        } else if (!stayer) {
+        if (walked === true) {
+          P.sight.push({ t: 'h', text: 'A letter, in Wren\'s hand' });
           P.sight.push(goodbyeBlock(roleId));
+          if (acceptedTok) P.sight.push({ t: 'fine', text: 'You took the Envoy\'s word tonight. If your key stayed dark at the fire, keep the letter anyway. It was written to you, not to your key.' });
           P.wren.push({ t: 'h', text: 'Walker' });
           P.wren.push({ t: 'p', text: 'You went in. You came out grey-eyed and free, and the ones who stayed are Masters now of a school that knows what it is built on. Wren lives. No pulse. Wren does not mind.' });
         } else {
           P.sight.push({ t: 'h', text: 'On the stones' });
           P.sight.push({ t: 'p', text: '**You kept your Sight. You watched them go.**' });
           P.sight.push({ t: 'p', text: STAY_LINE[roleId] });
-          if (acceptedTok && keptKnown === true) P.sight.push({ t: 'fine', text: 'Your key was the Envoy\'s. It stayed dark on the Hearth while the other three wrote. You are a Master, as promised; he keeps his word, which is the worst of him.' });
           if (walked === null) P.sight.push({ t: 'fine', text: 'This phone holds no word from the fire. If you walked, the goodbye was on the phone that spoke for you.' });
           P.wren.push({ t: 'h', text: 'Master' });
           P.wren.push({ t: 'p', text: `Master ${name} of Thornhallow. The fire is yours for life, and so is the wall, and so is the knowing. Wren visits, and laughs, and has no pulse, and you are the only kind of person who will ever notice.` });
         }
       } else if (E === 2) {
-        /* THE SEALING: Wren's last nickname line, then dark */
+        /* THE SEALING: Wren's last line to this player by name, then dark */
+        P.sight.push({ t: 'h', text: 'The last thing Wren said to you' });
         P.sight.push(darkBlock(`<div class="ch8-darkline">${esc(SEALING_LINE[roleId])}<br><br><span style="opacity:.6">— W.</span></div>`));
-        P.wren.push({ t: 'fine', text: 'Dark.' });
+        /* This page used to be the single word 'Dark.', which reads as a broken phone rather than as
+           an ending. One heading, one paragraph, inside the 40-75 word budget (R11.3). */
+        P.wren.push({ t: 'h', text: 'What you keep' });
+        P.wren.push({ t: 'p', text: {
+          reader: 'A name over the Hearth that nobody in the room could spell. You could. You did not offer, and you will not, and every winter you will read it anyway and say nothing about it to anybody.',
+          listener: 'A heartbeat you never heard, in a throat you knew by sight. You will listen for it in every room you stand in for the rest of your life. It was never there. You listened anyway.',
+          seer: 'A shadow that fell the wrong way for years, and then one morning fell no way at all. You were right about the wall, and the floor, and the shadow. Being right is not the same as being glad.',
+          binder: 'A thread you looked for all night and never found. There was nothing on the other end of it to tie to. There is now, and it is tied to a fire, and it holds.',
+        }[roleId] });
       } else if (E === 3) {
         /* THE KEEPER'S WALK: Marrow's one line to each */
-        P.sight.push({ t: 'h', text: 'Ilsabet Marrow, before she goes' });
+        P.sight.push({ t: 'h', text: 'Provost Marrow, before she goes' });
         const keeperLine = roleId === 'binder' && oathSworn(ctx) === false ? 'You would not swear to a Chair tonight. Good. Swear, one day, to a person. Wren will need at least one of you to have done that.' : KEEPER_LINE[roleId];
     P.sight.push({ t: 'letter', text: `${name} —\n\n${keeperLine}\n\n— I. M.` });
         P.sight.push({ t: 'fine', text: 'She wrote it on the stair, on the back of the writ, and did not wait to see it read.' });
@@ -256,15 +286,26 @@
         P.wren.push({ t: 'p', text: { reader: 'The Provost has you read the name on the door aloud once a year, properly, and never says why.', listener: 'The Provost asks you, once a year, whether you can hear it yet. You say no. The Provost says good.', seer: 'The Provost asks you, once a year, which way the shadow falls. You say toward. The Provost says good.', binder: 'The Provost asks you, once a year, whether there is a thread. You say no. The Provost says: not unbound. The knot itself. And laughs.' }[roleId] });
       } else {
         /* THE ENVOY'S BARGAIN: a Crown seal */
+        P.sight.push({ t: 'h', text: 'Your posting' });
         P.sight.push({ t: 'html', html: crownSeal() });
-        P.sight.push({ t: 'fine', text: `Master ${name}. Sighting: ${ctx.role.gift}. Assigned: the Cold-works, Thornhallow garrison. There is no page after this one.` });
-        P.wren.push({ t: 'fine', text: 'Nothing here. Wren did not say anything to any of you.' });
+        P.sight.push({ t: 'fine', text: `Master ${name}. Sighting: ${ctx.role.gift}. Assigned: the Cold-works, at the school. There is no page after this one.` });
+        /* Wren said nothing to anybody on this ending. The page holds what this gift saw instead --
+           still one heading and one paragraph, still inside 40-75 words. */
+        P.wren.push({ t: 'h', text: 'The last thing you saw' });
+        P.wren.push({ t: 'p', text: {
+          reader: 'Wren looked at the writing above the Hearth on the way out, and then at the floor. You are the only one in that hall who could have told the room what it said. Nobody asked you.',
+          listener: 'Wren said nothing at all, to any of you. What you heard instead was the cage, and the boots, and four hundred years of fire going on exactly as before.',
+          seer: 'Four soldiers, and a cage, and Wren\'s shadow falling towards the fire the whole way out of the hall. It always did. It still does. Nobody but you will ever know that.',
+          binder: 'Every thread in that hall went gold on the way out. Crown gold, all of it, including yours. Wren\'s went nowhere at all, because there was nobody left to tie it to.',
+        }[roleId] });
       }
+      if (stairFine) P.wren.push({ t: 'fine', text: stairFine });
 
       /* the Binder restates the Law the night was about */
       if (roleId === 'binder') {
+        /* No {t:'h'} here: the Law card names itself in its own era line, and a second heading is
+           what pushed the Binder's Sight page to two (R11.5 -- one heading per tab). */
         P.sight.push({ t: 'divider' });
-        P.sight.push({ t: 'h', text: 'Law 0' });
         P.sight.push({ t: 'html', html: `<div class="laws"><div class="law founders${E === 4 ? ' struck' : ''}"><div class="era">Law 0 · Founders' · Year 0${E === 4 ? ' · STRUCK, AGAIN' : E === 0 ? ' · WRITTEN' : ' · RESTORED'}</div><div class="txt">COLD is written by four hands.</div><div class="fine">${E === 0 ? 'Tonight it was.' : E === 1 ? 'Tonight it nearly was.' : E === 4 ? 'The Crown struck it. The Crown does not need Laws.' : 'It was not, tonight. It is still the Law.'}</div></div></div>` });
         P.sight.push({ t: 'fine', text: 'Law 3: where two Laws disagree, the older binds. There is no older Law than this one.' });
       }
