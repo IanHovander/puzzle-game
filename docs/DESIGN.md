@@ -3,6 +3,12 @@
 
 # WHAT THE FIRE KEEPS — Master Design Document (Revision 2)
 
+> **This document is the plan, not the game.** It was written before implementation and is stale in
+> roughly thirty documented places. Where it disagrees with the shipped source, **the source wins** —
+> see `docs/CANON.md` §13.51, which was built by reading `js/` rather than by reading this file.
+> For ground truth use `docs/CANON.md`; for who knows what and when, `docs/EPISTEMICS.md`; for what
+> the player believes at each beat, `docs/PLAYER-MODEL.md`.
+
 *Revised against three critiques (mystery, puzzle integrity, feasibility). Every change is folded into the body; Appendix A lists the few critiques rejected or modified, with reasons; Appendix B is the flag register implementers need. Numbers in this document (routes, vote uniqueness, Hymn-contour uniqueness, ring rotation, shelf positions) were checked by brute force during revision.*
 
 ## 1. Title, logline, tone, art, sound
