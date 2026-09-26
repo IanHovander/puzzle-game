@@ -143,7 +143,7 @@
           { speaker: 'Wren', text: 'You\'re awake. Good. I need four idiots and a lamp.' },
           { speaker: 'Wren', text: 'Reader — you read everything, eat nothing, and correct my spelling.' },
           { speaker: 'Wren', text: 'Listener — you can hear a spider think, two floors down. Then you apologise to it.' },
-          { speaker: 'Wren', text: 'Seer — you see under things. Paint. Polish. People. And you say so.' },
+          { speaker: 'Wren', text: 'Seer — you see under things. Paint. Polish. People. And you never tell.' },
           { speaker: 'Wren', text: 'Binder — you know every rule in the book, and who is tied to who. You\'ve never broken one.' },
         ],
         next: 'ch0_dare', button: 'And you?',
@@ -221,15 +221,15 @@
         type: 'choice', art: 'ch0_dorm', mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
         text: [
           'Nobody says anything. Wren talks to the lamp instead of to you.',
-          { speaker: 'Wren', text: 'Yes. All four of you. I\'ve known for years.' },
-          { speaker: 'Wren', text: 'It\'s fine. You can stop pretending you didn\'t notice.' },
+          { speaker: 'Wren', text: 'I know. All four of you. I\'ve known for years.' },
+          { speaker: 'Wren', text: 'You lot are terrible at secrets. …Thank you.' },
           { speaker: 'Wren', text: 'New subject. You need a name. As a set.' },
         ],
         options: [
           { id: 'four', text: 'Binder: "The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand.' }] },
           { id: 'idiots', text: 'Seer: "The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
           { id: 'vigil', text: 'Reader: "The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'The Provost will hate that. Perfect.' }] },
-          { id: 'own', text: 'Listener: "Um. Something of our own?"', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
+          { id: 'own', text: 'Listener: "Something of our own?"', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
         ],
       },
       ch0_flow: {
