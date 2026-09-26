@@ -91,10 +91,10 @@
           [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })} upside down`, '<b>EMBER</b> \u2014 <em>what remains; to keep; to close</em>'],
           [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} standing up`, '<b>ASH</b> \u2014 <em>fire; the Hearth; warmth</em>'],
         ] });
-        P.sight.push({ t: 'fine', text: 'Turn either one over and it says its opposite: the crown standing up would read **CROWN**; the flame upside down would read **COLD**. Neither shape is turned that way tonight. The table above is what the lamp actually says.' });
+        P.sight.push({ t: 'fine', text: 'Flipped, each says its opposite: **CROWN**, **COLD**. Not tonight. The table is what the lamp says.' });
         P.sight.push({ t: 'p', text: 'So the lamp has two words: **EMBER** and **ASH**. Say them both, out loud, now.' });
         P.sight.push({ t: 'p', text: 'The brass cannot tell you which of them comes first \u2014 a circle has no beginning. Somebody at this table can *hear* which one does.' });
-        P.sight.push({ t: 'fine', text: 'Every shape and both of its words live in your **Book**, all night. There is nothing to write down.' });
+        P.sight.push({ t: 'fine', text: 'Every shape and word is in your **Book**.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'p', text: 'Every fourth-year\u2019s name is chalked on the dormitory door. Wren\u2019s is there twice. Once in our letters. Once in letters you have never seen before \u2014 and the handwriting is the same. You decided, a year ago, that somebody was being funny. You have never asked who.' });
       }
@@ -106,7 +106,7 @@
         P.sight.push({ t: 'html', html: ladder3() });
         P.sight.push({ t: 'p', text: '**Two notes. Two words.** That is everything this lamp has to say. There is no third word and no fourth.' });
         P.sight.push({ t: 'p', text: 'Words in the old tongue sit on a ladder, each on its own rung \u2014 your **Book** has the whole ladder. When the Reader says the two words, look up their rungs. One order climbs three; the other falls three. The lamp climbs.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\u2019s name. Every room is tuned differently, so a single note means nothing on its own \u2014 you only ever hear how far the tune steps. You will need the Reader.' });
+        P.sight.push({ t: 'fine', text: 'You hear steps, never names. The Reader has the words.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'p', text: 'You can hear a teacher\u2019s heart through a stone floor. You have never once heard Wren\u2019s. You decided years ago that the fault was yours, and you have never said it out loud to anyone.' });
@@ -117,7 +117,7 @@
         P.sight.push({ t: 'p', text: 'Four sockets are set around the foot, with four hundred years of polish on top of them. Under the polish there are **two** cuts, and both were made before the polish ever went on.' });
         P.sight.push({ t: 'p', text: 'A long, deliberate **scratch** under socket **3**, the one at the bottom. A small **notch** under socket **1**, at the top. The numbers are the ones the Hearth shows.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
-        P.sight.push({ t: 'fine', text: 'Somebody meant both of those. Which one matters is not yours to know \u2014 that is the Binder\u2019s half of the job. Just say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Say what is cut, and where. The Binder knows which one matters.' });
         P.sight.push({ t: 'fine', text: 'Your Ring Page is in the **Book**.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
@@ -135,7 +135,7 @@
           'A sigil is its words and nothing else. **One slot per word. Any slot the words do not reach stays empty.** A spare shape is not decoration; it is a different sigil, and the brass can tell.',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
-        P.sight.push({ t: 'fine', text: 'You do not know this lamp\u2019s words and you cannot see what is cut into it. Ask for both. That is what the other three are for.' });
+        P.sight.push({ t: 'fine', text: 'Ask the others for the words and the cuts.' });
         P.wren.push({ t: 'h', text: 'No thread' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
           + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> an old red thread, well knotted.</li>'

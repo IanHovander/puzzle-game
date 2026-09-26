@@ -250,7 +250,7 @@
     const box = UI.el('div', { class: 'attune' }, [
       UI.el('div', { class: 'attune-label', text: scene.codeLabel || (cast ? 'Word of attunement, and the mark beside it — on every phone' : 'Word of attunement — enter it on every phone') }),
       UI.el('div', { class: 'attune-word', html: UI.esc(code) + (cast ? `<span class="attune-cast">·${UI.esc(cast)}</span>` : '') }),
-      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Each of you gets a different page — read yours, and only yours. Say nothing until all four of you have looked up.') }),
+      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Read your own page. Talk once all four look up.') }),
     ]);
     if (scene.roles) box.appendChild(UI.el('div', { class: 'attune-roles', html: UI.rich(typeof scene.roles === 'function' ? scene.roles(Store.state) : scene.roles) }));
     dom.actions.appendChild(box);

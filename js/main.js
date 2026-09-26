@@ -18,8 +18,8 @@
 
   function render() {
     UI.clear(body);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for exactly four, in one sitting of about four hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
-    body.appendChild(UI.el('p', { class: 'warn', text: 'Fair warning: at one clearly announced moment, the bells of Thornhallow will ring and all four of you will need quick hands on this keyboard. You will be told before it happens.' }));
+    body.appendChild(UI.el('p', { class: 'fine', html: 'For exactly four players, about four hours. This screen is the <strong>Hearth</strong>. Your phone is your <strong>Companion</strong>: it shows what only you can see.' }));
+    body.appendChild(UI.el('p', { class: 'warn', text: 'Fair warning: later, the bells ring and you will need quick hands on this keyboard. You will be warned first.' }));
 
     const seats = UI.el('div', { class: 'names' });
     Lore.roles.forEach((r, i) => {
@@ -53,7 +53,7 @@
     }
     buttons.appendChild(UI.el('button', { class: 'btn ghost', text: 'Phones: how to join', onclick: () => Game.showQR() }));
     body.appendChild(buttons);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'Sound on. Sit where everyone can see this screen and reach the keyboard; a wireless keyboard on the table is ideal. <span class="small">Press space or click the text to hurry the narration.</span>' }));
+    body.appendChild(UI.el('p', { class: 'fine', html: 'Sound on. Everyone should see this screen and reach the keyboard. <span class="small">Space or click skips ahead.</span>' }));
   }
   render();
 
