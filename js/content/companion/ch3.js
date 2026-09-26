@@ -29,16 +29,16 @@
      the whole insight, and the two tables it replaces buried it. Drawn as a loop so no beat reads as a start. */
   const rounds = () => {
     /* Laid out for a phone: no width style, so it takes the full column (~320px) at about one unit to the pixel,
-       and every stop is 13 units apart so the axis numbers never touch. */
+       and every stop is 15 units apart so the axis numbers never touch. */
     const x = (b) => 38 + (b - 1) * 24;
-    const yA = (s) => 128 - (s - 1) * 13, yB = (s) => 180 + (4 - s) * 16;
+    const yA = (s) => 140 - (s - 1) * 15, yB = (s) => 194 + (4 - s) * 16;
     const line = (r, y, col, w) => `<polyline points="${r.map((s, i) => x(i + 1) + ',' + y(s)).join(' ')}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round"/>`;
-    let s = `<svg viewBox="0 0 320 272">`;
+    let s = `<svg viewBox="0 0 320 290">`;
     s += `<text x="160" y="14" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="12" ${F}>twelve beats, then round again</text>`;
     s += `<text x="2" y="38" fill="#4fb3bf" font-size="13" ${F}>the lantern</text>`;
     s += line(ROUND_A, yA, 'rgba(79,179,191,.5)', 1.8);
     s += ROUND_A.map((st, i) => `<circle cx="${x(i + 1)}" cy="${yA(st)}" r="3.2" fill="rgba(79,179,191,.8)"/>`).join('');
-    s += `<text x="2" y="152" fill="#4fb3bf" font-size="13" ${F}>the sentry</text>`;
+    s += `<text x="2" y="165" fill="#4fb3bf" font-size="13" ${F}>the sentry</text>`;
     s += line(ROUND_B, yB, 'rgba(79,179,191,.45)', 1.8);
     // the accent: six beats without a step
     s += `<line x1="${x(1)}" y1="${yB(4)}" x2="${x(6)}" y2="${yB(4)}" stroke="#4fb3bf" stroke-width="5" stroke-linecap="round"/>`;
@@ -46,8 +46,8 @@
     s += ROUND_B.map((st, i) => `<circle cx="${x(i + 1)}" cy="${yB(st)}" r="3.2" fill="rgba(79,179,191,.8)"/>`).join('');
     s += `<g fill="rgba(255,255,255,.55)" font-size="11.5" ${F} text-anchor="middle">` + [1, 2, 3, 4, 5, 6, 7].map(st => `<text x="18" y="${yA(st) + 4}">${st}</text>`).join('')
       + [1, 2, 3, 4].map(st => `<text x="18" y="${yB(st) + 4}">${st}</text>`).join('') + `</g>`;
-    s += `<g fill="rgba(255,255,255,.7)" font-size="12" ${F} text-anchor="middle">` + ROUND_A.map((_, i) => `<text x="${x(i + 1)}" y="244">${i + 1}</text>`).join('') + `</g>`;
-    s += `<path d="M${x(12)},252 q${-(x(12) - x(1)) / 2},16 ${-(x(12) - x(1))},0" fill="none" stroke="rgba(79,179,191,.6)" stroke-width="1.4"/><path d="M${x(1)},252 l9,4 l-1,-10 z" fill="rgba(79,179,191,.85)"/>`;
+    s += `<g fill="rgba(255,255,255,.7)" font-size="12" ${F} text-anchor="middle">` + ROUND_A.map((_, i) => `<text x="${x(i + 1)}" y="258">${i + 1}</text>`).join('') + `</g>`;
+    s += `<path d="M${x(12)},270 q${-(x(12) - x(1)) / 2},14 ${-(x(12) - x(1))},0" fill="none" stroke="rgba(79,179,191,.6)" stroke-width="1.4"/><path d="M${x(1)},270 l9,4 l-1,-10 z" fill="rgba(79,179,191,.85)"/>`;
     return s + `</svg>`;
   };
 
@@ -108,7 +108,7 @@
     <g fill="#fff" opacity=".9"><circle cx="90" cy="110" r="6"/><circle cx="130" cy="96" r="6"/><circle cx="150" cy="128" r="6"/><circle cx="190" cy="106" r="6"/><circle cx="250" cy="112" r="5"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,110 L52,110"/><path d="M130,96 L96,92"/><path d="M150,128 L116,132"/><path d="M190,106 L154,104"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,112 L300,112"/></g>
-    <g fill="#fff" font-size="13" font-family="Cinzel,serif" text-anchor="middle"><text x="84" y="132">Reader</text><text x="130" y="86">Listener</text><text x="150" y="147">Seer</text><text x="194" y="126">Binder</text><text x="250" y="134" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="13" font-family="Cinzel,serif" text-anchor="middle"><text x="84" y="132">Reader</text><text x="130" y="85">Listener</text><text x="150" y="146">Seer</text><text x="194" y="126">Binder</text><text x="250" y="134" fill="#a482e6">Wren</text></g>
     <text x="180" y="230" text-anchor="middle" fill="#fff" font-size="12.5" font-family="Cinzel,serif" opacity=".75">shadows, as they fall — the portraits have none</text>
   </svg>`;
 

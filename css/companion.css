@@ -54,7 +54,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 /* Drawings in html blocks sit centred, and small ones are drawn big enough to read on a phone. */
 .blk-html > svg { display: block; margin: 8px auto 12px; max-width: 100%; }
 .blk-html > svg[style*="width"] { width: min(100%, 280px) !important; height: auto !important; }
-.blk-table th { font-size: 11px; letter-spacing: 0.06em; }
+.blk-table th { font-size: 11px; letter-spacing: 0.03em; }
 .blk-table td:has(> svg) { white-space: nowrap; }
 .blk-glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; margin: 8px 0 12px; }
 .blk-glyphs .g { display: flex; flex-direction: column; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 4px; font-size: 13px; text-align: center; }
@@ -103,8 +103,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-audio .label { font-family: var(--display); font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--sea); margin-bottom: 6px; }
 .blk-audio .strip { margin: 6px 0 10px; }
 .blk-audio .btn { width: 100%; border-color: rgba(79,179,191,0.5); }
-.arrow-strip { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 40px; padding: 6px 3px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
+.arrow-strip { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 38px; padding: 6px 2px; font-size: 12px; letter-spacing: 0; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
 .arrow-strip .step b { font-size: 20px; color: var(--sea); }
 .arrow-strip .step.rest b { color: var(--ink-dim); }
 .arrow-strip .step.start b, .arrow-strip .step.same b { color: var(--gold); }
