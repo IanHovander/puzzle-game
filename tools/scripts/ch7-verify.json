@@ -48,7 +48,7 @@
   {"eval": "({afterReload: VigilStore.state.flags.MIDNIGHT_LEFT, cold: VigilStore.state.flags.SIGIL_COLD, running: Game.clock.running()})"},
 
   {"click": "#hint"}, {"wait": 400}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 300}, {"click": "button.hint-btn"}, {"wait": 400}, {"shot": "v_hints"},
-  {"expect": "nobody has two"}, {"expect": "Four decisions"}, {"expect": "which wall speaks first"},
+  {"expect": "holds one piece"}, {"expect": "Four decisions"}, {"expect": "which wall speaks first"},
   {"expectNot": "smallest climb"}, {"expectNot": "eight different words"}, {"expectNot": "one rung"},
   {"expect": "EMBER 1, THORN 2, WELL 3, ASH 4, VEIL 5, CROWN 6, empty 7, KNOT 8"},
   {"assert": "(VigilStore.state.flags.hintsTotal|0) === 3 && VigilStore.state.hintsUsed.ch7_sigil === 3"},
