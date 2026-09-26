@@ -124,6 +124,11 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .lexicon .lx { display: flex; gap: 8px; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 8px; background: rgba(0,0,0,0.25); }
 .lexicon .lx b { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--gold-2); display: block; }
 .lexicon .lx span { font-size: 13px; color: var(--ink-dim); }
+/* Icon and word on one row, the meaning underneath at full tile width: side by side it wrapped to
+   one or two words a line. */
+.lexicon .lx { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; padding: 8px 10px; }
+.lexicon .lx > div:last-child { display: contents; }
+.lexicon .lx span { grid-column: 1 / -1; font-size: 14px; line-height: 1.3; }
 .heartbeats { margin-bottom: 14px; }
 .heartbeats .hb { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .heartbeats .hb .trace { width: 120px; height: 22px; }
