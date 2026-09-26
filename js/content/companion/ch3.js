@@ -273,7 +273,7 @@
           P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
         }
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
-        P.wren.push({ t: 'p', text: 'You read every thread in the gallery at a glance. You never let yourself follow the Provost’s thread to Wren. You know what colour a mother’s thread is.' });
+        P.wren.push({ t: 'p', text: 'You read every thread in the gallery at a glance. You never let yourself follow the Provost’s thread to Wren. You know what color a mother’s thread is.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go until it shuts behind you. That isn’t a rule. I checked. There isn’t one.”' });
       }

@@ -79,7 +79,7 @@
      ("the reading the school teaches", in js/content/ch2.js), next to the other reading of the same
      strip (KNOT, CROWN, THORN). ch2's
      strip is this gate's shape for shape inverse, so ch2's two readings were this gate's two
-     readings, and the winner was one of them. A Binder-less table that recognised the vault phrase
+     readings, and the winner was one of them. A Binder-less table that recognized the vault phrase
      went from p = 0.33 to 1.0, a Seer-less one from 0.20 to 1.0 — two candidates against a budget
      of two, so it did not even matter which it laid first. ch2 is forbidden ground and its strip is
      load-bearing (ch7 quotes the second reading verbatim), so the gate moved instead: the Crown and
@@ -281,7 +281,7 @@
         enter: () => { if (!doorNoted) { doorNoted = true; Store.note('You came down by Mere\'s door, unasked.'); } },
         text: [
           'The lantern goes on down without you.',
-          'Then a draught at the first landing, and Wren standing in the wall.',
+          'Then a draft at the first landing, and Wren standing in the wall.',
           { speaker: 'Wren', text: 'Mere left this one for people who were not asked. Mum will — the Provost will pretend she didn’t see.' },
           { speaker: 'Wren', text: 'Binder, it’s a door for the unasked. That’s a *rule*. You love a rule. Please?' },
           'Wren came back up three flights in the dark, for you.',

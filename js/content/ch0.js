@@ -152,7 +152,7 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           { speaker: 'Wren', text: 'Me? I\'m the main event. Tomorrow I stand at the front of a hall while the grown-ups decide about me.' },
-          { speaker: 'Wren', text: 'I\'ve been practising standing still. My record is eleven seconds.' },
+          { speaker: 'Wren', text: 'I\'ve been practicing standing still. My record is eleven seconds.' },
           { speaker: 'Wren', text: 'Everything I have, somebody gave me. The name. The bed. My birthday is just the night they found me.' },
           { speaker: 'Wren', text: 'So tonight I want one good thing. Ours. That lamp.' },
           { speaker: 'Wren', text: 'A hundred people have tried it with a match. Nobody\'s tried a sigil. Carve my name in first, so it knows whose it is.' },

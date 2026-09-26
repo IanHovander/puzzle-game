@@ -49,13 +49,13 @@
      so the stone is the same stone every night. tools/scripts/ch0.json and ch1.json assert that no
      path from js/content/glyphs.js is drawn in this chapter's art (ch1 allows the one on the Chair's
      banner, which is heraldry). */
-  function wornCuts(n, colour, gap, sc, seed) {
+  function wornCuts(n, color, gap, sc, seed) {
     const r = A.rng(seed || 1707);
     let out = '';
     for (let i = 0; i < n; i++) {
       const lean = (r() * 30 - 15).toFixed(1), h = (11 + r() * 7), bow = (r() * 9 - 4.5);
       let g = `<g transform="translate(${(i * gap).toFixed(0)},0) scale(${sc})">`;
-      g += `<g transform="rotate(${lean})" fill="none" stroke="${colour}" stroke-linecap="round">`;
+      g += `<g transform="rotate(${lean})" fill="none" stroke="${color}" stroke-linecap="round">`;
       // the groove, in two strokes that do not meet: the middle of it is gone
       g += `<path d="M${(-bow / 2).toFixed(1)},${(-h).toFixed(1)} q${bow.toFixed(1)},${(h * 0.45).toFixed(1)} ${(bow / 3).toFixed(1)},${(h * 0.62).toFixed(1)}" stroke-width="3.4" opacity="${(0.55 + r() * 0.3).toFixed(2)}"/>`;
       g += `<path d="M${(bow / 3).toFixed(1)},${(h * 0.82).toFixed(1)} l${(r() * 4 - 2).toFixed(1)},${(h * 0.5).toFixed(1)}" stroke-width="2.8" opacity="${(0.35 + r() * 0.3).toFixed(2)}"/>`;

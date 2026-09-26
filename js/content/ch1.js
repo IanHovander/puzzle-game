@@ -63,7 +63,7 @@
     brack: 'Seat 3 stands with the Chair, in writing, since before the doors shut. You had him already.',
     hallan: 'Seat 4 does not turn his head. "I vote as my cousin votes. I hear nobody else."',
     vey: 'Something at Seat 5\'s cuff catches the light. Seat 5 votes SEND.',
-    orrin: 'A soldier in the Envoy\'s grey steps between you and Seat 6. You never get near.',
+    orrin: 'A soldier in the Envoy\'s gray steps between you and Seat 6. You never get near.',
     oriel: 'Seat 7 listens a long time, asks two questions, does not smile. "Very well. Tonight — keep."',
     tarn: 'Seat 8 smiles with every tooth. Crown coin in it. Seat 8 votes SEND.',
     marrow: 'The Chair does not hear cases. The Chair counts them.',
@@ -133,7 +133,7 @@
       ch1_vane: {
         art: 'ch1_vane', mood: 'dread', fx: 'dust', sfx: 'boom',
         text: [
-          'The doors open before anyone asks them to. Cold first, then soldiers, then a grey coat.',
+          'The doors open before anyone asks them to. Cold first, then soldiers, then a gray coat.',
           'Lord Vane, the Crown\'s Envoy. His writ has a seal the size of a saucer.',
           { speaker: 'Vane', text: 'His Majesty asks one small thing: the child, tonight, for safekeeping.' },
           'Wren takes one small step back, toward the fire. Vane lowers his voice, not quite far enough.',
@@ -256,7 +256,7 @@
           { speaker: 'Master Oriel', text: 'Tell me what you find down there. All of it.' },
           'Over Sorrel\'s shoulder, Wren is doing an impression of Sorrel. "Accurate," says the Seer, without moving. The Provost is already crossing the hall.',
         ],
-        prompt: 'Whose price do you honour?',
+        prompt: 'Whose price do you honor?',
         options: [
           { id: 'sorrel', text: 'Binder: "The Ember goes to the nine. You have my word."', if: (s) => (s.flags.CH1_APPROACHED || []).includes('sorrel'), next: 'ch1_offer',
             set: { SORREL: true, ORIEL: false, NEITHER: false }, note: 'You promised Sorrel the Ember.',
@@ -275,7 +275,7 @@
         enter: (s) => { if (s.flags.VOTE_LOST) { if (s.flags.NEITHER == null) Store.set('NEITHER', true); if (s.flags.SORREL == null) Store.set('SORREL', false); if (s.flags.ORIEL == null) Store.set('ORIEL', false); } },
         timerText: '*Sixty heartbeats. He is very good at waiting.*',
         text: (s) => [
-          'Later, the hall empties. In a side passage, a grey coat is waiting.',
+          'Later, the hall empties. In a side passage, a gray coat is waiting.',
           { speaker: 'Vane', text: s.flags.VOTE_LOST
             ? 'The Provost will have the boy back by morning. When she does, bring him to me before dawn. He will come if you ask.'
             : 'Bring the boy to me before dawn. He waved at you in front of nine Houses. He will come if you ask.' },
@@ -326,7 +326,7 @@
         flowTitle: 'Chapter I — the paths you walked',
         stats: (s) => {
           const vote = s.flags.VOTE_LOST ? 'The nine voted to **send** Wren.' : 'The nine voted **5–4 to keep** Wren.';
-          const price = s.flags.SORREL ? 'You honoured **Sorrel\'s** price.' : s.flags.ORIEL ? 'You honoured **Oriel\'s** price.' : s.flags.VOTE_LOST ? 'No Master named a price.' : 'You honoured **neither** price.';
+          const price = s.flags.SORREL ? 'You honored **Sorrel\'s** price.' : s.flags.ORIEL ? 'You honored **Oriel\'s** price.' : s.flags.VOTE_LOST ? 'No Master named a price.' : 'You honored **neither** price.';
           const vane = s.flags.VANE_ACCEPT ? 'You **accepted** the Envoy\'s offer.' : s.flags.VANE_PRETEND ? 'You **pretended** to accept.' : 'You **refused** the Envoy.';
           return `${vote} ${price} ${vane} Hints so far: ${s.flags.hintsTotal || 0}.`;
         },

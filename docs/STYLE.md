@@ -49,6 +49,8 @@ What made these lovable, after two rejected drafts: each line shows **care for W
 
 **P9 — Budgets.** The R1.5 floor of 1,100 words is gone: ch0 is about 950 after the pass. The 1,600 ceiling, R1.1–R1.4 fit gates and R2 sentence rules stand.
 
+**P10 — American spelling.** Player-visible text uses American spellings: color, gray, honor, humor, neighbor, center, toward, practice (the verb too), recognize. Do not rename data that saves or tokens carry: the `GREY` flag, the `'grey'` option and thread ids, and the `grey:` reply keys stay as they are.
+
 ---
 
 ## 0. Hard constraints

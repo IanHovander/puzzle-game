@@ -125,7 +125,7 @@
     // Marrow kneeling (a low silhouette) and Wren standing at the rim
     s += `<g transform="translate(${cx + 110},${cy + 10})"><ellipse cx="0" cy="0" rx="40" ry="10" fill="#000" opacity=".35"/><path d="M-34,0 L-30,-40 L-12,-62 L12,-62 L26,-40 L34,0 Z" fill="#17121a"/><circle cx="0" cy="-74" r="12" fill="#17121a"/></g>`;
     s += P.figures([{ x: cx - 560, s: 0.9 }, { x: cx - 470, s: 0.95 }, { x: cx + 470, s: 0.95 }, { x: cx + 560, s: 0.9 }, { x: cx - 300, s: 0.8, color: '#1e1626' }], cy + 120, '#141018');
-    // rope-ring above centre
+    // rope-ring above center
     s += `<line x1="${cx}" y1="0" x2="${cx}" y2="${cy - 60}" stroke="#1a1416" stroke-width="5"/>`;
     s += P.fog(420, 300, '#1b1626', 0.35);
     return P.wrap(s);

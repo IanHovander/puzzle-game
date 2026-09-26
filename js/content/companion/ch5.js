@@ -307,7 +307,7 @@
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
         P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. In the Gallery the portraits showed four going down this stair, and four coming back.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humour me.”' });
+        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humor me.”' });
       }
 
       /* ===== SEER ===== */
@@ -338,7 +338,7 @@
         P.sight.push({ t: 'fine', text: 'You cannot read a shape or find a cut. Ask for both.' });
         P.wren.push({ t: 'h', text: 'Still no thread' });
         P.wren.push({ t: 'list', items: [
-          threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> grey, and it has not changed since the study.',
+          threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> gray, and it has not changed since the study.',
           threadLine((f.OATH | 0) === 0 ? 'none' : 'red') + ' <strong>The four of you to the Chair:</strong> ' + ((f.OATH | 0) === 0 ? 'nothing. You did not swear.' : 'red, and knotted.'),
           threadLine('gold') + ' <strong>The soldiers above:</strong> gold, every one of them, and none of it theirs.',
           threadLine('none') + ' <strong>Wren:</strong> nothing at all.',

@@ -759,7 +759,7 @@
           const E = s.flags.ENDING | 0, w = (E === 0 ? ROLES : walkers(s)).map(nickOf), st = stayers(s).map(nickOf);
           if (E === 0) return [
             `Walked into the Cold: ${UI.list(w)}. Stayed: no one.`,
-            'Four people come out, grey-eyed and ordinary.',
+            'Four people come out, gray-eyed and ordinary.',
             'The Reader sees shapes on the wall. The Listener hears a room, the way rooms sound. The Seer sees a floor. The Binder has to ask the Provost what she feels.',
             'Wren is on the warm stones, crying, and will deny it. And there is a heartbeat.',
             { speaker: 'Wren', text: 'You *idiots*. I had a *speech*.' },
@@ -772,7 +772,7 @@
           if (E === 2) return [
             'Walked into the Cold: Wren. Stayed: all four of you.',
             { speaker: 'Wren', text: 'It is alright. I knew. I wanted to hear what you would say.' },
-            'The fire takes the shape of a door, and Wren goes through. Provost Marrow is left holding a grey thread.',
+            'The fire takes the shape of a door, and Wren goes through. Provost Marrow is left holding a gray thread.',
           ];
           /* Not 'all four of you': a Fourfold vote that fell short lands here too, and one of you may
              have sealed WALK. ch8_unsealed prints that token back two scenes later. */

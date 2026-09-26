@@ -105,10 +105,11 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 #title .command { margin: 0; font-size: 26px; color: var(--gold); text-wrap: balance; }
 #title .seating .sub { margin: 4px 0 16px; font-size: 16px; color: var(--ink-dim); }
 #title .names { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-#title .names li { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px 14px; border-top: 3px solid currentColor; background: rgba(255,255,255,0.03); border-radius: 0 0 8px 8px; }
+/* Same tile as the Prologue's key pads (.pad): a full 2px border in the seat color, 12px corners. */
+#title .names li { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px 14px; border: 2px solid currentColor; background: rgba(255,255,255,0.04); border-radius: 12px; }
 #title .names li.p0 { color: var(--p1); } #title .names li.p1 { color: var(--p2); } #title .names li.p2 { color: var(--p3); } #title .names li.p3 { color: var(--p4); }
-#title .names .seat-n { font-family: var(--display); font-size: 13px; letter-spacing: .15em; opacity: .75; }
-#title .names .seat-name { font-family: var(--display); font-size: 24px; font-weight: 600; letter-spacing: .06em; }
+#title .names .seat-n { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--ink); opacity: .8; }
+#title .names .seat-name { font-family: var(--display); font-size: 26px; font-weight: 700; letter-spacing: .04em; }
 #title .names .seat-what { font-size: 16px; line-height: 1.3; color: var(--ink); text-wrap: balance; }
 #title .names .seat-what b { font-weight: 600; color: inherit; }
 #title .names li.p0 .seat-what b { color: var(--p1); } #title .names li.p1 .seat-what b { color: var(--p2); } #title .names li.p2 .seat-what b { color: var(--p3); } #title .names li.p3 .seat-what b { color: var(--p4); }
@@ -121,7 +122,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
   #title .card { padding: 18px 30px 14px; }
   #title #title-body { gap: 14px; }
   #title .intro p { font-size: 18px; }
-  #title .names li { padding: 10px 8px 12px; }
+  #title .names li { padding: 9px 8px 11px; }
   #title .seating { padding-top: 12px; }
   #title .seating .sub { margin-bottom: 10px; }
   #title .buttons { margin-top: 0; }
@@ -133,7 +134,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
   #title .intro .lead { font-size: 21px; margin-bottom: 2px; }
   #title .intro p { font-size: 17px; }
   #title .command { font-size: 23px; }
-  #title .names .seat-name { font-size: 21px; }
+  #title .names .seat-name { font-size: 22px; }
   #title .names .seat-what { font-size: 15px; }
   #title .btn.big { font-size: 18px; padding: 11px 26px; }
 }

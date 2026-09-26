@@ -62,7 +62,7 @@
          table: target 0.7 -> pass mark 17 of 24 · four hands played right 24 · one lane mashing and
          three careful 18 PASSES (the intended forgiveness) · two mashing 16 · three mashing 16 ·
          four mashing 16 — all fail. Drop any one lane (that lane silent) 15 and fails. On the
-         volunteer branch, with one lane already dead and remapped onto a neighbour, dropping a
+         volunteer branch, with one lane already dead and remapped onto a neighbor, dropping a
          survivor is 11 to 15 and fails, two mashing is still 16, and one mashing with two careful is
          16 or 18 depending on which lane went silent.
        ROUND THREE 32 beats, of which 24 sound: 18 bells and 6 Cold. Lane 1 never rings — the Listener
@@ -78,7 +78,7 @@
          RE-MEASURED off this very string by replaying reaction.js's onPress/frame/judge beat by beat,
          because the pass before recorded a drop-a-role result that was false. A press on a lane the
          event does not use is a stray, and darkCfg's `noFail` plus this chapter's hidden meter make a
-         stray free, so strays are modelled as costing nothing — the friendliest assumption to an
+         stray free, so strays are modeled as costing nothing — the friendliest assumption to an
          exploit. target 0.8 -> pass mark 20 of 24; honest four-handed play may miss four.
            four pages, called and played right ......................... 24  PASSES
            four pages, and everybody hammers every beat ................ 18
@@ -317,12 +317,12 @@
   const RIGHT = { seer: 'toward', listener: 'none', reader: 'hollow', binder: 'none' };
   /* A right answer is `yes`, then the laundry clause, then `end` -- Wren answering the line the
      player just read off the Wren tab. A wrong one is keyed by the option id, so Wren can answer
-     what was actually said. Grey gets the joke: that is Wren's humour coming back. */
+     what was actually said. Gray gets the joke: that is Wren's humor coming back. */
   const REPLY = {
     seer: { yes: 'Toward.', end: ' Thanks for moving.', no: { away: 'Away, like everybody\'s? Look down some time, when I\'m not standing here.', none: 'No shadow? I\'ve got one. Look down some time, when I\'m not standing here.' } },
     listener: { yes: 'Nothing.', end: ' Go on. Leave your hand there.', no: { loud: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.', faint: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.' } },
     reader: { yes: 'A hollow. The bit that rings. Four times? I\'d have stopped at one.', end: '', no: { bird: 'That\'s what they call me. It\'s not what it says.', fire: 'I wish. It\'s not what it says.' } },
-    binder: { yes: 'None. The knot itself.', end: ' Go on, then. Tie it tight.', no: { red: 'You\'re being kind again. Hold out your arm and look.', grey: 'Grey is a colour. I have seen grey. Grey is fine. It isn\'t mine.' } },
+    binder: { yes: 'None. The knot itself.', end: ' Go on, then. Tie it tight.', no: { red: 'You\'re being kind again. Hold out your arm and look.', grey: 'Gray is a color. I have seen gray. Gray is fine. It isn\'t mine.' } },
   };
   /* One clause of callback on a right answer, and only two ways for it to run: the laundry answer Wren
      remembers, or the one she does not. (Twelve keyed variants was three times the words for the same
@@ -428,7 +428,7 @@
     const f = s.flags;
     const SHORT = {
         seer: { toward: '"toward the fire"', away: '"away, like ours"', none: '"no shadow at all"' }, listener: { none: '"I have never heard it"', loud: '"loud"', faint: '"faint, far off"' },
-        reader: { hollow: '"a hollow"', bird: '"a brave bird"', fire: '"a fire"' }, binder: { none: '"the knot itself"', red: '"red — an oath"', grey: '"grey — grief"' },
+        reader: { hollow: '"a hollow"', bird: '"a brave bird"', fire: '"a fire"' }, binder: { none: '"the knot itself"', red: '"red — an oath"', grey: '"gray — grief"' },
     };
     const said = (role) => L.roleById(role).nick + ': ' + (SHORT[role][f['ASK_' + role]] || 'no answer');
     const c = f.BELLS_CRACKED | 0; const rounds = [1, 3].filter(n => f['BELLS_R' + n + '_CRACK']);
@@ -673,7 +673,7 @@
         prompt: 'The Binder answers.',
         options: [
           askOpt('red', 'Red. An oath, to us.', 'binder', false, 'ch6_iknow'),
-          askOpt('grey', 'Grey. Grief.', 'binder', false, 'ch6_iknow'),
+          askOpt('grey', 'Gray. Grief.', 'binder', false, 'ch6_iknow'),
           askOpt('none', 'None. Not unbound. The knot itself.', 'binder', true, 'ch6_iknow'),
         ],
       },

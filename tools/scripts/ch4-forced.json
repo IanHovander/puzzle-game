@@ -9,7 +9,7 @@
   {"slots": [[1, "ASH"], [2, "WELL"], [3, "COLD"], [4, "THORN"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "will not take COLD"}, {"wait": 1200},
   {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"]]}, {"clickText": "Close the sigil"}, {"wait": 400}, {"expect": "an oath without a lock is a wish"}, {"wait": 1200},
   {"slots": [[4, "THORN"], [1, "ASH"], [2, "WELL"], [3, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1600}, {"key": "Space"}, {"wait": 900},
-  {"expect": "wax stays grey"}, {"expect": "began at the notch"}, {"expect": "no part of this"}, {"expect": "nearly took"}, {"shot": "ch4_oath_cold"}, {"clickText": "The night moves on"},
+  {"expect": "wax stays gray"}, {"expect": "began at the notch"}, {"expect": "no part of this"}, {"expect": "nearly took"}, {"shot": "ch4_oath_cold"}, {"clickText": "The night moves on"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "would not close"}, {"expect": "you found none"}, {"shot": "ch4_forced_flow"},
   {"assert": "VigilStore.state.flags.OATH === 0 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === true && VigilStore.state.flags.LAW0 === false"},
   {"eval": "VigilStore.state.log.slice(-3)"}

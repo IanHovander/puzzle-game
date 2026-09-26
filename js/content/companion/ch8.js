@@ -128,7 +128,7 @@
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">You tried to tie a thread to me every week since we were seven. It never took. There wasn't a <em>me</em> on the other end to tie it to. There is now.</p>` +
         `<div class="ch8-thread">${thread}</div>` +
-        `<p class="ch8-line">Red. Not grey. Look at it once, ${esc(name)}, before it goes. That isn't a rule. It's a please.</p>` +
+        `<p class="ch8-line">Red. Not gray. Look at it once, ${esc(name)}, before it goes. That isn't a rule. It's a please.</p>` +
         `<div class="ch8-sign">— W.</div></div>`;
     },
   };
@@ -333,7 +333,7 @@
         wren('The last thing you saw', {
           reader: 'Wren looked at the writing above the Hearth on the way out, then at the floor. You were the only one who could have read it aloud. Nobody asked you.',
           listener: 'Wren asked you to write, and then said nothing more. You heard the cage, the boots, and the fire going on exactly as before.',
-          seer: 'Four soldiers, a cage, and Wren’s shadow falling towards the fire the whole way out. Nobody but you will ever know that.',
+          seer: 'Four soldiers, a cage, and Wren’s shadow falling toward the fire the whole way out. Nobody but you will ever know that.',
           binder: 'Every thread in that hall went Crown gold on the way out, yours included. Wren’s went nowhere. There was nobody left to tie it to.',
         }[roleId], 'Say it out loud, then write it to Wren:', {
           reader: '“I’m writing this in both alphabets. The Crown can only read one. The other half is just for you. Also, I ate something. You’d have asked.”',

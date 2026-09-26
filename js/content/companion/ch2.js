@@ -19,7 +19,7 @@
   ];
   const CUTFOR = [3, 4, 2, 1];              // plinth 1..4 -> the hole under that dial
 
-  /* Under the antechamber: four plinths as they stand, and under the grey floor the four holes they were
+  /* Under the antechamber: four plinths as they stand, and under the gray floor the four holes they were
      cut for, numbered the way the Hearth numbers the dials. One violet line each and nothing else — no
      arrow to a rule and no word about which floor the door obeys. The Seer reports holes, not rules. */
   const underFloor = (() => {
@@ -162,7 +162,7 @@
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> the same nothing, for the fourteenth year running.</li>'
           + '<li>' + threadLine('whole') + ' <strong>The Provost and the four of you:</strong> a thin red thread, new tonight.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'The stone did not trouble you. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs towards the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have never asked why the two nothings feel different.' });
+        P.wren.push({ t: 'p', text: 'The stone did not trouble you. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs toward the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have never asked why the two nothings feel different.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“The stone has no thread. Neither do you. I checked every rule, and none says that makes you the same. So you are not. And I am still tying one.”' });
       }

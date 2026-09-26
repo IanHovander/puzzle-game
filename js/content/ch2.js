@@ -284,7 +284,7 @@
         prompt: 'The Ember is two steps away.',
         options: [
           { id: 'ember', text: 'Binder: "We came for the Ember. We take it and go."', next: 'ch2_ember' },
-          { id: 'niche', text: 'Seer: "Look behind the first plinth. Humour me."', next: 'ch2_niche' },
+          { id: 'niche', text: 'Seer: "Look behind the first plinth. Humor me."', next: 'ch2_niche' },
         ],
       },
       /* ---------- the niche behind the first plinth (optional) ---------- */
@@ -339,7 +339,7 @@
       ch2_road: {
         art: 'ch2_vault', artParams: { empty: true, arch: true }, mood: 'dread', fx: 'motes', flame: 0.75,
         text: [
-          'Behind the empty plinth, an archway is bricked shut with newer stone. It is grey, where everything down here is black.',
+          'Behind the empty plinth, an archway is bricked shut with newer stone. It is gray, where everything down here is black.',
           'The Hearth is a long way up. Wren will want to hear every word of this.',
         ],
         next: 'ch2_stairfall', button: 'Up',

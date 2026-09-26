@@ -50,7 +50,7 @@
      The gallery is the ONLY safe room. B3 is undetectable by construction — no patrol path contains it
      and it has no open edge — so leaving it out of `safe` changes nothing about being caught there, and
      the two counts above are unchanged by it. What it changes is where a sighting throws Wren back to,
-     and that is the whole budget. Winning runs counted by sightings, with the bounce modelled:
+     and that is the whole budget. Winning runs counted by sightings, with the bounce modeled:
        safe:['A1']         unhurt 412 / 1 / 0 ...      hurt 34 / 0
        safe:['A1','B3']    unhurt 412 / 132 / 37 / 6   hurt 34 / 1
      With the laundry safe, a table that knew only the two door words and the word 'east' walked in on
@@ -84,7 +84,7 @@
        no Seer     — strictly worse than that: the Listener's twelve numbers index nothing, so the same
                      blind 10.3%, and on top of it a coin flip at each seam over which end is scratched.
                      (Where the seams ARE is free — grid.js prompts for the word before it checks the
-                     wall, and cancelling costs nothing. What the Seer holds is the mapping and the ends.)
+                     wall, and canceling costs nothing. What the Seer holds is the mapping and the ends.)
        no Binder   — the porter is the Binder's alone now. The Seer's under-layer draws the rooms, the
                      passages and the two seams, and no longer draws the lodge or its sight-lines, so
                      nothing else on the table says the north corridor is watched. With the cry unknown

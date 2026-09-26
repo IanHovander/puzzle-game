@@ -26,7 +26,7 @@
   {"expect": "THORN in slot 2, then ASH in slot 3, then WELL in slot 4"}, {"expect": "The lock goes in slot 1: KNOT or EMBER"}, {"expectNot": "slot 4, then ASH in slot 1"},
   {"clickText": "Back to the ward"}, {"wait": 400},
   {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"], [1, "KNOT"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"keys": "acm/"}, {"wait": 2200},
-  {"key": "Space"}, {"wait": 600}, {"expect": "does not come undone"}, {"expectNot": "wax stays grey"},
+  {"key": "Space"}, {"wait": 600}, {"expect": "does not come undone"}, {"expectNot": "wax stays gray"},
   {"assert": "VigilStore.state.flags.OATH === 1 && VigilStore.state.flags.OATH_KNOT === true && VigilStore.state.flags.REFUSED_OATH === false"},
   {"eval": "({scene: VigilStore.state.scene, OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, hints: VigilStore.state.flags.hintsTotal})"}
 ] }

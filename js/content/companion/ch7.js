@@ -121,7 +121,7 @@
     return s;
   };
 
-  /* A thread, drawn three ways: whole, grey, absent. */
+  /* A thread, drawn three ways: whole, gray, absent. */
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'whole' ? `<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="${RED}" stroke-width="2.5" stroke-linecap="round"/>`
     : kind === 'grey' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="rgba(233,226,210,.45)" stroke-width="2.5" stroke-linecap="round"/>'
@@ -257,7 +257,7 @@
         P.wren.push({ t: 'h', text: 'No thread, tonight of all nights' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
           + '<li>' + threadLine('whole') + ' <strong>The four of you:</strong> red, knotted, to each other.</li>'
-          + '<li>' + threadLine('grey') + ' <strong>The Provost, to Wren:</strong> grey since before you were born.</li>'
+          + '<li>' + threadLine('grey') + ' <strong>The Provost, to Wren:</strong> gray since before you were born.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren, to anyone:</strong> nothing at all.</li>'
           + '</ul>' });
         P.wren.push({ t: 'p', text: 'You decided years ago that your gift had a blind spot. It does not.' });

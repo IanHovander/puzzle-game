@@ -128,7 +128,7 @@
       blocks.push({ t: 'h', text: 'By year' });
       blocks.push({ t: 'html', html: render(laws.slice().sort((a, b) => a.year - b.year || a.n - b.n)) });
       blocks.push({ t: 'h', text: 'Threads' });
-      blocks.push({ t: 'fine', text: 'Grey — grief, or a goodbye already said. Gold — the Crown\'s coin or favour. Red — an oath. No thread — unbound; or, once, "not unbound: the knot itself."' });
+      blocks.push({ t: 'fine', text: 'Gray — grief, or a goodbye already said. Gold — the Crown\'s coin or favor. Red — an oath. No thread — unbound; or, once, "not unbound: the knot itself."' });
     }
     (C.bookExtras || []).forEach(fn => { try { const b = fn(roleId, ctx); if (b && b.length) blocks.push(...b); } catch (e) { console.error(e); } });
     return blocks;

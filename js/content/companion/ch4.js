@@ -40,7 +40,7 @@
      reference is never re-printed. The ch4 flags are read off the ch4 unlock itself, so the Book
      keeps them once the table has moved on.
      The sheet waits for Chapter V. It used to appear the instant EMBER was typed, three scenes before
-     the study is searched, and it says 'We were four' and 'came up grey' — the first field of the
+     the study is searched, and it says 'We were four' and 'came up gray' — the first field of the
      Seer's corner and the first field of the Binder's, in English, on the Reader's phone. The gate
      that belongs here is LETTER_READ (js/content/ch4.js sets it at the desk, and its own line
      promises the Book), but no Companion page can see a flag that is not cast, so the nearest honest
@@ -61,7 +61,7 @@
           so that trap cannot be walked into.
      If this page must one day read LETTER_READ exactly, the bit belongs to ch5's cast, not ch4's,
      and something in ch5's six would have to give it up. */
-  const mereText = '"We were four. I offered to go alone and was refused. One was never asked. We wrote the cold glyph with four hands, and came up grey. — Mere, who kept the fire, after."';
+  const mereText = '"We were four. I offered to go alone and was refused. One was never asked. We wrote the cold glyph with four hands, and came up gray. — Mere, who kept the fire, after."';
   C.bookExtras.push((roleId, ctx) => {
     if (roleId !== 'reader' || ctx.maxChapter < 4) return [];
     const u = (ctx.state && ctx.state.unlocked && ctx.state.unlocked.ch4) || {};
@@ -147,7 +147,7 @@
      not. That last clause is the Binder's alone — the Reader's Book gives the turning and not the
      places — so it is the one thing the shelf cannot be solved without.
      Both rows are drawn the same white, and the one accent is on the place numbers, which are the
-     thing that does not move. Painting the turned row in the Binder's colour said "this is tonight's
+     thing that does not move. Painting the turned row in the Binder's color said "this is tonight's
      board", which is the Seer's fact and not on this page. The rule has two arms and the drawing
      shows both. */
   const turnedBoard = () => {
@@ -171,7 +171,7 @@
   };
 
   /* A thread, drawn two ways: whole, and the empty bracket where one should be. The Binder's Wren tab
-     is the one place in this chapter a thread is a picture rather than a colour. */
+     is the one place in this chapter a thread is a picture rather than a color. */
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'whole' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/>'
       : '<path d="M6,2 L2,2 L2,14 L6,14 M84,2 L88,2 L88,14 L84,14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>'
@@ -240,7 +240,7 @@
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. Wren\'s still falls towards it. ' + (scared ? 'You blamed the lamp in the dormitory. There is no lamp here, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.') });
+        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. Wren\'s still falls toward it. ' + (scared ? 'You blamed the lamp in the dormitory. There is no lamp here, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.') });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“No lamp to blame this time. So I’ve stood between you and her fire since we walked in. You thought I was just cold. I’m not. I’m busy.”' });
       }
@@ -259,7 +259,7 @@
         P.sight.push({ t: 'p', text: 'The Provost\'s scroll is Founders\' work, not a Vigil ward like the Tower door. So **a sigil begins at the scratch, and runs the way a clock counts**. A notch is only a maker\'s mark.' });
         /* The costs of the two locks are Law 4, which the Binder's Book prints from this chapter on (P5). */
         P.sight.push({ t: 'p', text: 'The lock goes where the three words leave room. **Only KNOT or EMBER** will take the wax. Your **Book** says what each one costs.' });
-        P.sight.push({ t: 'p', text: '**Her thread to Wren is grey.** Hers to the four of you is red, and not tied yet.' });
+        P.sight.push({ t: 'p', text: '**Her thread to Wren is gray.** Hers to the four of you is red, and not tied yet.' });
         P.sight.push({ t: 'fine', text: 'You cannot read a word or find a cut. Ask for both.' });
 
         P.wren.push({ t: 'h', text: 'No thread found' });

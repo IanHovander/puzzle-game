@@ -161,7 +161,7 @@
          the Founders' card reads RESTORED or STRUCK, 212. A table whose phone has no ch5 code sees
          STRUCK and reads the stone exactly the same way. */
       const law0 = !!(ctx.state.unlocked && Object.values(ctx.state.unlocked).some(u => u && u.flags && u.flags.LAW0));
-      const neighbour = (l) => L.roles[[l - 1, l + 1, l - 2, l + 2].filter(x => x >= 0 && x < 4 && x !== l)[0]].nick;
+      const neighbor = (l) => L.roles[[l - 1, l + 1, l - 2, l + 2].filter(x => x >= 0 && x < 4 && x !== l)[0]].nick;
 
       /* ---------- SPEAK: the bells ---------- */
       if (roleId === 'listener') {
@@ -177,7 +177,7 @@
       }
       if (isVol) {
         P.speak.push({ t: 'divider' });
-        P.speak.push({ t: 'p', text: 'Your Sight is still up the Stair, holding the way shut. Through the first pattern your bell is silent and **' + neighbour(vol - 1) + '** rings it. The Provost ties the thread off before the dark one.' });
+        P.speak.push({ t: 'p', text: 'Your Sight is still up the Stair, holding the way shut. Through the first pattern your bell is silent and **' + neighbor(vol - 1) + '** rings it. The Provost ties the thread off before the dark one.' });
         P.speak.push(threadBlock());
       }
       P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
@@ -252,7 +252,7 @@
       if (roleId === 'binder') {
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
-          + '<li>' + threadLine('grey') + ' <strong>the Provost to Wren:</strong> grey. A goodbye already said.</li>'
+          + '<li>' + threadLine('grey') + ' <strong>the Provost to Wren:</strong> gray. A goodbye already said.</li>'
           + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> red, each to each, and holding.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing at all.</li>'
           + '</ul>' });

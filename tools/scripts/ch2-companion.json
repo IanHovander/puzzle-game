@@ -18,7 +18,7 @@
   {"expect": "Law 13"}, {"expect": "Law 9"}, {"expect": "Law 3"}, {"expect": "The older Law binds"}, {"expect": "a drill, not a Law"}, {"expect": "212"}, {"expect": "Ask for all three"},
   {"expectNot": "Hymn"},
   {"tab": "Wren"}, {"expect": "two nothings"}, {"tab": "Book"}, {"expect": "STRUCK"},
-  {"companion": true}, {"role": "Binder"}, {"unlock": ["KNOT", "BLJ"]}, {"shot": "c2_binder_sight_votelost"}, {"tab": "Wren"}, {"expect": "no longer runs towards the dais"},
+  {"companion": true}, {"role": "Binder"}, {"unlock": ["KNOT", "BLJ"]}, {"shot": "c2_binder_sight_votelost"}, {"tab": "Wren"}, {"expect": "no longer runs toward the dais"},
   {"companion": true}, {"role": "Reader"}, {"unlock": ["KNOT", "BLJ"]}, {"tab": "Wren"}, {"expect": "under guard when you went down"},
   {"companion": true}, {"role": "Seer"}, {"unlock": ["KNOT", "ZZZ"]}, {"expect": "The mark is not right"}
 ] }

@@ -124,7 +124,7 @@
         P.sight.push({ t: 'list', items: [
           '**Seat 5**: Crown coin under the cushion.',
           '**Seat 8**: the same coin, in the sleeve.',
-          '**Seat 6**: a soldier in grey behind the chair. Nobody gets near.',
+          '**Seat 6**: a soldier in gray behind the chair. Nobody gets near.',
         ] });
         P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** Say those three numbers out loud.' });
         P.wren.push({ t: 'h', text: 'The shadow, and the tapestry' });
@@ -144,7 +144,7 @@
         P.sight.push({ t: 'p', text: 'So **one ask can be worth two votes.** Ask the Master at the top of a thread, and the one below comes too.' });
         P.sight.push({ t: 'fine', text: 'The rest is on other phones. Ask.' });
         P.wren.push({ t: 'h', text: 'No thread found' });
-        P.wren.push({ t: 'p', text: 'On the dais you looked for Wren\u2019s thread: *no thread found.* When the fire bowed, you thought you saw one, from the Provost to Wren. The light came back before you saw its colour.' });
+        P.wren.push({ t: 'p', text: 'On the dais you looked for Wren\u2019s thread: *no thread found.* When the fire bowed, you thought you saw one, from the Provost to Wren. The light came back before you saw its color.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cI looked for your thread again tonight. Still nothing. Then the fire bowed, and for one second there was one, to the Provost. I intend to find it again.\u201d' });
       }

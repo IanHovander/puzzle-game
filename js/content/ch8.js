@@ -204,7 +204,7 @@
        the next node's left: an edge inside one column, or back a column, renders as an arrow that
        points the wrong way -- which is what the old ch8_together -> ch8_e0 and
        ch8_unsealed -> ch8_map edges did. ch8_together was also a node with no scene whose when()
-       was word for word ch8_e0's, so it is gone; on ENDING 2 the road not taken is the greyed
+       was word for word ch8_e0's, so it is gone; on ENDING 2 the road not taken is the grayed
        ch8_e0 sibling in the same column, which is what ch8_e2's closing line now points at.
        ADVERSARIAL #6: of the non-secret labels left -- 'Who walked', 'The whole night',
        'Unseal the dark?', 'Sit with it' -- every one names a scene at or behind the player. */
@@ -279,7 +279,7 @@
       ch8_e0: {
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
-          'White. The white of a forge, too hot to have a colour. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
+          'White. The white of a forge, too hot to have a color. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
           'Wren is waiting on the stones, as close to the fire as a person can sit.',
           'There is a pulse in Wren\'s throat. You can see it from here.',
           { speaker: 'Wren', text: 'You took your *time*. I had a speech. I\'ve forgotten all of it, so you\'ll have to go first.' },
@@ -314,7 +314,7 @@
         art: 'ch8_stones', mood: 'wonder', fx: 'embers', flame: 0.65, speed: 20,
         text: (s) => [
           'The Cold closes. Not the way the Founders closed it. Narrower. Enough.',
-          `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free.`,
+          `**${listOr(walkers(s), 'The walkers')}** come out of the fire gray-eyed and free.`,
           `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. The school needs Masters who can read the wall. Now it has them.`,
           'Wren lives. Wren hugs everyone and holds on slightly too long. There is no pulse in Wren\'s throat.',
           { speaker: 'Wren', text: 'Half of you can\'t see me properly any more. Good. I looked *terrible*.' },
@@ -328,7 +328,7 @@
           { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Nobody do the face.' },
           'Wren goes into the Hearth without knocking, the way Wren goes through every door. It closes behind. Four hundred years of fire, again, from a spark.',
           'In the morning a mason carves a fifth name over the Hearth. He has to ask how to spell it. The Reader does not offer. Then the Reader eats breakfast without being told.',
-          'The Provost stands at the fire with a thread only the Binder can see. It has been grey for fourteen years.',
+          'The Provost stands at the fire with a thread only the Binder can see. It has been gray for fourteen years.',
           'On the chart of the night, beside the road you took, there are four boxes you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -336,7 +336,7 @@
       ch8_e3: {
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
-          'Marrow does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it.',
+          'Marrow does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the color of it.',
           'The seal holds. Thin, but it holds.',
           'Wren lives, still without a pulse, and stands a long time where the Provost stood. Then Wren makes a joke nobody laughs at. The Binder bows to the new Provost, perfectly correctly, and that gets the laugh.',
           { text: 'Years later.', cls: 'center' },
@@ -534,9 +534,9 @@
         },
         flowTitle: 'Epilogue — the paths you walked',
         /* Two plain sentences and no numbers (R5.3). ch8_stats counted the night one scene ago and
-           ch7_flow named the ending one chapter ago; this line only has to say what the greyed
+           ch7_flow named the ending one chapter ago; this line only has to say what the grayed
            boxes are, and must not name any of them. */
-        stats: (s) => `The night ended in ${lowerName(ENDING_NAMES[ending(s)])}. Greyed beside it are the four nights it could have been.`,
+        stats: (s) => `The night ended in ${lowerName(ENDING_NAMES[ending(s)])}. Grayed beside it are the four nights it could have been.`,
         next: 'ch8_end', button: 'Sit with it',
       },
       ch8_end: {

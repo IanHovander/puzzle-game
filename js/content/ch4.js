@@ -201,7 +201,7 @@
      the journal as FOURTEEN YEARS, a phrase that exists nowhere else in this game (a leftover from
      docs/DESIGN.md:168), while the desk requires SLEEPS and WINDOW — so a table that spent the whole
      ladder and typed what the fire gave it burnt one of three tries and, with the desk shut, never
-     set LETTER_READ. The same rung offered 'the fourth of them' for the tapestry, which normalises to
+     set LETTER_READ. The same rung offered 'the fourth of them' for the tapestry, which normalizes to
      THEFOURTHOFTHEM and is in no corner's list either.
      The other three corners keep their accepted words as literals inside accept(), where
      tools/check-hints.js can extract and run them: it puts every phrase of the last rung through the
@@ -214,7 +214,7 @@
     desk: { text: 'It sleeps with the window open. It laughs at my jokes.', cls: 'letter' },
     bell: { text: '"Then the Crown will go through me. And through it."', cls: 'letter' },
     tapestry: { text: 'Four walk into the fire. No child anywhere in it.', cls: 'letter' },
-    chair: { text: 'Grey. The colour of someone who has already said goodbye.', cls: 'letter' },
+    chair: { text: 'Gray. The color of someone who has already said goodbye.', cls: 'letter' },
   };
   /* Every corner has a budget and a written consequence: spend it and the corner shuts for the night,
      the way ch1's vote is called once. The two corners that ask for a transcription get three tries,
@@ -246,7 +246,7 @@
     s += `<rect x="60" y="240" width="220" height="14" rx="3" fill="#3a2a1c"/><rect x="72" y="254" width="14" height="60" fill="#2a1e14"/><rect x="254" y="254" width="14" height="60" fill="#2a1e14"/>`;
     s += `<path d="M120,238 L168,232 L172,238 L176,232 L224,238 Z" fill="#d9cba8"/><rect x="200" y="226" width="60" height="10" rx="2" fill="#3a2a30"/>`;
     s += `<circle cx="172" cy="236" r="60" fill="#ffd27a" opacity=".08"/>`;
-    // tapestry (centre) — the school's overpaint until the Seer has said what is under it
+    // tapestry (center) — the school's overpaint until the Seer has said what is under it
     s += `<rect x="340" y="40" width="260" height="180" fill="#3a2a1a"/>`;
     s += f.TAPESTRY ? window.VigilArt.ch4.foundersWalking(348, 48, 244, 164) : window.VigilArt.ch4.orderPaint(348, 48, 244, 164);
     s += `<rect x="340" y="40" width="260" height="180" fill="none" stroke="#5a4020" stroke-width="4"/>`;
@@ -256,7 +256,7 @@
     s += `<g transform="translate(820,148)"><path d="M-12,0 L-12,-8 Q-12,-26 0,-28 Q12,-26 12,-8 L12,0 Z" fill="#8a7040"/><circle cx="0" cy="3" r="3" fill="#c9a85a"/></g>`;
     // chair (right, bottom)
     s += `<g transform="translate(790,330)"><rect x="-44" y="-96" width="88" height="96" rx="12" fill="#1c1418"/><rect x="-54" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="38" y="-60" width="16" height="60" rx="6" fill="#241a1e"/><rect x="-36" y="-34" width="72" height="34" rx="6" fill="#2a1e24"/></g>`;
-    // hotspots — the label carries whose corner it is, in that role's colour
+    // hotspots — the label carries whose corner it is, in that role's color
     s += hot('desk', 40, 190, 260, 150, 'the desk', 'Reader', '#e0b04a', f.JOURNAL);
     s += hot('tapestry', 320, 20, 300, 250, 'the tapestry', 'Seer', '#a482e6', f.TAPESTRY);
     s += hot('bell', 650, 90, 230, 80, 'the bell on the mantel', 'Listener', '#4fb3bf', f.MEMORY);
@@ -304,7 +304,7 @@
         { id: 'ch4_s_journal', label: 'the journal — the Reader', col: 3, row: 0, secret: true, when: (s) => !!s.flags.JOURNAL },
         { id: 'ch4_s_memory', label: 'the bell — the Listener', col: 3, row: 1, secret: true, when: (s) => !!s.flags.MEMORY },
         { id: 'ch4_s_tapestry', label: 'under the paint — the Seer', col: 3, row: 3, secret: true, when: (s) => !!s.flags.TAPESTRY },
-        { id: 'ch4_s_grey', label: 'the grey thread — the Binder', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
+        { id: 'ch4_s_grey', label: 'the gray thread — the Binder', col: 3, row: 4, secret: true, when: (s) => !!s.flags.GREY },
         { id: 'ch4_s_rubbing', label: 'Mere\'s sheet, read', col: 4, row: 0, secret: true, kind: 'end', when: (s) => !!s.flags.LETTER_READ },
         { id: 'ch4_s_note', label: 'a note under the cushion', col: 4, row: 4, secret: true, kind: 'end', when: (s) => !!(s.flags.ORIEL_NOTE || s.flags.MARROW_LETTER) },
         { id: 'ch4_swear', label: 'The oath', col: 4, row: 2, kind: 'choice' },
@@ -433,7 +433,7 @@
           'Nothing here is guessed. If a corner will not open, the page that opens it has not spoken.',
           () => `The journal: ${JOURNAL_LINES.join(' ')} The bell: the envoy, and through it. `
             + 'The tapestry: the fourth carries, the second reaches back. '
-            + 'The chair: grey, and red — not tied yet. Then stop searching.',
+            + 'The chair: gray, and red — not tied yet. Then stop searching.',
         ],
         run: (box, api) => new Promise((resolve) => {
           const f = F();   // a live reference: Store.set mutates this object in place
@@ -451,7 +451,7 @@
              same click that shuts it — the invitation to ask arriving after the thing it was for is
              over. This lights it when one try is left, whatever the budget, and records the spend. */
           const charge = (id, base) => (v, tries) => { const n = base + tries; Store.set('TRIED_' + id, n); if (n === TRIES[id] - 1) lightBell(); return null; };
-          /* runCustom does not honour par, so the two hint marks are hand-rolled: 6 minutes and 8. */
+          /* runCustom does not honor par, so the two hint marks are hand-rolled: 6 minutes and 8. */
           const parTimers = [setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire stirs. It has something to whisper, if you ask.', 3200); Audio.sfx('chime'); }, 6 * 60000),
             setTimeout(() => { if (!api.alive() || finished) return; document.getElementById('hint').classList.add('attention'); UI.toast('The fire dims a little. Ask it.', 3200); }, 8 * 60000)];
           const renderRoom = () => {
@@ -492,7 +492,7 @@
               Store.set('JOURNAL', true); Store.note('The Reader read the Provost\'s journal.');
               const out = [FOUND.desk];
               out.push(wren({ speaker: 'Wren', text: 'She writes *it*. And then she writes that. You read it beautifully, Reader. I wish you\'d been slower.' }, { speaker: 'Wren', text: 'She wrote *it*.' }));
-              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s sheet was read at last.'); out.push({ text: 'The grey smear you took below comes clear. It will be in your **Book** from here on.', cls: 'whisper' }); }
+              if (f.LETTER && !f.LETTER_READ) { Store.set('LETTER_READ', true); Store.note('Mere\'s sheet was read at last.'); out.push({ text: 'The gray smear you took below comes clear. It will be in your **Book** from here on.', cls: 'whisper' }); }
               reveal(CORNER.desk, out); Audio.sfx('reveal'); return;
             }
 
@@ -557,7 +557,7 @@
               return;
             }
 
-            /* --- the chair: thread colour, which lives on the Binder's page and in the Binder's Book. --- */
+            /* --- the chair: thread color, which lives on the Binder's page and in the Binder's Book. --- */
             if (id === 'chair') {
               head(CORNER.chair);
               if (f.GREY) { para(panel, [FOUND.chair]); back(); return; }
@@ -567,18 +567,18 @@
               /* The second field was a yes/no — NOTYET, NOT, NOTTIED, UNTIED, NO and nothing else —
                  so two tries covered it twice over and the corner was really one field wide
                  (ADVERSARIAL 12, a window wider than the budget). It now wants the second thread's
-                 colour AND its state, which is the same line of the Binder's page and is still
+                 color AND its state, which is the same line of the Binder's page and is still
                  Thread-Sight and nothing else. One accept function, so the widget lights both fields
                  together and a half-right guess confirms nothing. */
               const r = await window.VigilAnswer.build(panel, {
-                fields: [{ label: 'to Wren, the colour', placeholder: 'a colour', len: 12 }, { label: 'to you four, colour and state', placeholder: 'a colour, and…', len: 22 }],
+                fields: [{ label: 'to Wren, the color', placeholder: 'a color', len: 12 }, { label: 'to you four, color and state', placeholder: 'a color, and…', len: 22 }],
                 accept: (v) => ['GREY', 'GRAY'].indexOf(v[0]) >= 0 && /^RED/.test(v[1]) && /NOT|UNTIED/.test(v[1]),
                 onWrong: charge('chair', spent('chair')),
                 wrongText: 'Nothing in the chair answers. Hers to Wren, then hers to you.', submitText: 'Say what you see', successText: 'Seen.', maxTries: budget('chair'),
               }, api);
               if (!api.alive()) return;
               if (r && r.failed) { Store.note('The threads in the study went dark before the Binder could name them.'); reveal(CORNER.chair, [SHUT.chair]); return; }
-              Store.set('GREY', true); Store.note('The Binder saw the grey thread.');
+              Store.set('GREY', true); Store.note('The Binder saw the gray thread.');
               const out = [FOUND.chair];
               if (f.ORIEL) {
                 Store.set('ORIEL_NOTE', true); Store.note('Oriel\'s note was found in the Provost\'s chair.');
@@ -589,7 +589,7 @@
                 out.push('Under the cushion, a letter she never sent.');
                 out.push({ text: '"To the nine. Tonight I go down to the thing I have never named to you. — Marrow"', cls: 'letter' });
               } else out.push('Under the cushion, nothing but the shape of her.');
-              out.push(wren({ speaker: 'Wren', text: 'Grey is a colour. I\'ve seen grey. Grey is fine.' }, 'Wren does not ask what colour.'));
+              out.push(wren({ speaker: 'Wren', text: 'Gray is a color. I\'ve seen gray. Gray is fine.' }, 'Wren does not ask what color.'));
               reveal(CORNER.chair, out); Audio.sfx('chime'); return;
             }
           }
@@ -761,7 +761,7 @@
         text: () => {
           const tried = Store.chose('OATH_SWEAR', 'swear');
           return [
-            tried ? 'The ring shuts on the wrong oath. The wax stays grey.'
+            tried ? 'The ring shuts on the wrong oath. The wax stays gray.'
               : 'The scroll stays unrolled, and unsworn. Provost Marrow does not raise her voice. She never has.',
             ...(tried && oathReceipt ? [{ text: oathReceipt, cls: 'small' }] : []),
             { speaker: 'Provost Marrow', text: 'Then you are no part of this. Go to your beds. I will do it alone, with the child.' },
