@@ -170,7 +170,7 @@
         case 'letter': into.appendChild(UI.el('div', { class: 'blk-letter', html: UI.rich(b.text) })); break;
         case 'whisper': into.appendChild(UI.el('p', { class: 'blk-whisper', html: UI.rich(b.text) })); break;
         case 'omen': into.appendChild(UI.el('p', { class: 'blk-omen', html: UI.rich(b.text) })); break;
-        case 'html': into.appendChild(UI.el('div', { html: b.html })); break;
+        case 'html': into.appendChild(UI.el('div', { class: 'blk-html', html: b.html })); break;
         case 'svg': into.appendChild(UI.el('div', { class: 'blk-svg' + (b.cls ? ' ' + b.cls : ''), html: typeof b.svg === 'function' ? b.svg(cx) : b.svg })); break;
         case 'table': {
           const tb = UI.el('table', { class: 'blk-table' });
@@ -178,7 +178,7 @@
           b.rows.forEach(row => tb.appendChild(UI.el('tr', {}, row.map(c => UI.el('td', { html: typeof c === 'string' && !c.startsWith('<') ? UI.rich(c) : c })))));
           into.appendChild(tb); break;
         }
-        case 'list': into.appendChild(UI.el('ul', { class: 'blk-list' }, b.items.map(i => UI.el('li', { html: UI.rich(i) })))); break;
+        case 'list': into.appendChild(UI.el('ul', { class: 'blk-list' }, b.items.map(i => UI.el('li', { html: typeof i === 'string' && i.startsWith('<') ? i : UI.rich(i) })))); break;
         case 'glyphs': into.appendChild(UI.el('div', { class: 'blk-glyphs' }, b.items.map(g => UI.el('div', { class: 'g' }, [UI.el('div', { html: g.svg }), UI.el('span', { html: UI.rich(g.label || '') })])))); break;
         case 'key': into.appendChild(UI.el('div', { class: 'blk-key' }, b.items.map(g => UI.el('div', { class: 'k' }, [UI.el('div', { html: g.svg }), UI.el('b', { text: g.label })])))); break;
         case 'code': into.appendChild(UI.el('div', { class: 'blk-code ' + (b.cls || '') }, [UI.el('div', { class: 'label', text: b.label || 'Token' }), UI.el('div', { class: 'word', text: typeof b.text === 'function' ? b.text(cx) : b.text })])); break;
@@ -200,7 +200,8 @@
           /* Sixteen times a night one player needs sound on a phone holding a fact the other three must
              not have -- ch2's vault door is four notes, ch4's third shelf, ch5's two gates. Kept to a few
              words: it sits under every sound button, and the sound is always written on the page too. */
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Volume up, silent off. Headphones if you have them.' }));
+          // Once per page: a page with four sound buttons said it four times.
+          if (!(into.closest('#cmain') || into).querySelector('.nohear')) w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Volume up, silent off. Headphones if you have them.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

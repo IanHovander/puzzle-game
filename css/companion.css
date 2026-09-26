@@ -47,6 +47,15 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-table svg { width: 34px; height: 34px; vertical-align: middle; }
 .blk-list { margin: 6px 0 12px; padding-left: 22px; }
 .blk-list li { margin-bottom: 6px; }
+/* Thread lists (the Binder's pages): the thread drawn in its own left column, the words beside it. */
+.blk-list:has(> li > svg:first-child) { padding-left: 0; }
+.blk-list li:has(> svg:first-child) { list-style: none; position: relative; padding-left: 86px; margin-bottom: 12px; min-height: 22px; }
+.blk-list li > svg:first-child { position: absolute; left: 0; top: 0.5em; width: 74px !important; height: 14px !important; }
+/* Drawings in html blocks sit centred, and small ones are drawn big enough to read on a phone. */
+.blk-html > svg { display: block; margin: 8px auto 12px; max-width: 100%; }
+.blk-html > svg[style*="width"] { width: min(100%, 280px) !important; height: auto !important; }
+.blk-table th { font-size: 11px; letter-spacing: 0.06em; }
+.blk-table td:has(> svg) { white-space: nowrap; }
 .blk-glyphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 10px; margin: 8px 0 12px; }
 .blk-glyphs .g { display: flex; flex-direction: column; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 4px; font-size: 13px; text-align: center; }
 .blk-glyphs .g svg { width: 48px; height: 48px; }
@@ -78,8 +87,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-key .k { display: flex; flex-direction: column; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 6px 2px; font-size: 13px; }
 .blk-key .k svg { width: 40px; height: 40px; }
 .blk-key .k b { font-family: var(--display); color: var(--gold-2); font-size: 15px; }
-.tag { display: inline-block; font-family: var(--display); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--gold); margin-right: 6px; }
-.back-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.tag { display: inline-flex; align-items: center; line-height: 1; font-family: var(--display); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--gold); margin-right: 6px; }
+.back-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .role-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 .big-btn { width: 100%; font-size: 20px; padding: 16px; }
 .hold-btn { width: 100%; font-size: 18px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
@@ -94,8 +103,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-audio .label { font-family: var(--display); font-size: 12px; letter-spacing: .15em; text-transform: uppercase; color: var(--sea); margin-bottom: 6px; }
 .blk-audio .strip { margin: 6px 0 10px; }
 .blk-audio .btn { width: 100%; border-color: rgba(79,179,191,0.5); }
-.arrow-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 44px; padding: 6px 4px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
+.arrow-strip { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.arrow-strip .step { display: inline-flex; flex-direction: column; align-items: center; min-width: 40px; padding: 6px 3px; border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; background: rgba(0,0,0,0.3); font-family: var(--display); font-size: 12px; }
 .arrow-strip .step b { font-size: 20px; color: var(--sea); }
 .arrow-strip .step.rest b { color: var(--ink-dim); }
 .arrow-strip .step.start b, .arrow-strip .step.same b { color: var(--gold); }
@@ -115,6 +124,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .lexicon .lx { display: flex; gap: 8px; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 8px; background: rgba(0,0,0,0.25); }
 .lexicon .lx b { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--gold-2); display: block; }
 .lexicon .lx span { font-size: 13px; color: var(--ink-dim); }
+.heartbeats { margin-bottom: 14px; }
 .heartbeats .hb { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .heartbeats .hb .trace { width: 120px; height: 22px; }
 .thread-hold { width: 100%; padding: 26px; font-size: 20px; border: 2px solid var(--gold); }

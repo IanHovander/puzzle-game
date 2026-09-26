@@ -413,9 +413,7 @@
   {
    "key": "Space"
   },
-  {
-   "expect": "Five to four"
-  },
+  {"expect": "Look at me staying put"},
   {
    "clickText": "Down"
   },

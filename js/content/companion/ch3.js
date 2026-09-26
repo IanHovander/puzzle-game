@@ -141,7 +141,7 @@
   const thread = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'oath' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="9" r="3.2" fill="#d96b4a"/>'
     : kind === 'coin' ? '<path d="M4,8 C24,3 60,13 78,8" fill="none" stroke="#c8a24a" stroke-width="2" stroke-dasharray="5 3" stroke-linecap="round"/><circle cx="83" cy="8" r="4" fill="#c8a24a"/>'
-    : '<path d="M6,2 L2,2 L2,14 L6,14 M84,2 L88,2 L88,14 L84,14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>'
+    : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
   }</svg>`;
 
   const boots = (A) => { A.init(); if (A.isMuted()) A.setMuted(false); for (let i = 0; i < 7; i++) CA.later(() => A.sfx('step'), i * 250); for (let i = 0; i < 4; i++) CA.later(() => A.sfx('miss'), 2100 + i * 620); return 2100 + 4 * 620 + 400; };

@@ -18,7 +18,7 @@
   {"tab": "Wren"}, {"expect": "shadow"},
 
   {"companion": true}, {"role": "Binder", "name": "Dee"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_binder_sight"},
-  {"expect": "older than that Law"}, {"expect": "begins at the chip"}, {"expect": "begins at the notch"}, {"expect": "the older binds"}, {"expect": "leaves that slot empty"}, {"expect": "Two frosts and a gate stops answering"}, {"expectNot": "refused and the ring frosts"}, {"expectNot": "Law 5"}, {"expectNot": "widdershins"},
+  {"expect": "older than that Law"}, {"expect": "begins at the chip"}, {"expect": "begins at the notch"}, {"expect": "the older binds"}, {"expect": "leaves that slot empty"}, {"expect": "runs against the slot numbers"}, {"expectNot": "refused and the ring frosts"}, {"expectNot": "Law 5"}, {"expectNot": "widdershins"},
   {"tab": "Speak"}, {"clickText": "collapse the stair"}, {"wait": 300}, {"expect": "says never"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_binder_count"}, {"expect": "How many bind"}, {"expect": "sworn before Year 212"}, {"click": ".pick-grid .pk:has-text(\"4\")"}, {"wait": 200}, {"expect": "Now your second"}, {"click": ".pick-grid .pk:has-text(\"3\")"}, {"wait": 300}, {"expect": "Sealed"}, {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "Q3UT"},
   {"tab": "Book"}, {"shot": "c5_binder_book"}, {"expect": "Law 12"}, {"tab": "Wren"}, {"expect": "Still no thread"}
 ] }
