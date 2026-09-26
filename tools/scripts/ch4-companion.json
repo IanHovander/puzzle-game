@@ -1,6 +1,6 @@
 { "start": "ch4_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["EMBER", "DU8"]}, {"shot": "c4_reader_sight"},
-  {"expect": "What is written in this room"}, {"expect": "third shelf"}, {"expect": "EMBER"}, {"expect": "no first, no last"}, {"expect": "fire; a gate; down"},
+  {"expect": "What is written in this room"}, {"expect": "third shelf"}, {"expect": "EMBER"}, {"expect": "no first, no last"}, {"expect": "ASH, THORN, WELL"},
   {"expectNot": "page 1 of"},
   {"tab": "Wren"}, {"shot": "c4_reader_wren"}, {"expect": "hollow of a bell"}, {"expect": "spelling mistake"},
   {"tab": "Speak"}, {"expect": "call you by name"}, {"expect": "Never show your phone"},
@@ -20,7 +20,7 @@
   {"expectNot": "turned"},
   {"tab": "Wren"}, {"shot": "c4_seer_wren"}, {"expect": "falls towards it"}, {"expect": "no lamp here"}, {"expectNot": "his eyes"}, {"tab": "Speak"}, {"expect": "call you by name"},
   {"companion": true}, {"role": "Binder"}, {"unlock": ["EMBER", "DU8"]}, {"shot": "c4_binder_sight"},
-  {"expect": "either way up, the numbers do not move"}, {"expect": "begins at the scratch"}, {"expect": "cannot be untied"}, {"expect": "grey"}, {"expect": "Ask for both"},
+  {"expect": "either way up, the numbers do not move"}, {"expect": "begins at the scratch"}, {"expect": "Only KNOT or EMBER"}, {"expect": "grey"}, {"expect": "Ask for both"},
   {"expectNot": "Law 10"},
   {"tab": "Wren"}, {"expect": "nothing going out, to anyone"}, {"expect": "Nothing comes back"}, {"tab": "Speak"}, {"expect": "Never show your phone"},
   {"clickText": "Pages"}, {"unlock": ["EMBER", "EVF"]}, {"tab": "Wren"}, {"shot": "c4_binder_wren_evf"}, {"expect": "twice since the stair"},

@@ -321,7 +321,7 @@
   const REPLY = {
     seer: { yes: 'Toward.', end: ' Thanks for moving.', no: { away: 'Away, like everybody\'s? Look down some time, when I\'m not standing here.', none: 'No shadow? I\'ve got one. Look down some time, when I\'m not standing here.' } },
     listener: { yes: 'Nothing.', end: ' Go on. Leave your hand there.', no: { loud: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.', faint: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.' } },
-    reader: { yes: 'A hollow. The bit that rings.', end: ' Four times? I\'d have stopped at one.', no: { bird: 'That\'s what they call me. It\'s not what it says.', fire: 'I wish. It\'s not what it says.' } },
+    reader: { yes: 'A hollow. The bit that rings. Four times? I\'d have stopped at one.', end: '', no: { bird: 'That\'s what they call me. It\'s not what it says.', fire: 'I wish. It\'s not what it says.' } },
     binder: { yes: 'None. The knot itself.', end: ' Go on, then. Tie it tight.', no: { red: 'You\'re being kind again. Hold out your arm and look.', grey: 'Grey is a colour. I have seen grey. Grey is fine. It isn\'t mine.' } },
   };
   /* One clause of callback on a right answer, and only two ways for it to run: the laundry answer Wren
@@ -472,8 +472,8 @@
             'The Long Stair ends in a room that is mostly floor. Four bells hang from an iron beam, each as tall as a person.',
             'The floor is one round plate, riveted and faintly warm. You are standing on a lid. Under it, the Cold.',
             { text: 'A shaft runs straight up through the ceiling. At the top is a coin of orange light. It is the Hearth, seen from underneath.', cls: 'whisper' },
-            'Wren finds the warmest rivet and stands on it.',
             { speaker: 'Wren', text: 'Huh. It\'s smaller from down here. Don\'t tell it I said that.' },
+            '"It heard," says the Seer.',
           ];
           if (s.flags.STAIR === 'COLLAPSE') out.push({ text: 'One bell is wrong already. The stair\'s fall ran along the beam, and the first bell went *tang* instead of *tong*.', cls: 'whisper' });
           else if (volunteerLane(s) != null) out.push({ text: `${nick(volunteerLane(s))}'s thread still runs up the Stair behind you, taut as wire, holding the way shut.`, cls: 'whisper' });
@@ -563,7 +563,7 @@
           ruleCard([['press', 'your own key, on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold — hands off']]);
           return { practice: true, laneNames: L.nicks, events: evenEvents(PRACTICE, 60000 / tempo(s, 80)), fallMs: 1800, windowMs: win(s, 380), braceWindowMs: win(s, 320), deadLanes: v != null ? [v] : [], pulse: false };
         },
-        solvedText: (s, r) => [`${r.hits} of ${r.total}. Nothing counted.`, 'Wren applauds, slightly off the beat.', { text: 'Now the real one.', cls: 'whisper' }],
+        solvedText: (s, r) => [`${r.hits} of ${r.total}. Nothing counted.`, 'Wren applauds, off the beat. The Reader bows, in case it was for them.', { text: 'Now the real one.', cls: 'whisper' }],
         next: 'ch6_round1', button: 'Ring the pattern',
       },
       /* ---------- the lit pattern ---------- */
@@ -592,7 +592,7 @@
             out.push(`Marrow reaches up, takes hold of something none of you can see, and ties it off to the iron ring.`);
             out.push({ text: `${nick(v)}, your Sight comes back like blood into a numb hand. Open it.`, cls: 'whisper' });
           }
-          out.push('Then the light simply stops. In the dark, a hand tugs your sleeve, once, the way it did in the laundry.');
+          out.push('Then the light simply stops. In the dark the Listener counts heads out loud. Wren answers last, cheerfully.');
           out.push({ speaker: 'Provost Marrow', text: 'The Founders rang the last pattern blind. One of them called it. Three rang. Listener, your bell goes quiet. You are the voice.' });
           out.push({ text: 'Listener — say the number on each beat that has one.', cls: 'whisper' });
           out.push({ text: 'Reader, Seer, Binder — ring only the numbers on your **Speak**.', cls: 'whisper' });
@@ -624,13 +624,13 @@
         text: (s) => {
           const c = s.flags.BELLS_CRACKED | 0;
           return [
-            c === 0 ? 'Four bells, whole, still humming.' : c === 1 ? 'Three bells humming, and one hanging silent with its wound.' : `${c === 2 ? 'Two bells' : 'One bell'} humming. The others hang with their cracks.`,
-            'Marrow lays both hands flat on the iron and, for the first time tonight, lets her shoulders down.',
-            { speaker: 'Provost Marrow', text: 'It is held. Not closed — held. The last of it is not mine to do.' },
+            (c === 0 ? 'Four bells, whole, still humming.' : c === 1 ? 'Three bells humming, and one hanging silent with its wound.' : `${c === 2 ? 'Two bells' : 'One bell'} humming. The others hang with their cracks.`)
+              + ' Marrow lays both hands flat on the iron and lets her shoulders down.',
+            { speaker: 'Provost Marrow', text: 'It is held. Not closed. Held. The last of it is not mine to do.' },
             { speaker: 'Provost Marrow', text: 'Now, love. Walk.' },
-            'Wren does not walk. Wren looks at the four of you, one at a time.',
-            { speaker: 'Wren', text: 'In the laundry I asked each of you one question about me. You all got out of it.' },
-            { speaker: 'Wren', text: 'I am asking again, out loud. Look at me when you answer.' },
+            'The Seer steps in front of Wren without a word. Wren doesn\'t walk. For once, there is no joke.',
+            { speaker: 'Wren', text: 'In the laundry I asked you each one question. You all wriggled out of it. I\'m asking again, out loud. Look at me when you answer.' },
+            { text: 'Open your **Wren** tab. When Wren asks you, read your line to Wren. Then pick the answer you gave.', cls: 'whisper' },
           ];
         },
         next: 'ch6_ask_owl', button: 'Seer first',
@@ -638,7 +638,6 @@
       ch6_ask_owl: {
         type: 'choice', art: 'ch6_shaft', mood: 'sorrow', fx: 'ash', flame: 0.15, choice: 'ASK_OWL',
         text: [
-          { text: 'Four questions, one each. The table may argue. The one asked answers.', cls: 'whisper' },
           { speaker: 'Wren', text: 'Seer. You see under things. Which way does my shadow fall?' },
         ],
         prompt: 'The Seer answers.',
@@ -685,9 +684,9 @@
           const c = s.flags.CLUES | 0;
           return [
             wrenSays(s, 'binder'),
-            { speaker: 'Wren', text: c === 4 ? 'Four answers, and all four were the ones I already knew.' : c === 0 ? 'Four answers. I heard every one of them, and it changes nothing.' : `Four answers. ${c === 1 ? 'One was' : c + ' were'} the one I already knew.` },
-            { speaker: 'Wren', text: 'And — Mum. I know. I have known since the laundry. Tell them. You are allowed.' },
-            'Marrow does not stand up. She tells it kneeling, because the child gave her leave.',
+            { speaker: 'Wren', text: c === 4 ? 'Four for four. I knew them all already. It\'s better out loud.' : c === 0 ? 'Four kind answers. I heard every one, and it changes nothing.' : `${c === 1 ? 'One true answer. I knew that one' : (c === 2 ? 'Two' : 'Three') + ' true answers. I knew those'} already.` },
+            { speaker: 'Wren', text: 'And, Mum? I know. I\'ve known since the laundry. Tell them. You\'re allowed.' },
+            'Wren sits down beside her, on the warm part of the lid. Marrow tells it without getting up.',
             { speaker: 'Provost Marrow', text: 'It came out of the fire the night the Hearth guttered. I picked it up. I named it. I raised it to be—' },
             '"Loved," says Wren. "Loved enough to walk back in," says Marrow, and does not look up.',
           ];
@@ -699,9 +698,9 @@
         art: 'ch6_stonefoot', mood: 'wonder', fx: 'motes', flame: 0.12,
         text: [
           'Far above, the Hearth gutters. For a moment the light in the shaft comes from below, and it is blue.',
-          'The underside of the prophecy stone, lit from beneath for the first time in four hundred years.',
-          'Eight cuts run all the way round its foot. Four are clean. Four are burned to a smear.',
-          'From above, the school reads it "one born of four shall walk into the Cold". Nobody has read it from under here.',
+          'It lights the underside of the prophecy stone. Eight cuts run all the way round its foot. Four are clean. Four are burned to a smear.',
+          { speaker: 'Wren', text: 'Right. Everybody stop looking at me and look at that. The school has only ever read it from the top.' },
+          'The Reader is already reading, lips moving.',
           { text: 'Open your **Sight**. The stone is on it.', cls: 'whisper' },
         ],
         next: 'ch6_strip', button: 'Read it',
@@ -832,7 +831,7 @@
         text: (s) => {
           const mis = s.flags.STONE_MISREAD | 0;
           return [
-            'Four went down. Not one born of four — four, as one. The fire is only what they left behind.',
+            'Four went down. Not one born of four, but four, as one. The fire is only what they left behind.',
             /* WHY THE FIRE IS GOING OUT, said out loud, once, here. The Prologue opens with it ("it
                has never once gone out — except one night, fourteen years ago"), ch5.js:250 has Marrow
                state it flat ("the fire is going out"), and until this pass no chapter answered it:
@@ -843,10 +842,7 @@
                fire is four people, four people is a finite amount of fire, and that is the whole of
                it. It goes in Marrow's mouth at the one beat where the stone has just said what the
                fire is, and it says nobody is to blame, which is the chapter's own line about Wren. */
-            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is the whole answer to why it is going out. Nobody did anything wrong. It was only ever four people.' },
-            { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
-            { text: 'The road four people walk together, not one.', cls: 'whisper' },
-            { text: 'Binder — the struck Law is back in your Book.', cls: 'whisper' },
+            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is why it is going out. Nobody did anything wrong.' },
             /* STONE_TOLD is the losing branch of the reading budget, and this is where it is SAID.
                docs/ADVERSARIAL.md OPEN 2 is settled across ch6, ch7 and ch8 together: the last two
                chapters price a wrong answer as a record rather than a loss, the Walk still opens, and
@@ -856,7 +852,9 @@
             s.flags.STONE_TOLD
               ? { speaker: 'Provost Marrow', text: 'And I read it, not you. That is two minutes you will want at the bottom. Walk anyway.' }
               : mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
-            { speaker: 'Wren', text: 'Then ask me a third time. In there.' },
+            { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
+            { text: 'The road four people walk together, not one. Binder, the struck Law is back in your **Book**.', cls: 'whisper' },
+            { speaker: 'Wren', text: 'Well. I did say I needed four idiots. Then ask me a third time. In there.' },
           ].filter(Boolean);
         },
         next: 'ch6_flow', button: 'The night moves on',
@@ -864,7 +862,7 @@
       ch6_flow: {
         type: 'flow', art: 'ch6_chamber', artParams: bellParams, mood: 'hearth', fx: 'ash', flame: 0.12,
         enter: (s) => { Game.scenes.ch6_flow.flow = buildFlow(s); },
-        text: ['The bells. The Asking. The stone, read at last from the side the fire had covered.', { text: 'Next: the Cold. Pass the keyboard by name.', cls: 'small' }],
+        text: ['At the edge of the lid, Wren holds out a wrist with a bit of string on it. The Binder checks the knot twice.', { text: 'Next: the Cold. Pass the keyboard by name.', cls: 'small' }],
         flowTitle: 'Chapter VI — the paths you walked',
         stats: (s) => {
           const c = s.flags.BELLS_CRACKED | 0, mis = s.flags.STONE_MISREAD | 0;

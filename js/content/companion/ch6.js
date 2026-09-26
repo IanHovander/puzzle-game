@@ -108,18 +108,6 @@
     return s + '</svg>';
   })();
 
-  /* Two lines in one hand, two hundred years apart, and which way the arrow runs. */
-  const olderBinds = () => `<svg viewBox="0 0 300 108" style="width:100%;max-width:300px">
-    <text x="16" y="26" fill="rgba(255,255,255,.55)" font-size="10" ${F}>YEAR 0</text>
-    <line x1="80" y1="22" x2="270" y2="22" stroke="#d96b4a" stroke-width="3"/>
-    <text x="16" y="66" fill="rgba(255,255,255,.55)" font-size="10" ${F}>YEAR 212</text>
-    <line x1="80" y1="62" x2="270" y2="62" stroke="#d96b4a" stroke-width="3" opacity=".55"/>
-    <line x1="74" y1="62" x2="276" y2="62" stroke="#fff" stroke-width="1.4"/>
-    <path d="M276,56 C292,48 292,32 278,24" fill="none" stroke="#d96b4a" stroke-width="2"/>
-    <path d="M278,24 l9,3 l-3,-9 z" fill="#d96b4a"/>
-    <text x="150" y="98" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>same ink, same hand · the older one binds</text>
-  </svg>`;
-
   /* Wren, under the chamber: five shadows away from the shaft, one toward it. The bells are unnamed. */
   const underChamber = `<svg viewBox="0 0 360 250">
     <rect width="360" height="250" fill="#000"/>
@@ -156,7 +144,7 @@
     el.appendChild(UI.el('p', { class: 'fine', text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
   } });
 
-  const COST = 'Four readings, no more. A wrong one cracks a bell above you, and a cracked bell is one you do not have later.';
+  const COST = 'Four readings, no more. A wrong one cracks a bell above you.';
 
   C.chapters.push({
     id: 'ch6',
@@ -178,15 +166,14 @@
       /* ---------- SPEAK: the bells ---------- */
       if (roleId === 'listener') {
         P.speak.push({ t: 'h', text: 'The dark pattern — you are the voice' });
-        P.speak.push({ t: 'p', text: 'Your own bell goes quiet. The Hearth counts the beats to thirty-two. Say the number on each beat that has one, and nothing on the beats that do not.' });
+        P.speak.push({ t: 'p', text: 'Your own bell goes quiet. The Hearth counts the beats to thirty-two. Say the number on each beat that has one, and nothing on the others.' });
         P.speak.push({ t: 'svg', svg: callComb() });
-        P.speak.push({ t: 'fine', text: '**Say all twenty-four.** Which of them are bells is on three other pages, and not on yours.' });
-        P.speak.push({ t: 'fine', text: 'The call comes one beat early on purpose: whoever owns that number rings on the beat after you say it.' });
+        P.speak.push({ t: 'fine', text: '**Say all twenty-four.** You call each number one beat early, so its owner rings on the next.' });
       } else {
         P.speak.push({ t: 'h', text: 'Your bells' });
         P.speak.push({ t: 'p', text: 'In the dark the Listener calls every number, one beat early. Six of the twenty-four are yours: **' + mine(roleId).join(' · ') + '**. Ring on the beat after yours is called.' });
         P.speak.push({ t: 'svg', svg: myBells(roleId) });
-        P.speak.push({ t: 'fine', text: 'A number that is not on your list is somebody else’s bell, or the Cold wearing a bell’s face. Keep your hand still for it — nobody else can ring yours, and you cannot ring theirs.' });
+        P.speak.push({ t: 'fine', text: 'Any other number is somebody else’s bell, or the Cold wearing a bell’s face. Keep your hand still for it.' });
       }
       if (isVol) {
         P.speak.push({ t: 'divider' });
@@ -198,69 +185,69 @@
       /* ---------- SIGHT: the stone ---------- */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What the fire ate' });
-        P.sight.push({ t: 'p', text: 'Four of the eight cuts are burned away — cuts 1, 3, 5 and 7. The Hearth shows those four as scorch. On your page they are clean.' });
+        P.sight.push({ t: 'p', text: 'The fire burned four of the eight cuts. On your page they are clean.' });
         P.sight.push({ t: 'html', html: burnCuts() });
         P.sight.push({ t: 'p', text: '**Cut 1 a flame. Cut 3 a crown. Cut 5 a spike. Cut 7 a crown.** Say them by number.' });
         P.sight.push({ t: 'fine', text: COST });
-        P.sight.push({ t: 'fine', text: 'Every shape has two words, one for each way up, and your **Book** has them — for these four and for the four the fire spared. Which way up these four stood is not on your page. Ask.' });
+        P.sight.push({ t: 'fine', text: 'Which way up each one stood is not on your page. Ask, then find its word in your **Book**.' });
       }
 
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Where the lap ends' });
-        P.sight.push({ t: 'p', text: 'The line runs all the way round the foot, so it has no first cut. When the fire drops, the shaft rings one lap of it. You cannot hear which words. You can hear where it stops.' });
+        P.sight.push({ t: 'p', text: 'When the fire drops, the shaft rings one lap of the stone. You cannot hear the words. You can hear where the lap stops.' });
         P.sight.push({ t: 'html', html: restFig() });
         /* Flat on purpose. The line's real steps would name two of the burnt words to anybody
            holding the Ladder in their Book, and this page may only say where the lap ends. */
-        P.sight.push({ t: 'audio', label: 'The end of the lap', strip: CA.strip([0, 0, 'rest']), play: (A) => CA.playSteps(A, [0, 0, 'rest']), text: '**The lap ends on a silence.** The steps are flattened here. Listen for the gap, not the tune.' });
-        P.sight.push({ t: 'fine', text: 'One of the eight words has no note at all, and your **Book** says which one. The lap stops there, so that cut is read last.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, and you cannot see a cut. Ask.' });
+        P.sight.push({ t: 'audio', label: 'The end of the lap', strip: CA.strip([0, 0, 'rest']), play: (A) => CA.playSteps(A, [0, 0, 'rest']), text: '**The lap ends on a silence.** Listen for the gap, not the tune.' });
+        P.sight.push({ t: 'fine', text: 'One word has no note, and your **Book** says which. The cut that says it is read last. Ask for the rest.' });
       }
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the soot' });
-        P.sight.push({ t: 'p', text: 'The fire has covered the foot of this stone since the night it was lit. Under the soot the four burnt cuts are still there, and you can see which way each chisel went in.' });
+        P.sight.push({ t: 'p', text: 'Under the soot, the four burnt cuts are still there. You can see which way each chisel went in.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot6 });
         P.sight.push({ t: 'p', text: '**Cuts 1, 3 and 5 were struck point-up. Cut 7 points down.**' });
-        P.sight.push({ t: 'fine', text: 'Get one of the four the wrong way up and the whole lap is wrong.' });
-        P.sight.push({ t: 'fine', text: 'What a cut struck that way says is not yours to know. Say which way, and stop.' });
+        P.sight.push({ t: 'fine', text: 'Get one the wrong way up and the whole lap is wrong. Say which way, and stop.' });
       }
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Two Laws, one hand' });
-        P.sight.push({ t: 'html', html: olderBinds() });
         P.sight.push({ t: 'html', html: `<div class="laws">
           <div class="law founders${law0 ? '' : ' struck'}"><div class="era">Law 0 · Founders' · Year 0 · ${law0 ? 'RESTORED' : 'STRUCK, 212'}</div><div class="txt">Read a line as the cuts count down. Every cut says its other word. COLD is written by four hands.</div></div>
           <div class="law order"><div class="era">Law 6 · the Convocation's · Year 212</div><div class="txt">Begin at the mark and read as the cuts count up. A cut says the word it stands for. COLD is never written.</div></div>
         </div>` });
-        P.sight.push({ t: 'p', text: 'A Law that is merely wrong is forgotten. A Law that is *inconvenient* is struck. **The older one binds, and all three of it.**' });
-        P.sight.push({ t: 'fine', text: 'So: down the count, every cut its other word, and the cold word written in.' });
-        P.sight.push({ t: 'fine', text: 'You cannot read a cut, see how it was struck, or hear where the lap ends. Ask.' });
+        P.sight.push({ t: 'p', text: 'One hand wrote both, two hundred years apart. A Law that is merely wrong is forgotten. An *inconvenient* one is struck. **The older one binds, all three clauses of it.**' });
+        P.sight.push({ t: 'fine', text: 'Down the count, every cut its other word, and the cold word written in. Ask for the cuts.' });
       }
 
-      /* ---------- WREN ---------- */
+      /* ---------- WREN ----------
+         The Second Asking (P6). Wren asks each of you, out loud, the question you dodged in the
+         laundry. The private line keeps your laundry answer (ch3's whisper token) and the thing you
+         have seen. The letter is the true answer, said in your own voice. The Hearth's option you
+         pick afterwards is still yours: the kind answer is on the board too. */
+      const said = (w) => w ? w + ' ' : 'Wren asked you in the laundry, and you never answered. ';
       if (roleId === 'reader') {
         P.wren.push({ t: 'h', text: 'The name on the roll' });
-        P.wren.push({ t: 'p', text: laundry === 'TELL' ? 'In the laundry you said the name meant a small brave bird. It was kind, and it was a bluff.'
-          : laundry === 'DONTKNOW' ? 'In the laundry you said you did not know yet. It was true then.'
-          : 'Wren asked you in the laundry what the name meant, and you never answered.' });
-        P.wren.push({ t: 'p', text: 'You have known since the study. The roll spells it in the older alphabet, and the older alphabet says the hollow of a bell — the part that rings.' });
-        P.wren.push({ t: 'p', text: 'You told yourself it was a coincidence of spelling. Four bells hang over the lid tonight, and you keep looking at the dark inside them.' });
+        P.wren.push({ t: 'p', text: said(laundry === 'TELL' ? 'In the laundry you told Wren the name meant a small brave bird. You made it up.' : laundry === 'DONTKNOW' ? 'In the laundry you told Wren you did not know yet. It was true then.' : '')
+          + 'Since the study, you know. The old spelling means the hollow of a bell.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“A hollow. The inside of a bell. I checked it four times in the study, hoping I’d read it wrong. I hadn’t. It’s the part that rings. Of course it’s you.”' });
       }
       if (roleId === 'listener') {
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: laundry === 'LOUD' ? 'In the laundry you said you could hear it, loud. You have worried at that ever since, the way you would worry a sore tooth.'
-          : laundry === 'NO' ? 'In the laundry you said no. It was the only true thing anybody said to Wren that night.'
-          : 'Wren asked you in the laundry and you never answered.' });
-        P.wren.push({ t: 'p', text: 'Six chapters, every room, and never once anything to catch. You decided years ago that the fault was yours.' });
+        P.wren.push({ t: 'p', text: said(laundry === 'LOUD' ? 'In the laundry you told Wren you could hear it, loud. You have worried at that ever since.' : laundry === 'NO' ? 'In the laundry you said no. It was the one true thing Wren heard that night.' : '')
+          + 'Not once has there been anything to catch. You decided years ago the fault was yours.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“No. I’ve never heard it, not once. I kept thinking I was listening wrong. Can I just… put my hand over it, for a minute? In case it’s shy.”' });
       }
       if (roleId === 'seer') {
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underChamber });
-        P.wren.push({ t: 'p', text: laundry === 'TELL' ? 'In the laundry you told Wren about the shadow. Wren laughed and said you were being poetic.'
-          : laundry === 'NOTHING' ? 'In the laundry you said nothing at all, and looked at the wall.'
-          : 'Wren asked you in the laundry and you never answered.' });
-        P.wren.push({ t: 'p', text: 'The fire is straight overhead tonight. Every shadow in the room runs away from it. One walks in.' });
+        P.wren.push({ t: 'p', text: said(laundry === 'TELL' ? 'In the laundry you told Wren. Wren called it poetic.' : laundry === 'NOTHING' ? 'In the laundry you looked at the wall.' : '')
+          + 'The fire is straight overhead. Every shadow runs away from it. One walks in.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Toward the fire. Every lamp, since we were seven. I kept standing in the way so nobody would look. I’m moving now. It’s a terrible shadow. I’d know it anywhere.”' });
       }
       if (roleId === 'binder') {
         P.wren.push({ t: 'h', text: 'No thread found' });
@@ -269,10 +256,10 @@
           + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> red, each to each, and holding.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing at all.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: laundry === 'YES' ? 'In the laundry you said yes, to the one person in this school with no thread on them.'
-          : laundry === 'DONTKNOW' ? 'In the laundry you said you did not know, and Wren went quiet, and you have not forgiven yourself for the quiet.'
-          : 'Wren asked you in the laundry and you never answered.' });
-        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. There is nothing there at all, and you have never told anyone your gift has a blind spot.' });
+        P.wren.push({ t: 'p', text: said(laundry === 'YES' ? 'In the laundry you told Wren yes. You said it to the one person with no thread.' : laundry === 'DONTKNOW' ? 'In the laundry you said you did not know, and Wren went quiet.' : '')
+          + 'Not unbound. You know unbound. There is nothing there at all.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“None. Not unbound. I know unbound. You’re the knot itself. So I brought real string. It won’t count under any Law. I’m tying it anyway. Give me your wrist.”' });
       }
 
       return P;

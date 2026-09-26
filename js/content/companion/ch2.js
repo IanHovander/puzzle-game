@@ -136,7 +136,7 @@
       /* ================= SEER — which hole each plinth was cut to stand in ================= */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the antechamber' });
-        P.sight.push({ t: 'p', text: 'This floor is newer than the room. Under it, four old holes are cut, one at each dial, each to fit one plinth. Not one plinth is standing in the hole cut for it.' });
+        P.sight.push({ t: 'p', text: 'Under the floor are four old holes, each cut to fit one plinth. Not one plinth is standing in the hole cut for it.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFloor });
         P.sight.push({ t: 'p', text: '**Plinth 1 was cut for the hole at dial 3. Plinth 2 for dial 4. Plinth 3 for dial 2. Plinth 4 for dial 1.** Say all four out loud.' });
         P.sight.push({ t: 'fine', text: 'Behind the first plinth, at knee height, is a hollow the rebuilders missed. The stone strip in it begins at its right-hand end, where the mark is cut.' });

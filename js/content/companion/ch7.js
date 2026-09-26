@@ -29,7 +29,6 @@
   const SCRATCH = 6, NOTCH = 1;
   const words = (items, end) => G.readLine(items, end === 'other' ? 'right' : 'left')
     .map(n => `<b>${n}</b>`).join('<br>');
-  const law = (n, era, year, text, note) => `<div class="law ${era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${n} · ${era === 'F' ? 'Founders’ · Year 0' : 'Order’s · Year ' + year}</div><div class="txt">${UI.esc(text)}</div>${note ? `<div class="fine">${note}</div>` : ''}</div>`;
 
   /* Reader: the two walls, each drawn once and read both ways. No mark, no arrow, no socket number —
      which end a wall begins at is the Seer's, and which wall speaks first is the Listener's. */
@@ -192,31 +191,29 @@
       /* ---------- SIGHT ---------- */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The two walls' });
-        P.sight.push({ t: 'p', text: 'What the fire shows worn, you see cut. Four words on each wall, and together they make one phrase of eight.' });
+        P.sight.push({ t: 'p', text: 'What the fire shows worn, you see cut.' });
         P.sight.push({ t: 'table', head: ['cut into the wall', 'from one end', 'from the other'], rows: [
           [wallRow(WEST) + '<div class="fine">one wall</div>', words(WEST, 'one'), words(WEST, 'other')],
           [wallRow(EAST) + '<div class="fine">the other</div>', words(EAST, 'one'), words(EAST, 'other')],
         ] });
         P.sight.push({ t: 'fine', text: 'a wall has two ends and no beginning' });
-        P.sight.push({ t: 'p', text: '**Each wall says one of those two things, and never both.** Read all four rows out loud.' });
-        P.sight.push({ t: 'p', text: 'Read a wall from the wrong end and every word in it turns into its opposite.' });
+        P.sight.push({ t: 'p', text: '**Each wall says one of those two things, never both.** Read all four rows out loud.' });
         if (knot) P.sight.push({ t: 'fine', text: 'The seal at the foot of the Chair’s scroll is one word: **CROWN**.' });
-        P.sight.push({ t: 'fine', text: 'Nothing on the stone says which wall speaks first, or where the phrase begins. Ask. Your lexicon is in the **Book**.' });
+        P.sight.push({ t: 'fine', text: 'Nothing on the stone says which wall speaks first. Ask.' });
       }
 
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'How it opens' });
-        P.sight.push({ t: 'p', text: 'Every room tonight sang a piece of the Hymn. You have still never heard the whole of it. You have heard how it starts.' });
-        P.sight.push({ t: 'audio', label: 'The first two notes', strip: CA.strip([1]), play: (A) => CA.playSteps(A, [1]), text: '**The second note is one rung above the first.** The smallest climb there is.' });
+        P.sight.push({ t: 'p', text: 'You have never heard the whole Hymn. You have heard how it starts.' });
+        P.sight.push({ t: 'audio', label: 'The first two notes', strip: CA.strip([1]), play: (A) => CA.playSteps(A, [1]), text: '**The second note is one rung above the first.**' });
         P.sight.push({ t: 'html', html: climbOne() });
-        P.sight.push({ t: 'p', text: 'So **the phrase opens by climbing one rung**. Almost nothing these walls can say opens like that — say it out loud before anybody places a word.' });
-        P.sight.push({ t: 'p', text: 'Pick the wrong pair of readings and the ring is a different one. It will not sing.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, only how far the tune steps.' });
+        P.sight.push({ t: 'p', text: 'Open on any other climb and the ring will not sing. Say it before anybody places a word.' });
+        P.sight.push({ t: 'fine', text: 'You hear steps, never names.' });
       }
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Two cuts in the floor' });
-        P.sight.push({ t: 'p', text: 'Under four hundred years of polish, the rim of the floor is cut in two places, by two different hands.' });
+        P.sight.push({ t: 'p', text: 'Under the polish, the rim is cut in two places, by two different hands.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: ringCuts() });
         P.sight.push({ t: 'p', text: `A long, deliberate **scratch** at socket **${SCRATCH}**. A small **notch** at socket **${NOTCH}**. Those are the numbers the Hearth shows.` });
         P.sight.push({ t: 'p', text: 'Begin in the wrong socket and every word after it lands wrong too.' });
@@ -226,29 +223,35 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'The Law on the rim' });
         P.sight.push({ t: 'html', html: placingRule() });
-        P.sight.push({ t: 'html', html: `<div class="laws">${[
-          law(1, 'F', 0, 'A sigil is read sunwise from the mark.', 'Sunwise is clockwise, the way the numbers count up. The mark is the <strong>scratch</strong>. A notch is only a signature.'),
-          law(8, 'F', 0, 'A Great Sigil names every glyph once.', 'Eight sockets, eight words, no word twice.'),
-        ].concat(knot ? [law(7, 'F', 0, 'A sigil sworn under KNOT begins at the sworn-to.', '<strong>You swore under KNOT, to the Chair.</strong> Build the ring, then turn it whole until the Chair’s word stands where the phrase began. Ask the Reader which word.')] : []).join('')}</div>` });
-        P.sight.push({ t: 'p', text: 'From the Order: where the phrase shows the cold word, that socket stays empty.' });
-        P.sight.push({ t: 'p', text: '**Eight words, and no word twice.** Say that first.' });
-        P.sight.push({ t: 'fine', text: 'You have no words and no numbers. Ask for both.' });
+        P.sight.push({ t: 'list', items: [
+          'A sigil starts in the **scratch**. A notch is only a signature.',
+          'It runs **sunwise**. Sunwise is clockwise, the way the numbers count up.',
+          '**Eight words, and no word twice.** Say that first.',
+          'Where the phrase shows the cold word, that socket stays empty.',
+        ].concat(knot ? ['**You swore under KNOT, to the Chair.** Build the ring, then turn it whole until the Chair’s word stands where the phrase began.'] : []) });
+        P.sight.push({ t: 'fine', text: 'You have no words and no numbers. Ask for both. The Laws are in your **Book**.' });
       }
 
       /* ---------- WREN: one anomaly, four ways, one last time ---------- */
       if (roleId === 'reader') {
         P.wren.push({ t: 'h', text: 'The word in the socket' });
-        P.wren.push({ t: 'p', text: 'There is a word cut into the floor of the empty socket, in letters four hundred years older than ours. It is Wren’s name. You decided, in the study, that you had misread it. You have never misread anything in your life.' });
+        P.wren.push({ t: 'p', text: 'A word is cut into the floor of the empty socket, in the old letters. It is Wren’s name. In the study, you decided you had misread it.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your name is cut in that empty socket, in the old letters. I told myself I’d misread it. I don’t misread. Whatever it says, I’ll read it to you first.”' });
       }
       if (roleId === 'listener') {
         P.wren.push({ t: 'h', text: 'Eight hearts' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Reader', 'fast'], ['Listener', 'fast'], ['Seer', 'fast'], ['Binder', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'Nine people in this chamber, and eight hearts. You stopped calling it a fault of yours somewhere around the laundry. You have still never said aloud which one is missing.' });
+        P.wren.push({ t: 'p', text: 'Nine people in this chamber, and eight hearts. You have never said aloud which one is missing.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Every heart in here is racing. Yours is… still not there. It never has been. So I’m staying right beside you tonight. If it starts, I’ll hear it first.”' });
       }
       if (roleId === 'seer') {
         P.wren.push({ t: 'h', text: 'The shadow, still' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underChamber() });
-        P.wren.push({ t: 'p', text: 'Every shadow in the chamber falls away from the spark. Wren’s falls toward it. You told yourself for months that it was the light. There is barely any light left to blame.' });
+        P.wren.push({ t: 'p', text: 'Every shadow in the chamber falls away from the spark. Wren’s falls toward it. There is barely any light left to blame.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your shadow still leans toward the fire. In this little light, anyone could see it. So I’m standing between you and the spark. It was never about the lamps.”' });
       }
       if (roleId === 'binder') {
         P.wren.push({ t: 'h', text: 'No thread, tonight of all nights' });
@@ -258,6 +261,8 @@
           + '<li>' + threadLine('none') + ' <strong>Wren, to anyone:</strong> nothing at all.</li>'
           + '</ul>' });
         P.wren.push({ t: 'p', text: 'You decided years ago that your gift had a blind spot. It does not.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Still no thread, Wren. Not to any of us. So I’m saying it the old way, out loud. You are bound to us. I don’t need a thread to keep an oath.”' });
       }
 
       return P;

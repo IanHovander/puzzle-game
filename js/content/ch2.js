@@ -182,7 +182,7 @@
           { speaker: 'Provost Marrow', text: 'Take the Seer\'s eyes with you. That vault was rebuilt once, and the rebuilding was not honest.' },
         ].concat(s.flags.VOTE_LOST ? [
           'By the fire, Wren sits between two soldiers and mouths something at you. It is probably rude.',
-          'When the soldiers look away, Wren holds up four fingers, then points at the stair. *Go.*',
+          'When the soldiers look away, Wren points at the stair and mouths something else. This time it is not rude.',
         ] : [
           'Wren is already on the top step. The Provost looks at Wren, and Wren climbs back up.',
           { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. Seer, don\'t do the face.' },
@@ -295,7 +295,7 @@
           'The first plinth stands a hand\'s breadth from the wall. Behind it, at knee height, a hollow the rebuilders missed.',
           'Inside: a strip of stone with three shapes cut into it, and a sheet folded small.',
           'The sheet is in the same letters as Wren\'s name on the dormitory door. None of you can read them.',
-          'The name worn off the front of the plinth is cut fresh on its back. Mere. One of the four who closed the wound.',
+          'The name worn off the front of the plinth is cut fresh on its back. Mere.',
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz ch2-niche' });
@@ -348,8 +348,7 @@
       ch2_stairfall: {
         type: 'choice', art: 'ch2_stair', artParams: { broken: true }, mood: 'tense', fx: 'ash', sfx: 'boom', choice: 'CH2_STAIR', flame: 0.75,
         text: (s) => [
-          'Halfway up, the stair gives.',
-          'A dozen steps drop into the blue dark. You are on the upper side. The case is not.',
+          'Halfway up, the stair gives. A dozen steps drop into the blue dark. You are on the upper side. The case is not.',
           s.flags.VOTE_LOST
             ? 'Across the gap, hugging the case and grinning, is a child who was under guard twenty minutes ago.'
             : 'Across the gap, hugging the case and grinning, is a child who promised to stay put.',
@@ -363,18 +362,16 @@
         options: [
           { id: 'wren', text: 'Catch Wren.', sub: 'The case goes where the stair goes.', next: 'ch2_top', set: { EMBER_LOST: true }, note: 'At the stair, you caught Wren and let the Ember fall.',
             after: [
-              'Four hands close on one thin wrist and haul. The case does not come. It turns once in the air, and the dark takes it without a sound.',
+              'Four hands close on one thin wrist and haul. The case turns once in the air, and the dark takes it without a sound.',
               { speaker: 'Wren', text: 'Ow. Thank you. Ow. That was important, wasn\'t it. The box.' },
-              'Nobody answers. Below, for a moment, the blue light is brighter. Then it is not.',
-              'Wren sits on the landing, as close to the torch as a person can get.',
+              'On the landing, Wren sits as close to the torch as a person can get.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
           { id: 'ember', text: 'Catch the case.', cls: 'dark', sub: 'Wren is quick. Wren will manage.', next: 'ch2_top', set: { WREN_HURT: true }, note: 'At the stair, you caught the Ember and Wren fell.',
             after: [
-              'The case comes over the gap into eight numb hands. Wren does not, and there is a sound from the dark that nobody here will forget.',
+              'The case comes over into eight numb hands. Wren does not. Nobody here will forget the sound.',
               { speaker: 'Wren', text: 'I\'m fine. It\'s only my arm. Listener, don\'t look like that. You got the box.' },
-              'It takes ten minutes and the Binder\'s cloak, torn into a rope, to get Wren up. The arm is not fine. Wren does not mention it again.',
-              'Wren sits on the landing, as close to the torch as a person can get.',
+              'It takes the Binder\'s cloak, torn into a rope, to get Wren up. Wren sits by the torch and never mentions the arm.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
         ],
@@ -386,7 +383,7 @@
         /* Opens on Wren's answer to the four Wren-tab lines read on the landing (ch2_stairfall). */
         text: (s) => {
           const wren = Store.chose('CH2_STAIR', 'wren');
-          const out = [{ speaker: 'Wren', text: 'All four of you, on a *stair*. Honestly. …I didn\'t follow the box, you know. I followed you. The box was just shiny.' }];
+          const out = [{ speaker: 'Wren', text: 'All four of you, on a *stair*, in the dark. …I didn\'t follow the box, you know. I followed you. The box was just shiny.' }];
           out.push('Then the tapestry at the top is pulled aside. The Provost stands in it, as if she had not moved since she sent you. '
             + (s.flags.SORREL
               ? 'Behind her, two of the Convocation\'s guards and a writ. You promised them the Ember. They have come for it.'

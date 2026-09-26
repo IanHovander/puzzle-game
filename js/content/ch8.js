@@ -244,7 +244,6 @@
           if (e === 0) return [
             { text: `Walked into the fire: **${UI.list(walkers(s))}**.`, cls: 'center' },
             { text: 'Stayed on the stones: **nobody**.', cls: 'center' },
-            'Four hands on one key, with the phones already dark. The eighth glyph, written.',
             'The Hearth does not gutter. It does the other thing.',
             voice,
           ];
@@ -252,27 +251,24 @@
             { text: `Walked into the fire: **${listOr(walkers(s), 'fewer of you than meant to')}**.`, cls: 'center' },
             { text: `Stayed on the stones: **${listOr(stayers(s), 'nobody')}**.`, cls: 'center' },
             kept(s).length ? `${UI.list(kept(s))} had kept the Envoy's word. That key was dead, and three hands wrote what four should have.` : 'Not every hand went in. The glyph was written anyway, thinner than it was meant to be.',
-            'The Cold closes. Narrower than the Founders closed it. Wider than it was an hour ago.',
             voice,
           ];
           if (e === 2) return [
             { text: 'Walked into the fire: **Wren**.', cls: 'center' },
             { text: `Stayed on the stones: **${UI.list(L.nicks)}**.`, cls: 'center' },
-            { speaker: 'Wren', text: 'It\'s alright. I knew.' },
-            'That is all Wren says. It is the only time all night Wren has been short of words.',
+            'For the first time all night, Wren is short of words.',
             voice,
           ];
           if (e === 3) return [
             { text: `Walked into the fire: **the Provost**${walkers(s).length ? ', and **' + UI.list(walkers(s)) + '**' : ''}.`, cls: 'center' },
             { text: `Stayed on the stones: **${UI.list(['Wren'].concat(stayers(s)))}**.`, cls: 'center' },
-            { speaker: 'Provost Marrow', text: 'Then I go. I should have gone fourteen years ago.' },
-            'Nobody argues. Everybody meant to.',
+            'The Provost does not wait for anyone to argue. Everybody meant to.',
             voice,
           ];
           return [
             { text: 'Walked into the fire: **nobody**.', cls: 'center' },
             { text: 'Walked out of Thornhallow: **Lord Vane, with Wren**, in a cage it took four soldiers to carry.', cls: 'center' },
-            'The Hearth is still lit. That is the horror of it: nothing about the fire has changed at all.',
+            'The Hearth is still lit. Nothing about the fire has changed at all. That is the horror of it.',
             voice,
           ];
         },
@@ -283,16 +279,16 @@
       ch8_e0: {
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
-          'White. Not the white of snow — the white of a forge, of a thing too hot to have a colour. The Hearth of Thornhallow roars, and for the first time in four hundred years it is not holding anything shut. It is simply a fire.',
-          'You come out of it the way the Founders came out: grey-eyed and ordinary. The Reader looks at the stone and sees shapes. The Listener hears a room. The Seer sees a floor. The Binder sees four friends and nothing between them but air.',
-          'Wren is waiting on the stones.',
-          { speaker: 'Wren', text: 'You took your *time*.' },
-          'There is a pulse in Wren\'s throat. You can see it from here. The Listener, who will never hear anything like it again, does not need to.',
+          'White. The white of a forge, too hot to have a colour. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
+          'Wren is waiting on the stones, as close to the fire as a person can sit.',
+          'There is a pulse in Wren\'s throat. You can see it from here.',
+          { speaker: 'Wren', text: 'You took your *time*. I had a speech. I\'ve forgotten all of it, so you\'ll have to go first.' },
+          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
         next: 'ch8_years', button: 'Years later',
       },
       ch8_years: {
-        title: 'Years later', art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
+        art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
         /* WREN_TRUST reads here, and this is the only place in the game it is read. It is written four
            times -- ch1.js:213 when the nine vote Wren away, ch3.js:235 on every bell, ch3.js:444 for a
            true answer in the laundry, ch3.js:478 when the captain is given the boy -- and until this
@@ -304,11 +300,12 @@
            to come back. Everything after the first sentence is the same on both paths, because it is
            true on both. */
         text: (s) => [
-          'Four unremarkable people, in a house that is too small for all of them, every winter. They argue about what the ring looked like, and never settle it.',
-          'The Reader keeps a letter in the drawer by the bed. It is one line of glyphs. The Reader cannot read it, and will not have it translated.',
-          'They would do it again. They say so, every winter, at the point in the evening when it becomes true.',
+          'Wren hears all four out. Then Wren blames the smoke.',
+          { speaker: 'Wren', text: 'Listener, give me your hand. There. That\'s mine. Now all of you stop checking on me, and somebody find breakfast. The Reader hasn\'t eaten since yesterday.' },
+          { text: 'Years later.', cls: 'center' },
+          'Four unremarkable people share a house too small for them. Every winter they argue about what the ring looked like. They would do it again. They say so at the point in the evening when it becomes true.',
           ((s.flags.WREN_TRUST | 0) >= 0 ? 'Wren visits.' : 'Wren visits, in the end.')
-            + ' Grown, and tall, and still coming through doors sideways. There is a pulse in Wren\'s throat that the Listener cannot hear, and does not need to.',
+            + ' Grown, and tall, and still never knocks. The Listener checks the pulse, every time.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -318,19 +315,20 @@
         text: (s) => [
           'The Cold closes. Not the way the Founders closed it. Narrower. Enough.',
           `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free, blinking at a room they cannot see under any more.`,
-          `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. There is a school above you that needs Masters who can read the wall. Those are the Masters.`,
-          'Wren lives. Wren hugs everyone, walkers and stayers alike, and holds on slightly too long. There is no pulse in Wren\'s throat. Only the Listener would ever have known.',
+          `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. The school needs Masters who can read the wall. Now it has them.`,
+          'Wren lives. Wren hugs everyone and holds on slightly too long. There is no pulse in Wren\'s throat.',
           { speaker: 'Wren', text: 'Half of you can\'t see me properly any more. Good. I looked *terrible*.' },
+          'The Seer says Wren still looks terrible. Wren has never been so pleased.',
         ],
         next: 'ch8_night', button: 'The whole night',
       },
       ch8_e2: {
         art: 'ch8_stones', artParams: { noWren: true }, mood: 'sorrow', fx: 'embers', flame: 1, speed: 22,
         text: [
-          { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry.' },
-          'Wren walks into the Hearth the way Wren walks through doors. It closes behind. Four hundred years of fire, again, from a spark.',
-          'In the morning a mason carves a fifth name over the Hearth, beneath the four Founders. He has to ask how to spell it. Nobody in the room can spell it the old way, and the Reader does not offer.',
-          'The Provost stands at the fire with a thread nobody can see but the Binder. It is grey. It has been grey for fourteen years.',
+          { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Seer, don\'t do the face.' },
+          'Wren goes into the Hearth without knocking, the way Wren goes through every door. It closes behind. Four hundred years of fire, again, from a spark.',
+          'In the morning a mason carves a fifth name over the Hearth. He has to ask how to spell it. The Reader does not offer. Then the Reader eats breakfast without being told.',
+          'The Provost stands at the fire with a thread only the Binder can see. It has been grey for fourteen years.',
           'On the chart of the night, beside the road you took, there are four boxes you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -338,12 +336,12 @@
       ch8_e3: {
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
-          'She does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it. She puts her hand on the fire, and it opens like a door.',
-          'The seal holds. Thin — the kind of hold that needs watching — but it holds.',
-          'Wren lives. No pulse. Wren stands a long time where the Provost stood. Then Wren makes a joke that nobody laughs at, and then one that everybody does.',
+          'She does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it.',
+          'The seal holds. Thin, the kind of hold that needs watching. But it holds.',
+          'Wren lives, still without a pulse, and stands a long time where the Provost stood. Then Wren makes a joke nobody laughs at. The Binder bows to the new Provost, perfectly correctly, and that gets the laugh.',
           { text: 'Years later.', cls: 'center' },
-          'Provost Wren of Thornhallow keeps a fire that flickers. Every winter it dips, and every winter it comes back. The fourth-years are told it is nothing.',
-          'Wren, who once called someone Mum by accident, looks at the fire when it flickers. Not at them.',
+          'Provost Wren of Thornhallow still never knocks, and keeps a fire that flickers. Every winter it dips and comes back. The fourth-years are told it is nothing.',
+          'When it flickers, Wren looks at the fire, the way Marrow used to look at Wren.',
         ],
         next: 'ch8_night', button: 'The whole night',
       },
@@ -351,9 +349,9 @@
         art: 'ch8_cage', mood: 'dread', fx: 'ash', flame: 0.15, speed: 20,
         text: (s) => [
           'The Envoy is courteous about it. He has always been courteous.',
-          'Wren goes into the cage without being pushed. Wren does not say anything to any of you. It is the worst thing Wren has ever done.',
-          'By spring the Cold feeds the Crown\'s engines. What leaks from under Thornhallow is harnessed, as promised. The school is a garrison. The Hearth is a furnace with a schedule.',
-          'You are Masters, as promised. Masters of ash.',
+          'Wren climbs into the cage unpushed and does not look back at any of you. It is the only unkind thing Wren has ever done. It is meant kindly.',
+          'By spring the Cold feeds the Crown\'s engines. The school is a garrison. The Hearth is a furnace with a schedule.',
+          'You are Masters, as promised. Masters of ash. The Seer keeps one secret from the Crown, and will keep it for life.',
           broken(s).length ? { text: `On the chart of the night, beside ${UI.list(broken(s))}, it says: *one of you almost did.*`, cls: 'whisper' } : { text: 'On the chart of the night, beside your four names, it says nothing at all.', cls: 'whisper' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -362,7 +360,7 @@
       /* ---------- the whole night ---------- */
       ch8_night: {
         type: 'custom', art: 'ch8_dawn', mood: 'hearth', fx: 'dust',
-        text: ['The night, from the dormitory to the Cold. Eight hours. This is what the fire kept of them.'],
+        text: ['Eight hours, from the dormitory to the Cold. At every note, the Listener looks round the table, checking.'],
         run: (box, api) => new Promise((resolve) => {
           const s = api.state;
           /* An hour with no visited scene is dimmed, not dropped -- a table that came in from the
@@ -392,13 +390,13 @@
         text: ['Twice tonight, each of you chose alone and told nobody. The fire kept all four boxes.'],
         prompt: 'Unseal what each of you chose in the dark?',
         options: [
-          { id: 'yes', text: 'Unseal them. All four, one at a time.', next: 'ch8_unsealed', after: ['The wax cracks.'] },
-          { id: 'no', text: 'Leave them sealed.', sub: 'Some things a night keeps.', next: 'ch8_map', after: ['The fire keeps them. It is good at that.'] },
+          { id: 'yes', text: 'Reader: "Unseal them. I\'ve wondered all night."', next: 'ch8_unsealed', after: ['The wax cracks.'] },
+          { id: 'no', text: 'Seer: "Leave them sealed. Some things a night keeps."', next: 'ch8_map', after: ['The fire keeps them. It is good at that.'] },
         ],
       },
       ch8_unsealed: {
         type: 'custom', art: 'ch8_dawn', mood: 'hearth', fx: 'dust',
-        text: ['One at a time. By nickname. Nobody has to say anything about it.'],
+        text: ['One at a time. Nobody has to say anything about it.'],
         run: (box, api) => new Promise((resolve) => {
           const s = api.state;
           const wrap = UI.el('div', { class: 'ch8-night' });
@@ -426,7 +424,7 @@
       /* ---------- the map ---------- */
       ch8_map: {
         type: 'custom', art: 'ch8_dawn', mood: 'wonder', fx: 'dust',
-        text: ['The map of the night, and the gold line of the route you walked: dormitory, hall, vault, gallery, study, stair, chamber, the Cold, dawn.', { text: 'Seen whole —', cls: 'whisper' }],
+        text: ['The map of the night, and the gold line of the route you walked.', { text: 'Seen whole —', cls: 'whisper' }],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'ch8-map' });
           try { wrap.appendChild(UI.el('div', { html: window.VigilMap.render() })); } catch (e) { console.error(e); }
@@ -457,7 +455,7 @@
       /* ---------- the numbers ---------- */
       ch8_stats: {
         type: 'custom', art: 'ch8_dawn', mood: 'hearth', fx: 'dust',
-        text: (s) => ['The fire keeps count. It always has.', { text: `Wren called you **${s.flags.GROUP_NAME || 'the Four'}**. Wren was right.`, cls: 'small' }],
+        text: (s) => ['The fire keeps count. The Binder kept one too, and checks it line by line.', { text: `Wren called you **${s.flags.GROUP_NAME || 'the Four'}**. Wren was right.`, cls: 'small' }],
         run: (box, api) => new Promise((resolve) => {
           const s = api.state;
           const wrap = UI.el('div', { class: 'ch8-counts' });
@@ -475,7 +473,7 @@
       /* ---------- the words ---------- */
       ch8_words: {
         type: 'custom', art: 'ch8_dawn', mood: 'wonder', fx: 'motes', speed: 22,
-        text: [
+        text: (s) => [
           /* THIS LINE USED TO BE AN ORACLE, and it is the reason the Great Sigil's phrase moved.
              It read: '... were the Great Sigil in wall order.' That was TRUE — ch7's phrase was
              THORN KNOT VEIL EMBER ASH WELL CROWN, which is the attunement word of ch1..ch7 in
@@ -490,7 +488,10 @@
              words as a set are identical to VigilGlyphs.ORDER minus COLD, and neither KINDLE (ch0)
              nor WREN (ch8) is a glyph. tools/check-hints.js now fails any answer that reads four or
              more consecutive chapter words, so the shape cannot come back anywhere in the game. */
-          { text: 'The words that woke your phones tonight — THORN, KNOT, VEIL, EMBER, ASH, WELL, CROWN — are every glyph that can be written, each of them once. The eighth is the rest. The rest is never carved. You wrote it twice: once in the dormitory, when it was a dare, and once just now.', cls: 'omen' },
+          /* "Once just now" was only true on the true path, where ch7_wren_code has the table type WREN
+             at the fire. Every other ending types it for the first time one scene from here. */
+          { text: 'The words that woke your phones tonight — THORN, KNOT, VEIL, EMBER, ASH, WELL, CROWN — are every glyph that can be written, each of them once. The eighth is the rest, and it is never carved. '
+            + (s.flags.WREN_SHOWN ? 'You wrote it twice: once in the dormitory, as a dare, and once at the fire.' : 'You wrote it once already, in the dormitory, as a dare.'), cls: 'omen' },
         ],
         run: (box, api) => new Promise((resolve) => {
           const words = L.chapters.slice(1, 8).map(c => c.word);   // derived, never retyped: these are the seven the phones were given
@@ -506,17 +507,33 @@
       },
       ch8_code: {
         type: 'code', art: 'ch8_dawn', mood: 'wonder', fx: 'motes',
-        text: (s) => [
-          ending(s) === 0 ? 'The last word. In the dormitory it was a dare. Write it.' : 'The last word, for the phones. In the dormitory it was a dare, and the fire never got to see it written properly. Write it now, and look at your own page — nobody else\'s.',
-        ],
+        /* The Wren-tab reading for every ending but the true one, whose phones have held this page
+           since ch7_wren_code and whose table reads it to Wren on the stones in ch8_e0. Wren answers
+           on ch8_flow, the next scene. */
+        text: (s) => {
+          const e = ending(s), out = ['The last word. Write it.'];
+          if (e === 1 || e === 3) out.push({ text: 'Read your own page first. Then open your **Wren** tab and read your line to Wren, out loud, in seat order.', cls: 'whisper' });
+          if (e === 2) out.push({ text: 'Read your own page first. Then open your **Wren** tab. Wren is not here. Read your line out loud anyway, in seat order.', cls: 'whisper' });
+          if (e === 4) out.push({ text: 'Read your own page first. Then open your **Wren** tab and read your line out loud, in seat order. Wren asked you to write.', cls: 'whisper' });
+          return out;
+        },
         roles: 'Warden (keyboard): **whoever is nearest**. Voice (reads aloud): **all four of you**.', sightSeconds: 90,
-        codeSub: 'Each phone shows its last page. Read yours. Say nothing.',
+        codeSub: 'Each phone shows its last page.',
         enter: () => { Store.set('WREN_SHOWN', true); },
-        next: 'ch8_flow', button: 'Every phone has gone dark',
+        next: 'ch8_flow', button: 'All four have spoken',
       },
       ch8_flow: {
         type: 'flow', art: 'ch8_dawn', mood: 'hearth', fx: 'embers',
-        text: ['The last chart. Small, because the night was long and this is the end of it.'],
+        /* Wren's answer to the four Wren-tab lines read on ch8_code. The true path heard it on
+           ch8_years. Where Wren is gone, the answer is what the four are left with. */
+        text: (s) => {
+          const e = ending(s);
+          if (e === 1) return ['Wren listens to all four with a face that keeps trying to be a joke.', { speaker: 'Wren', text: 'Stop it. I haven\'t got a heartbeat, and you\'ve still made it do something. Medically, that\'s your fault.' }];
+          if (e === 2) return ['Nobody answers. Then every flame in the Hearth leans toward the table, the wrong way, the way one shadow always did.'];
+          if (e === 3) return ['Wren holds the Chair\'s seal in both hands and will not put it down.', { speaker: 'Wren', text: 'Right. Nobody is allowed to be kind to me for a week. …A day. Fine. Keep going.' }];
+          if (e === 4) return ['In spring one letter comes back, opened and resealed with Crown wax. One line, in Wren\'s hand: *Got all four. Reader, I know you didn\'t eat.*'];
+          return ['The last chart. Small, because the night was long and this is the end of it.'];
+        },
         flowTitle: 'Epilogue — the paths you walked',
         /* Two plain sentences and no numbers (R5.3). ch8_stats counted the night one scene ago and
            ch7_flow named the ending one chapter ago; this line only has to say what the greyed

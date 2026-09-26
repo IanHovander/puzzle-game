@@ -57,7 +57,7 @@
   const artP = (s) => ({ ally: !!castFlags(s).VANE_ALLY });
   /* One line carries five choices made in earlier chapters. They pay off here as story, not as puzzle
      difficulty: the soldiers' shields the Hearth and the phones used to disagree about are gone. */
-  const arrival = (s) => s.flags.ORIEL ? 'Master Oriel came down behind you and says nothing, loudly.'
+  const arrival = (s) => s.flags.ORIEL ? 'Master Oriel followed you down. She says nothing, loudly.'
     : (s.flags.SOLDIERS || s.flags.STAIR === 'RUN') ? 'His soldiers hold the stair you came down.'
     : (!s.flags.SORREL && !s.flags.VOTE_LOST) ? 'Two Masters whose price you would not pay watch from the edge.'
     : 'The stair behind you is empty. Nobody followed you down.';
@@ -300,6 +300,7 @@
         title: 'The bell-chamber',
         text: (s) => [
           'Far above, the Hearth is a spark. The floor is a lid, and under it the Cold glows.',
+          'Wren holds both hands up to the spark anyway.',
           'On the wall, four carved figures walk into a flame. Nobody is looking at them.',
           'Boots on the old road. Lord Vane stops at the edge, with the Crown\'s soldiers behind him.',
           arrival(s),
@@ -335,9 +336,10 @@
         },
         text: (s) => [
           s.flags.TAPESTRY
-            ? 'The Seer says what is under the paint in the study, and the Hearth turns it round.'
+            ? 'The Seer tells him what was under the paint in the study. The wall here says the same.'
             : 'The Seer takes four hundred years of soot off the wall.',
           'Four figures walking in. No child. The fourth writes a fire upside down.',
+          'Wren looks at that fire for a long moment, then pretends not to.',
           { speaker: 'Lord Vane', text: 'Twenty-two years. I stood in your Hall with that paint under my nails and told them. They sent me away to learn manners.' },
           { speaker: 'Lord Vane', text: 'My offer is withdrawn. I will not be the thing you have to be brave about.' },
         ],
@@ -353,9 +355,10 @@
         },
         text: [
           'A word is cut into the rim of the floor, worn almost away.',
-          { text: 'Open the Companion. Take your seat. Type the word on the rim.', cls: 'whisper' },
-          { text: 'Read your page. Say nothing.', cls: 'whisper' },
+          { text: 'Your Sight is for the ring. Open your **Wren** tab first.', cls: 'whisper' },
+          { text: 'Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
+        codeSub: 'Type this word into every phone.',
         roles: 'Warden (keyboard): **the Seer**. Voice (reads aloud): **the Binder**.', sightSeconds: 90,
         next: 'ch7_decision',
       },
@@ -364,7 +367,11 @@
       ch7_decision: {
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
         text: (s) => {
-          const out = [{ speaker: 'Provost Marrow', text: 'The ring has been ready for fourteen years. Decide.' }];
+          const out = [
+            'Wren wipes a sleeve across both eyes, and grins.',
+            { speaker: 'Wren', text: 'Stop it, all of you. I had my brave face on. Read it to me, then. Stand where you like. And I heard "bound". I\'m holding you to it.' },
+            { speaker: 'Provost Marrow', text: 'The ring has been ready for fourteen years. Decide.' },
+          ];
           out.push(s.flags.WALK_UNLOCKED
             ? { text: 'Four figures on the wall. Four hands on the stone.', cls: 'whisper' }
             : { text: 'One walks in, and the Cold closes behind. That is the reading you have.', cls: 'whisper' });
@@ -372,10 +379,10 @@
         },
         prompt: 'No clock on this. Talk.',
         options: [
-          { id: 'fourfold', text: 'Four of us go in together.', cls: 'bright', if: (s) => !!s.flags.WALK_UNLOCKED, next: (s) => oathKnot(s) ? 'ch7_argue1' : 'ch7_dec_fourfold', set: { DECISION: 'FOURFOLD' }, note: 'You chose the Fourfold Walk.' },
-          { id: 'walk', text: 'Let Wren walk.', next: 'ch7_dec_walk', set: { DECISION: 'WALK' }, note: 'You let Wren walk.' },
-          { id: 'refuse', text: 'Nobody walks.', next: 'ch7_dec_refuse', set: { DECISION: 'REFUSE' }, note: 'You refused to send anyone.' },
-          { id: 'vane', text: 'Give Wren to the Envoy.', cls: 'dark', if: (s) => !s.flags.VANE_ALLY, next: 'ch7_dec_vane', set: { DECISION: 'VANE' }, note: 'You gave Wren to the Envoy.' },
+          { id: 'fourfold', text: 'Reader: "It says four. Four of us go in together."', cls: 'bright', if: (s) => !!s.flags.WALK_UNLOCKED, next: (s) => oathKnot(s) ? 'ch7_argue1' : 'ch7_dec_fourfold', set: { DECISION: 'FOURFOLD' }, note: 'You chose the Fourfold Walk.' },
+          { id: 'walk', text: 'Listener: "If it\'s what Wren wants… let Wren walk."', next: 'ch7_dec_walk', set: { DECISION: 'WALK' }, note: 'You let Wren walk.' },
+          { id: 'refuse', text: 'Seer: "Nobody walks."', next: 'ch7_dec_refuse', set: { DECISION: 'REFUSE' }, note: 'You refused to send anyone.' },
+          { id: 'vane', text: 'Binder: "He swore Wren lives. Give Wren to the Envoy."', cls: 'dark', if: (s) => !s.flags.VANE_ALLY, next: 'ch7_dec_vane', set: { DECISION: 'VANE' }, note: 'You gave Wren to the Envoy.' },
         ],
       },
       /* The Provost bars the Walk when the oath was sworn under KNOT. She asks for one thing, so she gets
@@ -383,18 +390,18 @@
       ch7_argue1: {
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE1',
         text: [
-          'Provost Marrow steps between you, doing what you asked.',
+          'Provost Marrow steps between you, doing what you asked. Wren, for once, says nothing.',
           { speaker: 'Provost Marrow', text: 'You swore under KNOT, and it cannot be unbound. You swore to see Wren into the Cold.' },
         ],
         prompt: 'Name one thing you saw.',
         options: [
-          { id: 'stone', text: 'The stone has a mark at its foot. Read from there it says four.', next: 'ch7_dec_fourfold',
+          { id: 'stone', text: 'Seer: "The stone has a mark at its foot. Read from there, it says four."', next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'The foot of the stone. One Seer low enough to look.' }] },
-          { id: 'tapestry', text: 'Under the paint in your study: four walking in, no child.', if: (s) => !!s.flags.TAPESTRY, next: 'ch7_dec_fourfold',
+          { id: 'tapestry', text: 'Reader: "Under the paint in your study, four walk in. There is no child."', if: (s) => !!s.flags.TAPESTRY, next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'I scraped it myself, as a girl.' }] },
-          { id: 'letter', text: 'A struck Law says the cold word is written by four hands.', if: (s) => !s.flags.TAPESTRY || !!(s.flags.LETTER_READ || s.flags.LETTER), next: 'ch7_dec_fourfold',
+          { id: 'letter', text: 'Binder: "A struck Law says the cold word is written by four hands."', if: (s) => !s.flags.TAPESTRY || !!(s.flags.LETTER_READ || s.flags.LETTER), next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'They could not afford four Masters, so they made it grammar.' }] },
-          { id: 'feel', text: 'Because it is Wren, and we are not doing it.', cls: 'dark', next: 'ch7_dec_fourfold',
+          { id: 'feel', text: 'Listener: "Because it\'s Wren… and we\'re not doing it."', cls: 'dark', next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'That is not a reading.' }, 'She steps aside anyway.'] },
         ],
       },
@@ -409,8 +416,8 @@
       ch7_dec_refuse: {
         art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: [
-          { speaker: 'Provost Marrow', text: 'Nobody. Then the fire goes out and the Envoy gets what he came for.' },
-          { speaker: 'Provost Marrow', text: 'Build the sigil anyway. Hold the Cold while I think.' },
+          { speaker: 'Wren', text: 'Nobody! I like nobody. Nobody is my favourite.' },
+          { speaker: 'Provost Marrow', text: 'Then the fire goes out, and the Envoy gets what he came for. Build the sigil anyway. Hold the Cold while I think.' },
         ],
         next: (s) => finaleValues(s) ? 'ch7_tokens_intro' : 'ch7_sigil', button: 'Seal your word',
       },
@@ -429,7 +436,7 @@
         art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.03, sfx: 'boom',
         enter: (s) => { s.flags.ENDING = 4; Store.save(); },
         text: [
-          'The Envoy does not gloat. He holds his hand out as if helping someone over a stream.',
+          'The Envoy holds his hand out, as if helping someone over a stream.',
           { speaker: 'Wren', text: 'Oh. No, it is fine. He promised. People keep saying he keeps promises.' },
           'Wren goes without looking back. The spark goes out.',
         ],
@@ -441,7 +448,7 @@
         type: 'custom', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: (s) => {
           const v = finaleValues(s);
-          const out = [{ text: 'Every phone, now. Open SPEAK. Nobody here sees the question or the answer.', cls: 'whisper' }];
+          const out = [{ text: 'Every phone, now. Open SPEAK. Nobody sees your question but you.', cls: 'whisper' }];
           if (v && v.length === 4) out.push({ text: 'Two questions, one sealed word.', cls: 'whisper' });
           else if (v && v[0] === 'WALK') out.push({ text: 'One question. Whether you walk.', cls: 'whisper' });
           else out.push({ text: 'One question, from the Envoy, to you alone.', cls: 'whisper' });
@@ -613,8 +620,7 @@
         onSolve: (s, r) => { playHymn(); Store.note('The Great Sigil closed' + (r && r.tries > 1 ? ` after ${r.tries} tries.` : ' first time.')); },
         solvedText: [
           'The ring warms, socket by socket, and the Hymn plays itself through the floor.',
-          'Then a rest, where nothing is written.',
-          { speaker: 'Provost Marrow', text: 'Hands on your keys.' },
+          'Wren hums along, and stops on the last beat, where nothing is written.',
         ],
         next: 'ch7_binding', button: 'The Binding',
       },
@@ -750,7 +756,7 @@
           if (E === 0) return [
             `Walked into the Cold: ${UI.list(w)}. Stayed: no one.`,
             'The Hearth roars white. Four people come out, grey-eyed and ordinary.',
-            'The Reader looks at the wall and sees shapes. The Listener hears a room, the way rooms sound. The Seer looks at the floor and it is a floor. The Binder looks at the Provost and has to ask what she feels.',
+            'The Reader sees shapes on the wall. The Listener hears a room, the way rooms sound. The Seer sees a floor. The Binder has to ask the Provost what she feels.',
             'Wren is on the warm stones, crying, and will deny it. And there is a heartbeat.',
             { speaker: 'Wren', text: 'You *idiots*. I had a *speech*.' },
           ];

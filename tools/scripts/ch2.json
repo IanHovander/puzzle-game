@@ -1,5 +1,5 @@
 { "start": "ch2_start", "steps": [
-  {"key": "Space"}, {"shot": "ch2_start"}, {"expect": "Five to four"}, {"clickText": "Down"},
+  {"key": "Space"}, {"shot": "ch2_start"}, {"expect": "Look at me staying put"}, {"clickText": "Down"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "The bottom"},
   {"wait": 600}, {"key": "Space"}, {"expect": "numbered one to four"}, {"clickText": "Attune"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_attune"}, {"expect": "KNOT"}, {"expect": "AC4"}, {"expect": "Warden (keyboard)"}, {"clickText": "All phones are ready"},
