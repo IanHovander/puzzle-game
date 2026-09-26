@@ -60,7 +60,7 @@
   const arrival = (s) => s.flags.ORIEL ? 'Master Oriel followed you down. She says nothing, loudly.'
     : (s.flags.SOLDIERS || s.flags.STAIR === 'RUN') ? 'His soldiers hold the stair you came down.'
     : (!s.flags.SORREL && !s.flags.VOTE_LOST) ? 'Two Masters whose price you would not pay watch from the edge.'
-    : 'The stair behind you is empty. Nobody followed you down.';
+    : 'Nobody followed you down.';
 
   /* ---------- the Great Sigil ----------
      Two walls, four carvings each. A wall reads two ways: from one end, or from the other, where the line
@@ -299,10 +299,10 @@
         art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, sfx: 'step',
         title: 'The bell-chamber',
         text: (s) => [
-          'Far above, the Hearth is a spark. The floor is a lid, and under it the Cold glows.',
+          'Far above, the Hearth is a spark. The floor is a lid over the Cold.',
           'The Listener keeps glancing at Wren, who holds both hands up to the spark anyway.',
           'On the wall, four carved figures walk into a flame. Nobody is looking at them.',
-          'Boots on the old road. Lord Vane stops at the edge, with the Crown\'s soldiers behind him.',
+          'Lord Vane stops at the edge, with the Crown\'s soldiers behind him.',
           arrival(s),
         ],
         next: 'ch7_vane', button: 'The Envoy speaks',
@@ -314,8 +314,8 @@
         text: (s) => [
           { speaker: 'Lord Vane', text: s.flags.VANE_ACCEPT
             ? 'You gave me your word in the Hall. Bring the boy up the road and he lives.'
-            : 'One child, and a fire that will be out within the hour. Bring him up the road.' },
-          { speaker: 'Wren', text: `Don't look at him. Look at me. ${group(s)}, this is the *in there* I meant. Reader, did you ever eat that biscuit?` },
+            : 'One child, and the fire is out within the hour. Bring him up the road.' },
+          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. This is the *in there* I meant. Reader, did you ever eat that biscuit?` },
         ],
         prompt: 'The Envoy waits.',
         options: [
@@ -340,7 +340,7 @@
             : 'The Seer takes four hundred years of soot off the wall.',
           'Four figures walking in. No child. The fourth writes a fire upside down.',
           'Wren stares at that fire, then pretends not to.',
-          { speaker: 'Lord Vane', text: 'Twenty-two years. I stood in your Hall with that paint under my nails and told them. They sent me away to learn manners.' },
+          { speaker: 'Lord Vane', text: 'Twenty-two years ago I stood in your Hall with that paint under my nails. They sent me away to learn manners.' },
           { speaker: 'Lord Vane', text: 'My offer is withdrawn. I will not be the thing you have to be brave about.' },
         ],
         next: 'ch7_attune', button: 'The word on the rim',
@@ -354,8 +354,8 @@
           Store.save();
         },
         text: [
-          'A word is cut into the rim, worn almost away.',
-          { text: 'Your Sight is for the ring. Open your **Wren** tab first.', cls: 'whisper' },
+          'A word is cut into the rim of the floor.',
+          { text: 'Open your **Wren** tab first.', cls: 'whisper' },
           { text: 'Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
         codeSub: 'Type this word into every phone.',
@@ -368,7 +368,7 @@
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
         text: (s) => {
           const out = [
-            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read it to me, then. Seer, stand where you like. Listener, you can stay. And Binder — bound. I heard. I\'m holding you to it.' },
+            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read it to me, then. Seer, stand where you like. Listener, you can stay. And Binder — bound. I\'m holding you to it.' },
             { speaker: 'Provost Marrow', text: 'The ring has been ready for fourteen years. Decide.' },
           ];
           out.push(s.flags.WALK_UNLOCKED
@@ -390,13 +390,13 @@
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_ARGUE1',
         text: [
           'Provost Marrow steps between you, doing what you asked. Wren, for once, says nothing.',
-          { speaker: 'Provost Marrow', text: 'You swore under KNOT, and it cannot be unbound. You swore to see Wren into the Cold.' },
+          { speaker: 'Provost Marrow', text: 'You swore under KNOT to see Wren into the Cold. It cannot be unbound.' },
         ],
         prompt: 'Name one thing you saw.',
         options: [
           { id: 'stone', text: 'Seer: "The stone has a mark at its foot. Read from there, it says four."', next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'The foot of the stone. One Seer low enough to look.' }] },
-          { id: 'tapestry', text: 'Reader: "Under the paint in your study, four walk in. There is no child."', if: (s) => !!s.flags.TAPESTRY, next: 'ch7_dec_fourfold',
+          { id: 'tapestry', text: 'Reader: "Under your study\'s paint, four walk in, and no child."', if: (s) => !!s.flags.TAPESTRY, next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'I scraped it myself, as a girl.' }] },
           { id: 'letter', text: 'Binder: "A struck Law says the cold word is written by four hands."', if: (s) => !s.flags.TAPESTRY || !!(s.flags.LETTER_READ || s.flags.LETTER), next: 'ch7_dec_fourfold',
             after: [{ speaker: 'Provost Marrow', text: 'They could not afford four Masters, so they made it grammar.' }] },
@@ -416,7 +416,7 @@
         art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: [
           { speaker: 'Wren', text: 'Nobody. Seer, that\'s the nicest thing you\'ve ever said to me.' },
-          { speaker: 'Provost Marrow', text: 'Then the fire goes out, and the Envoy gets what he came for. Build the sigil anyway. Hold the Cold while I think.' },
+          { speaker: 'Provost Marrow', text: 'Then the fire goes out, and the Envoy wins. Build the sigil anyway. Hold the Cold while I think.' },
         ],
         next: (s) => finaleValues(s) ? 'ch7_tokens_intro' : 'ch7_sigil', button: 'Seal your word',
       },
@@ -424,8 +424,8 @@
         art: 'ch7_edge', artParams: artP, mood: 'wonder', fx: 'ash', flame: 0.06, sfx: 'chime',
         text: (s) => {
           const out = [];
-          if (oathKnot(s)) out.push({ speaker: 'Provost Marrow', text: 'The oath was sworn to me, and it stands. The ring will have to be turned. Ask your Binder.' });
-          out.push('The Binder says it the way the Founders wrote it, word for word. Four, as one, go through.');
+          if (oathKnot(s)) out.push({ speaker: 'Provost Marrow', text: 'The oath was sworn to me, and it stands. The ring must be turned. Ask your Binder.' });
+          out.push('The Binder says it the Founders\' way, word for word. Four, as one, go through.');
           out.push({ speaker: 'Wren', text: `The *deal* was that I go in. Fine. Fine! ${group(s)}. Four idiots and a hollow.` });
           return out;
         },
@@ -447,10 +447,10 @@
         type: 'custom', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: (s) => {
           const v = finaleValues(s);
-          const out = [{ text: 'Every phone, now. Open SPEAK. Nobody sees your question but you.', cls: 'whisper' }];
+          const out = [{ text: 'Every phone, now. Open SPEAK. Answer alone.', cls: 'whisper' }];
           if (v && v.length === 4) out.push({ text: 'Two questions, one sealed word.', cls: 'whisper' });
           else if (v && v[0] === 'WALK') out.push({ text: 'One question. Whether you walk.', cls: 'whisper' });
-          else out.push({ text: 'One question, from the Envoy, to you alone.', cls: 'whisper' });
+          else out.push({ text: 'One question, from the Envoy.', cls: 'whisper' });
           return out;
         },
         run: (box, api) => new Promise((resolve) => {
@@ -468,7 +468,7 @@
       ch7_tokens: {
         type: 'token', art: 'ch7_ring', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06,
         text: ['Four sealed words, in seat order.'],
-        prompt: 'Read your word into the slot with your name.',
+        prompt: 'Type your word into your own slot.',
         slots: [0, 1, 2, 3].map(i => ({ label: nick(i), player: i, length: 4 })),
         decode: (tok, i, s) => { const v = finaleValues(s); return v ? S.decode(L.channel('finale', ROLES[i]), tok, v) : null; },
         badText: 'The fire does not know that word. Read it again.',
@@ -505,8 +505,8 @@
             after: [{ speaker: 'Wren', text: {
               reader: 'Reader. A Master at fourteen. I\'d have taken it too.',
               listener: 'Listener. You took it to keep me safe. I know.',
-              seer: 'Seer. You were never going to tell me, were you? It\'s alright.',
-              binder: 'Binder. You broke a promise, for me. I\'m never letting you forget it.',
+              seer: 'Seer. You\'d never have told me, would you?',
+              binder: 'Binder. You broke a promise for me. I\'m framing that.',
             }[r] }] },
           { id: 'keep', text: 'Keep it.', cls: 'dark', next: (s) => nextBargain(s, i), set: { ['BARGAIN_' + r]: 'kept' }, note: `${nickOf(r)} kept the Envoy's bargain.`,
             after: [{ speaker: 'Lord Vane', text: 'Thank you.' }] },
@@ -524,7 +524,7 @@
           const out = [];
           if (k.length === 1) out.push(`${nickOf(k[0])}'s key goes dark. Three hands must bind what four should.`);
           if (b.length) out.push(`${UI.list(b.map(nickOf))} broke the Envoy's word to his face.`);
-          if (!k.length && !b.length) out.push('Nobody was bound. The room lets out a breath.');
+          if (!k.length && !b.length) out.push('Nobody was bound.');
           if (v >= 1 && v <= 4) out.push(`${nick(v - 1)} flexes the bell-rope hand.`);
           out.push('Now the ring.');
           return out;
@@ -594,7 +594,7 @@
               if (g.includes('COLD') && !walk) return 'The cold word is never written. Where the phrase shows it, that socket stays empty.';
               if (same(sh, ans)) return true;
               const n = chargeRing(Store.state);
-              if (knot && same(sh, BASE)) return 'Right by the Laws, and still it will not close. You swore to somebody. Turn the whole ring until the sworn word stands where the phrase began.';
+              if (knot && same(sh, BASE)) return 'Right by the Laws, and still it will not close. You swore to somebody.';
               /* ring.js only reaches onWrong when check() returns false, and this one never does, so the
                  second-try nudge is appended here -- off SIGIL_COLD, which a Replay scene cannot refund. */
               return 'Frost takes the ring, and says nothing about which part of it was wrong. Say all four things again.'
@@ -623,7 +623,7 @@
         ],
         onSolve: (s, r) => { playHymn(); Store.note('The Great Sigil closed' + (r && r.tries > 1 ? ` after ${r.tries} tries.` : ' first time.')); },
         solvedText: [
-          'The ring warms, socket by socket, and the Hymn plays itself through the floor.',
+          'Socket by socket, the Hymn plays itself through the floor.',
           'Wren hums along, and stops on the last beat, where nothing is written.',
         ],
         next: 'ch7_binding', button: 'The Binding',
@@ -639,7 +639,7 @@
           if (k.length) out.push(`${nickOf(k[0])}'s key is bound to the Envoy. Three notes, a longer climb.`);
           if (cracked) out.push(`${cracked} lane${cracked > 1 ? 's have' : ' has'} no light. Go on the count.`);
           out.push({ text: 'Listener — count them in and out. Say it once with hands off the keys.', cls: 'whisper' });
-          out.push({ text: 'A slip costs thirty seconds. It cannot cost the night.', cls: 'whisper' });
+          out.push({ text: 'A slip costs thirty seconds.', cls: 'whisper' });
           return out;
         },
         config: (s) => {
@@ -663,7 +663,7 @@
                flags.MIDNIGHT_LEFT from render(), and this order is what keeps a slip charged across a
                reload. The 30 s is flat on purpose -- a reflex round is not a search. */
             onSlip: () => { Game.clock.penalty(30); Store.inc('BINDING_FAILS'); },
-            failText: 'The fire will not wait. The Hearth counts for you: one — two — three — off.',
+            failText: 'The Hearth counts for you: one — two — three — off.',
           };
         },
         onSolve: (s, r) => {
@@ -684,7 +684,7 @@
         type: 'custom', art: 'ch7_cold', mood: 'void', fx: 'snow', flame: 0,
         enter: (s) => { Game.clock.stop(); s.flags.MIDNIGHT_LEFT = 0; Store.save(); },
         text: [
-          'Midnight. The spark goes out — not guttering, simply gone.',
+          'Midnight. The spark goes out, simply gone.',
           'Then Wren, in the dark, still talking.',
           { speaker: 'Wren', text: 'Well. Nothing is on fire. Finish the ring.' },
           { text: 'Nothing you have done is undone.', cls: 'small' },
@@ -698,10 +698,10 @@
       ch7_cold_slot: {
         art: 'ch7_ring', artParams: artP, mood: 'wonder', fx: 'motes', flame: 0.1,
         text: [
-          'The ring is full but for one socket. Wren walks to it and stands in it.',
+          'One socket is still empty. Wren walks to it and stands in it.',
           { text: 'It is never written.', cls: 'omen' },
           { speaker: 'Wren', text: 'It\'s cold in here. Obviously. It\'s me.' },
-          'Four sealed words said WALK. Nothing here looks surprised.',
+          'Four sealed words said WALK. Nobody looks surprised.',
           'Something is cut into that socket. The Reader is already kneeling to read it.',
         ],
         next: 'ch7_wren_code', button: 'Look',
@@ -743,7 +743,7 @@
       ch7_white: {
         art: 'ch7_white', mood: 'silence', fx: 'none', flame: 1, speed: 40,
         text: [
-          { text: 'A fire the wrong way up appears in the empty socket, written by four hands.', cls: 'center' },
+          { text: 'A fire the wrong way up appears in the empty socket.', cls: 'center' },
           { text: 'Wren steps aside. The four step through.', cls: 'center' },
           { text: 'White.', cls: 'big' },
         ],
@@ -759,14 +759,14 @@
           const E = s.flags.ENDING | 0, w = (E === 0 ? ROLES : walkers(s)).map(nickOf), st = stayers(s).map(nickOf);
           if (E === 0) return [
             `Walked into the Cold: ${UI.list(w)}. Stayed: no one.`,
-            'The Hearth roars white. Four people come out, grey-eyed and ordinary.',
+            'Four people come out, grey-eyed and ordinary.',
             'The Reader sees shapes on the wall. The Listener hears a room, the way rooms sound. The Seer sees a floor. The Binder has to ask the Provost what she feels.',
             'Wren is on the warm stones, crying, and will deny it. And there is a heartbeat.',
             { speaker: 'Wren', text: 'You *idiots*. I had a *speech*.' },
           ];
           if (E === 1) return [
             `Walked into the Cold: ${UI.list(w)}. Stayed: ${UI.list(st)}.`,
-            'The Cold closes. Not all the way. Enough. The walkers come out with no gift.',
+            'The Cold closes, not all the way, but enough. The walkers come out with no gift.',
             { speaker: 'Wren', text: 'Half a walk. Story of my life.' },
           ];
           if (E === 2) return [

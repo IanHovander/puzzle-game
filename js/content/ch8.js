@@ -325,7 +325,7 @@
       ch8_e2: {
         art: 'ch8_stones', artParams: { noWren: true }, mood: 'sorrow', fx: 'embers', flame: 1, speed: 22,
         text: [
-          { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Seer, don\'t do the face.' },
+          { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Nobody do the face.' },
           'Wren goes into the Hearth without knocking, the way Wren goes through every door. It closes behind. Four hundred years of fire, again, from a spark.',
           'In the morning a mason carves a fifth name over the Hearth. He has to ask how to spell it. The Reader does not offer. Then the Reader eats breakfast without being told.',
           'The Provost stands at the fire with a thread only the Binder can see. It has been grey for fourteen years.',
@@ -336,7 +336,7 @@
       ch8_e3: {
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
-          'She does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it.',
+          'Marrow does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it.',
           'The seal holds. Thin, but it holds.',
           'Wren lives, still without a pulse, and stands a long time where the Provost stood. Then Wren makes a joke nobody laughs at. The Binder bows to the new Provost, perfectly correctly, and that gets the laugh.',
           { text: 'Years later.', cls: 'center' },

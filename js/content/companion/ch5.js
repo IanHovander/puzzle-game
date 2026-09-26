@@ -277,23 +277,23 @@
       /* ===== READER ===== */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What is cut on Mere’s two gates' });
-        P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. On your page they are clean.' });
-        P.sight.push({ t: 'p', text: '**A shape says one word standing as it was cut, and the opposite word the other way up.** A carving marked at its left-hand end says the words as they stand. Marked at its right, every shape says its other word.' });
+        P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. You see them clean.' });
         P.sight.push({ t: 'html', html: readerLintels() });
-        P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that.' });
-        P.sight.push({ t: 'fine', text: 'A spare shape in the ring is not decoration. It is a different sigil, and the gate can tell.' });
-        P.sight.push({ t: 'fine', text: 'Which end each carving is marked at is not on this page, and neither is where the words go. Say both words for every shape, in the order they are cut.' });
+        P.sight.push({ t: 'p', text: '**Say both words for every shape, in the order they are cut.** Which end is marked is not on this page.' });
+        P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that. A spare shape in the ring is a different sigil.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
-        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones. "You went quiet in the study. You read something with my name in it." A pause. "You don’t have to say."' });
-        P.wren.push({ t: 'p', text: f.WREN_HURT
-          ? 'Wren has not mentioned the strapped arm since the Vault, and has laughed twice on the stair, both times wrongly.'
-          : 'The Vigil roll in your Book still spells her name *Wrenn*, in the old letters. You decided, a year ago, that it was a spelling mistake. You have never asked her.' });
+        P.wren.push({ t: 'p', text: (f.WREN_HURT
+          ? 'Wren has not mentioned the strapped arm since the Vault. '
+          : 'In the study you ciphered Wren’s name, and it was not a spelling mistake. ')
+          + 'On the ledge, quietly: “You read something with my name in it. You don’t have to say.”' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I did read it. In the old letters. I checked it three times, because it’s yours. I’m not saying it on a stair. You’ll get it properly, somewhere warm.”' });
       }
 
       /* ===== LISTENER ===== */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Eight bells, and what they count' });
-        P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. The Hearth cannot hear them. You can.' });
+        P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. Only you can hear them.' });
         P.sight.push({ t: 'p', text: '**A bell’s count says which slot its word takes.** Count round the ring from wherever a sigil begins, and that slot is one.' });
         P.sight.push({ t: 'audio', label: 'The first gate — three bells', strip: tallyRow(COUNTS1, -1), button: '♪ Cup your ear',
           play: (A) => playCounts(A, COUNTS1, -1), text: '**Three, one, five**, over the shapes in the order they are cut.' });
@@ -303,11 +303,11 @@
             : '**Two, five, one, three, four**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'Boots above, in step. Water below, moving slowly. And beside you, where Wren is standing, the thing you have called a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
-        P.wren.push({ t: 'p', text: 'In the Gallery the portraits showed four going down the stair and four coming back. You have not stopped hearing it.' });
+        P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. In the Gallery the portraits showed four going down this stair, and four coming back.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humour me.”' });
       }
 
       /* ===== SEER ===== */
@@ -317,24 +317,25 @@
         P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Three cuts again: a scratch at **slot 5**, a notch at **slot 2**, a chip at **slot 3**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: gateMarks });
         P.sight.push({ t: 'fine', text: 'Counted from anywhere else on the ring, the right words in the right order still fail.' });
-        P.sight.push({ t: 'fine', text: 'Somebody meant those cuts. Which one a sigil begins at, and what a marked end obliges, are not yours. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Which cut a sigil begins at is not yours. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underLedge });
-        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows falling away from it, the way shadows do, and Wren’s falling toward it. In the dormitory you blamed the lamp. There is no lamp here.' });
+        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows fall away from it, and Wren’s falls toward it. In the dormitory you blamed the lamp. There is no lamp here.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I sat down between you and the others. You didn’t notice. Good. Nobody down here sees your shadow but me. Also, you were too near the edge.”' });
       }
 
       /* ===== BINDER ===== */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Which cut, and which way round' });
-        P.sight.push({ t: 'p', text: 'Above ground a sigil begins at a scratch. Everyone at this table has heard you say so twice tonight.' });
-        P.sight.push({ t: 'p', text: '**These two doors are older than that Law, and they do not keep it.** On the first gate the sigil begins at the **chip**. On the second it begins at the **notch**. A scratch on a Founders’ door is only where the mason rested the tool.' });
-        P.sight.push({ t: 'p', text: 'Two Laws disagree about which way a carving runs round the ring. The newer says every one runs the way the numbers count up. The older says a carving marked at its right-hand end runs the other way. **The older binds.**' });
+        P.sight.push({ t: 'p', text: 'Above ground a sigil begins at a scratch. **These two doors are older than that Law, and they do not keep it.**' });
+        P.sight.push({ t: 'p', text: 'On the first gate the sigil begins at the **chip**. On the second it begins at the **notch**.' });
         P.sight.push({ t: 'html', html: lawClash() });
+        P.sight.push({ t: 'p', text: 'Two Laws disagree on which way a carving runs, and **the older binds**: marked at its right-hand end, it runs against the slot numbers.' });
         P.sight.push({ t: 'p', text: law0
           ? '**Where a carving shows COLD, the older Law writes it into its slot — and the older Law is back in your Book. Say so: the slot is not left empty.**'
           : '**Where a carving shows COLD, the newer Law leaves that slot empty. Say so: nothing goes in it.**' });
-        P.sight.push({ t: 'fine', text: 'Two frosts and a gate stops answering, and the Provost must break it. Say your rule before the Warden closes the ring — and say it even when it sounds wrong.' });
-        P.sight.push({ t: 'fine', text: 'Both Laws are dated in your **Book**. You cannot read a shape and you cannot find a cut. Ask for both.' });
+        P.sight.push({ t: 'fine', text: 'You cannot read a shape or find a cut. Ask for both.' });
         P.wren.push({ t: 'h', text: 'Still no thread' });
         P.wren.push({ t: 'list', items: [
           threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> grey, and it has not changed since the study.',
@@ -342,7 +343,9 @@
           threadLine('gold') + ' <strong>The soldiers above:</strong> gold, every one of them, and none of it theirs.',
           threadLine('none') + ' <strong>Wren:</strong> nothing at all.',
         ] });
-        P.wren.push({ t: 'p', text: 'Not unbound — you know unbound. You decided years ago it was a blind spot in your own gift. You have never told anyone your gift has one.' });
+        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. You decided years ago it was a blind spot in your gift, and you have never told anyone.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Everyone on this stair is tied to something. Even the soldiers. You aren’t, so we’ll do it by hand. Hold my sleeve on the way down. I’ve decided that counts.”' });
       }
 
       /* ===== SPEAK (all roles) ===== */

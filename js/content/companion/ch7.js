@@ -199,7 +199,7 @@
         P.sight.push({ t: 'fine', text: 'a wall has two ends and no beginning' });
         P.sight.push({ t: 'p', text: '**Each wall says one of those two things, never both.** Read all four rows out loud.' });
         if (knot) P.sight.push({ t: 'fine', text: 'The seal at the foot of the Chair’s scroll is one word: **CROWN**.' });
-        P.sight.push({ t: 'fine', text: 'Nothing on the stone says which wall speaks first. Ask.' });
+        P.sight.push({ t: 'fine', text: 'Nothing on the walls says which one speaks first. Ask.' });
       }
 
       if (roleId === 'listener') {
@@ -237,7 +237,7 @@
         P.wren.push({ t: 'h', text: 'The word in the socket' });
         P.wren.push({ t: 'p', text: 'A word is cut into the floor of the empty socket, in the old letters. It is Wren’s name. In the study, you decided you had misread it.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name is cut in that empty socket, in the old letters. I told myself I’d misread it. I don’t misread. Whatever it says, I’ll read it to you first.”' });
+        P.wren.push({ t: 'letter', text: '“Your name is cut in that empty socket, in the old letters. I told myself I’d misread it. I don’t misread. Whatever it means, I’ll read it to you first.”' });
       }
       if (roleId === 'listener') {
         P.wren.push({ t: 'h', text: 'Eight hearts' });

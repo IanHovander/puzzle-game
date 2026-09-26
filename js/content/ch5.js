@@ -246,13 +246,12 @@
         },
         text: (s) => {
           const t = ['Midnight is an hour away. The Hearth is a blue tongue the height of a hand.'];
-          t.push({ speaker: 'Provost Marrow', text: 'Under this school there is a wound. The Founders shut it and left the fire on top.' });
-          t.push({ speaker: 'Provost Marrow', text: 'The fire is going out. Tonight I take the child down and shut it again.' });
+          t.push({ speaker: 'Provost Marrow', text: 'Under this school there is a wound. The Founders shut it. Their fire is going out, and tonight I take the child down to shut it again.' });
           t.push(unsworn(s)
             ? { speaker: 'Provost Marrow', text: 'You would not swear, so I do not take you. There is a door on this stair for the unasked.' }
             : { speaker: 'Provost Marrow', text: 'You swore in the study to see the child into the Cold. Then you come.' });
-          t.push({ speaker: 'Wren', text: 'And I am the — what am I again? The occasion.' });
-          t.push('She lifts the lantern and goes down.');
+          t.push({ speaker: 'Wren', text: 'The child. That’s me. Could everyone look less like a funeral? It’s a stair.' });
+          t.push('She lifts the lantern and goes down. Wren goes after her first, whistling.');
           return t;
         },
         next: 'ch5_descent', button: 'Down',
@@ -260,11 +259,10 @@
       ch5_descent: {
         art: 'ch5_foundations', mood: 'dread', fx: 'dust', sfx: 'step',
         text: [
-          'The stair is older than the school.',
-          'Above you, boots. The Envoy\'s soldiers are on the stair.',
-          { speaker: 'Provost Marrow', text: 'Mere warded this stair. She was one of the four who built the Hearth.' },
-          { speaker: 'Provost Marrow', text: 'Her gates do not lie. They do not play fair. Read them together.' },
-          'Cut into the first landing, worn almost away, a word.',
+          'Above you, boots. The Envoy\'s soldiers are on the stair too.',
+          { speaker: 'Provost Marrow', text: 'Mere warded this stair. She was one of the four who built the Hearth. Her gates do not play fair.' },
+          'Cut into the first landing, worn almost away, a word. The Reader is kneeling at it before the lantern stops.',
+          { speaker: 'Wren', text: 'It’s waited four hundred years, Reader. It can wait while you eat this.' },
         ],
         next: 'ch5_attune', button: 'Read it',
       },
@@ -282,9 +280,10 @@
         art: 'ch5_foundations', mood: 'tense', fx: 'dust',
         enter: () => { if (!doorNoted) { doorNoted = true; Store.note('You came down by Mere\'s door, unasked.'); } },
         text: [
-          'The lantern goes on down without you, and the dark closes over where it was.',
+          'The lantern goes on down without you.',
           'Then a draught at the first landing, and Wren standing in the wall.',
-          { speaker: 'Wren', text: 'Mere left this one for people who were not asked. Mum will pretend she did not see.' },
+          { speaker: 'Wren', text: 'Mere left this one for people who were not asked. Mum will — the Provost will pretend she didn’t see.' },
+          { speaker: 'Wren', text: 'Binder, it’s a door for the unasked. That’s a *rule*. You love a rule. Please?' },
           'Wren came back up three flights in the dark, for you.',
         ],
         next: 'ch5_gate1', button: 'Go down',
@@ -299,7 +298,7 @@
         config: (s) => {
           const c = {
             title: 'THE FIRST GATE',
-            note: 'Provost Marrow, low: *Three shapes, three bells. A bell\'s count says which slot its word takes. Count round from the cut a sigil begins at, and that cut\'s own slot is one. The Binder says which cut, and which way round. Slots the words do not reach stay empty. Two frosts and the gate stops answering.*',
+            note: 'Provost Marrow, low: *A bell\'s count says which slot its word takes. Count round from the cut a sigil begins at, and that cut\'s own slot is one. Slots the words do not reach stay empty. Two frosts and the gate stops answering.*',
             slots: N, glyphs: glyphPalette(), allowEmpty: true, showArrow: false,
             fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
             maxTries: Math.max(1, GATE_TRIES - (F(s).GATE1_FROST | 0)),
@@ -325,7 +324,7 @@
           else Store.note('Mere\'s first gate: counted the older way round.' + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : ''));
         },
         solvedText: (s, r) => (r && r.failed) ? [
-          'The gate stops answering. The Provost sets her palm flat on it.',
+          'The gate stops answering. The Provost lays her palm on it.',
           { speaker: 'Provost Marrow', text: 'That was Mere\'s, and it was four hundred years old. Go down.' },
           'It breaks. Above you, the boots come a flight closer.',
         ] : [
@@ -339,10 +338,10 @@
         art: 'ch5_marches', mood: 'wonder', fx: 'motes', sfx: 'reveal', flame: 0.28,
         text: [
           'The stair ends at a ledge, and the world ends with it.',
-          'Below, a cavern with no far side, and drowned arches in black water.',
-          'On a shelf above them, four thrones. Empty.',
-          'And under all of it, glowing like a sky from beneath, the Cold. Nobody would say where it was.',
-          { speaker: 'Wren', text: 'Four thrones. Four Founders. It is a *theme*.' },
+          'Below, drowned arches and four empty thrones. Under it all, glowing like a sky from beneath, the Cold.',
+          { speaker: 'Wren', text: 'Four thrones, four Founders. It’s a *theme*. I’m not looking down, by the way. I’ve decided.' },
+          'Wren sits by the torch, as close as the flame allows.',
+          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
         next: 'ch5_gate2', button: 'The second gate',
       },
@@ -350,6 +349,8 @@
       ch5_gate2: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [2.5, 5, 7],
         text: [
+          { speaker: 'Wren', text: 'Somewhere warm. My feet, counted. My shadow, guarded. A sleeve.' },
+          { speaker: 'Wren', text: 'You lot have made a *rota*. …All right. I’ll take the sleeve.' },
           'Five shapes, and five bells the Hearth cannot hear.',
           { text: 'All four out loud, before anybody touches the ring.', cls: 'whisper' },
         ],
@@ -357,7 +358,7 @@
           const want = law0(s) ? ANS2_COLD : ANS2;
           const c = {
             title: 'THE SILENT GATE',
-            note: 'Provost Marrow, quieter: *Five shapes, five bells. A bell\'s count says which slot its word takes. Count round from the cut a sigil begins at, and that cut\'s slot is one. The Binder says which cut, and which way round. One of the five words is one the Laws argue about. Two frosts and the gate stops answering.*',
+            note: 'Provost Marrow, quieter: *A bell\'s count says which slot its word takes. Count round from the cut a sigil begins at, and that cut\'s slot is one. One of the five words is one the Laws argue about. Two frosts and the gate stops answering.*',
             slots: N, glyphs: glyphPalette(), allowEmpty: true, showArrow: false,
             fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to close it',
             maxTries: Math.max(1, GATE_TRIES - (F(s).GATE2_FROST | 0)),
@@ -389,7 +390,7 @@
         ] : (r && r.map && r.map[COLD_SLOT] === 'COLD') ? [
           'You wrote the word nobody writes, and the gate took it.',
           { speaker: 'Provost Marrow', text: 'That is not in the Book I was given.' },
-          { speaker: 'Wren', text: 'It is in Mere\'s, apparently.' },
+          { speaker: 'Wren', text: 'It’s in Mere’s, apparently. Binder, you’re allowed to look smug.' },
         ] : [
           'The gate counts five, finds four, and opens anyway.',
           { speaker: 'Wren', text: 'A gap in the middle. I would have written something.' },
@@ -401,7 +402,7 @@
         type: 'custom', art: 'ch5_gate', artParams: { n: 2, cold: 0.6 }, mood: 'tense', fx: 'motes',
         text: [
           'The third gate is not a door. It is a count.',
-          { speaker: 'Provost Marrow', text: 'Mere\'s last ward. Two questions each, and one number out of the four of you.' },
+          { speaker: 'Provost Marrow', text: 'Mere\'s last ward. Two questions each, and one number.' },
           { text: 'Every phone: open SPEAK and find *The Founders\' Count*.', cls: 'whisper' },
           { text: 'On START, forty-five seconds. Then say your two digits aloud, in seat order.', cls: 'whisper' },
         ],
@@ -429,7 +430,7 @@
         config: (s) => {
           const c = {
             title: 'THE FOUNDERS\' COUNT',
-            note: 'Provost Marrow, flat: *Mere asks each of you twice. Two digits a seat, typed as one number, in seat order — the Reader\'s pair, the Listener\'s, the Seer\'s, the Binder\'s. The ward hears three answers and then stops.*',
+            note: 'Provost Marrow, flat: *Mere asks each of you twice. Two digits a seat, typed as one number, in seat order. The ward hears three answers and then stops.*',
             fields: [{ label: 'the count', placeholder: '·· ·· ·· ··', len: 8 }], submitText: 'Count', maxTries: Math.max(1, COUNT_TRIES - (F(s).COUNT_LOST | 0)),
             accept: (v) => v[0] === COUNT,
             onWrong: (v, tries) => {
@@ -464,12 +465,12 @@
           else Store.note('The Founders\' Count: ' + PAIRS.join(' ') + (r && r.tries > 1 ? ' (' + r.tries + ' tries)' : ''));
         },
         solvedText: (s, r) => (r && r.failed) ? [
-          'The ward stops asking. The Provost puts her hand flat on the stone and says a word that costs her something.',
-          'It gives, slowly, and the boots above come three flights closer.',
+          'The ward stops asking. The Provost says a word that costs her something.',
+          'It gives, and the boots come three flights closer.',
         ] : [
           'Eight digits, and the count closes. The ward is not there any more.',
-          { speaker: 'Wren', text: 'I would have got two of them. I do not have a phone.' },
-          { speaker: 'Provost Marrow', text: 'Eight questions, four eyes, one answer. That was Mere.' },
+          { speaker: 'Wren', text: 'I’d have got two of them. I don’t have a phone. I have *charm*.' },
+          '“Barely,” says the Seer, and moves between Wren and the edge.',
         ],
         next: 'ch5_soldiers', button: 'Boots, above',
       },
@@ -477,9 +478,9 @@
       ch5_soldiers: {
         art: 'ch5_soldiers', mood: 'tense', fx: 'ash', sfx: 'boom',
         text: (s) => [
-          'Boots above, no longer quiet. Torchlight coming down the shaft in a line.',
-          'A voice follows it, and asks the Provost to stop.',
+          'Boots above, no longer quiet. A voice asks the Provost to stop.',
           { speaker: 'Provost Marrow', text: 'Then the Envoy can ask the stair.' },
+          { speaker: 'Wren', text: 'Listener, you’re counting them. I can see your lips move. Don’t tell me how many.' },
           F(s).DOOR === 'FIGHT'
             ? { text: 'The ward you flared at the Tower door told them where to look.', cls: 'whisper' }
             : forcedGates(s)
@@ -504,16 +505,16 @@
         timeout: 'run',
         text: ['Three things can be done with a stair.'],
         options: [
-          { id: 'collapse', text: 'Collapse the stair.', sub: 'One hand, no time for four. Nobody follows.', next: 'ch5_collapse', note: 'You chose to collapse the stair.' },
-          { id: 'hold', text: 'Hold the stair with a thread.', sub: 'One of you stays, and their Sight pays for it.', next: 'ch5_hold_ask', note: 'You chose to hold the stair with a thread.' },
-          { id: 'run', text: 'Run for the road down.', sub: 'They follow.', next: 'ch5_run', note: 'You ran for the road down.' },
+          { id: 'collapse', text: 'Seer: “Collapse the stair.”', sub: 'One hand, no time for four. Nobody follows.', next: 'ch5_collapse', note: 'You chose to collapse the stair.' },
+          { id: 'hold', text: 'Binder: “Hold it with a thread.”', sub: 'One of you stays, and their Sight pays for it.', next: 'ch5_hold_ask', note: 'You chose to hold the stair with a thread.' },
+          { id: 'run', text: 'Listener: “Run for the road down.”', sub: 'They follow.', next: 'ch5_run', note: 'You ran for the road down.' },
         ],
       },
       /* ---------- collapse ---------- */
       ch5_collapse: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_stair', artParams: { broken: false }, mood: 'tense', fx: 'ash', puzzleId: 'ch5_collapse', par: [1, 2],
         text: [
-          'Two slots cut into the newel post. One hand, because there is no time for four.',
+          'Two slots in the newel post. One hand, because there is no time for four.',
           { text: 'One of you has one thing to say first. Say it, then write.', cls: 'whisper' },
         ],
         config: () => ({
@@ -532,7 +533,7 @@
           'The stair goes. Not the flight you are on, but the one above it.',
           'Then, far above, a bell answers the fall. One note, and a wrong one.',
           { speaker: 'Provost Marrow', text: 'One bell gone. We will manage with three.' },
-          { speaker: 'Wren', text: 'You wrote the cold one. With one hand.' },
+          { speaker: 'Wren', text: 'You wrote the cold one with one hand. Binder, breathe. Nobody’s arresting you.' },
         ],
         next: 'ch5_endcard', button: 'The road down',
       },
@@ -540,9 +541,9 @@
       ch5_hold_ask: {
         art: 'ch5_soldiers', mood: 'tense', fx: 'ash',
         text: [
-          'A held thread needs a living anchor. One of you stays.',
-          'That Sight is spent until the Provost ties it off.',
+          'A held thread needs a living anchor. One of you stays. That Sight is spent until the Provost ties it off.',
           { speaker: 'Provost Marrow', text: 'I will not choose. Mere would not have either.' },
+          { speaker: 'Wren', text: 'Nobody has to. I mean it.' },
           { text: 'Every phone: open SPEAK and answer *Stay and hold?* Alone, in silence.', cls: 'whisper' },
           { text: 'Then type each sealed word into the Hearth. The first yes stays.', cls: 'whisper' },
         ],
@@ -567,12 +568,17 @@
       ch5_hold_named: {
         art: 'ch5_stair', mood: 'sorrow', fx: 'motes', sfx: 'seal',
         text: (s) => {
-          const v = nick((F(s).VOLUNTEER || 1) - 1), n = F(s).HOLD_YES || 1;
+          const vi = (F(s).VOLUNTEER || 1) - 1, v = nick(vi), n = F(s).HOLD_YES || 1;
           const t = ['The Hearth reads four words and says one name.', { text: `The ${v} was faster.`, cls: 'ch5-name' }];
           t.push(n > 1 ? `${n === 4 ? 'All four' : n === 3 ? 'Three' : 'Two'} of you said yes. The ${v} said it first.` : 'One yes, and nobody has to say that twice.');
           t.push(`The ${v} sits down, back to the wall, and takes hold of something nobody else can see.`);
-          t.push({ speaker: 'Provost Marrow', text: 'I will tie it off down in the bell-chamber. Do not let go.' });
-          t.push({ speaker: 'Wren', text: `${v}. Do not let go. I will be really annoyed.` });
+          t.push({ speaker: 'Provost Marrow', text: 'I will tie it off in the bell-chamber.' });
+          t.push({ speaker: 'Wren', text: [
+            'Reader. There’s a biscuit in your pocket. Eat it. Hold on.',
+            'Listener. Stop checking on me. I’ll be loud. Hold on.',
+            'Seer. Don’t do the face. I’ll be fine. Hold on.',
+            'Binder. You’ve never let go of anything. Don’t start.',
+          ][vi] || `${v}. Don’t let go.` });
           return t;
         },
         next: 'ch5_endcard', button: 'The road down',
@@ -583,6 +589,7 @@
           'Received. Received. Received. Received.',
           'The Hearth reads four words and says no name.',
           'Nobody stays. Not cowardice — four people who each thought somebody else would.',
+          { speaker: 'Wren', text: 'Good. I wasn’t leaving any of you on a stair.' },
         ],
         next: 'ch5_run', button: 'Run',
       },
@@ -591,7 +598,7 @@
         art: 'ch5_marches', mood: 'tense', fx: 'ash', sfx: 'whoosh',
         enter: (s) => { if (F(s).STAIR !== 'RUN') { Store.set('STAIR', 'RUN'); Store.set('VOLUNTEER', 0); Store.note('You ran. The soldiers followed.'); } Store.set('SOLDIERS', true); },
         text: [
-          'You run. The road down is wider than the stair, and older.',
+          'You run. The road down is wider than the stair.',
           'Behind you, boots and torches. They will reach the bell-chamber soon after you.',
           { speaker: 'Wren', text: 'For the record, I said we should collapse it.' },
           'Nobody remembers Wren saying that.',
