@@ -100,7 +100,9 @@
         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
         P.sight.push({ t: 'fine', text: 'A ring has no first word. Somebody here can *hear* which one comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
-        P.wren.push({ t: 'p', text: 'Every fourth-year’s name is chalked on the dormitory door. Wren’s is there twice. Once in our letters, once in letters you have never seen. The handwriting is the same. You decided somebody was being funny, and never asked who.' });
+        P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice. Once in our letters. Once in letters you cannot read, in the same hand.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your name is on our door twice. Once in letters I can’t read. I can read *everything*, Wren. I told myself it was a joke. I never asked whose.”' });
       }
 
       if (roleId === 'listener') {
@@ -112,7 +114,9 @@
         P.sight.push({ t: 'fine', text: 'You never hear a word’s name, only how far the tune steps.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'You can hear a teacher’s heart through a stone floor. You have never once heard Wren’s. You decided the fault was yours, and never told anyone.' });
+        P.wren.push({ t: 'p', text: 'You can hear every heart in this tower. Never Wren’s.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I can hear the cook’s heart through two floors. I’ve never heard yours. Not once. I thought my ears were broken. I’m sorry I never said.”' });
       }
 
       if (roleId === 'seer') {
@@ -122,7 +126,9 @@
         P.sight.push({ t: 'fine', text: 'Which one matters is the Binder’s call. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the lamp. Wren’s falls toward it. You decided it was a trick of the light. You are looking at it now, in the light you just made.' });
+        P.wren.push({ t: 'p', text: 'Every shadow falls away from the lamp. Wren’s falls toward it.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your shadow’s wrong. Everyone’s points away from the lamp. Yours points at it. I called it a trick of the light. Well. We’re standing in the light.”' });
       }
 
       if (roleId === 'binder') {
@@ -141,7 +147,8 @@
           + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> last week’s practice thread still will not hold.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'Wren is not unbound. There is nothing there at all. You decided it was a blind spot in your gift, and never told anyone.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“You don’t have a single thread, Wren. Not to anyone. Not even to us. I decided my gift was faulty. I should have told you. Friends tell each other. That’s a rule.”' });
       }
 
       // First night only, like the tab guide: point each page at the Book once its fact has been said.
