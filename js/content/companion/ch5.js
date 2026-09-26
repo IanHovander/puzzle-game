@@ -115,12 +115,12 @@
   /* ---------- Binder: the two Laws, drawn ---------- */
   const lawClash = () => {
     const T = 'font-size="12"';
-    const plate = (y, era, lines, struck) => `<rect x="6" y="${y}" width="288" height="58" rx="4" fill="none" stroke="${struck ? 'rgba(217,107,74,.4)' : RED}" stroke-width="1.4"/>`
+    const plate = (y, era, lines, struck) => `<rect x="6" y="${y}" width="288" height="64" rx="4" fill="none" stroke="${struck ? 'rgba(217,107,74,.4)' : RED}" stroke-width="1.4"/>`
       + `<text x="16" y="${y + 18}" fill="${struck ? 'rgba(217,107,74,.7)' : RED}" ${T} ${F}>${era}</text>`
       + lines.map((ln, k) => `<text x="16" y="${y + 35 + k * 16}" fill="${struck ? 'rgba(233,226,210,.5)' : 'rgba(233,226,210,.9)'}" ${T} ${F}>${ln}</text>`).join('')
       + (struck ? lines.map((ln, k) => `<path d="M12,${y + 31 + k * 16} L${Math.round(20 + ln.length * 6.8)},${y + 31 + k * 16}" stroke="${RED}" stroke-width="1.4"/>`).join('') : '');
     const ring = (cx, dir, label) => {
-      const cy = 184;
+      const cy = 192;
       let s = `<circle cx="${cx}" cy="${cy}" r="30" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>`;
       s += `<circle cx="${cx}" cy="${cy - 30}" r="7" fill="rgba(217,107,74,.3)" stroke="${RED}" stroke-width="1.4"/>`;
       s += dir > 0
@@ -129,11 +129,11 @@
       s += label.map((ln, k) => `<text x="${cx}" y="${cy + 50 + k * 16}" text-anchor="middle" fill="rgba(233,226,210,.8)" ${T} ${F}>${ln}</text>`).join('');
       return s;
     };
-    return `<svg viewBox="0 0 300 282" width="100%" style="display:block;margin:0 auto">`
+    return `<svg viewBox="0 0 300 290" width="100%" style="display:block;margin:0 auto">`
       + plate(6, 'Year 0', ['carving marked at its right:', 'the other way round'], false)
-      + plate(72, 'Year 212', ['every line runs the way', 'the numbers count up'], true)
+      + plate(78, 'Year 212', ['every line runs the way', 'the numbers count up'], true)
       + ring(80, -1, ['carving marked', 'at its right']) + ring(220, 1, ['carving marked', 'at its left'])
-      + `<text x="150" y="274" text-anchor="middle" fill="rgba(233,226,210,.7)" ${T} ${F}>where two Laws disagree, the older binds</text></svg>`;
+      + `<text x="150" y="282" text-anchor="middle" fill="rgba(233,226,210,.7)" ${T} ${F}>where two Laws disagree, the older binds</text></svg>`;
   };
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:70px;height:14px;vertical-align:middle">${
     kind === 'grey' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="rgba(200,200,210,.7)" stroke-width="2.5" stroke-linecap="round"/>'

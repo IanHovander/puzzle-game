@@ -188,7 +188,7 @@
       /* ---------- SPEAK ---------- */
       P.speak.push({ t: 'h', text: 'The last sealed word' });
       P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
-      if (!ally) P.speak.push({ t: 'letter', text: `"${ctx.name ? ctx.name + '. ' : ''}To you alone, and I will not say it twice. Bring the boy to my door before the fire is out and you live a Master. The others need never know who opened the door."` });
+      if (!ally) P.speak.push({ t: 'letter', text: `“${ctx.name ? ctx.name + '. ' : ''}To you alone, and I will not say it twice. Bring the boy to my door before the fire is out and you live a Master. The others need never know who opened the door.”` });
       P.speak.push(finaleBlock(ctx));
       if (walkOn) P.speak.push({ t: 'fine', text: {
         reader: 'If you walk, you will not read tomorrow. Not the door, not the lexicon, not whatever Wren leaves you.',
