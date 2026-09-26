@@ -373,10 +373,6 @@
         type: 'puzzle', puzzle: 'wheel', art: 'ch4_shelf', mood: 'tower', fx: 'dust', puzzleId: 'ch4_shelf', par: [3, 5, 7], clearWidget: true,
         text: [
           'Six great books, each stamped with a shape rubbed past reading.',
-          { text: 'Reader — what the six books say.', cls: 'whisper' },
-          { text: 'Listener — the phrase the shelf hums.', cls: 'whisper' },
-          { text: 'Seer — which end of the board is marked.', cls: 'whisper' },
-          { text: 'Binder — what that does to a book.', cls: 'whisper' },
           { text: 'Say all four out loud. The catch gives one pull.', cls: 'whisper' },
         ],
         config: () => {
@@ -406,7 +402,7 @@
           return cfg;
         },
         hints: [
-          'Four answers, four people, nobody has two. What the books say, the Reader. What order, the Listener. Which end is marked, the Seer. What that does to a book, the Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           'Two of you hold what this board does to a book. One can see which way it is hanging. One knows what that costs a word. Neither of you can say it alone.',
           /* read off SHELF_ANSWER, which is pullsFor() of the four constants — the shelf's rung is one
              constant away from the oath's failure mode, and nothing was reading it back */
@@ -483,12 +479,12 @@
               if (!budget('desk')) { para(panel, [SHUT.desk]); back(); return; }
               para(panel, ['Her journal, under the primer, open at a page in the old letters.']);
               panel.appendChild(UI.el('div', { html: runeBlock(JOURNAL_LINES, { height: (typeof window !== 'undefined' && window.innerHeight < 760) ? 32 : 40 }) }));
-              para(panel, [{ text: 'Reader — read it out, letter by letter. Both lines.', cls: 'whisper' }]);
+              para(panel, [{ text: 'Read it out, letter by letter. Both lines.', cls: 'whisper' }]);
               const r = await window.VigilAnswer.build(panel, {
                 fields: [{ label: 'the first line', placeholder: 'six words', len: 40, plain: true }, { label: 'the second line', placeholder: 'five words', len: 40, plain: true }],
                 accept: (v) => /SLEEPS/.test(v[0]) && /WINDOW/.test(v[0]) && /LAUGHS/.test(v[1]) && /JOKES/.test(v[1]),
                 onWrong: charge('desk', spent('desk')),
-                wrongText: 'That is not what it says. Reader — letter by letter, and both lines.', submitText: 'Read it', successText: 'Read.', maxTries: budget('desk'),
+                wrongText: 'That is not what it says. Letter by letter, and both lines.', submitText: 'Read it', successText: 'Read.', maxTries: budget('desk'),
               }, api);
               if (!api.alive()) return;
               if (r && r.failed) { Store.note('The journal went back under the primer, unread.'); reveal(CORNER.desk, [SHUT.desk]); return; }
@@ -505,7 +501,7 @@
               if (f.MEMORY) { para(panel, [FOUND.bell]); back(); return; }
               if (!budget('bell')) { para(panel, [SHUT.bell]); back(); return; }
               para(panel, ['A small bell, older than the mantel. Struck, it says back the last thing said near it — to an Ear only.',
-                { text: 'Listener — who else was in this room, and how she answered.', cls: 'whisper' }]);
+                { text: 'Who else was in this room, and how she answered.', cls: 'whisper' }]);
               const r = await window.VigilAnswer.build(panel, {
                 fields: [{ label: 'the other voice', placeholder: 'a name', len: 16 }, { label: 'her last two words', placeholder: 'two words', len: 20 }],
                 /* One accept function, not the per-field array this corner used to carry. answer.js
@@ -515,7 +511,7 @@
                    blended three-try search over a name and a phrase into two independent ones. */
                 accept: (v) => ['VANE', 'LORDVANE', 'ENVOY', 'THEENVOY'].indexOf(v[0]) >= 0 && v[1] === 'THROUGHIT',
                 onWrong: charge('bell', spent('bell')),
-                wrongText: 'The bell hums and says it again. Listener — word for word.', submitText: 'Say it back', successText: 'Said.', maxTries: budget('bell'),
+                wrongText: 'The bell hums and says it again. Word for word.', submitText: 'Say it back', successText: 'Said.', maxTries: budget('bell'),
               }, api);
               if (!api.alive()) return;
               if (r && r.failed) { Store.note('The bell was struck once too often and went quiet.'); reveal(CORNER.bell, [SHUT.bell]); return; }
@@ -531,7 +527,7 @@
               if (f.TAPESTRY) { para(panel, [FOUND.tapestry]); back(); return; }
               if (!budget('tapestry')) { para(panel, [SHUT.tapestry]); back(); return; }
               para(panel, ['The picture this school hangs in every hall: a fire, and one small figure walking into it. Painted over older paint.',
-                { text: 'Seer — which of them carries, and which reaches back.', cls: 'whisper' }]);
+                { text: 'Which of them carries, and which reaches back.', cls: 'whisper' }]);
               /* Under the paint: four walk in, the FOURTH carries the cold glyph, and the SECOND has
                  turned and reached back for something that is not there. Both are on the Seer's plate
                  (js/content/companion/ch4.js) and on no other surface, and the reveal art draws both
@@ -545,7 +541,7 @@
                 fields: [{ label: 'which of them carries', placeholder: 'first, second…', len: 12 }, { label: 'and which reaches back', placeholder: 'first, second…', len: 12 }],
                 accept: (v) => ['FOURTH', 'THEFOURTH', 'FOURTHONE', 'LAST', 'THELAST', 'LASTONE'].indexOf(v[0]) >= 0 && ['SECOND', 'THESECOND', 'SECONDONE'].indexOf(v[1]) >= 0,
                 onWrong: charge('tapestry', spent('tapestry')),
-                wrongText: 'The cloth keeps its paint. Seer — both figures, together.', submitText: 'Say what is under it', successText: 'Said.', maxTries: budget('tapestry'),
+                wrongText: 'The cloth keeps its paint. Both figures, together.', submitText: 'Say what is under it', successText: 'Said.', maxTries: budget('tapestry'),
               }, api);
               if (!api.alive()) return;
               if (r && r.failed) { Store.note('Nobody would scrape the tapestry on a guess.'); reveal(CORNER.tapestry, [SHUT.tapestry]); return; }
@@ -565,7 +561,7 @@
               if (f.GREY) { para(panel, [FOUND.chair]); back(); return; }
               if (!budget('chair')) { para(panel, [SHUT.chair]); back(); return; }
               para(panel, ['Her chair by the fire, still warm. Nothing in it.',
-                { text: 'Binder — her thread to Wren, and hers to you four.', cls: 'whisper' }]);
+                { text: 'Her thread to Wren, and hers to you four.', cls: 'whisper' }]);
               /* The second field was a yes/no — NOTYET, NOT, NOTTIED, UNTIED, NO and nothing else —
                  so two tries covered it twice over and the corner was really one field wide
                  (ADVERSARIAL 12, a window wider than the budget). It now wants the second thread's
@@ -576,7 +572,7 @@
                 fields: [{ label: 'to Wren, the colour', placeholder: 'a colour', len: 12 }, { label: 'to you four, colour and state', placeholder: 'a colour, and…', len: 22 }],
                 accept: (v) => ['GREY', 'GRAY'].indexOf(v[0]) >= 0 && /^RED/.test(v[1]) && /NOT|UNTIED/.test(v[1]),
                 onWrong: charge('chair', spent('chair')),
-                wrongText: 'Nothing in the chair answers. Binder — hers to Wren, then hers to you.', submitText: 'Say what you see', successText: 'Seen.', maxTries: budget('chair'),
+                wrongText: 'Nothing in the chair answers. Hers to Wren, then hers to you.', submitText: 'Say what you see', successText: 'Seen.', maxTries: budget('chair'),
               }, api);
               if (!api.alive()) return;
               if (r && r.failed) { Store.note('The threads in the study went dark before the Binder could name them.'); reveal(CORNER.chair, [SHUT.chair]); return; }
@@ -622,10 +618,6 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch4_scroll', mood: 'court', fx: 'embers', puzzleId: 'ch4_oath', par: [4, 6, 8],
         text: [
           'Four slots in the ring, and three words cut above it, worn nearly smooth.',
-          { text: 'Reader — which three words.', cls: 'whisper' },
-          { text: 'Listener — how far the first two words step.', cls: 'whisper' },
-          { text: 'Seer — every cut in the ring, and where.', cls: 'whisper' },
-          { text: 'Binder — where a sigil begins, and what may lock it.', cls: 'whisper' },
           { text: 'Say all four out loud. The wax takes one closing.', cls: 'whisper' },
         ],
         config: () => {
@@ -683,7 +675,7 @@
              that one of you keeps the rule, and none of the rows above moves when it is read. */
           const cfg = {
             title: 'THE OATH',
-            note: 'The Provost, on her way out: *Three words go in the ring, then a lock. The lock is the **last** thing placed, and it is not written on the scroll — your Binder knows what the wax will take. You may close it **once**. Wax does not soften twice.*',
+            note: 'The Provost, on her way out: *Three words go in the ring, then a lock. The lock is the **last** thing placed, and it is not written on the scroll. You may close it **once**. Wax does not soften twice.*',
             slots: 4, glyphs: glyphPalette(), showArrow: false, maxTries: 1,
             fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to swear it',
             onPlace: (g, slot) => { const before = Object.keys(mine).length; mine[slot] = g; const n = Object.keys(mine).length; if (n === before) return; const who = ['Listener', 'Seer', 'Binder'][n - 1]; if (who) UI.toast(`${who} — the keyboard.`, 1600); },
@@ -719,8 +711,8 @@
           return cfg;
         },
         hints: [
-          'Four answers, four people, nobody has two. The three words, the Reader. The step from the first to the second, the Listener. Every cut, the Seer. Where one starts and what may close it, the Binder.',
-          'A ring has no first, and there is more than one cut in this one. Which kind of cut starts a sigil is the Binder\'s rule.',
+          'Each of you holds one piece. Say yours out loud.',
+          'A ring has no first, and there is more than one cut in this one. Only one kind starts a sigil.',
           oathAnswerRung,
         ],
         onSolve: (s, r) => {

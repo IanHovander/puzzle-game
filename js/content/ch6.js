@@ -737,10 +737,6 @@
           crackedNow(s) < 3
             ? 'Eight cuts, four burnt. Four readings, and a wrong one cracks a bell you need later.'
             : 'Eight cuts, four burnt. Four readings, and no bell left to pay for a wrong one.',
-          { text: 'Reader — what the four burnt cuts were.', cls: 'whisper' },
-          { text: 'Listener — where the line ends.', cls: 'whisper' },
-          { text: 'Seer — which way each burnt cut was struck.', cls: 'whisper' },
-          { text: 'Binder — which way it runs, and what a cut says.', cls: 'whisper' },
           { text: 'Say your one thing out loud first.', cls: 'whisper' },
         ],
         config: () => {
@@ -801,7 +797,7 @@
         };
         return cfg; },
         hints: [
-          'Four things, four people, nobody has two. What the burnt cuts were — the Reader. Where the line ends — the Listener. Which way each was struck — the Seer. The older Law — the Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           'A ring has no first cut, so something must say where the lap ends. Somebody here can hear it. And the school is not the only way to read a cut.',
           /* GENERATED, never typed. ch4 shipped a rung 3 that had drifted from the board the puzzle
              accepts, on a maxTries:1 puzzle, and a table that spent its last resort lost the oath.

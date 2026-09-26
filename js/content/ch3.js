@@ -376,7 +376,7 @@
     if (!placed.length) return UNDER.none;
     if (placed.length < 3) return UNDER.few;
     if (placed.length > 3) return 'Three shapes, three words. A fourth is a different sigil, and the iron can tell.';
-    if (placed.map(i => m[i]).slice().sort().join() !== ARCH.slice().sort().join()) return 'Those are not the three words cut over this door. The Reader has them.';
+    if (placed.map(i => m[i]).slice().sort().join() !== ARCH.slice().sort().join()) return 'Those are not the three words cut over this door.';
     const missing = [1, 2, 3, 4].find(i => !m[i]);          // three of four slots are always a run
     /* There used to be a keyed line here for the board a table lays from the Prologue's rule -- 'begun at
        slot 1. Nothing on this ring says it begins at slot 1.' It named the axis the missing Binder holds,
@@ -465,15 +465,11 @@
         enter: (s) => { if (s.flags.CH3_SPOTTED == null) Store.set('CH3_SPOTTED', 0); },   // cumulative: a re-entry is not a clean sheet (ch1.js:92 is the pattern)
         text: [
           'A1 to E5, in the dark, past two patrols.',
-          { text: 'Reader — the word cut over a hidden door.', cls: 'whisper' },
-          { text: 'Listener — how far along its round each patrol is.', cls: 'whisper' },
-          { text: 'Seer — where the rooms and the rounds are.', cls: 'whisper' },
-          { text: 'Binder — who is bought, and which room nobody searches.', cls: 'whisper' },
           { text: 'Say your one thing out loud before Wren moves.', cls: 'whisper' },
         ],
         config: gridConfig,
         hints: [
-          'Four things, four people, and nobody has two. The word cut over a hidden door — the Reader. How far along their rounds the patrols are — the Listener. Where those rounds run, room by room — the Seer. Who is bought, and which room nobody searches — the Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           'A room is not safe or unsafe. It is safe on some beats and not on others, and the beats come round again. So the question is when to move, not which way — and no two of you can answer that between you. Ask for all four things before Wren moves.',
           (s) => s.flags.WREN_HURT
             ? 'A2, then A3. Speak the west word on turn 3, and the bad arm spends it, so Wren is in the laundry on turn 4. Wait once. The back seam spends turn 6. Then C3, D3, E3, E4, and the door on turn 11.'
@@ -562,10 +558,6 @@
             ? 'Nobody answers. Wren turns to the door instead: three shapes cut into the arch, four sooty slots.'
             : 'Three shapes cut into the arch. Below them, four sooty slots.',
           { text: 'Every phone: **Pages**, and the word WARD.', cls: 'whisper' },
-          { text: 'Reader — what the three shapes say.', cls: 'whisper' },
-          { text: 'Listener — which of them sounds first.', cls: 'whisper' },
-          { text: 'Seer — what is cut under the ring.', cls: 'whisper' },
-          { text: 'Binder — where a sigil begins. Then four hands.', cls: 'whisper' },
         ],
         config: (s) => {
           const cfg = {
@@ -580,7 +572,7 @@
           return cfg;
         },
         hints: [
-          'Four answers, four people, and nobody has two. What the shapes say — the Reader. Which of them sounds first — the Listener. What is cut under the ring — the Seer. Where a sigil begins — the Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So the only question is where the run begins, and that answer comes in two halves, on two phones.',
           /* Derived, never typed out: a rung that restates the answer by hand is what broke ch4's oath
              (ADVERSARIAL 18). tools/check-hints.js runs this text through wardCheck on every build. */

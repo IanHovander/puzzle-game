@@ -1,13 +1,13 @@
 { "start": "ch3_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"},
-  {"expect": "What is cut over the seams"}, {"expect": "scratch at the left end"}, {"expect": "CROWN"}, {"expect": "Ask the Seer, seam by seam"}, {"expectNot": "ASH"},
+  {"expect": "What is cut over the seams"}, {"expect": "scratch at the left end"}, {"expect": "CROWN"}, {"expect": "not yours to see"}, {"expectNot": "ASH"},
   {"tab": "Wren"}, {"expect": "plaques"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
   {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the laundry, in a whisper"}, {"expect": "Never show your phone"}, {"shot": "c3_reader_speak"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "VYXX"}, {"shot": "c3_reader_token"},
   {"clickText": "Pages"}, {"unlock": ["ward"]}, {"expect": "The arch over the Tower door"}, {"expect": "no first, no last"}, {"expect": "KNOT"}, {"shot": "c3_reader_ward"},
 
   {"companion": true}, {"role": "Listener"}, {"unlock": ["VEIL", "CLE"]}, {"shot": "c3_listener_sight"},
-  {"expect": "twelve beats"}, {"expect": "Lose the count"}, {"expect": "The Seer has the rooms"}, {"expect": "twelve beats, then round again"},
+  {"expect": "twelve beats"}, {"expect": "Lose the count"}, {"expect": "Never which room that is"}, {"expect": "twelve beats, then round again"},
   {"tab": "Wren"}, {"expect": "sling"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "Can you hear mine"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "BAX6"},
   {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "The ward hums"}, {"expect": "one rung above"}, {"shot": "c3_listener_ward"},

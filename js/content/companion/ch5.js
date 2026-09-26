@@ -214,7 +214,7 @@
       const prev = (raw == null || !/^\d\d$/.test(String(raw))) ? null : String(raw);
       let ctl = null;
       const mat = MATERIAL[roleId];
-      const said = 'Say them aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.';
+      const said = 'Say them aloud when the Hearth asks, in seat order. Never show the phone.';
       const idle = () => {
         UI.clear(box);
         if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: prev[0] + ' ' + prev[1] })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your two digits. ' + said })); }
@@ -303,7 +303,7 @@
             : '**Two, five, one, three, four**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far. The words are the Reader’s, and where a sigil begins is the Binder’s.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
         P.wren.push({ t: 'p', text: 'Boots above, in step. Water below, moving slowly. And beside you, where Wren is standing, the thing you have called a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });

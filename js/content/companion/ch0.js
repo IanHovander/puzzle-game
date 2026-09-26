@@ -98,7 +98,7 @@
           [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} standing up`, '<b>ASH</b>'],
         ] });
         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
-        P.sight.push({ t: 'fine', text: 'A ring has no first word. Somebody here can *hear* which one comes first.' });
+        P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice. Once in our letters. Once in letters you cannot read, in the same hand.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
@@ -110,8 +110,8 @@
         P.sight.push({ t: 'p', text: 'Nobody else can hear it. Two notes, over and over.' });
         P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note is **three steps above** the first.' });
         P.sight.push({ t: 'html', html: ladder3() });
-        P.sight.push({ t: 'p', text: 'Two notes, two words. When the Reader says them, find both on the ladder in your **Book**. The order that climbs three is right.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, only how far the tune steps.' });
+        P.sight.push({ t: 'p', text: 'Two notes, two words. When you hear the two words, find both on the ladder in your **Book**. The order that climbs three is right.' });
+        P.sight.push({ t: 'fine', text: 'You hear steps, never names.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'p', text: 'You can hear every heart in this tower. Never Wren’s.' });
@@ -123,7 +123,7 @@
         P.sight.push({ t: 'h', text: 'Under the lamp’s foot' });
         P.sight.push({ t: 'p', text: 'Under the polish are **two** old cuts. A long **scratch** under socket **3**. A small **notch** under socket **1**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
-        P.sight.push({ t: 'fine', text: 'Which one matters is the Binder’s call. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
         P.wren.push({ t: 'p', text: 'Every shadow falls away from the lamp. Wren’s falls toward it.' });

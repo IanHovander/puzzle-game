@@ -61,8 +61,8 @@
           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
           'You cannot walk into weather. The Cold is a place, and nobody will tell you where.',
           'Everybody agrees who it is about. Nobody finishes it out loud when Wren is in the room.',
-          { text: 'You will see this sentence again, closer. Nothing tonight needs writing down.', cls: 'small' },
           'And tonight, for the first time in fourteen years, the Hearth is flickering.',
+          { text: 'No need to write anything down.', cls: 'small' },
         ],
         next: 'ch0_dorm', button: 'The night before',
       },
@@ -74,8 +74,8 @@
           'Four of you, awake past curfew, in a room with four beds and one round window.',
           'On the sill, a brass lamp older than the school\'s records. Nobody has ever got it to light. Everybody has tried.',
           'A fifth blanket lies folded on the floor. Officially, it is nobody\'s.',
-          'You have known each other since you were seven. Each of you sees one thing the other three cannot.',
-          { text: 'Sit in this order, left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Those are your seats for the whole night.', cls: 'whisper' },
+          'You have been friends since you were seven. Five of you, not four: Wren adopted you the first week and never gave you back.',
+          { text: 'Sit left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Keep these seats all night.', cls: 'whisper' },
         ],
         next: 'ch0_keys', button: 'Claim the keys',
       },
@@ -83,7 +83,7 @@
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           { text: 'One keyboard, one key each. Press yours when it glows.', cls: 'whisper' },
-          { text: 'Then all four together, inside one second. Four hands is how this school does anything that matters.', cls: 'whisper' },
+          { text: 'Then all four at once.', cls: 'whisper' },
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
@@ -91,7 +91,7 @@
           const pads = UI.el('div', {});
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
           wrap.appendChild(pads); wrap.appendChild(st);
-          const remap = UI.el('button', { class: 'btn small ghost', text: 'A key is not working — change keys', onclick: async () => {
+          const remap = UI.el('button', { class: 'btn small ghost', text: 'Key not working? Change keys', onclick: async () => {
             const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
             if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1);
             if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
@@ -128,7 +128,7 @@
       ch0_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
-          'Later tonight you do this for real, against a clock. This one is free.',
+          'Practice. Later tonight, it counts.',
           { text: 'Press as your light crosses the line.', cls: 'whisper' },
           { text: 'Purple means everyone.', cls: 'whisper' },
         ],
@@ -140,21 +140,21 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
           'The door bangs open. Wren never knocks.',
-          { speaker: 'Wren', text: 'You\'re awake. Good. I need four idiots and a lamp.' },
-          { speaker: 'Wren', text: 'Reader — you read everything, eat nothing, and correct my spelling.' },
-          { speaker: 'Wren', text: 'Listener — you can hear a spider think, two floors down. Then you apologise to it.' },
-          { speaker: 'Wren', text: 'Seer — you see under things. Paint. Polish. People. And you never tell.' },
-          { speaker: 'Wren', text: 'Binder — you know every rule in the book, and who is tied to who. You\'ve never broken one.' },
+          { speaker: 'Wren', text: 'You\'re awake! Brilliant. I need four idiots and a lamp, and look — both, already here.' },
+          { speaker: 'Wren', text: 'The lamp has old words on it. Reader, you read everything and eat nothing, so that\'s you. I brought you a biscuit anyway.' },
+          { speaker: 'Wren', text: 'It hums, too. Listener, you can hear a spider think two floors down. Hello, spider. A humming lamp is easy.' },
+          { speaker: 'Wren', text: 'Seer, there\'s something cut under the brass. You see under things. Paint, polish, my excuses. Go on, look.' },
+          { speaker: 'Wren', text: 'Binder, you know every rule in the book, including the ones we\'re about to break. And who\'s tied to who. Mostly to me.' },
         ],
         next: 'ch0_dare', button: 'And you?',
       },
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          { speaker: 'Wren', text: 'Me? I\'m the thing they\'re all coming to look at.' },
-          { speaker: 'Wren', text: 'Tomorrow I stand at the front of a hall and hold still while grown-ups decide about me. That\'s the whole job.' },
+          { speaker: 'Wren', text: 'Me? I\'m the main event. Tomorrow I stand at the front of a hall while the grown-ups decide about me.' },
+          { speaker: 'Wren', text: 'I\'ve been practising standing still. My record is eleven seconds.' },
           { speaker: 'Wren', text: 'Everything I have, somebody gave me. The name. The bed. My birthday is just the night they found me.' },
-          { speaker: 'Wren', text: 'So tonight I want one thing that\'s mine. That lamp. Mum\'ll — the Provost\'ll — kill me. Worth it.' },
+          { speaker: 'Wren', text: 'So tonight I want one good thing. Ours. That lamp.' },
           { speaker: 'Wren', text: 'A hundred people have tried it with a match. Nobody\'s tried a sigil. Carve my name in first, so it knows whose it is.' },
         ],
         next: 'ch0_carve', button: 'Carve it',
@@ -162,23 +162,19 @@
       ch0_carve: {
         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
         text: ['A hundred names already in the brass. A hundred people who tried a match.'],
-        config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: 'Wren, arms folded: "My name. Mine. W-R-E-N."', submitText: 'Carve' }),
+        config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: 'Wren, delighted: "Close! It\'s W-R-E-N. Four letters. I believe in you."', submitText: 'Carve' }),
         solvedText: [
           'It flares blue, once, and dies.',
-          { speaker: 'Wren', text: 'Told you. Names don\'t burn. Words do. The old ones.' },
-          { speaker: 'Wren', text: 'Reader — two shapes round the collar. Only you can read them.' },
-          { speaker: 'Wren', text: 'Listener — it hums. It\'s hummed since before you were born.' },
-          { speaker: 'Wren', text: 'Seer — something\'s cut under the brass. Nobody\'s ever seen it. You will.' },
-          { speaker: 'Wren', text: 'Binder — you know the rule about rings. The one nobody else got taught.' },
-          { speaker: 'Wren', text: 'Nobody has all four. That\'s the whole trick.' },
+          { speaker: 'Wren', text: 'Ha! It *noticed* me. Names don\'t burn, though. Words do — the old ones.' },
+          { speaker: 'Wren', text: 'And the old words need all four of you. Nobody else has all four. That\'s the whole trick of it.' },
         ],
         next: 'ch0_attune',
       },
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
         text: [
-          { text: 'Open the Companion on your phone. Take your seat. Type this word.', cls: 'whisper' },
-          { text: 'Your phone keeps everything it shows you — in the **Book** tab, all night. You will never have to remember it.', cls: 'small' },
+          { text: 'Open the Companion on your phone. Pick your seat. Type this word.', cls: 'whisper' },
+          { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
         roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,
         next: 'ch0_lamp',
@@ -188,13 +184,12 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
           { text: 'A sigil is words in slots. This ring has four slots.', cls: 'whisper' },
-          { text: 'The Reader has the words. The Listener has the order. The Seer has the cuts. The Binder has the rule. Nobody has two.', cls: 'whisper' },
           { text: 'Say what you see. Never show your phone.', cls: 'whisper' },
-          { text: 'Stuck? The fire keeps a Hint.', cls: 'small' },
+          { text: 'Stuck? Press Hint.', cls: 'small' },
         ],
         config: () => ({
           title: 'THE DORMITORY LAMP',
-          note: 'Four brass sockets around the foot. Two shapes cut around the collar, worn past reading — the Reader\'s page has them clean.',
+          note: 'Two shapes on the collar, worn smooth.',
           slots: 4, glyphs: glyphPalette(), answer: { 3: 'ASH', 4: 'EMBER' },
           allowEmpty: true, showArrow: false,
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys, within a second',
@@ -202,44 +197,44 @@
           onWrong: (m, tries) => tries >= 2 ? 'The brass stays cold. Wren, unhelpfully: “Has everyone actually said their bit?”' : null,
         }),
         hints: [
-          'Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder.',
-          'Two words, and the hum between them says which of the two is spoken first. The Listener has that step. And there is more than one cut under the brass — the Binder knows which kind starts a sigil.',
+          'Each of you holds one piece. Say yours out loud.',
+          'The hum says which word goes first. Only one cut marks the start.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The lamp catches. Warm, steady, and against about a dozen school rules.',
-          { speaker: 'Wren', text: 'Four hundred years. Still works. Took four of you, mind.' },
+          { speaker: 'Wren', text: 'Four hundred years, and it still works. Mum\'ll — the Provost\'ll — kill me.' },
           'Wren drags the fifth blanket over and sits right up against the glass.',
           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
           'In that light, each of you sees the thing about Wren you have never said out loud.',
-          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order: Reader, Listener, Seer, Binder.', cls: 'whisper' },
+          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
         next: 'ch0_name',
       },
       ch0_name: {
         type: 'choice', art: 'ch0_dorm', mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
         text: [
-          'Nobody says anything. Wren talks to the lamp instead of to you.',
-          { speaker: 'Wren', text: 'I know. All four of you. I\'ve known for years.' },
+          'Nobody says anything. Then Wren laughs.',
+          { speaker: 'Wren', text: 'Oh, *that*. I know. All four of you. I\'ve known for years.' },
           { speaker: 'Wren', text: 'You lot are terrible at secrets. …Thank you.' },
-          { speaker: 'Wren', text: 'New subject. You need a name. As a set.' },
+          { speaker: 'Wren', text: 'Now. You need a name, as a set. I want something good to say tomorrow.' },
         ],
         options: [
-          { id: 'four', text: 'Binder: "The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand.' }] },
+          { id: 'four', text: 'Binder: "The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand. Very carved-in-stone.' }] },
           { id: 'idiots', text: 'Seer: "The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
-          { id: 'vigil', text: 'Reader: "The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'The Provost will hate that. Perfect.' }] },
+          { id: 'vigil', text: 'Reader: "The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'The Provost will *hate* that. Perfect.' }] },
           { id: 'own', text: 'Listener: "Something of our own?"', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
         ],
       },
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
         text: [
+          'Wren talks until all four of you are asleep. Nobody sees whether Wren sleeps at all.',
           'Below, in the great hall, the Hearth flickers again.',
-          'Wren falls asleep on the fifth blanket, as close to the lamp as it goes.',
-          'The school has a word for what each of you just did. A Sighting. One way of seeing, one to a person, and nobody chooses which.',
+          'The school has a word for what each of you did tonight. A Sighting. One way of seeing, one to a person, and nobody chooses which.',
           'Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years. Not one of them has said what they saw.',
-          { text: 'After each chapter the Hearth shows you every path — the ones you walked, and the ones you did not.', cls: 'small' },
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,

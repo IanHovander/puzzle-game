@@ -226,15 +226,11 @@
         type: 'puzzle', puzzle: 'dialseq', art: 'ch2_antechamber', mood: 'tense', fx: 'dust', puzzleId: 'ch2_door', par: [3, 4.5, 6],
         text: [
           { text: 'Four turns, one order. Say your one thing before anybody touches a dial.', cls: 'whisper' },
-          { text: 'Reader — the word cut into each plinth.', cls: 'whisper' },
-          { text: 'Listener — the order the door hums.', cls: 'whisper' },
-          { text: 'Seer — which hole each plinth was cut for.', cls: 'whisper' },
-          { text: 'Binder — which of the three counts binds.', cls: 'whisper' },
           { text: 'One count only. A wrong one does not end the night.', cls: 'small' },
         ],
         config: () => ({
           title: "THE FOUNDERS' DOOR",
-          note: 'The Reader reads the lintel: *Four plinths, four dials. Turn all four, one word each, in the order the door hums. The door counts **once**.* Three rules say which dial a word goes on: the dial its plinth **stands over**, the dial it was **cut for**, or **one to four** in turn. Only one is older than this floor.',
+          note: 'The lintel: *Four plinths, four dials. Turn all four, one word each, in the order the door hums. The door counts **once**.* Three rules say which dial a word goes on: the dial its plinth **stands over**, the dial it was **cut for**, or **one to four** in turn. Only one is older than this floor.',
           html: '<div class="ch2-count" id="ch2-count">One count. It has not been called yet.</div>',
           dials: [1, 2, 3, 4].map(n => ({ id: String(n), label: String(n) })),
           glyphs: glyphPalette(), maxTurns: 4,
@@ -248,7 +244,7 @@
           },
         }),
         hints: [
-          'Four things, four people, and nobody has two. The words — the Reader. The order — the Listener. Which hole each plinth was cut for — the Seer. Which of the three counts binds — the Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           'Three ways to count this door, and the room can see all three. Which one the door was cut to obey is a question of dates, and only one of you can date them.',
           /* Generated, never written out twice: ch4's oath is what a hand-copied last rung costs on a
              puzzle that commits once. tools/check-hints.js puts this string back through check(). */
@@ -306,7 +302,6 @@
           wrap.appendChild(UI.el('div', { class: 'pz-title', text: "MERE'S NICHE" }));
           wrap.appendChild(UI.el('div', { class: 'ch2-label', text: 'the strip — three shapes, left to right' }));
           wrap.appendChild(UI.el('div', { html: G.inscription(STRIP, { showMark: false }) }));
-          wrap.appendChild(UI.el('div', { class: 'pz-note', html: UI.rich('The Reader has both readings. Only the Seer can say which end this line begins at.') }));
           const status = UI.el('div', { class: 'pz-status' }); wrap.appendChild(status);
           wrap.appendChild(UI.el('div', { html: oldSheet() }));
           const say = (cls, t) => { status.className = 'pz-status ' + cls; status.textContent = t; };

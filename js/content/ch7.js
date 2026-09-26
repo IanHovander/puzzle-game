@@ -531,10 +531,6 @@
            along with the two minutes the prophecy stone can take off the night. */
         text: [
           { text: 'Eight sockets, one phrase. Say your one thing first.', cls: 'whisper' },
-          { text: 'Reader — what each wall says, both ways.', cls: 'whisper' },
-          { text: 'Listener — how the phrase opens.', cls: 'whisper' },
-          { text: 'Seer — where the floor is cut.', cls: 'whisper' },
-          { text: 'Binder — what a cut obliges.', cls: 'whisper' },
         ],
         config: (s) => {
           const knot = oathKnot(s), walk = walkOn(s);
@@ -597,7 +593,7 @@
           };
         },
         hints: [
-          'Four answers, and nobody has two. The walls — Reader. How it opens — Listener. Where the floor is cut — Seer. What a cut obliges — Binder.',
+          'Each of you holds one piece. Say yours out loud.',
           /* R10.22: the insight in the abstract. The rung that stood here read "Two walls, two ways each,
              and either may speak first: eight phrases. Four say eight different words. Only one opens
              with the smallest climb." Both of those last two sentences are somebody's page said out

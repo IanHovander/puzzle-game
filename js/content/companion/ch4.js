@@ -219,7 +219,7 @@
            exactly one order; one step without them is thirty-two boards. */
         P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then it dies away</span></div>', play: (A) => CA.playSteps(A, [-1]),
           text: '**Down one, and then the tune goes out of it.** Three words are cut there. The ring will only give you the step from the first to the second.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. Three words, one step — the Reader has to tell you which three.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps.' });
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -235,7 +235,7 @@
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
         P.sight.push({ t: 'fine', text: 'Three cuts, and nothing else cut anywhere in the room. **The two in the scroll\'s ring are not the same kind.**' });
         P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say which of them has something in his hand, and which of them reaches back.' });
-        P.sight.push({ t: 'fine', text: 'What a cut obliges is not yours — one kind starts a sigil and one does not, and that is the Binder\'s. Say where they are, and stop.' });
+        P.sight.push({ t: 'fine', text: 'Say where the cuts are, and stop.' });
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });

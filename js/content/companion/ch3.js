@@ -165,7 +165,7 @@
           ] });
           P.sight.push({ t: 'p', text: '**One shape, two words, and only one of them opens a seam.** Say both, out loud, for each.' });
           P.sight.push({ t: 'fine', text: 'A word that is not the one costs Wren a turn — and a turn more for every guess that seam already remembers. The Hearth counts what is left.' });
-          P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see. Ask the Seer, seam by seam.' });
+          P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see.' });
         } else {
           P.sight.push({ t: 'h', text: 'The arch over the Tower door' });
           P.sight.push({ t: 'p', text: 'Three shapes are cut into the arch, all of them standing up. The Hearth shows them worn away. On your page they are clean.' });
@@ -192,14 +192,14 @@
             text: 'The lantern goes out along its corridor and comes back. The sentry stands a long while at one end, walks away, and comes back.' });
           P.sight.push({ t: 'html', html: rounds() });
           P.sight.push({ t: 'fine', text: '**Lose the count and Wren walks into somebody.** A sighting sends Wren back, and the count keeps running.' });
-          P.sight.push({ t: 'fine', text: 'You hear how far along a round they are. Never which room that is. The Seer has the rooms.' });
+          P.sight.push({ t: 'fine', text: 'You hear how far along a round they are. Never which room that is.' });
         } else {
           P.sight.push({ t: 'h', text: 'The ward hums' });
           P.sight.push({ t: 'p', text: 'Three notes under the soot, over and over. Nobody else in this stairwell can hear them.' });
           P.sight.push({ t: 'audio', label: 'The threshold, humming', strip: CA.strip([1, 1]), play: (A) => CA.playSteps(A, [1, 1]),
             text: 'The second note is **one rung above** the first. The third is one rung above that.' });
           P.sight.push({ t: 'p', text: 'Three notes, three words. Look their rungs up on the Ladder in your **Book**. Only one order climbs one, then one.' });
-          P.sight.push({ t: 'fine', text: 'You never hear a word’s name. The Reader has the words. Say the climb out loud, and let them put it in order.' });
+          P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Say the climb out loud.' });
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -211,17 +211,17 @@
       if (roleId === 'seer') {
         if (!ward) {
           P.sight.push({ t: 'h', text: 'Under the corridors' });
-          P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. The Listener counts stops along a round. Only you have both.' });
+          P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. Your map ties each stop of a round to a room.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
           P.sight.push({ t: 'p', text: '**The west seam is scratched at its left end. The laundry’s back seam is scratched at its right.**' });
-          P.sight.push({ t: 'fine', text: 'Give the Reader the end before anybody speaks. A wrong word costs a turn, and more at a seam you have guessed at before.' });
+          P.sight.push({ t: 'fine', text: 'Say which end before anybody reads. A wrong word costs a turn, and more at a seam you have guessed at before.' });
           P.sight.push({ t: 'fine', text: 'What a shape says is not yours, and neither is what a cry costs. Say where things are, and stop.' });
         } else {
           P.sight.push({ t: 'h', text: 'Under the Tower door' });
           P.sight.push({ t: 'p', text: 'Four slots below the arch, black with soot. Two things are cut under them, and both were cut long before the soot.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
           P.sight.push({ t: 'p', text: '**A small notch under slot 4. A long, deliberate scratch under slot 1.** The numbers are the ones the Hearth shows.' });
-          P.sight.push({ t: 'fine', text: 'Which cut matters is not yours to know. That is the Binder’s half. Say what is cut, and where.' });
+          P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
