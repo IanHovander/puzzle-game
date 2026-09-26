@@ -32,7 +32,16 @@
 
   /* Reader: the two walls, each drawn once and read both ways. No mark, no arrow, no socket number —
      which end a wall begins at is the Seer's, and which wall speaks first is the Listener's. */
-  const wallRow = (items) => G.inscription(items.map(it => Object.assign({}, it)), { showMark: false, color: GOLD });
+  const wallRow = (items) => G.inscription(items.map(it => Object.assign({}, it)), { showMark: false, color: GOLD })
+    .replace('style="', 'style="width:100%;height:auto;');
+  /* One table, each wall across its full width with its two readings under it: in a three-column row
+     the drawing shrank to a thumbnail on a phone. */
+  const wallTable = () => {
+    const TH = '<tr><th>from one end</th><th>from the other</th></tr>';
+    const wall = (items, lab) => `<tr><td colspan="2">${wallRow(items)}<div class="fine" style="text-align:center">${lab}</div></td></tr>`
+      + TH + `<tr><td>${words(items, 'one')}</td><td>${words(items, 'other')}</td></tr>`;
+    return '<table class="blk-table"><tr><th colspan="2">cut into the wall</th></tr>' + wall(WEST, 'one wall') + wall(EAST, 'the other') + '</table>';
+  };
 
   /* The Listener's interval, drawn: two rungs of the ladder and the smallest climb there is.
      The dormitory lamp opened on +3. This one opens on +1. */
@@ -47,26 +56,27 @@
   /* The Seer's floor: eight sockets, numbered as the Hearth numbers them, and TWO cuts.
      No arrow, no direction, no rule — the Seer reports cuts, not meanings. */
   const ringCuts = () => {
-    const cx = 170, cy = 132, R = 76;
+    const cx = 180, cy = 148, R = 86;
     const at = (n, d) => { const a = ((n - 1) / 8 * 360 - 90) * Math.PI / 180; return [cx + Math.cos(a) * (R + d), cy + Math.sin(a) * (R + d)]; };
     /* labels are placed by the mark's own bearing, so they stay inside the box wherever the cuts move */
     const lab = (n, d) => { const a = ((n - 1) / 8 * 360 - 90) * Math.PI / 180, c = Math.cos(a), v = Math.sin(a);
-      return [(cx + c * (R + d)).toFixed(1), (cy + v * (R + d) + (Math.abs(v) > 0.9 ? (v > 0 ? 15 : -9) : 4)).toFixed(1),
+      if (Math.abs(v) <= 0.9) d += 24;   /* beside a mark, the label clears the mark's own width */
+      return [(cx + c * (R + d)).toFixed(1), (cy + v * (R + d) + (Math.abs(v) > 0.9 ? (v > 0 ? 17 : -10) : 5)).toFixed(1),
         c > 0.35 ? 'start' : c < -0.35 ? 'end' : 'middle']; };
-    let s = `<svg viewBox="0 0 360 260"><rect width="360" height="260" fill="#000"/>`;
+    let s = `<svg viewBox="0 0 360 298"><rect width="360" height="298" fill="#000"/>`;
     s += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#fff" stroke-width="1.4"/>`;
     for (let i = 0; i < 8; i++) {
       const [x, y] = at(i + 1, 0); const hot = (i + 1) === SCRATCH;
-      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="15" fill="#000" stroke="${hot ? V : '#fff'}" stroke-width="${hot ? 2.5 : 1.4}"/>`;
-      s += `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="${hot ? V : '#fff'}" font-size="12" ${F}>${i + 1}</text>`;
+      s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16" fill="#000" stroke="${hot ? V : '#fff'}" stroke-width="${hot ? 2.5 : 1.4}"/>`;
+      s += `<text x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}" text-anchor="middle" fill="${hot ? V : '#fff'}" font-size="14" ${F}>${i + 1}</text>`;
     }
     const [sx, sy] = at(SCRATCH, 26), [slx, sly, sla] = lab(SCRATCH, 34);
     s += `<g stroke="${V}" stroke-width="2.5" stroke-linecap="round"><path d="M${(sx - 17).toFixed(1)},${(sy + 3).toFixed(1)} L${(sx + 17).toFixed(1)},${(sy - 5).toFixed(1)}"/><path d="M${(sx - 13).toFixed(1)},${(sy + 10).toFixed(1)} L${(sx + 13).toFixed(1)},${(sy + 3).toFixed(1)}"/></g>`;
-    s += `<text x="${slx}" y="${sly}" text-anchor="${sla}" fill="${V}" font-size="10" ${F}>a scratch</text>`;
+    s += `<text x="${slx}" y="${sly}" text-anchor="${sla}" fill="${V}" font-size="13" ${F}>a scratch</text>`;
     const [nx, ny] = at(NOTCH, 24), [nlx, nly, nla] = lab(NOTCH, 32);
     s += `<g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".9"><path d="M${(nx - 7).toFixed(1)},${(ny + 7).toFixed(1)} L${nx.toFixed(1)},${(ny - 4).toFixed(1)} L${(nx + 7).toFixed(1)},${(ny + 7).toFixed(1)}"/></g>`;
-    s += `<text x="${nlx}" y="${nly}" text-anchor="${nla}" fill="rgba(255,255,255,.85)" font-size="10" ${F}>a small notch</text>`;
-    s += `<text x="180" y="252" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">two cuts in the rim, under the polish</text></svg>`;
+    s += `<text x="${nlx}" y="${nly}" text-anchor="${nla}" fill="rgba(255,255,255,.85)" font-size="13" ${F}>a small notch</text>`;
+    s += `<text x="180" y="288" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".75">two cuts in the rim, under the polish</text></svg>`;
     return s;
   };
 
@@ -100,14 +110,14 @@
     <text x="26" y="129" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>a notch</text>
     <path d="M129,36 a62,62 0 0 1 0,88" fill="none" stroke="${RED}" stroke-width="2.5"/>
     <path d="M129,124 l-8,-5 l0,10 Z" fill="${RED}"/>
-    <text x="144" y="82" text-anchor="middle" fill="${RED}" font-size="9" ${F}>clockwise</text>
+    <text x="128" y="84" text-anchor="end" fill="${RED}" font-size="9" ${F}>clockwise</text>
     <text x="85" y="156" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the scratch starts it, then clockwise</text>
   </svg>`;
 
   /* Wren, under the chamber: four shadows away from the spark, and one toward it. No names but Wren's. */
   const underChamber = () => {
-    let s = `<svg viewBox="0 0 360 210"><rect width="360" height="210" fill="#000"/>`;
-    s += `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="190"/>`;
+    let s = `<svg viewBox="0 0 360 252"><rect width="360" height="252" fill="#000"/>`;
+    s += `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="212"/>`;
     s += `<ellipse cx="180" cy="128" rx="120" ry="50"/>`;
     for (let i = 0; i < 8; i++) { const a = (i / 8 * 360 - 90) * Math.PI / 180; s += `<circle cx="${(180 + Math.cos(a) * 120).toFixed(1)}" cy="${(128 + Math.sin(a) * 50).toFixed(1)}" r="6"/>`; }
     s += `<path d="M180,40 L180,18" stroke-dasharray="2 4"/></g>`;
@@ -116,8 +126,8 @@
     s += `<g fill="#fff">${four.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5"/>`).join('')}<circle cx="180" cy="90" r="5" fill="${V}"/></g>`;
     s += `<g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round">${four.map(([x, y]) => { const dx = x - 180, dy = y - 128, n = Math.hypot(dx, dy); return `<path d="M${x},${y} L${(x + dx / n * 22).toFixed(1)},${(y + dy / n * 22).toFixed(1)}"/>`; }).join('')}</g>`;
     s += `<g stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,90 L180,116"/></g>`;
-    s += `<text x="180" y="80" text-anchor="middle" fill="${V}" font-size="9" ${F}>Wren</text>`;
-    s += `<text x="180" y="206" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">shadows, as they fall</text></svg>`;
+    s += `<text x="189" y="98" fill="${V}" font-size="13" ${F}>Wren</text>`;
+    s += `<text x="180" y="243" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".75">shadows, as they fall</text></svg>`;
     return s;
   };
 
@@ -192,10 +202,7 @@
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The two walls' });
         P.sight.push({ t: 'p', text: 'What the fire shows worn, you see cut.' });
-        P.sight.push({ t: 'table', head: ['cut into the wall', 'from one end', 'from the other'], rows: [
-          [wallRow(WEST) + '<div class="fine">one wall</div>', words(WEST, 'one'), words(WEST, 'other')],
-          [wallRow(EAST) + '<div class="fine">the other</div>', words(EAST, 'one'), words(EAST, 'other')],
-        ] });
+        P.sight.push({ t: 'html', html: wallTable() });
         P.sight.push({ t: 'fine', text: 'a wall has two ends and no beginning' });
         P.sight.push({ t: 'p', text: '**Each wall says one of those two things, never both.** Read all four rows out loud.' });
         if (knot) P.sight.push({ t: 'fine', text: 'The seal at the foot of the Chair’s scroll is one word: **CROWN**.' });

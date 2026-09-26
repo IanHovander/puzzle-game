@@ -23,24 +23,25 @@
      cut for, numbered the way the Hearth numbers the dials. One violet line each and nothing else — no
      arrow to a rule and no word about which floor the door obeys. The Seer reports holes, not rules. */
   const underFloor = (() => {
-    const xs = [58, 148, 238, 328];
-    let s = `<svg viewBox="0 0 386 252"><rect width="386" height="252" fill="#000"/>`;
-    s += `<line x1="12" y1="126" x2="374" y2="126" stroke="#fff" stroke-width="1" opacity=".45"/>`;
-    s += `<rect x="20" y="96" width="26" height="24" rx="3" fill="none" stroke="${V}" stroke-width="1.5" stroke-dasharray="3 2"/>`;
-    s += `<text x="33" y="90" text-anchor="middle" fill="${V}" font-size="8" ${F}>a hollow</text>`;
+    /* Sized for a phone: the figure shows ~318px wide, so a viewBox 340 wide keeps 13.5-unit type at ~12.5px. */
+    const xs = [90, 164, 238, 312];
+    let s = `<svg viewBox="0 30 340 230"><rect y="30" width="340" height="230" fill="#000"/>`;
+    s += `<line x1="4" y1="126" x2="336" y2="126" stroke="#fff" stroke-width="1" opacity=".45"/>`;
+    s += `<rect x="18" y="96" width="26" height="24" rx="3" fill="none" stroke="${V}" stroke-width="1.5" stroke-dasharray="3 2"/>`;
+    s += `<text x="4" y="88" fill="${V}" font-size="13.5" ${F}>a hollow</text>`;
     xs.forEach((x, i) => {
       s += `<path d="M${x - 8},118 L${x - 6},72 C${x - 6},62 ${x + 6},62 ${x + 6},72 L${x + 8},118 Z" fill="none" stroke="#fff" stroke-width="1.2"/>`;
       s += `<rect x="${x - 20}" y="118" width="40" height="8" fill="none" stroke="#fff" stroke-width="1.2"/>`;
-      s += `<text x="${x}" y="58" text-anchor="middle" fill="#fff" font-size="12" ${F}>${i + 1}</text>`;
+      s += `<text x="${x}" y="54" text-anchor="middle" fill="#fff" font-size="15" ${F}>${i + 1}</text>`;
       s += `<rect x="${x - 22}" y="176" width="44" height="12" rx="2" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".7"/>`;
-      s += `<circle cx="${x}" cy="212" r="14" fill="none" stroke="#fff" stroke-width="1.3"/><text x="${x}" y="216" text-anchor="middle" fill="#fff" font-size="11" ${F}>${i + 1}</text>`;
+      s += `<circle cx="${x}" cy="213" r="15" fill="none" stroke="#fff" stroke-width="1.3"/><text x="${x}" y="218" text-anchor="middle" fill="#fff" font-size="14" ${F}>${i + 1}</text>`;
     });
     xs.forEach((x, i) => {
       const tx = xs[CUTFOR[i] - 1];
       s += `<path d="M${x},130 C${x},154 ${tx},150 ${tx},172" fill="none" stroke="${V}" stroke-width="2" opacity=".95"/>`;
       s += `<path d="M${tx - 4},165 L${tx},174 L${tx + 4},165" fill="none" stroke="${V}" stroke-width="2"/>`;
     });
-    s += `<text x="193" y="242" text-anchor="middle" fill="${V}" font-size="9" ${F}>the hole each plinth was cut to stand in</text>`;
+    s += `<text x="170" y="250" text-anchor="middle" fill="${V}" font-size="13" ${F}>the hole each plinth was cut to stand in</text>`;
     return s + `</svg>`;
   })();
 
@@ -55,18 +56,18 @@
      across. No numbers — which plinth and which dial is the Seer's to say. Only which band binds is his. */
   const twoBands = () => `<svg viewBox="0 0 252 172" style="width:222px;height:151px">
     <rect x="6" y="6" width="240" height="62" fill="none" stroke="rgba(255,255,255,.22)"/>
-    <text x="16" y="20" fill="rgba(255,255,255,.45)" font-size="9" ${F}>YEAR 212</text>
+    <text x="14" y="22" fill="rgba(255,255,255,.55)" font-size="11.5" ${F}>YEAR 212</text>
     <rect x="70" y="26" width="26" height="11" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
     <path d="M83,39 L83,52" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/><path d="M79,47 L83,54 L87,47" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
     <circle cx="83" cy="60" r="5" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"/>
     <path d="M12,64 L240,12" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
     <rect x="6" y="80" width="240" height="62" fill="none" stroke="${RED}"/>
-    <text x="16" y="94" fill="${RED}" font-size="9" ${F}>YEAR 0</text>
+    <text x="14" y="96" fill="${RED}" font-size="11.5" ${F}>YEAR 0</text>
     <rect x="70" y="100" width="26" height="11" fill="none" stroke="${RED}" stroke-width="1.5"/>
     <path d="M83,113 C83,126 176,122 176,128" fill="none" stroke="${RED}" stroke-width="2"/><path d="M172,122 L177,131 L181,122" fill="none" stroke="${RED}" stroke-width="2"/>
     <circle cx="83" cy="134" r="5" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="1.2" stroke-dasharray="2 2"/>
     <circle cx="178" cy="136" r="5" fill="none" stroke="${RED}" stroke-width="1.5"/>
-    <text x="126" y="164" text-anchor="middle" fill="${RED}" font-size="10" ${F}>the older band is the one that binds</text>
+    <text x="126" y="165" text-anchor="middle" fill="${RED}" font-size="11" ${F}>the older band is the one that binds</text>
   </svg>`;
 
   /* A thread, drawn two ways: whole, and absent. */
@@ -76,11 +77,11 @@
   }</svg>`;
 
   /* Under the stair: four shadows fall away from the cold light, and Wren's reaches for it. */
-  const underStair = `<svg viewBox="0 0 360 224">
-    <rect width="360" height="224" fill="#000"/>
+  const underStair = `<svg viewBox="0 94 360 160">
+    <rect y="94" width="360" height="160" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
       <path d="M10,196 L120,196 L120,176 L150,176"/><path d="M210,176 L240,176 L240,156 L350,156"/>
-      <path d="M150,176 L150,220 M210,176 L210,220" stroke-dasharray="3 3" opacity=".6"/>
+      <path d="M150,176 L150,222 M210,176 L210,222" stroke-dasharray="3 3" opacity=".6"/>
       <rect x="268" y="108" width="26" height="30" rx="3"/>
       <path d="M281,116 C285,120 287,124 287,127 C287,131 284,134 281,134 C278,134 275,131 275,127 C275,124 277,120 281,116 Z" fill="${SEA}" stroke="none" opacity=".9"/>
     </g>
@@ -89,8 +90,8 @@
     <circle cx="300" cy="146" r="6" fill="${V}"/>
     <path d="M300,146 L340,144" stroke="${V}" stroke-width="3" opacity=".9" stroke-linecap="round"/>
     <path d="M300,146 C295,136 285,130 281,124" stroke="${V}" stroke-width="1.2" fill="none" stroke-dasharray="2 2"/>
-    <g fill="#fff" font-size="9" ${F}><text x="28" y="208">Reader</text><text x="60" y="162">Listener</text><text x="88" y="208">Seer</text><text x="118" y="154">Binder</text><text x="292" y="172" fill="${V}">Wren</text></g>
-    <text x="180" y="220" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">four shadows fall away. One reaches.</text>
+    <g fill="#fff" font-size="13.5" ${F} text-anchor="middle"><text x="36" y="214">Reader</text><text x="62" y="160">Listener</text><text x="104" y="214">Seer</text><text x="136" y="148">Binder</text><text x="300" y="176" fill="${V}">Wren</text></g>
+    <text x="180" y="244" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".75">four shadows fall away. One reaches.</text>
   </svg>`;
 
   C.chapters.push({

@@ -29,28 +29,28 @@
 
   /* The Listener's score: thirty-two beats, and the number to say on each. Nobody else has it. */
   const callComb = () => {
-    const cw = 42, rows = 4, per = 8;
-    let s = `<svg viewBox="0 0 ${per * cw + 16} ${rows * 46 + 22}" style="width:100%">`;
+    const cw = 42, rows = 4, per = 8, ch = 48, pitch = 56;
+    let s = `<svg viewBox="0 0 ${per * cw + 10} ${rows * pitch + 30}" style="width:100%">`;
     for (let i = 0; i < 32; i++) {
-      const r = Math.floor(i / per), c = i % per, x = 8 + c * cw, y = 6 + r * 46, b = i + 1, n = CALL[b];
-      s += `<rect x="${x}" y="${y}" width="${cw - 6}" height="36" rx="4" fill="${n ? 'rgba(79,179,191,.22)' : 'none'}" stroke="${n ? '#4fb3bf' : 'rgba(255,255,255,.18)'}" stroke-width="1.2"/>`;
-      s += `<text x="${x + 3}" y="${y + 11}" fill="rgba(255,255,255,.45)" font-size="8" ${F}>${b}</text>`;
-      if (n) s += `<text x="${x + (cw - 6) / 2}" y="${y + 29}" text-anchor="middle" fill="#4fb3bf" font-size="17" ${F}>${n}</text>`;
+      const r = Math.floor(i / per), c = i % per, x = 8 + c * cw, y = 6 + r * pitch, b = i + 1, n = CALL[b];
+      s += `<rect x="${x}" y="${y}" width="${cw - 6}" height="${ch}" rx="4" fill="${n ? 'rgba(79,179,191,.22)' : 'none'}" stroke="${n ? '#4fb3bf' : 'rgba(255,255,255,.18)'}" stroke-width="1.2"/>`;
+      s += `<text x="${x + 4}" y="${y + 14}" fill="rgba(255,255,255,.55)" font-size="13" ${F}>${b}</text>`;
+      if (n) s += `<text x="${x + (cw - 6) / 2}" y="${y + 41}" text-anchor="middle" fill="#4fb3bf" font-size="20" ${F}>${n}</text>`;
     }
-    s += `<text x="${(per * cw) / 2}" y="${rows * 46 + 18}" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the beats, and the number to say on each</text>`;
+    s += `<text x="${(per * cw + 10) / 2}" y="${rows * pitch + 22}" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13" ${F}>the beats, and the number to say on each</text>`;
     return s + '</svg>';
   };
   /* One player's bells, drawn: all twenty-four numbers, and the six that are yours. The other
      eighteen are somebody else's bell or the Cold, and this page never says which. */
   const myBells = (roleId) => {
     const ms = mine(roleId), col = COL[roleId], cw = 42, n = SOUND.length;
-    let s = `<svg viewBox="0 0 ${8 * cw + 16} 154" style="width:100%">`;
+    let s = `<svg viewBox="0 0 ${8 * cw + 10} 170" style="width:100%">`;
     for (let i = 1; i <= n; i++) {
       const r = Math.floor((i - 1) / 8), c = (i - 1) % 8, x = 8 + c * cw, y = 6 + r * 46, on = ms.indexOf(i) >= 0;
       s += `<rect x="${x}" y="${y}" width="${cw - 6}" height="36" rx="4" fill="${on ? col : 'none'}" fill-opacity="${on ? .85 : 0}" stroke="${on ? col : 'rgba(255,255,255,.18)'}" stroke-width="1.2"/>`;
       s += `<text x="${x + (cw - 6) / 2}" y="${y + 25}" text-anchor="middle" fill="${on ? '#12101a' : 'rgba(255,255,255,.3)'}" font-size="16" ${F}>${i}</text>`;
     }
-    s += `<text x="${(8 * cw) / 2}" y="150" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>your bells, of the twenty-four numbers</text>`;
+    s += `<text x="${(8 * cw + 10) / 2}" y="160" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13" ${F}>your bells, of the twenty-four numbers</text>`;
     return s + '</svg>';
   };
 
@@ -69,50 +69,52 @@
 
   /* The Reader's four burns, drawn on their side, so the page can say what was cut and cannot say which
      way up it stood — that half is the Seer's, and the geometry is what keeps it there. (ch0's collar.) */
-  const burnCuts = () => `<svg viewBox="0 0 320 108" style="width:100%;max-width:320px">
-    ${BURN_SHAPES.map((sh, i) => { const x = 40 + i * 80; return `<g><rect x="${x - 32}" y="10" width="64" height="64" rx="6" fill="rgba(0,0,0,.35)" stroke="rgba(242,210,122,.35)"/><g transform="translate(${x},42) rotate(90) scale(1.25)" style="color:#f2d27a">${G.SHAPES[sh]}</g><text x="${x}" y="90" text-anchor="middle" fill="rgba(242,210,122,.8)" font-size="11" ${F}>cut ${BURNT_CUTS[i]}</text></g>`; }).join('')}
-    <text x="160" y="104" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="9" ${F}>laid on their side · what was cut, not which way up</text>
+  const burnCuts = () => `<svg viewBox="0 0 300 118" style="width:100%;max-width:300px">
+    ${BURN_SHAPES.map((sh, i) => { const x = 38 + i * 75; return `<g><rect x="${x - 32}" y="6" width="64" height="64" rx="6" fill="rgba(0,0,0,.35)" stroke="rgba(242,210,122,.35)"/><g transform="translate(${x},38) rotate(90) scale(1.25)" style="color:#f2d27a">${G.SHAPES[sh]}</g><text x="${x}" y="89" text-anchor="middle" fill="rgba(242,210,122,.85)" font-size="13" ${F}>cut ${BURNT_CUTS[i]}</text></g>`; }).join('')}
+    <text x="150" y="111" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="12.5" ${F}>laid on their side · what was cut, not which way up</text>
   </svg>`;
 
   /* The Listener's fact, drawn as a lap: eight notes round a ring, and the one it stops on is a
      silence. No cut number anywhere on it — WHICH cut that is comes from the other three pages, and
      this page may not know. The geometry is the separation. */
-  const restFig = () => `<svg viewBox="0 0 300 132" style="width:100%;max-width:300px">
+  const restFig = () => `<svg viewBox="0 0 300 196" style="width:100%;max-width:300px">
+    <g transform="translate(150,100) scale(1.35) translate(-150,-62)">
     <circle cx="150" cy="62" r="44" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
     ${[0,1,2,3,4,5,6].map(i => { const a = (-90 + (i + 1) * 45) * Math.PI / 180; return `<circle cx="${(150 + Math.cos(a) * 44).toFixed(1)}" cy="${(62 + Math.sin(a) * 44).toFixed(1)}" r="7" fill="#4fb3bf"/>`; }).join('')}
     <circle cx="150" cy="18" r="7" fill="none" stroke="#4fb3bf" stroke-width="1.5" stroke-dasharray="3 3"/>
     <path d="M120,104 A44,44 0 0 0 174,100" fill="none" stroke="#4fb3bf" stroke-width="1.4" opacity=".7"/>
-    <text x="150" y="10" text-anchor="middle" fill="#4fb3bf" font-size="10" ${F}>silence</text>
-    <text x="150" y="126" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>one lap of eight, and it stops on the silence</text>
+    </g>
+    <text x="150" y="22" text-anchor="middle" fill="#4fb3bf" font-size="13" ${F}>silence</text>
+    <text x="150" y="188" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="12.5" ${F}>one lap of eight, and it stops on the silence</text>
   </svg>`;
 
   /* Under the foot: eight recesses, four of them scorched, and which way each chisel went in.
      No shape and no rule — the Seer reports how a cut was struck, never what it says. */
   const underFoot6 = (() => {
-    let s = `<svg viewBox="0 0 360 200"><rect width="360" height="200" fill="#000"/>`;
-    s += `<text x="180" y="18" text-anchor="middle" fill="#fff" font-size="10" ${F} opacity=".8">the foot of the stone, from below · cuts 1 to 8</text>`;
+    let s = `<svg viewBox="0 0 360 212"><rect width="360" height="212" fill="#000"/>`;
+    s += `<text x="180" y="22" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".85">the foot of the stone, from below · cuts 1 to 8</text>`;
     let burn = 0;
     for (let i = 0; i < 8; i++) {
-      const x = 26 + i * 42, isBurn = i % 2 === 0;
-      s += `<rect x="${x}" y="34" width="34" height="52" rx="3" fill="none" stroke="#fff" stroke-width="1.1" opacity="${isBurn ? .5 : .85}"/>`;
-      s += `<text x="${x + 17}" y="100" text-anchor="middle" fill="${isBurn ? '#a482e6' : 'rgba(255,255,255,.45)'}" font-size="9" ${F}>${i + 1}</text>`;
+      const x = 16 + i * 42, isBurn = i % 2 === 0;
+      s += `<rect x="${x}" y="36" width="34" height="52" rx="3" fill="none" stroke="#fff" stroke-width="1.1" opacity="${isBurn ? .5 : .85}"/>`;
+      s += `<text x="${x + 17}" y="108" text-anchor="middle" fill="${isBurn ? '#a482e6' : 'rgba(255,255,255,.55)'}" font-size="14" ${F}>${i + 1}</text>`;
       if (isBurn) {
         burn++;
         const up = BURN_UP[burn - 1];
-        s += `<g stroke="#a482e6" stroke-width="2.4" fill="none" stroke-linecap="round" transform="translate(${x + 17},60)">`
+        s += `<g stroke="#a482e6" stroke-width="2.4" fill="none" stroke-linecap="round" transform="translate(${x + 17},62)">`
           + (up ? `<path d="M-9,6 L0,-7 L9,6"/>` : `<path d="M-9,-6 L0,7 L9,-6"/>`) + `</g>`;
       }
     }
-    s += `<g stroke="#fff" fill="none" stroke-width="1.4" transform="translate(180,140) scale(0.9)"><path d="M0,-16 C6,-8 10,-2 10,4 C10,11 5,15 0,15 C-5,15 -10,11 -10,4 C-10,-2 -6,-8 0,-16 Z" opacity=".7"/><path d="M-70,16 L70,16" opacity=".4"/></g>`;
-    s += `<text x="180" y="190" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">the fire, lower than it has ever been</text>`;
+    s += `<g stroke="#fff" fill="none" stroke-width="1.4" transform="translate(180,150) scale(0.9)"><path d="M0,-16 C6,-8 10,-2 10,4 C10,11 5,15 0,15 C-5,15 -10,11 -10,4 C-10,-2 -6,-8 0,-16 Z" opacity=".7"/><path d="M-70,16 L70,16" opacity=".4"/></g>`;
+    s += `<text x="180" y="198" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".75">the fire, lower than it has ever been</text>`;
     return s + '</svg>';
   })();
 
   /* Wren, under the chamber: five shadows away from the shaft, one toward it. The bells are unnamed. */
-  const underChamber = `<svg viewBox="0 0 360 250">
-    <rect width="360" height="250" fill="#000"/>
+  const underChamber = `<svg viewBox="0 0 360 296">
+    <rect width="360" height="296" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
-      <rect x="10" y="10" width="340" height="230"/>
+      <rect x="10" y="10" width="340" height="254"/>
       <circle cx="180" cy="34" r="14"/><path d="M180,12 L180,4 M162,20 L156,14 M198,20 L204,14 M160,34 L152,34 M200,34 L208,34"/>
       <line x1="40" y1="78" x2="320" y2="78" stroke-width="2"/>
       ${[70, 143, 217, 290].map((x) => `<path d="M${x - 14},112 L${x - 14},92 Q${x - 14},80 ${x},80 Q${x + 14},80 ${x + 14},92 L${x + 14},112 Z"/><line x1="${x}" y1="78" x2="${x}" y2="80"/>`).join('')}
@@ -121,7 +123,7 @@
     <g fill="#fff" opacity=".9"><circle cx="180" cy="160" r="5"/><circle cx="112" cy="196" r="6"/><circle cx="148" cy="212" r="6"/><circle cx="212" cy="212" r="6"/><circle cx="248" cy="196" r="6"/><circle cx="180" cy="215" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M112,196 L98,224"/><path d="M148,212 L140,238"/><path d="M212,212 L220,238"/><path d="M248,196 L262,224"/><path d="M180,160 L180,180" opacity=".6"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M180,215 L180,190"/></g>
-    <g fill="#fff" font-size="8" ${F}><text x="180" y="58" text-anchor="middle">the Hearth — up the shaft</text><text x="180" y="245" text-anchor="middle" opacity=".7">shadows, as they fall</text><text x="190" y="228" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="13" ${F}><text x="180" y="67" text-anchor="middle">the Hearth — up the shaft</text><text x="180" y="286" text-anchor="middle" opacity=".75">shadows, as they fall</text><text x="180" y="252" text-anchor="middle" fill="#a482e6">Wren</text></g>
   </svg>`;
 
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
@@ -133,7 +135,7 @@
   /* ---------- the volunteer's thread (Chapter V's spent Sight), on the Speak tab ---------- */
   const threadBlock = () => ({ t: 'custom', render: (el, cx) => {
     const st = cx.state; st.thread = st.thread || { letGo: 0, held: 0 }; cx.save();
-    el.appendChild(UI.el('div', { class: 'blk-svg underlayer', html: `<svg viewBox="0 0 360 80"><rect width="360" height="80" fill="#000"/><path id="ch6-thread" d="M10,40 C80,30 120,50 180,40 S280,30 350,40" fill="none" stroke="#fff" stroke-width="2"/><g id="ch6-fray" stroke="#fff" stroke-width="1" opacity=".5"><path d="M150,40 l-8,-10"/><path d="M200,42 l6,-9"/><path d="M260,36 l-5,-9"/></g><text x="180" y="70" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif" id="ch6-thread-txt">the thread — fraying</text></svg>` }));
+    el.appendChild(UI.el('div', { class: 'blk-svg underlayer', html: `<svg viewBox="0 0 360 80"><rect width="360" height="80" fill="#000"/><path id="ch6-thread" d="M10,40 C80,30 120,50 180,40 S280,30 350,40" fill="none" stroke="#fff" stroke-width="2"/><g id="ch6-fray" stroke="#fff" stroke-width="1" opacity=".5"><path d="M150,40 l-8,-10"/><path d="M200,42 l6,-9"/><path d="M260,36 l-5,-9"/></g><text x="180" y="72" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" id="ch6-thread-txt">the thread — fraying</text></svg>` }));
     const thread = el.querySelector('#ch6-thread'), fray = el.querySelector('#ch6-fray'), txt = el.querySelector('#ch6-thread-txt');
     let holding = false, t0 = 0;
     const btn = UI.el('button', { class: 'btn primary hold-btn', style: { width: '100%', marginTop: '8px' }, text: 'HOLD — keep a finger on it' });
@@ -141,7 +143,7 @@
     const up = () => { if (!holding) return; holding = false; st.thread.held += Date.now() - t0; st.thread.letGo += 1; cx.save(); thread.setAttribute('stroke-width', '2'); fray.style.opacity = '.5'; txt.textContent = 'the thread — fraying'; btn.textContent = 'HOLD — keep a finger on it'; };
     btn.addEventListener('pointerdown', down); btn.addEventListener('pointerup', up); btn.addEventListener('pointerleave', up); btn.addEventListener('pointercancel', up);
     el.appendChild(btn);
-    el.appendChild(UI.el('p', { class: 'fine', text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
+    el.appendChild(UI.el('p', { class: 'fine', style: { marginTop: '10px' }, text: 'Nothing on the Hearth shows whether you let go. This page remembers, and will tell you — only you — at the end.' }));
   } });
 
   const COST = 'Four readings, no more. A wrong one cracks a bell above you.';

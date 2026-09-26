@@ -60,7 +60,7 @@
     .ch8-thread .ch8-th { stroke-dasharray: 700; stroke-dashoffset: 700; animation: ch8thread 3.5s .8s ease-out forwards; }
     @keyframes ch8thread { to { stroke-dashoffset: 0; } }
     .ch8-seal-crown { text-align: center; padding: 18px 0 6px; }
-    .ch8-seal-crown svg { width: 150px; height: 150px; }
+    .ch8-seal-crown svg { width: 184px; height: 184px; }
     .ch8-seal-crown .ch8-decree { font-family: var(--display); font-size: 13px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-top: 8px; line-height: 1.9; }
     .ch8-darkline { font-family: var(--hand); font-size: 22px; color: var(--ink); text-align: center; padding: 28px 8px; animation: fadeUp 1.5s ease both; }
     .ch8-fade { transition: opacity 5s ease 9s; }
@@ -101,14 +101,15 @@
     },
     seer: (ctx) => {
       const name = firstName(ctx);
-      const fig = (x, y, lab, shadowTo, col) => `<circle cx="${x}" cy="${y}" r="6" fill="#fff"/><path d="M${x},${y} L${shadowTo[0]},${shadowTo[1]}" stroke="${col || '#fff'}" stroke-width="3" opacity=".6" stroke-linecap="round"/><text x="${x}" y="${y + 18}" text-anchor="middle" fill="${col || '#fff'}" font-size="9" font-family="Cinzel,serif">${esc(lab)}</text>`;
+      /* the name goes on the side of the dot its shadow does not fall on */
+      const fig = (x, y, lab, shadowTo, col) => `<circle cx="${x}" cy="${y}" r="6" fill="#fff"/><path d="M${x},${y} L${shadowTo[0]},${shadowTo[1]}" stroke="${col || '#fff'}" stroke-width="3" opacity=".6" stroke-linecap="round"/><text x="${x}" y="${shadowTo[1] > y ? y - 12 : y + 22}" text-anchor="middle" fill="${col || '#fff'}" font-size="13" font-family="Cinzel,serif">${esc(lab)}</text>`;
       const under = `<svg viewBox="0 0 360 250"><rect width="360" height="250" fill="#000"/>` +
         `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="200"/><path d="M150,150 L150,110 A30,30 0 0 1 210,110 L210,150 Z"/></g>` +
         `<g stroke="#fff" fill="none" stroke-width="1.5"><path d="M180,146 C168,132 172,120 180,110 C188,120 192,132 180,146 Z"/><path d="M180,146 L180,128"/></g>` +
-        `<text x="180" y="168" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">the Hearth, which is only a fire</text>` +
+        `<text x="180" y="192" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".75">the Hearth, which is only a fire</text>` +
         fig(70, 70, 'Reader', [38, 44]) + fig(70, 170, 'Listener', [38, 196]) + fig(290, 70, 'Seer', [322, 44]) + fig(290, 170, 'Binder', [322, 196]) +
         fig(180, 44, 'Wren', [180, 14], '#a482e6') +
-        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">all five shadows fall away from the fire. At last.</text></svg>`;
+        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="13" font-family="Cinzel,serif">all five shadows fall away from the fire. At last.</text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">Don't do the face. I drew it myself, and yes, the fire's wonky.</p>` +
         `<div class="blk-svg underlayer">${under}</div>` +
@@ -161,7 +162,7 @@
         if (roleId === 'listener') { const btn = UI.audioButton('Cup your ear — once', () => CA.heartbeat(ctx.audio, 64, 8)); g.appendChild(btn); }
         const look = UI.el('button', { class: 'btn primary big-btn', text: 'Look up', style: { marginTop: '14px' }, onclick: burn });
         el.appendChild(look);
-        el.appendChild(UI.el('p', { class: 'fine', text: 'The page burns when you look up. Or in a little while, whether you do or not.' }));
+        el.appendChild(UI.el('p', { class: 'fine', style: { marginTop: '10px' }, text: 'The page burns when you look up. Or in a little while, whether you do or not.' }));
         const t = setTimeout(() => { if (el.isConnected && !ctx.state.done[key]) burn(); }, 45000 + ctx.role.idx * 5000);
         const mo = window.MutationObserver ? new MutationObserver(() => { if (!el.isConnected) { clearTimeout(t); mo.disconnect(); } }) : null;
         if (mo) mo.observe(document.getElementById('cmain'), { childList: true, subtree: true });

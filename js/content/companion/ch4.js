@@ -81,29 +81,39 @@
      The oath's three worn words, drawn as a ring so the page cannot imply an order, and set at odd
      angles with no mark and no numbers. Read round from the top they come out ASH, THORN, WELL —
      neither the answer nor its reverse, so reading the picture fails and the Listener is needed. */
+  /* The empty place is a gap in the ring with a dashed outline in it, not a filled disc: on a phone a
+     dark disc read as a fifth thing on the ring. The caption is two lines so it can be read at size. */
   const oathRing = () => {
-    const at = (deg, r) => [150 + Math.cos(deg * Math.PI / 180) * r, 84 + Math.sin(deg * Math.PI / 180) * r];
-    const put = (name, deg) => { const [x, y] = at(deg, 58); return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(1.05)" style="color:#f2d27a">${G.inner(name)}</g>`; };
-    const [ex, ey] = at(265, 58);
-    return `<svg viewBox="0 0 300 168" style="width:100%;max-width:300px;height:auto">
-      <circle cx="150" cy="84" r="58" fill="none" stroke="rgba(212,169,78,.3)" stroke-width="10"/>
+    const R = 62, cx = 150, cy = 90;
+    const at = (deg, r) => [cx + Math.cos(deg * Math.PI / 180) * r, cy + Math.sin(deg * Math.PI / 180) * r];
+    const put = (name, deg) => { const [x, y] = at(deg, R); return `<g transform="translate(${x.toFixed(1)},${y.toFixed(1)}) scale(1.2)" style="color:#f2d27a">${G.inner(name)}</g>`; };
+    const [ex, ey] = at(265, R), [ax, ay] = at(285, R), [bx, by] = at(245, R);
+    return `<svg viewBox="0 0 300 206" width="100%" style="display:block;height:auto">
+      <path d="M${ax.toFixed(1)},${ay.toFixed(1)} A${R},${R} 0 1 1 ${bx.toFixed(1)},${by.toFixed(1)}" fill="none" stroke="rgba(212,169,78,.3)" stroke-width="10"/>
       ${put('ASH', -60)}${put('THORN', 55)}${put('WELL', 175)}
-      <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="17" fill="#0b0a10" stroke="rgba(212,169,78,.45)" stroke-dasharray="4 4"/>
-      <text x="150" y="162" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="11" font-family="Cinzel,serif">three worn words and one empty place · no first, no last</text>
+      <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="15" fill="none" stroke="rgba(212,169,78,.6)" stroke-width="1.6" stroke-dasharray="4 4"/>
+      <text x="150" y="182" text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="13" font-family="Cinzel,serif">three worn words and one empty place</text>
+      <text x="150" y="200" text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="13" font-family="Cinzel,serif">no first, no last</text>
     </svg>`;
   };
 
-  /* ---------- the Seer's figure ----------
-     One plate, three things: the shelf board and where it is marked, the paint and what is under it,
-     the scroll's ring and where it is cut. No arrow, no direction, no rule — the Seer reports cuts. */
-  const underMarks = (() => {
-    let s = `<svg viewBox="0 0 360 336"><rect width="360" height="336" fill="#000"/>`;
-    // A — the shelf board, six blank spines, one mark
-    s += `<rect x="14" y="22" width="300" height="46" fill="none" stroke="#fff" stroke-width="1.2"/>`;
-    for (let i = 0; i < 6; i++) s += `<rect x="${24 + i * 48}" y="28" width="36" height="34" fill="none" stroke="#fff" stroke-width="1"/><text x="${42 + i * 48}" y="82" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">${i + 1}</text>`;
-    s += `<path d="M332,37 L320,45 L332,53 Z" fill="#a482e6"/>`;
-    s += `<text x="180" y="16" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">the board is marked at the right-hand end</text>`;
-    // B — under the paint: four walking in, no child
+  /* ---------- the Seer's figures ----------
+     Three things, one plate each so the labels can be read on a phone: the shelf board and where it is
+     marked, the paint and what is under it, the scroll's ring and where it is cut. No arrow, no
+     direction, no rule — the Seer reports cuts. */
+  const FONT = 'font-family="Cinzel,serif"';
+  // A — the shelf board, six blank spines, one mark at the right-hand end
+  const underBoard = (() => {
+    let s = `<svg viewBox="0 0 360 114"><rect width="360" height="114" fill="#000"/>`;
+    s += `<text x="180" y="20" text-anchor="middle" fill="#a482e6" font-size="13" ${FONT}>the board is marked at the right-hand end</text>`;
+    s += `<rect x="14" y="32" width="300" height="46" fill="none" stroke="#fff" stroke-width="1.2"/>`;
+    for (let i = 0; i < 6; i++) s += `<rect x="${24 + i * 48}" y="38" width="36" height="34" fill="none" stroke="#fff" stroke-width="1"/><text x="${42 + i * 48}" y="100" text-anchor="middle" fill="#fff" font-size="14" ${FONT}>${i + 1}</text>`;
+    s += `<path d="M334,45 L320,55 L334,65 Z" fill="#a482e6"/>`;
+    return s + `</svg>`;
+  })();
+  // B — under the paint: four walking in, no child
+  const underTapestry = (() => {
+    let s = `<svg viewBox="0 0 360 152"><rect width="360" height="152" fill="#000"/><g transform="translate(0,-92)">`;
     s += `<rect x="14" y="102" width="332" height="96" fill="none" stroke="#fff" stroke-width="1.2"/>`;
     s += `<g stroke="#fff" fill="none" stroke-width="1.4">${[0, 1, 2].map(i => `<path d="M${292 + i * 12},190 C${286 + i * 12},166 ${294 + i * 12},152 ${300 + i * 12},134 C${306 + i * 12},152 ${314 + i * 12},166 ${304 + i * 12},190"/>`).join('')}</g>`;
     /* Two figures do something the others do not: the fourth carries, the second reaches back the way
@@ -114,32 +124,39 @@
       s += `<g transform="translate(${x},190)"><path d="M-7,0 L-5,-34 L5,-34 L7,0 Z" fill="#fff"/><circle cx="${back ? -2 : 0}" cy="-40" r="5" fill="#fff"/><path d="${back ? 'M-5,-30 L-16,-22' : 'M5,-30 L16,-22'}" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M-3,0 L-24,5 L4,0 Z" fill="#fff" opacity=".4"/>`
         + (i === 3 ? `<g transform="translate(24,-26) scale(0.62)" style="color:#a482e6">${G.shapeInner('Flame', true)}</g>` : '') + `</g>`;
     }
-    s += `<text x="180" y="214" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">four walk in, no child — the fourth carries, the second reaches back</text>`;
-    // C — the scroll's ring, and the two cuts in it
-    s += `<g transform="translate(110,278)" stroke="#fff" fill="none" stroke-width="1.4"><circle r="40"/>`;
-    s += [0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 40).toFixed(1), y = (Math.sin(a) * 40).toFixed(1); return `<circle cx="${x}" cy="${y}" r="11"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif" stroke="none">${i + 1}</text>`; }).join('');
+    s += `</g>`;
+    s += `<text x="180" y="126" text-anchor="middle" fill="#a482e6" font-size="13" ${FONT}>four walk in, no child —</text>`;
+    s += `<text x="180" y="144" text-anchor="middle" fill="#a482e6" font-size="13" ${FONT}>the fourth carries, the second reaches back</text>`;
+    return s + `</svg>`;
+  })();
+  // C — the scroll's ring, and the two cuts in it
+  const underRing = (() => {
+    const cx = 96, cy = 98, R = 54;
+    let s = `<svg viewBox="0 0 360 210"><rect width="360" height="210" fill="#000"/>`;
+    s += `<g stroke="#fff" fill="none" stroke-width="1.4"><circle cx="${cx}" cy="${cy}" r="${R}"/>`;
+    s += [0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (cx + Math.cos(a) * R).toFixed(1), y = (cy + Math.sin(a) * R).toFixed(1); return `<circle cx="${x}" cy="${y}" r="15" fill="#000"/><text x="${x}" y="${(+y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${FONT} stroke="none">${i + 1}</text>`; }).join('');
     s += `</g>`;
     /* Two cuts, drawn the same white and lettered the same size: slot 2 (right of the ring) carries a
        long scratch, slot 4 (left of it) a small notch. Not ch3's pair, on purpose -- see ch4.js. Which kind of cut a sigil starts at is the
        Binder's Law, so neither cut takes the violet — an accent here would say which one matters, and
        that is the whole of the Binder's seat at this puzzle. Same shape as the Prologue's lamp foot. */
-    s += `<path d="M174,258 L174,298" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
-    s += `<path d="M46,274 L46,282" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
-    s += `<text x="262" y="264" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">beside slot 2 — a long scratch</text>`;
-    s += `<text x="262" y="290" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">beside slot 4 — a small notch</text>`;
-    s += `<text x="180" y="330" text-anchor="middle" fill="#fff" opacity=".7" font-size="9" font-family="Cinzel,serif">three cuts in this room, and nothing else</text>`;
+    s += `<path d="M${cx + R + 28},${cy - 22} L${cx + R + 28},${cy + 22}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+    s += `<path d="M${cx - R - 28},${cy - 4} L${cx - R - 28},${cy + 4}" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+    s += `<g fill="#fff" font-size="14" ${FONT}><text x="204" y="68">beside slot 2 —</text><text x="204" y="88">a long scratch</text>`;
+    s += `<text x="204" y="120">beside slot 4 —</text><text x="204" y="140">a small notch</text></g>`;
+    s += `<text x="180" y="198" text-anchor="middle" fill="#fff" opacity=".7" font-size="13" ${FONT}>three cuts in this room, and nothing else</text>`;
     return s + `</svg>`;
   })();
 
   // Seer, Wren tab: shadows in the study — the fire at the right; four away, the Provost's away, Wren's toward.
-  const underShadows = `<svg viewBox="0 0 360 200">
-    <rect width="360" height="200" fill="#000"/>
-    <g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="180"/><rect x="20" y="120" width="90" height="16"/><rect x="120" y="24" width="120" height="60"/><path d="M300,140 L300,110 M292,116 L308,116"/></g>
-    <g fill="#fff" opacity=".9"><circle cx="70" cy="90" r="6"/><circle cx="110" cy="150" r="6"/><circle cx="160" cy="120" r="6"/><circle cx="200" cy="160" r="6"/><circle cx="260" cy="90" r="6"/><circle cx="240" cy="150" r="6"/></g>
-    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,90 L36,84"/><path d="M110,150 L76,152"/><path d="M160,120 L126,116"/><path d="M200,160 L166,164"/><path d="M260,90 L228,82"/></g>
-    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L278,146"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="60" y="108">Reader</text><text x="100" y="168">Listener</text><text x="150" y="138">Seer</text><text x="190" y="178">Binder</text><text x="248" y="80">the Provost</text><text x="230" y="168" fill="#a482e6">Wren</text><text x="300" y="158" text-anchor="middle">the fire</text></g>
-    <text x="180" y="194" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
+  const underShadows = `<svg viewBox="0 0 360 258">
+    <rect width="360" height="258" fill="#000"/>
+    <g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="214"/><rect x="20" y="136" width="90" height="16"/><rect x="120" y="24" width="100" height="56"/><path d="M310,160 L310,130 M302,136 L318,136"/></g>
+    <g fill="#fff" opacity=".9"><circle cx="70" cy="96" r="6"/><circle cx="110" cy="180" r="6"/><circle cx="160" cy="132" r="6"/><circle cx="210" cy="184" r="6"/><circle cx="268" cy="100" r="6"/><circle cx="250" cy="150" r="6"/></g>
+    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,96 L36,90"/><path d="M110,180 L76,182"/><path d="M160,132 L126,128"/><path d="M210,184 L176,188"/><path d="M268,100 L236,92"/></g>
+    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,150 L288,146"/></g>
+    <g fill="#fff" font-size="14" font-family="Cinzel,serif" text-anchor="middle"><text x="70" y="118">Reader</text><text x="110" y="202">Listener</text><text x="160" y="154">Seer</text><text x="210" y="206">Binder</text><text x="272" y="84">the Provost</text><text x="250" y="172" fill="#a482e6">Wren</text><text x="310" y="182">the fire</text></g>
+    <text x="180" y="246" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
   </svg>`;
 
   /* ---------- the Binder's figure ----------
@@ -157,16 +174,16 @@
         const x = 22 + i * 42;
         s += `<rect x="${x}" y="${y}" width="34" height="30" rx="3" fill="none" stroke="rgba(255,255,255,.35)"/>`;
         s += `<g transform="translate(${x + 17},${y + 15}) rotate(${flipped ? 180 : 0})"><path d="M-7,4 L0,-5 L7,4" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linecap="round"/></g>`;
-        s += `<text x="${x + 17}" y="${y + 46}" text-anchor="middle" fill="${numColor}" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`;
+        s += `<text x="${x + 17}" y="${y + 52}" text-anchor="middle" fill="${numColor}" font-size="15" font-family="Cinzel,serif">${i + 1}</text>`;
       }
       return s;
     };
-    return `<svg viewBox="0 0 300 176" style="width:100%;max-width:300px;height:auto">
-      ${row(14, false, '#d96b4a')}
-      <path d="M8,22 L18,29 L8,36 Z" fill="rgba(255,255,255,.7)"/>
-      ${row(94, true, '#d96b4a')}
-      <path d="M290,102 L280,109 L290,116 Z" fill="rgba(255,255,255,.7)"/>
-      <text x="150" y="172" text-anchor="middle" fill="#d96b4a" font-size="11" font-family="Cinzel,serif">either way up, the numbers do not move</text>
+    return `<svg viewBox="0 0 300 192" width="100%" style="display:block;height:auto">
+      ${row(10, false, '#d96b4a')}
+      <path d="M8,18 L18,25 L8,32 Z" fill="rgba(255,255,255,.7)"/>
+      ${row(98, true, '#d96b4a')}
+      <path d="M290,106 L280,113 L290,120 Z" fill="rgba(255,255,255,.7)"/>
+      <text x="150" y="184" text-anchor="middle" fill="#d96b4a" font-size="12.5" font-family="Cinzel,serif">either way up, the numbers do not move</text>
     </svg>`;
   };
 
@@ -219,7 +236,7 @@
         /* One step, not the contour. Two steps pin the three words on their own, and then the Reader's
            set is confirming what this page has already said. One step plus three known words is still
            exactly one order; one step without them is thirty-two boards. */
-        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then it dies away</span></div>', play: (A) => CA.playSteps(A, [-1]),
+        P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1]).replace(/<\/div>$/, '<span class="step rest"><b>◆</b>then it dies away</span></div>'), play: (A) => CA.playSteps(A, [-1]),
           text: '**Down one, and then the tune goes out of it.** That is the first word to the second, and nothing more.' });
         P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps.' });
 
@@ -233,7 +250,9 @@
       /* ================= SEER ================= */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under three things in this study' });
-        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
+        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underBoard });
+        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underTapestry });
+        P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
         P.sight.push({ t: 'fine', text: 'Three cuts in the whole room. **The two in the scroll\'s ring are not the same kind.**' });
         P.sight.push({ t: 'p', text: 'The tapestry is painted over an older picture. Say which of them carries, and which of them reaches back.' });
         P.sight.push({ t: 'fine', text: 'Say where the cuts are, and stop.' });
