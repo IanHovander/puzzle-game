@@ -176,18 +176,18 @@
       ch2_start: {
         art: 'ch2_stair', mood: 'court', fx: 'dust', sfx: 'step',
         title: 'The Great Hall, after the bell',
-        text: (s) => (s.flags.VOTE_LOST ? [
-          'The vote is lost. Vane\'s guard closes around Wren, and the Houses file out without looking at the child they gave away.',
-          'Wren, over a soldier\'s shoulder, mouths something at you. It is probably *rude*.',
-          { speaker: 'Provost Marrow', text: 'Then bring me the Ember. I will get the child back myself.' },
+        /* The errand itself is given at the end of Chapter I (ch1_after, ch1_lost). This is the leaving. */
+        text: (s) => [
+          'The Provost holds the tapestry aside. Behind it, a stair goes down into the dark.',
+          { speaker: 'Provost Marrow', text: 'Take the Seer\'s eyes with you. That vault was rebuilt once, and the rebuilding was not honest.' },
+        ].concat(s.flags.VOTE_LOST ? [
+          'By the fire, Wren sits between two soldiers and mouths something at you. It is probably rude.',
+          'When the soldiers look away, Wren holds up four fingers, then points at the stair. *Go.*',
         ] : [
-          'Five to four. Vane bows as if he had won something.',
-          'The Hearth flickered twice during the count. The Provost was the only one in the Hall not watching it.',
-          { speaker: 'Provost Marrow', text: 'Wren stays with me tonight. You four have an errand.' },
-        ]).concat([
-          { speaker: 'Provost Marrow', text: 'Under this school the Founders left the Cold Ember. If the Hearth goes out, the Ember lights it again. Bring it up.' },
-          { speaker: 'Provost Marrow', text: 'And take the Seer\'s eyes with you. That vault was rebuilt once, and the rebuilding was not honest.' },
-        ]).concat(s.flags.VOTE_LOST ? [] : [{ speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put.' }]),
+          'Wren is already on the top step. The Provost looks at Wren, and Wren climbs back up.',
+          { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. Seer, don\'t do the face.' },
+          { speaker: 'Wren', text: 'Reader, there\'s a biscuit in your pocket. Don\'t argue. Eat it on the way down.' },
+        ]),
         next: 'ch2_descent', button: 'Down',
       },
       ch2_descent: {

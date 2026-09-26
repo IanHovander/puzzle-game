@@ -18,7 +18,6 @@
     { n: 4, shape: 'Hook', inv: false },    // KNOT
   ];
   const CUTFOR = [3, 4, 2, 1];              // plinth 1..4 -> the hole under that dial
-  const laws = (ns) => `<div class="laws">${L.laws.filter(l => ns.includes(l.n)).sort((a, b) => ns.indexOf(a.n) - ns.indexOf(b.n)).map(l => `<div class="law ${l.era === 'O' ? 'order' : 'founders'}"><div class="era">Law ${l.n} · ${l.era === 'F' ? "Founders' · Year 0" : "Order's · Year " + l.year}</div><div class="txt">${l.text}</div></div>`).join('')}</div>`;
 
   /* Under the antechamber: four plinths as they stand, and under the grey floor the four holes they were
      cut for, numbered the way the Hearth numbers the dials. One violet line each and nothing else — no
@@ -105,60 +104,57 @@
       /* ================= READER — what is cut into each plinth ================= */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What is cut into the plinths' });
-        P.sight.push({ t: 'p', text: 'One shape to a plinth, numbered the way the Hearth numbers them. The Hearth shows them worn away. On your page they are clean.' });
+        P.sight.push({ t: 'p', text: 'The Hearth shows them worn smooth. You see them clean.' });
         P.sight.push({ t: 'table', head: ['cut into the plinth', 'and it says'], rows: PLINTHS.map(p => [
           `<b>Plinth ${p.n}</b><br>${G.shapeSvg(p.shape, p.inv, { size: 34, color: AMBER })}`,
           `<b>${G.read(p.shape, p.inv)}</b>`,
         ]) });
-        P.sight.push({ t: 'fine', text: 'Two of them carry the same shape, one of the two upside down. That is the whole of the difference.' });
-        P.sight.push({ t: 'p', text: '**Four words: THORN, VEIL, EMBER, KNOT.** Say them out loud, with their numbers.' });
-        P.sight.push({ t: 'fine', text: 'A word that is not one of these four is not a count. The door counts once.' });
-        P.sight.push({ t: 'fine', text: 'And if a strip of three shapes turns up tonight, it reads two ways. From the left: *one went down alone and kept it.* From the other end: *four, as one, went through.*' });
-        P.sight.push({ t: 'fine', text: 'Which dial each word belongs on is not on this page and never was. Ask.' });
+        P.sight.push({ t: 'p', text: '**THORN, VEIL, EMBER, KNOT.** Say them out loud, with their numbers. Any other word wastes the count, and the door counts once.' });
+        P.sight.push({ t: 'fine', text: 'If a strip of three shapes turns up tonight, it reads two ways. From the left: *one went down alone and kept it.* From the other end: *four, as one, went through.*' });
         P.wren.push({ t: 'h', text: 'Four words, and one name' });
-        P.wren.push({ t: 'p', text: lost
-          ? 'Wren was under guard when you went down. You have read every name in this school tonight, and the one you cannot read is chalked on a dormitory door in letters nobody has taught you. You decided a year ago that somebody was being funny. You have never asked who.'
-          : 'Four words cut in stone tonight, and you read them without thinking. Wren\'s name is chalked on the dormitory door in letters nobody has taught you, in handwriting you know. You decided a year ago that somebody was being funny. Four floors down, you have started to wonder who wrote it.' });
+        P.wren.push({ t: 'p', text: (lost ? 'Wren was under guard when you went down. ' : '')
+          + 'You read four words in stone tonight without trying. Wren’s name on the dormitory door, you still cannot. The chalk is in a hand you have seen before. You have started to wonder who wrote it.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I read four words in stone tonight, first try. Your name, I still can’t. It’s the only one I want. I’ve copied it into the back of every book I own.”' });
       }
 
       /* ================= LISTENER — the order the door hums ================= */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'The door hums' });
-        P.sight.push({ t: 'p', text: 'Touch a dial and the door hums four notes under it. You are the only one who hears how far the tune steps.' });
+        P.sight.push({ t: 'p', text: 'Touch a dial and the door hums four notes. Only you hear how far the tune steps.' });
         P.sight.push({ t: 'audio', label: 'The door — four notes', strip: CA.strip([1, 3, -2]), play: (A) => CA.playSteps(A, [1, 3, -2]),
-          text: '**Up one, up three, down two.** Four words, three steps. Of every order four words could be turned in, only one climbs like that.' });
+          text: '**Up one, up three, down two.** Only one order of the four words climbs like that.' });
         P.sight.push({ t: 'html', html: dialsUnheard() });
-        P.sight.push({ t: 'fine', text: 'An order guessed is a whole count spent, and the door counts once.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, and you never hear which dial moved.' });
+        P.sight.push({ t: 'fine', text: 'Guess the order and you spend the count, and the door counts once. You never hear a word’s name, or which dial moved.' });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'The Ember is a stone in a box and you did not expect a heart. ' + (lost ? 'Wren is two floors up, under guard.' : 'Wren promised to stay put.') + ' Then footsteps on the stair behind you, light and quick and familiar, and no heart walking with them. You have heard those feet every day for a year. Until this stair it never occurred to you that you have only ever heard the feet.' });
+        P.wren.push({ t: 'p', text: 'The Ember is a stone in a box. You did not expect a heart. ' + (lost ? 'Wren was two floors up, under guard.' : 'Wren promised to stay put.') + ' Then light, quick feet on the stair behind you, and no heart with them. You have only ever heard the feet.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I heard you on the stair behind us. Just your feet… nothing else. I kept turning round to check. Next time, just… walk with us? So I don’t have to wonder.”' });
       }
 
       /* ================= SEER — which hole each plinth was cut to stand in ================= */
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the antechamber' });
-        P.sight.push({ t: 'p', text: 'This floor is newer than the room. Under it, four holes are still cut in the old stone, one at each dial.' });
-        P.sight.push({ t: 'p', text: 'Each hole was cut to fit one plinth and no other. Not one plinth is standing in the hole cut for it.' });
+        P.sight.push({ t: 'p', text: 'This floor is newer than the room. Under it, four old holes are cut, one at each dial, each to fit one plinth. Not one plinth is standing in the hole cut for it.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFloor });
         P.sight.push({ t: 'p', text: '**Plinth 1 was cut for the hole at dial 3. Plinth 2 for dial 4. Plinth 3 for dial 2. Plinth 4 for dial 1.** Say all four out loud.' });
-        P.sight.push({ t: 'fine', text: 'A word set on the wrong dial is the whole count wrong, and the door counts once.' });
-        P.sight.push({ t: 'fine', text: 'Behind the first plinth, at knee height, a hollow the rebuilders missed. The stone strip in it begins at its right-hand end, where the mark is cut.' });
-        P.sight.push({ t: 'fine', text: 'Whether the door goes by these holes, by the floor above them or by the drill you were taught is not yours to say. Somebody here keeps the rules.' });
+        P.sight.push({ t: 'fine', text: 'Behind the first plinth, at knee height, is a hollow the rebuilders missed. The stone strip in it begins at its right-hand end, where the mark is cut.' });
+        P.sight.push({ t: 'fine', text: 'Which way of counting the door obeys is not yours to say.' });
         P.wren.push({ t: 'h', text: 'Reaching' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underStair });
-        P.wren.push({ t: 'p', text: 'In the dormitory it leaned toward the lamp and you called it the lamp. Down here there is no lamp, only a cold stone in a box that gives no light a shadow should want. ' + (lost ? 'Wren is meant to be on the dais, under guard.' : 'Wren is meant to be with the Provost.') + ' You are going to watch that shadow reach anyway. You already knew you would.' });
+        P.wren.push({ t: 'p', text: 'In the dormitory you blamed the lamp. Down here there is only a cold stone in a box. ' + (lost ? 'Wren was meant to be on the dais, under guard.' : 'Wren was meant to be with the Provost.') + ' On the stair, that shadow reached for the case anyway.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your shadow went for that box before your hands did. Nobody else saw, and nobody will hear it from me. Honestly, Wren. A cold box. Your shadow has no taste.”' });
       }
 
       /* ================= BINDER — which of the two rules is the older ================= */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Three ways to count, and which one binds' });
-        P.sight.push({ t: 'html', html: laws([13, 9, 3]) });
-        P.sight.push({ t: 'p', text: 'Two of those say opposite things, and the third settles it. The newer one was written in 212 — the year this room was rebuilt and the statues were put back.' });
-        P.sight.push({ t: 'p', text: 'The third way is the one you were all taught in class: one, two, three, four, in the order it hums. **That is a drill, not a Law**, and it is younger than both of these.' });
+        P.sight.push({ t: 'p', text: 'Law 13 and Law 9 in your **Book** say opposite things. Law 9 is from 212, the year this room was rebuilt.' });
         P.sight.push({ t: 'html', html: twoBands() });
-        P.sight.push({ t: 'p', text: '**The older Law binds.** A plinth faces the hole it was cut to stand in, not the dial it happens to stand over.' });
-        P.sight.push({ t: 'fine', text: 'Go by the floor, or by the drill, and every word lands on the wrong dial. The door counts once.' });
+        P.sight.push({ t: 'p', text: 'Law 3 settles it. **The older Law binds**: a plinth faces the hole it was cut for, not the dial it stands over.' });
+        P.sight.push({ t: 'p', text: 'One to four in the order it hums is what the school taught you. **That is a drill, not a Law**, and it is younger than both.' });
         P.sight.push({ t: 'fine', text: 'You cannot read a shape, hear a note, or see under a floor. Ask for all three.' });
         P.wren.push({ t: 'h', text: 'The same nothing' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
@@ -166,7 +162,9 @@
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> the same nothing, for the fourteenth year running.</li>'
           + '<li>' + threadLine('whole') + ' <strong>The Provost and the four of you:</strong> a thin red thread, new tonight.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'The stone did not trouble you. ' + (lost ? 'Vane\'s gold still runs to Wren, and it no longer runs towards the dais.' : 'Vane\'s gold still runs to Wren, so he has not left the school.') + ' You have never asked yourself why the two nothings feel different — or whether they are.' });
+        P.wren.push({ t: 'p', text: 'The stone did not trouble you. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs towards the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have never asked why the two nothings feel different.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“The stone has no thread. Neither do you. I checked every rule, and none says that makes you the same. So you are not. And I am still tying one.”' });
       }
 
       return P;
