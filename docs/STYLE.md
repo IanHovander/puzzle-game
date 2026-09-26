@@ -1,8 +1,8 @@
 # House style
 
-*What the Fire Keeps* — the writing and puzzle contract for Chapters II–VIII, derived from the two chapters the user has approved (`js/content/ch0.js`, `js/content/ch1.js`, `js/content/companion/ch0.js`, `js/content/companion/ch1.js`).
+*What the Fire Keeps* — the writing and puzzle contract for every chapter.
 
-You are reworking **one chapter**. Chapters 0 and I are the reference; do not change them. Every number below was measured from those four files, and where the three source readings disagreed, the code decided — those places are flagged **(settled)**.
+**The Prologue (`js/content/ch0.js`, `js/content/companion/ch0.js`) is the reference, as reworked in the Prologue pass below.** Where §1–§13 disagree with §0.5, §0.5 wins: those sections were measured from the Prologue before the user rewrote its direction. Chapter I has not had the pass yet and is no longer a reference.
 
 The user's direction, in their own words:
 
@@ -11,6 +11,43 @@ The user's direction, in their own words:
 > "In the companion app as well, we should lean more on graphics and less on words."
 > "The amount of jargon is too much."
 > "Ideally text always fits on a reasonable sized laptop screen and you don't have to scroll."
+
+
+## 0.5 The Prologue pass — the current direction
+
+The user's words, across the pass:
+
+> "I want us to have more of a connection to Wren… keep the snappy, short sentences, but give the reader more focused and cool things to chew on. I want to treat the reader as smart, so assume they can put straight forward 1 step things together. The reader should feel like they're gaining clear understanding rapidly, often by filling in small gaps."
+> "The text on the phones is too long… maybe 5 sentences each."
+> "Give each character a little bit of personality… what they read out loud for what they tell Wren should be in the character's voice and not just info."
+> "No one should steal the spotlight entirely, they should be harmonious, but each personality must be memorable." / "We want characters the players will love."
+
+**P1 — One concrete detail, then stop. Leave one-step gaps.** Do not state what the table can infer in one step, and let a later line confirm it quickly. Worked examples in ch0: "You were all born that year. Wren was found." (never *born*). "Nobody finishes it out loud when Wren is in the room." (the prophecy's end is a one-way trip). "A fifth blanket… Officially, it is nobody's." (Wren's; confirmed when Wren drags it to the lamp). "They have watched Wren for fourteen years. Not one of them has said what they saw."
+
+**P2 — A gap is a complete sentence.** A one-word fragment ("Nobody's.") made the reader guess what the line *meant* as well as what it implied, and was cut. Imply with whole sentences.
+
+**P3 — Cut the explainer and the recap.** If a line restates what the table just did or already knows, cut it. The parallel "one to read it, one to put it in order…" exception in R2.2 is retired.
+
+**P4 — Every scene gives Wren something small and specific.** A habit, a joke, a want, a slip ("Mum'll — the Provost'll —"), a place Wren sits (always nearest the warm thing). Wren's own voice is playful and warm, deflecting with jokes. Keep that voice and do not flatten it.
+
+**P5 — Phone Sight pages: about five short sentences plus the one figure or table.** The heading, the fact, the cost where there is one, and a closing line. Anything the Book tab already holds (lexicon glosses, the orientation rule, Law cards, the Ring Page) is not repeated on the page. This supersedes the 120/160-word budget in R11.2.
+
+**P6 — The Wren tab is spoken, in character, to Wren.** One short private line of setup (second person, not read aloud), then `{ t:'fine', text:'Say it to Wren, out loud:' }`, then the line itself as a `{ t:'letter' }` in the first person, about 25–30 words. It is something the player character **does** about Wren, not a report. The Hearth tells the table to read their line to Wren, and Wren answers what they said. This supersedes the second-person "fact plus the excuse you made" form of R11.20. No bold and no numbers the puzzle needs.
+
+**P7 — The four characters.** These are nudges for real players, taken from where the story already takes each role. Keep all four equally weighted in any scene that gives them a line each.
+
+| role | who they are | how it sounds | where the story already shows it |
+|---|---|---|---|
+| Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("*Yet.* … Don't laugh.") | bluffs Wren's name in III; decodes it in IV; argues about the ring every winter in VIII |
+| Listener | the worrier; checks on everyone | warm, a little hesitant, trailing off ("So I just… keep checking on you.") | the kind lie "Yes. Loud." in III |
+| Seer | dry, protective, keeps secrets | short, deadpan, one dry joke ("You thought I just liked lamps.") | tell-or-stay-silent in III; "very poetic", meant plainly |
+| Binder | earnest, stubborn, loyal; rule-bound | plain and formal; states intent ("I'm not stopping.") | "doesn't walk up to anyone" in I; oaths throughout; a thread finally drawn in VIII |
+
+What made these lovable, after two rejected drafts: each line shows **care for Wren**, in the character's own way. Verbal tics alone ("For the record", "Sorry. Um.") read as gimmicks, and blunt lines read as cold. In a group choice, voice each option through the role it sounds like (`'Seer: "The Idiots."'`), and never change option ids or flags.
+
+**P8 — Teach the tabs once.** The tab guide table and "Said your part? Then read through your **Book**." live in the Prologue only. Later chapters do not repeat them.
+
+**P9 — Budgets.** The R1.5 floor of 1,100 words is gone: ch0 is about 950 after the pass. The 1,600 ceiling, R1.1–R1.4 fit gates and R2 sentence rules stand.
 
 ---
 
