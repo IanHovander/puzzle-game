@@ -7,11 +7,11 @@
 
   /* The lamp's collar, drawn as a ring so the page cannot imply an order.
      Crown sits left, Flame right — the reverse of the answer, so reading left to right fails. */
-  const collar = () => `<svg viewBox="0 0 300 176">
+  const collar = () => `<svg viewBox="0 0 300 200">
     <circle cx="150" cy="88" r="62" fill="none" stroke="rgba(212,169,78,.35)" stroke-width="11"/>
     <g transform="translate(88,88) scale(1.15)" style="color:#f2d27a">${G.shapeInner('Crown', true)}</g>
     <g transform="translate(212,88) scale(1.15)" style="color:#f2d27a">${G.shapeInner('Flame', false)}</g>
-    <text x="150" y="170" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="11" font-family="Cinzel,serif">the band runs all the way round \u00b7 no first, no last</text>
+    <g text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="13" font-family="Cinzel,serif"><text x="150" y="174">the band runs all the way round</text><text x="150" y="193">no first, no last</text></g>
   </svg>`;
 
   /* The Listener's interval, drawn: two rungs of the ladder and the climb between them. */
@@ -24,13 +24,13 @@
   </svg>`;
 
   /* The Binder's rule, drawn: a ring, a mark, and the count running clockwise from it. */
-  const lawRing = () => `<svg viewBox="0 0 150 150" style="width:130px;height:130px">
-    <circle cx="75" cy="75" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
-    ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 135) * Math.PI / 180, x = 75 + Math.cos(a) * 46, y = 75 + Math.sin(a) * 46;
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${i === 0 ? 'rgba(164,130,230,.25)' : 'none'}" stroke="${i === 0 ? '#a482e6' : 'rgba(255,255,255,.4)'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
-    <path d="M96,18 a60,60 0 0 1 34,40" fill="none" stroke="#a482e6" stroke-width="2"/><path d="M130,58 l-8,-3 l1,9 Z" fill="#a482e6"/>
-    <text x="40" y="24" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">the scratch</text>
-    <text x="75" y="142" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" font-family="Cinzel,serif">first word in it, then clockwise</text>
+  const lawRing = () => `<svg viewBox="0 0 180 162" style="width:130px;height:117px">
+    <circle cx="90" cy="78" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+    ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 135) * Math.PI / 180, x = 90 + Math.cos(a) * 46, y = 78 + Math.sin(a) * 46;
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="#16131f"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${i === 0 ? 'rgba(164,130,230,.25)' : 'none'}" stroke="${i === 0 ? '#a482e6' : 'rgba(255,255,255,.4)'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
+    <path d="M111,21 a60,60 0 0 1 34,40" fill="none" stroke="#a482e6" stroke-width="2"/><path d="M145,61 l-8,-3 l1,9 Z" fill="#a482e6"/>
+    <text x="55" y="27" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">the scratch</text>
+    <text x="90" y="152" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="Cinzel,serif">first word in it, then clockwise</text>
   </svg>`;
 
   /* A thread, drawn three ways: whole, broken, absent. */
@@ -41,14 +41,14 @@
   }</svg>`;
 
   // Seer under-layer of the dormitory: four shadows away from the lamp, Wren's toward it.
-  const underDorm = `<svg viewBox="0 0 360 220">
-    <rect width="360" height="220" fill="#000"/>
+  const underDorm = `<svg viewBox="0 0 360 252">
+    <rect width="360" height="252" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
-      <rect x="10" y="10" width="340" height="200"/>
+      <rect x="10" y="10" width="340" height="210"/>
       <rect x="20" y="30" width="60" height="30"/><rect x="20" y="90" width="60" height="30"/><rect x="20" y="150" width="60" height="30"/><rect x="280" y="30" width="60" height="30"/>
       <circle cx="300" cy="150" r="14"/><path d="M300,136 L300,120 M292,124 L308,124"/>
-      <text x="300" y="185" text-anchor="middle" fill="#fff" font-size="10" font-family="Cinzel,serif">the lamp</text>
     </g>
+    <text x="300" y="189" text-anchor="middle" fill="#fff" font-size="14" font-family="Cinzel,serif">the lamp</text>
     <g fill="#fff" opacity=".9">
       <circle cx="120" cy="100" r="6"/><circle cx="160" cy="70" r="6"/><circle cx="170" cy="140" r="6"/><circle cx="210" cy="110" r="6"/><circle cx="240" cy="150" r="6"/>
     </g>
@@ -56,23 +56,23 @@
       <path d="M120,100 L80,88"/><path d="M160,70 L124,52"/><path d="M170,140 L134,138"/><path d="M210,110 L178,96"/>
     </g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L276,150"/></g>
-    <g fill="#fff" font-size="9" font-family="Cinzel,serif"><text x="112" y="118">Reader</text><text x="150" y="60">Listener</text><text x="158" y="158">Seer</text><text x="202" y="128">Binder</text><text x="230" y="168" fill="#a482e6">Wren</text></g>
-    <text x="180" y="210" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
+    <g fill="#fff" font-size="14" font-family="Cinzel,serif"><text x="120" y="124" text-anchor="middle">Reader</text><text x="171" y="75">Listener</text><text x="170" y="164" text-anchor="middle">Seer</text><text x="221" y="115">Binder</text><text x="240" y="136" text-anchor="middle" fill="#a482e6">Wren</text></g>
+    <text x="180" y="242" text-anchor="middle" fill="#fff" font-size="14" font-family="Cinzel,serif" opacity=".75">shadows, as they fall</text>
   </svg>`;
 
   /* Under the lamp's foot: four sockets, numbered as the Hearth numbers them, and TWO cuts.
      No carving, no arrow, no rule — the Seer reports cuts, not meanings. */
-  const underFoot = `<svg viewBox="0 0 360 240">
-    <rect width="360" height="240" fill="#000"/>
-    <g transform="translate(180,120)">
+  const underFoot = `<svg viewBox="0 0 300 266">
+    <rect width="300" height="266" fill="#000"/>
+    <g transform="translate(150,135)">
       <circle r="68" fill="none" stroke="#fff" stroke-width="1.5"/>
       ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180, x = (Math.cos(a) * 68).toFixed(1), y = (Math.sin(a) * 68).toFixed(1), hot = i === 2;
-        return `<circle cx="${x}" cy="${y}" r="16" fill="none" stroke="${hot ? '#a482e6' : '#fff'}" stroke-width="${hot ? 2.5 : 1.5}"/><text x="${x}" y="${(+y + 4).toFixed(1)}" text-anchor="middle" fill="${hot ? '#a482e6' : '#fff'}" font-size="12" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
+        return `<circle cx="${x}" cy="${y}" r="16" fill="#000" stroke="${hot ? '#a482e6' : '#fff'}" stroke-width="${hot ? 2.5 : 1.5}"/><text x="${x}" y="${(+y + 5).toFixed(1)}" text-anchor="middle" fill="${hot ? '#a482e6' : '#fff'}" font-size="15" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
     </g>
-    <g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"><path d="M174,34 L180,24 L186,34"/></g>
-    <text x="180" y="16" text-anchor="middle" fill="rgba(255,255,255,.8)" font-size="10" font-family="Cinzel,serif">a small notch</text>
-    <g stroke="#a482e6" stroke-width="2.5" stroke-linecap="round"><path d="M166,214 L196,206"/><path d="M170,221 L191,215"/></g>
-    <text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="10" font-family="Cinzel,serif">a scratch \u2014 long, deliberate</text>
+    <g stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"><path d="M144,48 L150,38 L156,48"/></g>
+    <text x="150" y="27" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="13" font-family="Cinzel,serif">a small notch</text>
+    <g stroke="#a482e6" stroke-width="2.5" stroke-linecap="round"><path d="M136,229 L166,221"/><path d="M140,236 L161,230"/></g>
+    <text x="150" y="257" text-anchor="middle" fill="#a482e6" font-size="13" font-family="Cinzel,serif">a scratch \u2014 long, deliberate</text>
   </svg>`;
 
   C.chapters.push({

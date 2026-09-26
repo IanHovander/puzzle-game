@@ -43,34 +43,34 @@
 
   /* ---------- Seer: three things under the Great Hall ---------- */
   const underHall = (() => {
-    const seats = ring(180, 150, 82);
-    let s = `<svg viewBox="0 0 360 300"><rect width="360" height="300" fill="#000"/>`;
-    s += `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="280"/>`;
+    const seats = ring(180, 185, 88);
+    let s = `<svg viewBox="0 0 360 360"><rect width="360" height="360" fill="#000"/>`;
+    s += `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="340"/>`;
     s += `<path d="M150,10 L150,42 A30,30 0 0 0 210,42 L210,10"/>`;
-    s += `<rect x="18" y="60" width="16" height="110" stroke-dasharray="3,3"/></g>`;
-    s += `<text x="180" y="58" text-anchor="middle" fill="#fff" font-size="9" ${F}>the Hearth</text>`;
-    s += `<text x="26" y="184" text-anchor="middle" fill="#a482e6" font-size="8" ${F}>the tapestry</text>`;
-    s += `<text x="26" y="194" text-anchor="middle" fill="#a482e6" font-size="7" ${F}>older paint under it</text>`;
-    seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="12" fill="none" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" ${F}>${p.n}</text>`; });
-    [5, 8].forEach(n => { const p = seats[n - 1]; s += `<g transform="translate(${p.x.toFixed(1)},${(p.y + 19).toFixed(1)})"><circle r="4.5" fill="none" stroke="#a482e6" stroke-width="1.5"/></g>`; });
+    s += `<rect x="18" y="95" width="16" height="110" stroke-dasharray="3,3"/></g>`;
+    s += `<text x="218" y="36" fill="#fff" font-size="14" ${F}>the Hearth</text>`;
+    s += `<text x="18" y="68" fill="#a482e6" font-size="14" ${F}>the tapestry</text>`;
+    s += `<text x="18" y="86" fill="#a482e6" font-size="13" ${F}>older paint under it</text>`;
+    seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="14" fill="none" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${F}>${p.n}</text>`; });
+    [5, 8].forEach(n => { const p = seats[n - 1]; s += `<g transform="translate(${p.x.toFixed(1)},${(p.y + 22).toFixed(1)})"><circle r="5" fill="none" stroke="#a482e6" stroke-width="1.5"/></g>`; });
     const p5 = seats[4], p8 = seats[7], p6 = seats[5];
-    s += `<text x="${(p5.x + 10).toFixed(1)}" y="${(p5.y + 34).toFixed(1)}" fill="#a482e6" font-size="8" ${F}>coin</text>`;
-    s += `<text x="${(p8.x - 10).toFixed(1)}" y="${(p8.y + 34).toFixed(1)}" text-anchor="end" fill="#a482e6" font-size="8" ${F}>coin</text>`;
-    s += `<g transform="translate(${(p6.x + 24).toFixed(1)},${(p6.y + 2).toFixed(1)})"><path d="M-4,10 L-3,-4 L3,-4 L4,10 Z M0,-4 m-3,0 a3,3 0 1 1 6,0" fill="#a482e6"/><path d="M6,-11 L6,10" stroke="#a482e6" stroke-width="1.2"/></g>`;
-    s += `<text x="${(p6.x + 34).toFixed(1)}" y="${(p6.y + 6).toFixed(1)}" fill="#a482e6" font-size="8" ${F}>a soldier</text>`;
-    s += `<text x="180" y="284" text-anchor="middle" fill="#fff" font-size="8" ${F} opacity=".7">the nine seats, from above</text>`;
+    s += `<text x="${p5.x.toFixed(1)}" y="${(p5.y + 45).toFixed(1)}" text-anchor="middle" fill="#a482e6" font-size="14" ${F}>coin</text>`;
+    s += `<text x="${(p8.x - 9).toFixed(1)}" y="${(p8.y + 27).toFixed(1)}" text-anchor="end" fill="#a482e6" font-size="14" ${F}>coin</text>`;
+    s += `<g transform="translate(${(p6.x + 26).toFixed(1)},${(p6.y + 2).toFixed(1)})"><path d="M-4,10 L-3,-4 L3,-4 L4,10 Z M0,-4 m-3,0 a3,3 0 1 1 6,0" fill="#a482e6"/><path d="M6,-11 L6,10" stroke="#a482e6" stroke-width="1.2"/></g>`;
+    s += `<text x="${(p6.x + 38).toFixed(1)}" y="${(p6.y + 7).toFixed(1)}" fill="#a482e6" font-size="14" ${F}>a soldier</text>`;
+    s += `<text x="180" y="338" text-anchor="middle" fill="#fff" font-size="14" ${F} opacity=".75">the nine seats, from above</text>`;
     return s + '</svg>';
   })();
 
   /* ---------- Binder: the two sworn threads ---------- */
   const threadMap = (() => {
-    const seats = ring(180, 150, 96);
+    const seats = ring(180, 140, 96);
     const P = (n) => seats[n - 1];
     let s = `<svg viewBox="0 0 360 300"><rect width="360" height="300" fill="#000"/>`;
     const draw = (a, b) => `<path d="M${a.x.toFixed(1)},${a.y.toFixed(1)} L${b.x.toFixed(1)},${b.y.toFixed(1)}" stroke="#d96b4a" stroke-width="2.5"/><circle cx="${((a.x + b.x) / 2).toFixed(1)}" cy="${((a.y + b.y) / 2).toFixed(1)}" r="3.5" fill="#d96b4a"/>`;
     s += draw(P(2), P(1)) + draw(P(4), P(6));
-    seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="13" fill="#000" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" ${F}>${p.n}</text>`; });
-    s += `<text x="180" y="284" text-anchor="middle" fill="#d96b4a" font-size="9" ${F}>red, knotted — sworn. Two threads in the whole hall.</text>`;
+    seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="15" fill="#000" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${F}>${p.n}</text>`; });
+    s += `<g text-anchor="middle" fill="#d96b4a" font-size="14" ${F}><text x="180" y="270">red, knotted — sworn.</text><text x="180" y="290">Two threads in the whole hall.</text></g>`;
     return s + '</svg>';
   })();
 
