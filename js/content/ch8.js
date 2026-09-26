@@ -250,7 +250,7 @@
           if (e === 1) return [
             { text: `Walked into the fire: **${listOr(walkers(s), 'fewer of you than meant to')}**.`, cls: 'center' },
             { text: `Stayed on the stones: **${listOr(stayers(s), 'nobody')}**.`, cls: 'center' },
-            kept(s).length ? `${UI.list(kept(s))} had kept the Envoy's word. That key was dead, and three hands wrote what four should have.` : 'Not every hand went in. The glyph was written anyway, thinner than it was meant to be.',
+            kept(s).length ? `${UI.list(kept(s))} had kept the Envoy's word. That key was dead, and three hands wrote what four should have.` : 'Not every hand went in. The glyph was written anyway, thinner.',
             voice,
           ];
           if (e === 2) return [
@@ -526,7 +526,7 @@
            ch8_years. Where Wren is gone, the answer is what the four are left with. */
         text: (s) => {
           const e = ending(s);
-          if (e === 1) return ['Wren listens to all four with a face that keeps trying to be a joke.', { speaker: 'Wren', text: 'Stop it. I haven\'t got a heartbeat, and you\'ve still made it do something. Medically, that\'s your fault.' }];
+          if (e === 1) return ['Wren listens with a face that keeps trying to be a joke.', { speaker: 'Wren', text: 'Stop it. I haven\'t got a heartbeat, and you\'ve still made it do something. Medically, that\'s your fault.' }];
           if (e === 2) return ['Nobody answers. Then every flame in the Hearth leans toward the table, the wrong way, the way one shadow always did.'];
           if (e === 3) return ['Wren holds the Chair\'s seal in both hands and will not put it down.', { speaker: 'Wren', text: 'Right. Nobody is allowed to be kind to me for a week. …A day. Fine. Keep going.' }];
           if (e === 4) return ['In spring one letter comes back, opened and resealed with Crown wax. One line, in Wren\'s hand: *Got all four. Reader, I know you didn\'t eat.*'];
