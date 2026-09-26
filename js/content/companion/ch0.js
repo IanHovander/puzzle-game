@@ -144,6 +144,9 @@
         P.wren.push({ t: 'p', text: 'Wren is not unbound. There is nothing there at all. You decided it was a blind spot in your gift, and never told anyone.' });
       }
 
+      // First night only, like the tab guide: point each page at the Book once its fact has been said.
+      P.sight.push({ t: 'fine', text: 'Said your part? Then read through your **Book**. You will lean on it all night.' });
+
       return P;
     },
   });
