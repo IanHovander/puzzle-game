@@ -164,7 +164,7 @@
             [`${G.shapeSvg('Spike', false, { size: 38, color: '#f2d27a' })}<div class="fine">the laundry’s back wall</div>`, '<b>THORN</b>', '<b>WELL</b>'],
           ] });
           P.sight.push({ t: 'p', text: '**One shape, two words, and only one of them opens a seam.** Say both, out loud, for each.' });
-          P.sight.push({ t: 'fine', text: 'A word that is not the one costs Wren a turn — and a turn more for every guess that seam already remembers. The Hearth counts what is left.' });
+          P.sight.push({ t: 'fine', text: 'A wrong word costs Wren a turn, and more each time at the same seam.' });
           P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see.' });
         } else {
           P.sight.push({ t: 'h', text: 'The arch over the Tower door' });
@@ -175,19 +175,19 @@
             [G.shapeSvg('Spike', false, { size: 40, color: '#f2d27a' }), '<b>THORN</b>'],
             [G.shapeSvg('Flame', false, { size: 40, color: '#f2d27a' }), '<b>ASH</b>'],
           ] });
-          P.sight.push({ t: 'fine', text: 'An arch has no first stone. This page cannot tell you which word comes first, and a wrong order wakes nothing. Somebody here can *hear* it.' });
+          P.sight.push({ t: 'fine', text: 'An arch has no first stone. This page cannot tell you which word comes first. Say all three, out loud.' });
         }
         P.wren.push({ t: 'h', text: 'The plaques' });
-        P.wren.push({ t: 'p', text: 'Every portrait carries a brass plaque: a name, a House, a year. On the four oldest, the letters are the ones from the dormitory door.' });
-        P.wren.push({ t: 'p', text: 'The second version of Wren’s name, chalked there in the same hand.' });
-        P.wren.push({ t: 'fine', text: 'You decided a year ago that somebody was being funny. You still cannot read either of them.' });
+        P.wren.push({ t: 'p', text: 'The four oldest plaques in the gallery are cut in the letters from the dormitory door. You still cannot read them.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“The oldest plaques use your letters. The ones from our door. I copied them onto my cuff on the way past. I will crack them. I refuse to lose to a door.”' });
       }
 
       /* ================= LISTENER ================= */
       if (roleId === 'listener') {
         if (!ward) {
           P.sight.push({ t: 'h', text: 'Two rounds in the dark' });
-          P.sight.push({ t: 'p', text: 'Two patrols. Each walks a round of **twelve beats** and then walks the very same round again. One beat is one turn on the Hearth.' });
+          P.sight.push({ t: 'p', text: 'Two patrols. Each walks a round of **twelve beats**, then walks it again. One beat is one turn on the Hearth.' });
           P.sight.push({ t: 'audio', label: 'Boots, in the dark', strip: '<div class="fine">quick and soft, then slow and iron-shod</div>', play: boots,
             text: 'The lantern goes out along its corridor and comes back. The sentry stands a long while at one end, walks away, and comes back.' });
           P.sight.push({ t: 'html', html: rounds() });
@@ -203,8 +203,9 @@
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: hurt ? 'With the lamps out you will hear every heart in these corridors. The Provost’s. The porter’s. Every soldier’s. Not the one walking beside you in a sling.' : 'With the lamps out you will hear every heart in these corridors. The Provost’s. The porter’s. Every soldier’s. Not the one walking beside you.' });
-        P.wren.push({ t: 'fine', text: 'You decided years ago that the fault was yours. You have never said it out loud to anyone.' });
+        P.wren.push({ t: 'p', text: hurt ? 'In the dark you heard every heart in the corridors. The porter’s, too fast. Not the one beside you in a sling.' : 'In the dark you heard every heart in the corridors. The porter’s, too fast. Not the one beside you.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I counted every boot between the gallery and here. Every time you held your breath, I held mine. We should probably both breathe now. You… first. Go on.”' });
       }
 
       /* ================= SEER ================= */
@@ -214,8 +215,8 @@
           P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. Your map ties each stop of a round to a room.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
           P.sight.push({ t: 'p', text: '**The west seam is scratched at its left end. The laundry’s back seam is scratched at its right.**' });
-          P.sight.push({ t: 'fine', text: 'Say which end before anybody reads. A wrong word costs a turn, and more at a seam you have guessed at before.' });
-          P.sight.push({ t: 'fine', text: 'What a shape says is not yours, and neither is what a cry costs. Say where things are, and stop.' });
+          P.sight.push({ t: 'fine', text: 'Say which end before anybody reads a word.' });
+          P.sight.push({ t: 'fine', text: 'What a shape says is not yours. Say where things are, and stop.' });
         } else {
           P.sight.push({ t: 'h', text: 'Under the Tower door' });
           P.sight.push({ t: 'p', text: 'Four slots below the arch, black with soot. Two things are cut under them, and both were cut long before the soot.' });
@@ -225,8 +226,9 @@
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
-        P.wren.push({ t: 'p', text: 'Two hundred painted Masters and not one shadow between them, because paint has none. Five living people in that gallery, and five shadows. Four of them fall away from the lamp.' });
-        P.wren.push({ t: 'fine', text: hurt ? 'Wren’s falls toward it, with one arm of it hanging wrong. It always has fallen that way. You have run out of lamps to blame.' : 'Wren’s falls toward it. It always has. You have run out of lamps to blame.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Two hundred painted Masters, and not one shadow. Four living shadows fall away from the lamp. Wren’s falls toward it, one arm hanging wrong.' : 'Two hundred painted Masters, and not one shadow. Four living shadows fall away from the lamp. Wren’s falls toward it.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Every time a lantern came round, I stood between it and you. Nobody saw a thing. You thought I was just slow on corners. I am never slow.”' });
       }
 
       /* ================= BINDER ================= */
@@ -240,11 +242,11 @@
             + '<li>' + thread('coin') + ' <strong>Both patrols.</strong> The captain’s men, and nothing more than that.</li>'
             + '</ul>' });
           P.sight.push({ t: 'p', text: '**His gold buys four rooms: B5, C5, D5 and C4.** Wren in one of them and he shouts. The sentry leaves its round and stands at the foot of the Tower stair, that turn and three after it.' });
-          P.sight.push({ t: 'fine', text: 'Say it before anybody moves. A room he has not bought is a room nobody is paid to watch.' });
+          P.sight.push({ t: 'fine', text: 'Say it before anybody moves.' });
           P.sight.push({ t: 'fine', text: 'You cannot see a seam, a shape, or a beat. Ask for all three.' });
         } else {
           P.sight.push({ t: 'h', text: 'Where a sigil begins' });
-          P.sight.push({ t: 'p', text: 'You are the only one on this stair who was ever taught this, and tonight it is three lines.' });
+          P.sight.push({ t: 'p', text: 'You are the only one on this stair who was ever taught this.' });
           /* THE PROLOGUE SPENT THE OLD VERSION OF THIS PAGE. Until this pass these three lines were,
              word for word, the Binder's Chapter 0 page -- begin at the scratch, a notch is only a
              signature, run clockwise -- and the dormitory lamp is WORKED ON THE SHARED SCREEN with
@@ -262,18 +264,18 @@
              sigil all use: the guess a table makes without the missing seat has a cut under it. */
           P.sight.push({ t: 'list', items: [
             'The dormitory lamp was Founders\u2019 brass, and a Founders\u2019 sigil begins at the **scratch**. **This is not one.**',
-            'A Vigil ward is cut by the keeper sworn to it, and on a Vigil ward the keeper\u2019s mark **binds**. It begins at the **notch**. The scratch is the older cut, and down here the older cut is only wear.',
-            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so every word after it goes into the previous slot — **widdershins, back against the count.** Above ground you have only ever seen a sigil run the other way. This is not above ground.',
+            'This is a Vigil ward. The keeper\u2019s mark **binds**, so it begins at the **notch**. Down here the scratch is only wear.',
+            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so each next word goes in the slot before — **widdershins, back against the count.**',
             'When the count runs off the end it comes back to slot 1. **Any slot the words do not reach stays empty.**',
           ] });
           P.sight.push({ t: 'fine', text: 'A spare shape is not decoration. It is a different sign, and the iron can tell.' });
-          P.sight.push({ t: 'fine', text: 'Say which cut binds **before** anybody places a word. The other three will start at the scratch, because that is what the lamp taught them, and they will be wrong.' });
+          P.sight.push({ t: 'fine', text: 'Say which cut binds **before** anybody places a word. The lamp taught everyone else the scratch.' });
           P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
         }
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
-        P.wren.push({ t: 'p', text: 'Bess, the porter, the captain — you read every thread in that gallery at a glance.' });
-        P.wren.push({ t: 'p', text: hurt ? 'There is one you have never let yourself follow: the one from the Provost to Wren. Tonight Wren took your arm with the good hand, and there was no thread in it. There was a hand.' : 'There is one you have never let yourself follow: the one from the Provost to Wren.' });
-        P.wren.push({ t: 'fine', text: 'You know what colour a mother’s thread is. You decided long ago not to look.' });
+        P.wren.push({ t: 'p', text: 'You read every thread in the gallery at a glance. You never let yourself follow the Provost’s thread to Wren. You know what colour a mother’s thread is.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go until it shuts behind you. That isn’t a rule. I checked. There isn’t one.”' });
       }
 
       /* ================= SPEAK (gated by LINEN) ================= */
@@ -281,17 +283,17 @@
         P.speak.push({ t: 'fine', text: 'Nothing to speak yet. The Hearth will tell you when.' });
       } else {
         const Q = {
-          reader: { prompt: hurt ? 'Wren, the arm re-strapped in a clean sheet, does not look at you while asking. *"The Reader. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*' : 'Wren, over the kettle, so the others cannot hear. *"The Reader. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
-            opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know yet."** ~~(the truth)~~']],
+          reader: { prompt: (hurt ? 'Wren, the arm re-strapped in a clean sheet, does not look at you while asking.' : 'Wren, over the kettle, so the others cannot hear.') + ' *"Reader. Quick one. Easy, for a genius. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
+            opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know. Yet."** ~~(the truth)~~']],
             after: { TELL: 'Wren grins, delighted, and says it twice under the breath. *A small brave bird.* You made that up. It sounded true, which is not the same thing.', DONTKNOW: 'Wren nods, not disappointed. *"Yet. Good. Tell me when."*' } },
-          listener: { prompt: hurt ? 'Wren, on a tub with the bad arm held close, asks it to the arm rather than to you. *"The Listener. You hear everyone\'s heart. Can you hear mine?"*' : 'Wren, pretending to fold a sheet, so it looks like nothing. *"The Listener. You hear everyone\'s heart. Can you hear mine?"*',
-            opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No."** ~~(the truth)~~']],
+          listener: { prompt: (hurt ? 'Wren, on a tub with the bad arm held close, asks it to the arm rather than to you.' : 'Wren, pretending to fold a sheet, so it looks like nothing.') + ' *"Listener, you\'re checking on me again. So check properly. You hear everyone\'s heart. Can you hear mine?"*',
+            opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No. I… no."** ~~(the truth)~~']],
             after: { LOUD: 'Wren looks pleased, then looks at you a moment too long, then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The kettle covers whatever comes next.' } },
-          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"The Seer. You look at me strangely. More, since the stair. What do you see?"*' : 'Wren, close, in the steam. *"The Seer. You look at me strangely sometimes. You\'re doing it now. What do you see?"*',
+          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Seer. You\'ve been doing the face since the stair. More than usual, and usual is a lot. What do you see?"*' : 'Wren, close, in the steam. *"Seer. You\'re doing the face. The one you only ever do at me. What do you see?"*',
             opts: [['TELL', 'Tell Wren about **the shadow**: it falls toward the fire. Every fire. ~~(the truth)~~'], ['NOTHING', '**Say nothing.** Look at the wall.']],
-            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, later: *"That\'s very poetic, the Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
-          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"The Binder. Honestly. Am I really the one? Because the one should be able to get down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"The Binder. Honestly. Do you think I\'m really the one?"*',
-            opts: [['YES', '**"Yes."**'], ['DONTKNOW', '**"I don\'t know."** ~~(the truth)~~']],
+            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, later: *"That\'s very poetic, Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
+          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"Binder. Honestly. Am I really the one? Because the one should be able to get down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"Binder. You know all the rules, so you\'d know. Honestly. Do you think I\'m really the one?"*',
+            opts: [['YES', '**"Yes."**'], ['DONTKNOW', '**"I don\'t know. I won\'t pretend I do."** ~~(the truth)~~']],
             after: { YES: 'Wren nods like someone receiving an expected verdict. *"Right. Yes. Good to have it from a Binder."* You said yes because it was kind. You are not sure it was kind.', DONTKNOW: 'Wren is quiet a moment. *"Nobody\'s ever said that to me. Everyone always knows."* And then, almost too low to hear: *"Thanks."*' } },
         }[roleId];
         P.speak.push({ t: 'h', text: 'In the laundry, in a whisper' });
