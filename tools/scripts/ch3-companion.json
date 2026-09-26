@@ -1,6 +1,6 @@
 { "start": "ch3_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["veil", "a8e"]}, {"shot": "c3_reader_sight"},
-  {"expect": "What is cut over the seams"}, {"expect": "scratch at the left end"}, {"expect": "CROWN"}, {"expect": "Ask the Seer, seam by seam"}, {"expectNot": "ASH"},
+  {"expect": "What is cut over the seams"}, {"expect": "scratch at the left end"}, {"expect": "CROWN"}, {"expect": "not yours to see"}, {"expectNot": "ASH"},
   {"tab": "Wren"}, {"expect": "plaques"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
   {"clickText": "Pages"}, {"unlock": ["linen"]}, {"expect": "In the laundry, in a whisper"}, {"expect": "Never show your phone"}, {"shot": "c3_reader_speak"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "VYXX"}, {"shot": "c3_reader_token"},

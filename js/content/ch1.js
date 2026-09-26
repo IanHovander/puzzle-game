@@ -165,10 +165,6 @@
         type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
         text: [
           { text: 'Numbers, not names — say your one thing first.', cls: 'whisper' },
-          { text: 'Reader — who is already pledged.', cls: 'whisper' },
-          { text: 'Listener — who is still talking about it.', cls: 'whisper' },
-          { text: 'Seer — who cannot be moved by anybody.', cls: 'whisper' },
-          { text: 'Binder — who is sworn to whom.', cls: 'whisper' },
           { text: 'Then ask ' + ASKS_WORD + '. The vote is called once.', cls: 'whisper' },
         ],
         config: () => {
@@ -204,8 +200,8 @@
           };
         },
         hints: [
-          'Four questions, four people: who is pledged (Reader), who is still talking (Listener), who cannot be moved at all (Seer), who is sworn to whom (Binder).',
-          'Nine seats, five needed, and ' + ASKS_WORD + ' asks. One of the seats you can reach does not vote alone. Which one is the Binder\'s to say.',
+          'Each of you holds one piece. Say yours out loud.',
+          'Nine seats, five needed, and ' + ASKS_WORD + ' asks. One of the seats you can reach does not vote alone.',
           'Seat 1 and Seat 7. Seat 1 brings Seat 2 with her. With the Chair and Seat 3, that is five.',
         ],
         onSolve: (s, r) => {

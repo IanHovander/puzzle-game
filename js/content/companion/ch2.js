@@ -129,7 +129,7 @@
           text: '**Up one, up three, down two.** Four words, three steps. Of every order four words could be turned in, only one climbs like that.' });
         P.sight.push({ t: 'html', html: dialsUnheard() });
         P.sight.push({ t: 'fine', text: 'An order guessed is a whole count spent, and the door counts once.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, and you never hear which dial moved. The words belong to the Reader. The dials belong to the Seer.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, and you never hear which dial moved.' });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'p', text: 'The Ember is a stone in a box and you did not expect a heart. ' + (lost ? 'Wren is two floors up, under guard.' : 'Wren promised to stay put.') + ' Then footsteps on the stair behind you, light and quick and familiar, and no heart walking with them. You have heard those feet every day for a year. Until this stair it never occurred to you that you have only ever heard the feet.' });

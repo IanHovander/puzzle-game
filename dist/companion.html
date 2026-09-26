@@ -1735,7 +1735,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
           text: '**Up one, up three, down two.** Four words, three steps. Of every order four words could be turned in, only one climbs like that.' });
         P.sight.push({ t: 'html', html: dialsUnheard() });
         P.sight.push({ t: 'fine', text: 'An order guessed is a whole count spent, and the door counts once.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, and you never hear which dial moved. The words belong to the Reader. The dials belong to the Seer.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, and you never hear which dial moved.' });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('flat')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'p', text: 'The Ember is a stone in a box and you did not expect a heart. ' + (lost ? 'Wren is two floors up, under guard.' : 'Wren promised to stay put.') + ' Then footsteps on the stair behind you, light and quick and familiar, and no heart walking with them. You have heard those feet every day for a year. Until this stair it never occurred to you that you have only ever heard the feet.' });
@@ -1949,7 +1949,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
           ] });
           P.sight.push({ t: 'p', text: '**One shape, two words, and only one of them opens a seam.** Say both, out loud, for each.' });
           P.sight.push({ t: 'fine', text: 'A word that is not the one costs Wren a turn — and a turn more for every guess that seam already remembers. The Hearth counts what is left.' });
-          P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see. Ask the Seer, seam by seam.' });
+          P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see.' });
         } else {
           P.sight.push({ t: 'h', text: 'The arch over the Tower door' });
           P.sight.push({ t: 'p', text: 'Three shapes are cut into the arch, all of them standing up. The Hearth shows them worn away. On your page they are clean.' });
@@ -1976,14 +1976,14 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
             text: 'The lantern goes out along its corridor and comes back. The sentry stands a long while at one end, walks away, and comes back.' });
           P.sight.push({ t: 'html', html: rounds() });
           P.sight.push({ t: 'fine', text: '**Lose the count and Wren walks into somebody.** A sighting sends Wren back, and the count keeps running.' });
-          P.sight.push({ t: 'fine', text: 'You hear how far along a round they are. Never which room that is. The Seer has the rooms.' });
+          P.sight.push({ t: 'fine', text: 'You hear how far along a round they are. Never which room that is.' });
         } else {
           P.sight.push({ t: 'h', text: 'The ward hums' });
           P.sight.push({ t: 'p', text: 'Three notes under the soot, over and over. Nobody else in this stairwell can hear them.' });
           P.sight.push({ t: 'audio', label: 'The threshold, humming', strip: CA.strip([1, 1]), play: (A) => CA.playSteps(A, [1, 1]),
             text: 'The second note is **one rung above** the first. The third is one rung above that.' });
           P.sight.push({ t: 'p', text: 'Three notes, three words. Look their rungs up on the Ladder in your **Book**. Only one order climbs one, then one.' });
-          P.sight.push({ t: 'fine', text: 'You never hear a word’s name. The Reader has the words. Say the climb out loud, and let them put it in order.' });
+          P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Say the climb out loud.' });
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -1995,17 +1995,17 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
       if (roleId === 'seer') {
         if (!ward) {
           P.sight.push({ t: 'h', text: 'Under the corridors' });
-          P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. The Listener counts stops along a round. Only you have both.' });
+          P.sight.push({ t: 'p', text: 'The Hearth draws rooms by letter and number. Your map ties each stop of a round to a room.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underCorridors(hurt) });
           P.sight.push({ t: 'p', text: '**The west seam is scratched at its left end. The laundry’s back seam is scratched at its right.**' });
-          P.sight.push({ t: 'fine', text: 'Give the Reader the end before anybody speaks. A wrong word costs a turn, and more at a seam you have guessed at before.' });
+          P.sight.push({ t: 'fine', text: 'Say which end before anybody reads. A wrong word costs a turn, and more at a seam you have guessed at before.' });
           P.sight.push({ t: 'fine', text: 'What a shape says is not yours, and neither is what a cry costs. Say where things are, and stop.' });
         } else {
           P.sight.push({ t: 'h', text: 'Under the Tower door' });
           P.sight.push({ t: 'p', text: 'Four slots below the arch, black with soot. Two things are cut under them, and both were cut long before the soot.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
           P.sight.push({ t: 'p', text: '**A small notch under slot 4. A long, deliberate scratch under slot 1.** The numbers are the ones the Hearth shows.' });
-          P.sight.push({ t: 'fine', text: 'Which cut matters is not yours to know. That is the Binder’s half. Say what is cut, and where.' });
+          P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
@@ -2311,7 +2311,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
            exactly one order; one step without them is thirty-two boards. */
         P.sight.push({ t: 'audio', label: 'The scroll, when the ring is touched', strip: CA.strip([-1]) + '<div class="arrow-strip"><span class="step rest"><b>◆</b>then it dies away</span></div>', play: (A) => CA.playSteps(A, [-1]),
           text: '**Down one, and then the tune goes out of it.** Three words are cut there. The ring will only give you the step from the first to the second.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps. Three words, one step — the Reader has to tell you which three.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word\'s name, only how far the tune steps.' });
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -2327,7 +2327,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underMarks });
         P.sight.push({ t: 'fine', text: 'Three cuts, and nothing else cut anywhere in the room. **The two in the scroll\'s ring are not the same kind.**' });
         P.sight.push({ t: 'p', text: 'The tapestry is painted, and painted over. Say which of them has something in his hand, and which of them reaches back.' });
-        P.sight.push({ t: 'fine', text: 'What a cut obliges is not yours — one kind starts a sigil and one does not, and that is the Binder\'s. Say where they are, and stop.' });
+        P.sight.push({ t: 'fine', text: 'Say where the cuts are, and stop.' });
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
@@ -2587,7 +2587,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
       const prev = (raw == null || !/^\d\d$/.test(String(raw))) ? null : String(raw);
       let ctl = null;
       const mat = MATERIAL[roleId];
-      const said = 'Say them aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.';
+      const said = 'Say them aloud when the Hearth asks, in seat order. Never show the phone.';
       const idle = () => {
         UI.clear(box);
         if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: prev[0] + ' ' + prev[1] })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your two digits. ' + said })); }
@@ -2676,7 +2676,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
             : '**Two, five, one, three, four**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far. The words are the Reader’s, and where a sigil begins is the Binder’s.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
         P.wren.push({ t: 'p', text: 'Boots above, in step. Water below, moving slowly. And beside you, where Wren is standing, the thing you have called a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
@@ -3239,7 +3239,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
         P.sight.push({ t: 'html', html: climbOne() });
         P.sight.push({ t: 'p', text: 'So **the phrase opens by climbing one rung**. Almost nothing these walls can say opens like that — say it out loud before anybody places a word.' });
         P.sight.push({ t: 'p', text: 'Pick the wrong pair of readings and the ring is a different one. It will not sing.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Every room is tuned differently, so you only ever hear how far the tune steps. You will need the Reader.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, only how far the tune steps.' });
       }
 
       if (roleId === 'seer') {
@@ -3248,7 +3248,7 @@ window.CompanionContent.roleIntro = 'Pick the seat you are in. *Say what you see
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: ringCuts() });
         P.sight.push({ t: 'p', text: `A long, deliberate **scratch** at socket **${SCRATCH}**. A small **notch** at socket **${NOTCH}**. Those are the numbers the Hearth shows.` });
         P.sight.push({ t: 'p', text: 'Begin in the wrong socket and every word after it lands wrong too.' });
-        P.sight.push({ t: 'fine', text: 'Which of them matters is not yours to know — that is the Binder’s half of the job. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
       }
 
       if (roleId === 'binder') {

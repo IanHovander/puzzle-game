@@ -64,7 +64,7 @@ failure at any size.
 - **R1.1 — Ship gate.** `node tools/scan-fit.js chN --w 1280 --h 720` reports **`overflowing: none`**, with **at most 2 scenes shrunk**. `UI.fitBox` will not shrink below **17px** — the game is read aloud from across a room, and smaller than that is not small, it is gone — so a scene that cannot fit above the floor now reports as an overflow rather than quietly becoming unreadable. An overflow is a cut, never a CSS tweak. The same scan reports the puzzle panel, which never shrinks at all: anything it lists as "puzzle panel scrolls" is a palette or a commit button the room cannot see.
 - **R1.2 — Stretch check.** `node tools/scan-fit.js chN --w 1152 --h 648` may overflow **at most one** scene, by **under 5 px**. Anything worse is a rewrite, not a CSS tweak.
 - **R1.3** A prose scene displays **≤ 6 paragraphs and ≤ 150 words on any one branch**. ch0/ch1 prose scenes run 62–151 words. Count the *worst* branch of a `text: (s) => [...]`, not the average.
-- **R1.4** A puzzle brief (`text` on a `type:'puzzle'` scene, which renders in a 44vh box and cannot shrink below 17px) is **≤ 65 words and ≤ 6 paragraphs, each ≤ 18 words**. Calibrated against the 17px floor, not the old 14px one: `ch1_vote` at 8 paragraphs / 86 words overflowed by 84px once the floor was raised, and `ch2_door` at 7 paragraphs by 14px. Both now fit at full size. Four of those paragraphs are the four role prompts, so the brief has room for two lines of its own — one to say what the puzzle is, one to say what a wrong answer costs. Everything else belongs in the rule card.
+- **R1.4** A puzzle brief (`text` on a `type:'puzzle'` scene, which renders in a 44vh box and cannot shrink below 17px) is **≤ 65 words and ≤ 6 paragraphs, each ≤ 18 words**. Calibrated against the 17px floor, not the old 14px one: `ch1_vote` at 8 paragraphs / 86 words overflowed by 84px once the floor was raised, and `ch2_door` at 7 paragraphs by 14px. Both now fit at full size. A brief does not list the four roles (R8.0), so it needs two or three lines: what the puzzle is, what a wrong answer costs, and "say your one thing first". Everything else belongs in the rule card.
 - **R1.5 — Chapter prose budget: 1,100–1,600 words.** Count it with `node tools/prose-count.js chN` — that tool is the authority, and `node tools/prose-count.js` with no argument prints every chapter. As it stands, every chapter is inside the budget: ch0 1,101 · ch1 1,349 · ch2 1,500 · ch3 1,519 · ch4 1,593 · ch5 1,595 · ch6 1,526 · ch7 1,592 · ch8 1,598. (The figures above this line were the pre-rework ones and are kept nowhere; re-read them from the tool.) `node tools/prose-count.js chN` also breaks the chapter down by scene, worst first, and marks any scene over the 150-word cap.
 
 Chapter-local CSS is a legitimate part of the fit budget. `ch1.js` shrinks `.table-area` to `min(380px, 50vh)` with a `@media (max-height: 820px)` step to `min(300px, 42vh)`, and un-monospaces `.pz-status` / `.pz-note` so the rule card reads as prose. Copy that pattern; namespace it to your chapter.
@@ -149,7 +149,7 @@ and only after the puzzle, once, in `cls:'small'`, as a reward:
 - **R4.1** A term is **defined in the sentence that first uses it, in ordinary words**, or it does not appear. No Law named by number before its `learned:` chapter, and even then the prose says what it *means*, not its number.
 - **R4.2** **No definition may use another undefined term.** ("turned" → "widdershins" → "from its mark" is three unknowns deep.)
 - **R4.3** **Chapter working vocabulary ≤ 3 system terms.** Everything past that gets a plain-English stand-in — *the cuts*, *the rule*, *the order*, *filed*, *asks*, *sworn*, *bought*, *out of reach* — and the real word arrives later, once.
-- **R4.4** Hint tier 1 says **who holds what**, in no jargon at all (see §10.6).
+- **R4.4** Hint tier 1 says, in no jargon at all, that everyone holds a piece. It does not name who holds what (R8.0, §10.6).
 
 Inventory to attack across ch2–ch8: *sunwise, widdershins, the mark / the first mark, turned line, the lock, the sworn-to, Idony's Law, "the 212 page", Law 0/4/6, the Hymn and its rest, the older alphabet, memory-bell, the Sealing, the Fourfold Walk, Ear-Sighted, Crown-coined, the Founders' road, the rim*, and the eight glyph names used as if they were common nouns.
 
@@ -215,12 +215,7 @@ In ch0/ch1 these conventions are consistent enough to be load-bearing. Breaking 
 
 ## 8. Instruction lines: one job, one line, one name
 
-**After** — `ch1_vote`, one job per line, each addressed to a role, each ≤ 8 words:
-
-> 'Reader — who is already pledged.'
-> 'Listener — who is still talking about it.'
-> 'Seer — who cannot be moved by anybody.'
-> 'Binder — who is sworn to whom.'
+- **R8.0 — Never re-explain the four roles.** The title screen and Wren's nicknames in the Prologue teach them once. A puzzle brief, rule card, hint or phone page does not say what each role holds ("Reader — the words…", "the Binder knows which cut…", "ask the Seer"). The user's playtest note: repeating it for every challenge is grating, and the table can work out who holds what. Tell the table the shape of the job and to say their piece first. Say who drives the keyboard and who reads aloud (R7.6), and keep a role name where the table has to act on it in real time (ch6's bell lanes).
 
 **After** — `ch1_attune`, 18 words total:
 
@@ -231,7 +226,7 @@ In ch0/ch1 these conventions are consistent enough to be load-bearing. Breaking 
 
 > 'Cut into the mantel above the fire, where four hundred years of smoke have not quite hidden it: a word, and a mark beside it. Each of you — your Companion, the word, the mark.'
 
-- **R8.1** One instruction per line, prefixed with the role name and an em-dash: `'Reader — …'`.
+- **R8.1** One instruction per line, addressed to the whole table.
 - **R8.2** ≤ 10 words per instruction line, imperative mood, no subordinate clauses.
 - **R8.3** Instruction and fiction never share a sentence.
 - **R8.4 — The house rule appears exactly once per chapter, verbatim from `VigilLore.houseRule`** ("Say what you see. Never show your phone."). **(settled — one reading made it a per-puzzle constant; it is not.)** ch0 puts it on the table-talk puzzle brief as `cls:'whisper'`; ch1 puts it on the Companion **Speak** page as `{t:'fine', text:'*'+L.houseRule+'*'}`. Pick one. Do not paraphrase it and do not repeat it.
@@ -331,8 +326,8 @@ ch0 is the same shape: the Seer reports **two** cuts and is told which one matte
 
 | rung | job | ch0_lamp | ch1_vote |
 |---|---|---|---|
-| 1 | **Re-partition.** Who owns what. Gives away nothing. No jargon at all. | "Four answers, four people, and nobody has two. Which words — the Reader. What order — the Listener. What is cut under the brass — the Seer. What a cut means — the Binder." | "Four questions, four people: who is pledged (Reader), who is still talking (Listener), who cannot be moved at all (Seer), who is sworn to whom (Binder)." |
-| 2 | **The insight, in the abstract.** Names the trick with no coordinates. | "Two words, and the hum between them says which of the two is spoken first. The Listener has that step. And there is more than one cut under the brass — the Binder knows which kind starts a sigil." | "Nine seats, five needed, and two asks. One of the seats you can reach does not vote alone. Which one is the Binder's to say." |
+| 1 | **Talk.** Everyone holds a piece. Gives away nothing, names no role. No jargon at all. | "Each of you holds one piece. Say yours out loud." | "Each of you holds one piece. Say yours out loud." |
+| 2 | **The insight, in the abstract.** Names the trick with no coordinates and no role. | "The hum says which word goes first. Only one cut marks the start." | "Nine seats, five needed, and two asks. One of the seats you can reach does not vote alone." |
 | 3 | **The answer, literally, plus the commit step.** | "ASH in slot 3, EMBER in slot 4. The other two stay empty. **Then four hands.**" | "Seat 1 and Seat 7. Seat 1 brings Seat 2 with her. With the Chair and Seat 3, that is five." |
 
 *(Both rung 2s were rewritten in the whole-game sweep and this table was re-read out of the shipped
@@ -573,8 +568,8 @@ A chapter ships when every line is true.
 - [ ] the whole rule fits in `config().note` in ≤ 60 words, quoted from a character, ≤ 2 verbs and ≤ 2 states
 - [ ] every identity on the puzzle surface is an integer or a role name — zero proper nouns
 - [ ] four role facts as four droppable named constants, each commented with its owner
-- [ ] each companion page: one bold fact, one cost line ≤ 20 words, one closing "what you cannot see / ask" line
-- [ ] four one-line role prompts in the scene text, seat order, ≤ 8 words each, plus the say-it-before-you-act line
+- [ ] each companion page: one bold fact, one cost line ≤ 20 words, and no line naming what another role holds (R8.0)
+- [ ] no role prompts in the scene text (R8.0), just the say-it-before-you-act line
 - [ ] solve rule is a pure function of committed input; search space enumerated; uniqueness + drop-a-role result in a comment above the data and in the commit message
 - [ ] every wrong option has a keyed line naming the clause that stopped it; impossible actions are `locked` with a `lockedText`; a failed commit prints an arithmetic receipt
 - [ ] one decoy, tempting on one role's page, disarmed in one sentence on a **different** role's page, costing one budgeted resource

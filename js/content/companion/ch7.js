@@ -211,7 +211,7 @@
         P.sight.push({ t: 'html', html: climbOne() });
         P.sight.push({ t: 'p', text: 'So **the phrase opens by climbing one rung**. Almost nothing these walls can say opens like that — say it out loud before anybody places a word.' });
         P.sight.push({ t: 'p', text: 'Pick the wrong pair of readings and the ring is a different one. It will not sing.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Every room is tuned differently, so you only ever hear how far the tune steps. You will need the Reader.' });
+        P.sight.push({ t: 'fine', text: 'You never hear a word’s name, only how far the tune steps.' });
       }
 
       if (roleId === 'seer') {
@@ -220,7 +220,7 @@
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: ringCuts() });
         P.sight.push({ t: 'p', text: `A long, deliberate **scratch** at socket **${SCRATCH}**. A small **notch** at socket **${NOTCH}**. Those are the numbers the Hearth shows.` });
         P.sight.push({ t: 'p', text: 'Begin in the wrong socket and every word after it lands wrong too.' });
-        P.sight.push({ t: 'fine', text: 'Which of them matters is not yours to know — that is the Binder’s half of the job. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
       }
 
       if (roleId === 'binder') {

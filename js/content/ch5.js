@@ -294,10 +294,6 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 1 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate1', par: [2.5, 5, 7],
         text: [
           'Three shapes on the lintel, three bells above them, five slots below.',
-          { text: 'Reader — what each shape says, both ways.', cls: 'whisper' },
-          { text: 'Listener — the bell over each shape, and its count.', cls: 'whisper' },
-          { text: 'Seer — which end is marked, and every cut on the ring.', cls: 'whisper' },
-          { text: 'Binder — where a sigil begins, and which way round.', cls: 'whisper' },
           { text: 'All four out loud, before anybody touches the ring.', cls: 'whisper' },
         ],
         config: (s) => {
@@ -320,8 +316,8 @@
           return c;
         },
         hints: [
-          'Four answers, four people, nobody has two. The words — the Reader. The counts — the Listener. The cuts — the Seer. Where a sigil begins, and which way — the Binder.',
-          'Three cuts on that ring, and only one kind starts a sigil. The Binder knows which kind, and which way the count then runs.',
+          'Each of you holds one piece. Say yours out loud.',
+          'Three cuts on that ring, and only one kind starts a sigil. Which way the count runs matters too.',
           () => ringRung(ANS1),
         ],
         onSolve: (s, r) => {
@@ -354,11 +350,7 @@
       ch5_gate2: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [2.5, 5, 7],
         text: [
-          'Five shapes, five bells the Hearth cannot hear, and the same four jobs.',
-          { text: 'Reader — what each shape says.', cls: 'whisper' },
-          { text: 'Listener — every bell, and its count.', cls: 'whisper' },
-          { text: 'Seer — which end is marked, and every cut on the ring.', cls: 'whisper' },
-          { text: 'Binder — where a sigil begins, which way, and one word.', cls: 'whisper' },
+          'Five shapes, and five bells the Hearth cannot hear.',
           { text: 'All four out loud, before anybody touches the ring.', cls: 'whisper' },
         ],
         config: (s) => {
@@ -380,8 +372,8 @@
           return c;
         },
         hints: [
-          'Four answers, four people, nobody has two. The words — the Reader. The counts — the Listener. The cuts — the Seer. Where it begins, which way, and one word — the Binder.',
-          'Three cuts here too, and only one kind starts a sigil. One of the five words is one the Laws argue about — also the Binder\'s.',
+          'Each of you holds one piece. Say yours out loud.',
+          'Three cuts here too, and only one kind starts a sigil. One of the five words is one the Laws argue about.',
           (s) => ringRung(law0(s) ? ANS2_COLD : ANS2),
         ],
         onSolve: (s, r) => {
@@ -459,7 +451,7 @@
           return c;
         },
         hints: [
-          'Two answers on each phone, and nobody has four. The Reader first, then the Listener, the Seer, the Binder.',
+          'Two answers on each phone. Say them in seat order.',
           'Every one of the eight questions has a trap. Count what it asks for, not what is easy to count.',
           /* Built from PAIRS, and with no ** in this line: tools/check-hints.js reads the bold spans
              out of the rung's SOURCE when the rung is a function, so a bolded answer here would be
@@ -522,7 +514,7 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch5_stair', artParams: { broken: false }, mood: 'tense', fx: 'ash', puzzleId: 'ch5_collapse', par: [1, 2],
         text: [
           'Two slots cut into the newel post. One hand, because there is no time for four.',
-          { text: 'The Binder has one thing to say first. Say it, then write.', cls: 'whisper' },
+          { text: 'One of you has one thing to say first. Say it, then write.', cls: 'whisper' },
         ],
         config: () => ({
           title: 'THE COLLAPSE — ONE HAND',
