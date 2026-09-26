@@ -295,7 +295,7 @@
       const out = [{ text: `${r.hits} of ${r.total} lights answered right. ${mark} holds the lid.`, cls: 'whisper' }];
       if (r.passed) { out.push.apply(out, holdLines); return out; }
       const c = s.flags.BELLS_CRACKED | 0;
-      out.push('Not enough. The Cold comes up through the gaps, and a bell answers it with a flat note that goes on too long.');
+      out.push('Not enough. The Cold comes up through the gaps. A bell answers it with a flat note that goes on too long.');
       out.push({ text: c >= 3 ? 'Three bells cracked. The lid holds on the pattern alone now.' : `A bell is cracked. ${c} of four.`, cls: 'whisper' });
       out.push({ speaker: 'Provost Marrow', text: again });
       return out;
@@ -315,25 +315,28 @@
      over its own fallback (ch8.js:76). The real fix is one map in lore.js beside L.tokens.whisper,
      which no chapter agent may make alone; this at least removes the copy that could disagree. */
   const RIGHT = { seer: 'toward', listener: 'none', reader: 'hollow', binder: 'none' };
+  /* A right answer is `yes`, then the laundry clause, then `end` -- Wren answering the line the
+     player just read off the Wren tab. A wrong one is keyed by the option id, so Wren can answer
+     what was actually said. Grey gets the joke: that is Wren's humour coming back. */
   const REPLY = {
-    seer: { yes: 'Toward it.', no: 'Look down, some time when I am not standing here.' },
-    listener: { yes: 'Nothing.', no: 'That was kind. It was not true, and I would rather have had the true one.' },
-    reader: { yes: 'A hollow. The part of a bell that rings.', no: 'That is what they call me. It is not what it says.' },
-    binder: { yes: 'None. Not unbound. The knot itself.', no: 'You are being kind again. Hold out your arm and look.' },
+    seer: { yes: 'Toward.', end: ' Thanks for moving.', no: { away: 'Away, like everybody\'s? Look down some time, when I\'m not standing here.', none: 'No shadow? I\'ve got one. Look down some time, when I\'m not standing here.' } },
+    listener: { yes: 'Nothing.', end: ' Go on. Leave your hand there.', no: { loud: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.', faint: 'That was kind. It wasn\'t true, and I\'d rather have had the true one.' } },
+    reader: { yes: 'A hollow. The bit that rings.', end: ' Four times? I\'d have stopped at one.', no: { bird: 'That\'s what they call me. It\'s not what it says.', fire: 'I wish. It\'s not what it says.' } },
+    binder: { yes: 'None. The knot itself.', end: ' Go on, then. Tie it tight.', no: { red: 'You\'re being kind again. Hold out your arm and look.', grey: 'Grey is a colour. I have seen grey. Grey is fine. It isn\'t mine.' } },
   };
   /* One clause of callback on a right answer, and only two ways for it to run: the laundry answer Wren
      remembers, or the one she does not. (Twelve keyed variants was three times the words for the same
      four lines a table ever reads.) */
   const ECHO = { seer: 'TELL', listener: 'NO', reader: 'DONTKNOW', binder: 'YES' };
   const LAUNDRY = {
-    seer: [' You said so in the laundry. I called you poetic.', ' Six years, and nobody said it.'],
-    listener: [' You said no in the laundry, and did not flinch.', ' You have listened since we were seven.'],
-    reader: [' You said you did not know. That was true then.', ' You found it in the study.'],
-    binder: [' You said yes, to the one person with none.', ' You have seen unbound people. I am not one.'],
+    seer: [' You told me in the laundry, and I called you poetic.', ' Out loud, this time.'],
+    listener: [' You said no in the laundry too, and didn\'t flinch.', ' That\'s the true one.'],
+    reader: [' You didn\'t know yet, in the laundry. Now you do.', ' I liked the bird, though.'],
+    binder: [' You said yes in the laundry. That was the kind one.', ' You said you didn\'t know. Nobody else ever has.'],
   };
   const wrenSays = (s, role) => {
-    const right = s.flags['ASK_' + role] === RIGHT[role];
-    return { speaker: 'Wren', text: right ? REPLY[role].yes + LAUNDRY[role][W(s, role) === ECHO[role] ? 0 : 1] : REPLY[role].no };
+    const a = s.flags['ASK_' + role], R = REPLY[role];
+    return { speaker: 'Wren', text: a === RIGHT[role] ? R.yes + LAUNDRY[role][W(s, role) === ECHO[role] ? 0 : 1] + R.end : (R.no[a] || R.no[Object.keys(R.no)[0]]) };
   };
   const askOpt = (id, text, role, right, next) => ({ id, text, next, set: Object.assign({ ['ASK_' + role]: id }, right ? { CLUES: (s) => (s.flags.CLUES | 0) + 1 } : {}) });
 
@@ -466,13 +469,13 @@
         enter: (s) => { if (s.flags.PRECRACKED == null && s.flags.STAIR === 'COLLAPSE') Store.set('PRECRACKED', true); Store.set('BELLS_CRACKED', crackedNow(s)); widgetClass('ch6-bells', false); widgetClass('ch6-dark', false); },
         text: (s) => {
           const out = [
-            'The Long Stair ends in a room that is mostly floor.',
-            'Four bells hang from a beam of black iron, each the height of a person. Under them the floor is one round plate, riveted, faintly warm.',
-            'You are standing on a lid. Under it, the Cold.',
-            { text: 'Straight up through the ceiling goes a shaft, and at the top of it a coin of orange light. That is the Hearth, seen from underneath.', cls: 'whisper' },
-            { speaker: 'Wren', text: 'Huh. It is smaller from down here. Do not tell it I said that.' },
+            'The Long Stair ends in a room that is mostly floor. Four bells hang from an iron beam, each as tall as a person.',
+            'The floor is one round plate, riveted and faintly warm. You are standing on a lid. Under it, the Cold.',
+            { text: 'A shaft runs straight up through the ceiling. At the top is a coin of orange light. It is the Hearth, seen from underneath.', cls: 'whisper' },
+            'Wren finds the warmest rivet and stands on it.',
+            { speaker: 'Wren', text: 'Huh. It\'s smaller from down here. Don\'t tell it I said that.' },
           ];
-          if (s.flags.STAIR === 'COLLAPSE') out.push({ text: 'One bell is wrong already. When the stair came down the shock ran along the beam, and the first bell went *tang* instead of *tong*.', cls: 'whisper' });
+          if (s.flags.STAIR === 'COLLAPSE') out.push({ text: 'One bell is wrong already. The stair\'s fall ran along the beam, and the first bell went *tang* instead of *tong*.', cls: 'whisper' });
           else if (volunteerLane(s) != null) out.push({ text: `${nick(volunteerLane(s))}'s thread still runs up the Stair behind you, taut as wire, holding the way shut.`, cls: 'whisper' });
           return out;
         },
@@ -481,19 +484,18 @@
       ch6_marrow: {
         art: 'ch6_lid', artParams: bellParams, mood: 'dread', fx: 'ash', flame: 0.2,
         text: [
-          'Provost Marrow kneels at the middle of the lid, where the bell-ropes meet an iron ring. Chalk. Salt. Her seal pressed into the iron.',
-          'The lid shivers. Frost blooms out of the rivets and is gone. All four bells hum with it.',
-          { speaker: 'Provost Marrow', text: 'It knows. It always knows when somebody kneels here.' },
+          'Provost Marrow kneels where the bell-ropes meet an iron ring. She lays out chalk and salt, and presses her seal into the iron.',
+          'The lid shivers. Frost blooms out of the rivets and is gone. Wren watches her hands and says nothing, which is new.',
           { speaker: 'Provost Marrow', text: 'I can close this wound. While I work the Cold pushes, and nothing holds it but the old pattern, rung on these bells by four hands.' },
           { speaker: 'Provost Marrow', text: 'Miss it and the Cold pushes further. That is all that happens. Hands on your keys.' },
+          { speaker: 'Wren', text: 'Binder, that\'s an actual rule. From a Provost. Enjoy it.' },
         ],
         next: 'ch6_attune', button: 'Attune',
       },
       ch6_attune: {
         type: 'code', art: 'ch6_lid', artParams: bellParams, mood: 'dread', fx: 'ash', flame: 0.2,
         text: [
-          { text: 'Cut into the rim of the lid, worn nearly smooth: a word, and a mark beside it.', cls: 'whisper' },
-          { text: 'Open the Companion. Take your seat. Type the word and the mark.', cls: 'whisper' },
+          { text: 'A word is cut into the rim of the lid, with a mark beside it. Type both.', cls: 'whisper' },
           { text: 'Read your **Speak** first. The bells come before the stone.', cls: 'whisper' },
         ],
         roles: 'Warden (keyboard): **the Binder**. Voice (reads aloud): **the Listener**.', sightSeconds: 90,
@@ -511,7 +513,7 @@
             { text: 'Pale blue lights are the Cold. Every hand off the keys.', cls: 'whisper' },
             { text: 'Two patterns. Each one says how many lights it needs. Fall short and a bell cracks, and the night goes on either way.', cls: 'whisper' },
           ];
-          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))} covers that lane too — one hand each, and never both at once.`, cls: 'whisper' });
+          if (v != null) out.push({ text: `${nick(v)}'s bell is silent for the first pattern. ${nick(neighbourOf(v, [v]))}, take both keys. One hand on each, and never both at once.`, cls: 'whisper' });
           return out;
         },
         run: (box, api) => new Promise((resolve) => {
@@ -536,7 +538,7 @@
       },
       ch6_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch6_chamber', artParams: bellParams, mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_practice', replayable: true,
-        text: ['Eight lights, nothing counted. Two of them are the pale blue of the Cold. Every hand off for those.'],
+        text: ['Eight lights, nothing counted. Two are the pale blue of the Cold. Hands off for those.'],
         /* NO HINT LADDER, and the three rounds are the same: R10.26's other branch, the one ch7's
            Binding already took (ch7.js:501). Three reasons, and the first is decisive.
            (a) OPENING THE LADDER COSTS THE ROUND. reaction.js drives the pattern from
@@ -561,7 +563,7 @@
           ruleCard([['press', 'your own key, on the line'], ['chord', 'joined lights, one breath'], ['cold', 'blue is the Cold — hands off']]);
           return { practice: true, laneNames: L.nicks, events: evenEvents(PRACTICE, 60000 / tempo(s, 80)), fallMs: 1800, windowMs: win(s, 380), braceWindowMs: win(s, 320), deadLanes: v != null ? [v] : [], pulse: false };
         },
-        solvedText: (s, r) => [`${r.hits} of ${r.total}. Nothing counted.`, { text: 'Now the real one.', cls: 'whisper' }],
+        solvedText: (s, r) => [`${r.hits} of ${r.total}. Nothing counted.`, 'Wren applauds, slightly off the beat.', { text: 'Now the real one.', cls: 'whisper' }],
         next: 'ch6_round1', button: 'Ring the pattern',
       },
       /* ---------- the lit pattern ---------- */
@@ -569,14 +571,14 @@
         type: 'puzzle', puzzle: 'reaction', art: 'ch6_lid', artParams: bellParams, mood: 'tense', fx: 'ash', flame: 0.2, puzzleId: 'ch6_round1',
         enter: (s) => { widgetClass('ch6-bells', true); widgetClass('ch6-dark', false); roundEnter(1, 'ch6_lid')(s); },
         text: (s) => [
-          'Provost Marrow presses her seal into the iron. The lid answers with a low note that is none of the bells.',
+          'Marrow presses her seal to the iron. The lid answers, lower than any bell.',
           { speaker: 'Provost Marrow', text: 'Chords now. Together means *together* — every hand inside a breath, or the bell does not sound.' },
           { text: 'Twenty-four lights. Eight of them are the Cold.', cls: 'whisper' },
         ].concat(abandonedLine(s, 1)),
         /* No ladder — see the note on ch6_practice. */
         config: litCfg,
         onSolve: roundSolve(1),
-        solvedText: roundText('Seven in ten', ['The pattern holds. The frost at the rivets stops a hand\'s breadth from her knees and goes no further.', { speaker: 'Provost Marrow', text: 'Good. Do not get proud. The last one is the Founders\' own, and they did not ring it by sight.' }],
+        solvedText: roundText('Seven in ten', ['The pattern holds. The frost stops a hand\'s breadth from her knees.', { speaker: 'Wren', text: 'Ha! Listener, stop checking on me. Check on her.' }, { speaker: 'Provost Marrow', text: 'Good. Do not get proud. The last one is the Founders\' own, and they did not ring it by sight.' }],
           'Again. The next one. You do not stop for a cracked bell.'),
         next: 'ch6_tieoff', button: 'The last pattern',
       },
@@ -590,10 +592,8 @@
             out.push(`Marrow reaches up, takes hold of something none of you can see, and ties it off to the iron ring.`);
             out.push({ text: `${nick(v)}, your Sight comes back like blood into a numb hand. Open it.`, cls: 'whisper' });
           }
-          out.push('Then the chamber goes dark. Not the lamps. There are no lamps. The light simply stops.');
-          out.push({ speaker: 'Provost Marrow', text: 'The Founders rang the last pattern blind. One of them called it. Three of them rang.' });
-          out.push({ speaker: 'Provost Marrow', text: 'Listener — your bell goes quiet. You are the voice.' });
-          out.push({ text: 'The Hearth counts the beats, one to thirty-two.', cls: 'whisper' });
+          out.push('Then the light simply stops. In the dark, a hand tugs your sleeve, once, the way it did in the laundry.');
+          out.push({ speaker: 'Provost Marrow', text: 'The Founders rang the last pattern blind. One of them called it. Three rang. Listener, your bell goes quiet. You are the voice.' });
           out.push({ text: 'Listener — say the number on each beat that has one.', cls: 'whisper' });
           out.push({ text: 'Reader, Seer, Binder — ring only the numbers on your **Speak**.', cls: 'whisper' });
           return out;
@@ -608,7 +608,7 @@
            which took a page-less lane from a certain 18 to a 28.4% pass. */
         config: darkCfg,
         onSolve: roundSolve(3),
-        solvedText: roundText('Eight in ten', ['The last bell goes on ringing after your hands have left the keys, and the lid under your feet stops beating.', 'The chamber comes back a little at a time. The beam. The bells. Marrow kneeling in chalk gone from white to gold.'],
+        solvedText: roundText('Eight in ten', ['The last bell goes on ringing after your hands leave the keys. Under your feet, the lid stops beating.', 'The light comes back slowly. Marrow kneels in chalk gone from white to gold.'],
           'That is what we have. Hands off the keys.'),
         next: 'ch6_held', button: 'The Cold is held',
       },

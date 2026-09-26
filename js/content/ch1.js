@@ -148,7 +148,7 @@
           { speaker: 'Provost Marrow', text: 'This school does not hand its children to a writ. It puts them to a vote. Does the child stay tonight? Nine seats. Five keeps.' },
           'Then the Hearth bows, long and low. Every face turns to the fire, except two.',
           'The Provost is looking at Wren. Wren is looking at the Binder, and mouths one word: *please?*',
-          'The Provost follows Wren\'s eyes to the back of the hall.',
+          'The Binder nods once, as if signing something. The Provost sees it.',
           { speaker: 'Provost Marrow', text: 'The bell is in an hour. Until then, a Master may be spoken to. Go.' },
           { text: 'Above the Masters\' door, a word is cut into the lintel.', cls: 'whisper' },
         ],
@@ -254,7 +254,7 @@
           'Seat 1 is Master Sorrel. Seat 7 is Master Oriel. They voted for you, and would like that noticed.',
           { speaker: 'Master Sorrel', text: 'Under this school is a thing called the Cold Ember. When the Provost sends you down for it, it comes to the nine of us. Not to her.' },
           { speaker: 'Master Oriel', text: 'Tell me what you find down there. All of it.' },
-          'Over Sorrel\'s shoulder, Wren is doing an impression of Sorrel. It is quite good. The Provost is already crossing the hall.',
+          'Over Sorrel\'s shoulder, Wren is doing an impression of Sorrel. "Accurate," says the Seer, without moving. The Provost is already crossing the hall.',
         ],
         prompt: 'Whose price do you honour?',
         options: [
