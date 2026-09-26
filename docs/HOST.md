@@ -46,7 +46,7 @@ Sit in a row facing the screen, left to right: **the Reader, the Listener, the S
 4. Some choices are timed — the screen always says so, and a bar counts down. Some choices are private: each phone asks you something and gives you a short sealed word to type into the Hearth. Nobody can tell what your word meant.
 5. At the end of each chapter the Hearth shows the paths you took and the ones you didn't.
 
-**Fair warning, as promised on the title screen:** one chapter, announced well in advance and preceded by a practice round, asks all four of you to press your keys in time with falling lights. It is not hard, it is not long, and the game does not end if you miss.
+**Fair warning:** one chapter, announced well in advance and preceded by a practice round, asks all four of you to press your keys in time with falling lights. It is not hard, it is not long, and the game does not end if you miss.
 
 ## Hints and time
 
@@ -64,7 +64,7 @@ The Hearth saves after every scene. Closing the laptop or the tab is fine: the t
 
 ## If something goes wrong
 
-- **A key doesn't register** — use *change keys* on the title screen or in the key-claiming scene and pick four keys spread across the keyboard. Avoid modifier keys.
+- **A key doesn't register** — use *Change keys* in the menu, or the button on the key-claiming scene at the start of the Prologue, and pick four keys spread across the keyboard. Avoid modifier keys.
 - **A phone can't reach the page** — it is on a different network, or the laptop's firewall blocks port 8080. GitHub Pages sidesteps this entirely.
 - **The wrong scene, or a mistake you want to undo** — the menu (☰) has *Replay scene* and *Chapter select*.
 - **Someone typed a private word wrong** — the Hearth just says it isn't attuned; retype it.

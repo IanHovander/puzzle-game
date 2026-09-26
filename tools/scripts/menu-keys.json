@@ -1,0 +1,5 @@
+{ "start": "ch0_start", "steps": [
+  {"_": "Change keys lives in the Menu now, not on the title screen. The runner answers UI.ask with the dialog text."},
+  {"wait": 800}, {"dialog": "q w e r"}, {"click": "#menu"}, {"wait": 500}, {"expect": "Words of the night"}, {"clickText": "Change keys"}, {"wait": 800},
+  {"assert": "VigilStore.state.keys.join('') === 'QWER'"}
+] }
