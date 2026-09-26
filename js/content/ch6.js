@@ -444,7 +444,7 @@
       { id: 'ch6_ask_hush', label: said('listener'), col: 3, row: 1, kind: 'choice' },
       { id: 'ch6_ask_bookmoth', label: said('reader'), col: 3, row: 2, kind: 'choice' },
       { id: 'ch6_ask_knot', label: said('binder'), col: 3, row: 3, kind: 'choice' },
-      { id: 'ch6_strip', label: f.STONE_TOLD ? 'The stone, read to you' : '"I know, Mum." — the stone', col: 4, row: 1 },
+      { id: 'ch6_strip', label: f.STONE_TOLD ? 'The stone, read to you' : '"I know, Mom." — the stone', col: 4, row: 1 },
       { id: 'ch6_walk', label: 'The Fourfold Walk', col: 5, row: 0, kind: 'end', secret: true, when: (st) => !!st.flags.WALK_UNLOCKED },
       { id: 'ch7_start', label: 'One Born of Four', col: 5, row: 2, secret: true },
     ];
@@ -685,7 +685,7 @@
           return [
             wrenSays(s, 'binder'),
             { speaker: 'Wren', text: c === 4 ? 'Four for four. I knew them all already. It\'s better out loud.' : c === 0 ? 'Four kind answers. I heard every one, and it changes nothing.' : `${c === 1 ? 'One true answer. I knew that one' : (c === 2 ? 'Two' : 'Three') + ' true answers. I knew those'} already.` },
-            { speaker: 'Wren', text: 'And, Mum? I know. I\'ve known since the laundry. Tell them. You\'re allowed.' },
+            { speaker: 'Wren', text: 'And, Mom? I know. I\'ve known since the laundry. Tell them. You\'re allowed.' },
             'Wren sits down beside her, on the warm part of the lid. Marrow tells it without getting up.',
             { speaker: 'Provost Marrow', text: 'It came out of the fire the night the Hearth guttered. I picked it up. I named it. I raised it to be—' },
             '"Loved," says Wren. "Loved enough to walk back in," says Marrow, and does not look up.',

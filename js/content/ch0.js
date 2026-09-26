@@ -204,7 +204,7 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The lamp catches. Warm, steady, and against about a dozen school rules.',
-          { speaker: 'Wren', text: 'Four hundred years, and it still works. Mum\'ll — the Provost\'ll — kill me.' },
+          { speaker: 'Wren', text: 'Four hundred years, and it still works. Mom\'ll — the Provost\'ll — kill me.' },
           'Wren drags the fifth blanket over and sits right up against the glass.',
           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
           'In that light, each of you sees the thing about Wren you have never said out loud.',

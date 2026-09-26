@@ -766,7 +766,7 @@
             ...(tried && oathReceipt ? [{ text: oathReceipt, cls: 'small' }] : []),
             { speaker: 'Provost Marrow', text: 'Then you are no part of this. Go to your beds. I will do it alone, with the child.' },
             tried ? { speaker: 'Wren', text: 'It nearly took. I saw it nearly take.' }
-              : wren({ speaker: 'Wren', text: 'They said *no*, Mum. Nobody says no to you. I want to remember it.' }, { speaker: 'Wren', text: '…they said no.' }),
+              : wren({ speaker: 'Wren', text: 'They said *no*, Mom. Nobody says no to you. I want to remember it.' }, { speaker: 'Wren', text: '…they said no.' }),
             'She takes Wren by the hand, and the door shuts. It does not lock.',
             { text: 'You will be at the stair before she is.', cls: 'whisper' },
           ];

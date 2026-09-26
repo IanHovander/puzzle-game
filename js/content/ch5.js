@@ -282,7 +282,7 @@
         text: [
           'The lantern goes on down without you.',
           'Then a draft at the first landing, and Wren standing in the wall.',
-          { speaker: 'Wren', text: 'Mere left this one for people who were not asked. Mum will — the Provost will pretend she didn’t see.' },
+          { speaker: 'Wren', text: 'Mere left this one for people who were not asked. Mom will — the Provost will pretend she didn’t see.' },
           { speaker: 'Wren', text: 'Binder, it’s a door for the unasked. That’s a *rule*. You love a rule. Please?' },
           'Wren came back up three flights in the dark, for you.',
         ],

@@ -28,7 +28,7 @@ The user's words, across the pass:
 
 **P3 — Cut the explainer and the recap.** If a line restates what the table just did or already knows, cut it. The parallel "one to read it, one to put it in order…" exception in R2.2 is retired.
 
-**P4 — Every scene gives Wren something small and specific.** A habit, a joke, a want, a slip ("Mum'll — the Provost'll —"), a place Wren sits (always nearest the warm thing). Wren's own voice is playful and warm, deflecting with jokes. Keep that voice and do not flatten it.
+**P4 — Every scene gives Wren something small and specific.** A habit, a joke, a want, a slip ("Mom'll — the Provost'll —"), a place Wren sits (always nearest the warm thing). Wren's own voice is playful and warm, deflecting with jokes. Keep that voice and do not flatten it.
 
 **P5 — Phone Sight pages: about five short sentences plus the one figure or table.** The heading, the fact, the cost where there is one, and a closing line. Anything the Book tab already holds (lexicon glosses, the orientation rule, Law cards, the Ring Page) is not repeated on the page. This supersedes the 120/160-word budget in R11.2.
 
@@ -49,7 +49,7 @@ What made these lovable, after two rejected drafts: each line shows **care for W
 
 **P9 — Budgets.** The R1.5 floor of 1,100 words is gone: ch0 is about 950 after the pass. The 1,600 ceiling, R1.1–R1.4 fit gates and R2 sentence rules stand.
 
-**P10 — American spelling.** Player-visible text uses American spellings: color, gray, honor, humor, neighbor, center, toward, practice (the verb too), recognize. Do not rename data that saves or tokens carry: the `GREY` flag, the `'grey'` option and thread ids, and the `grey:` reply keys stay as they are.
+**P10 — American spelling.** Player-visible text uses American spellings: color, gray, honor, humor, neighbor, center, toward, practice (the verb too), recognize. Wren calls the Provost "Mom", never "Mum". "Biscuit" stays: it is Wren's joke. Do not rename data that saves or tokens carry: the `GREY` flag, the `'grey'` option and thread ids, and the `grey:` reply keys stay as they are.
 
 ---
 
