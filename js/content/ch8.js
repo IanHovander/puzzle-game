@@ -240,7 +240,7 @@
           const e = ending(s);
           /* The one table instruction in the chapter, said once (R5.4). ch8_code's roles: line is
              the engine's own, and no longer repeats this. */
-          const voice = { text: 'Whoever is nearest has the keyboard. Read the rest aloud, a paragraph each, round the table from the Reader.', cls: 'small' };
+          const voice = { text: 'Whoever is nearest has the keyboard. Take turns reading aloud, from the Reader round.', cls: 'small' };
           if (e === 0) return [
             { text: `Walked into the fire: **${UI.list(walkers(s))}**.`, cls: 'center' },
             { text: 'Stayed on the stones: **nobody**.', cls: 'center' },
@@ -314,7 +314,7 @@
         art: 'ch8_stones', mood: 'wonder', fx: 'embers', flame: 0.65, speed: 20,
         text: (s) => [
           'The Cold closes. Not the way the Founders closed it. Narrower. Enough.',
-          `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free, blinking at a room they cannot see under any more.`,
+          `**${listOr(walkers(s), 'The walkers')}** come out of the fire grey-eyed and free.`,
           `**${listOr(stayers(s), 'The rest')}** keep their Sightings, and the fire, for life. The school needs Masters who can read the wall. Now it has them.`,
           'Wren lives. Wren hugs everyone and holds on slightly too long. There is no pulse in Wren\'s throat.',
           { speaker: 'Wren', text: 'Half of you can\'t see me properly any more. Good. I looked *terrible*.' },
@@ -337,7 +337,7 @@
         art: 'ch8_flicker', mood: 'sorrow', fx: 'ash', flame: 0.3, speed: 20,
         text: [
           'She does not say goodbye to Wren. She has been saying it for fourteen years, and the Binder has seen the colour of it.',
-          'The seal holds. Thin, the kind of hold that needs watching. But it holds.',
+          'The seal holds. Thin, but it holds.',
           'Wren lives, still without a pulse, and stands a long time where the Provost stood. Then Wren makes a joke nobody laughs at. The Binder bows to the new Provost, perfectly correctly, and that gets the laugh.',
           { text: 'Years later.', cls: 'center' },
           'Provost Wren of Thornhallow still never knocks, and keeps a fire that flickers. Every winter it dips and comes back. The fourth-years are told it is nothing.',
@@ -500,7 +500,6 @@
           const cold = UI.el('div', { class: 'ch8-w cold', html: `${G.svg('COLD', { size: 44, color: '#4fb3bf' })}<span>WREN</span><small>never written</small>` }); cold.style.animationDelay = '3.4s'; row.appendChild(cold);
           box.appendChild(UI.el('div', { class: 'pz-title', text: 'SEVEN THAT CAN BE WRITTEN, AND ONE THAT CANNOT' }));
           box.appendChild(row);
-          box.appendChild(UI.el('p', { class: 'small', text: 'KINDLE, in the dormitory, was only a lamp. It is not a glyph, and neither is the last one.' }));
           words.forEach((w, i) => setTimeout(() => { if (api.alive()) Audio.note(G.MIDI[w], 1.2, 0.14); }, 400 + i * 350));
           api.button('The last word', () => resolve(ending(api.state) === 0 && api.state.flags.WREN_SHOWN ? 'ch8_flow' : 'ch8_code'), 'primary');
         }),
@@ -511,11 +510,10 @@
            since ch7_wren_code and whose table reads it to Wren on the stones in ch8_e0. Wren answers
            on ch8_flow, the next scene. */
         text: (s) => {
-          const e = ending(s), out = ['The last word. Write it.'];
-          if (e === 1 || e === 3) out.push({ text: 'Read your own page first. Then open your **Wren** tab and read your line to Wren, out loud, in seat order.', cls: 'whisper' });
-          if (e === 2) out.push({ text: 'Read your own page first. Then open your **Wren** tab. Wren is not here. Read your line out loud anyway, in seat order.', cls: 'whisper' });
-          if (e === 4) out.push({ text: 'Read your own page first. Then open your **Wren** tab and read your line out loud, in seat order. Wren asked you to write.', cls: 'whisper' });
-          return out;
+          const e = ending(s);
+          if (e === 0) return ['The last word. Write it.'];
+          return ['The last word. Write it.', { text: 'Read your own page first. Then open your **Wren** tab.', cls: 'whisper' },
+            { text: e === 2 ? 'Wren is not here. Read your line out loud anyway, in seat order.' : e === 4 ? 'Read your line out loud, in seat order. Wren asked you to write.' : 'Read your line to Wren, out loud, in seat order.', cls: 'whisper' }];
         },
         roles: 'Warden (keyboard): **whoever is nearest**. Voice (reads aloud): **all four of you**.', sightSeconds: 90,
         codeSub: 'Each phone shows its last page.',
@@ -532,7 +530,7 @@
           if (e === 2) return ['Nobody answers. Then every flame in the Hearth leans toward the table, the wrong way, the way one shadow always did.'];
           if (e === 3) return ['Wren holds the Chair\'s seal in both hands and will not put it down.', { speaker: 'Wren', text: 'Right. Nobody is allowed to be kind to me for a week. …A day. Fine. Keep going.' }];
           if (e === 4) return ['In spring one letter comes back, opened and resealed with Crown wax. One line, in Wren\'s hand: *Got all four. Reader, I know you didn\'t eat.*'];
-          return ['The last chart. Small, because the night was long and this is the end of it.'];
+          return ['The last chart, and the end of the night.'];
         },
         flowTitle: 'Epilogue — the paths you walked',
         /* Two plain sentences and no numbers (R5.3). ch8_stats counted the night one scene ago and
