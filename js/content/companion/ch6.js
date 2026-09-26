@@ -69,9 +69,9 @@
 
   /* The Reader's four burns, drawn on their side, so the page can say what was cut and cannot say which
      way up it stood — that half is the Seer's, and the geometry is what keeps it there. (ch0's collar.) */
-  const burnCuts = () => `<svg viewBox="0 0 300 118" style="width:100%;max-width:300px">
+  const burnCuts = () => `<svg viewBox="0 0 300 132" style="width:100%;max-width:300px">
     ${BURN_SHAPES.map((sh, i) => { const x = 38 + i * 75; return `<g><rect x="${x - 32}" y="6" width="64" height="64" rx="6" fill="rgba(0,0,0,.35)" stroke="rgba(242,210,122,.35)"/><g transform="translate(${x},38) rotate(90) scale(1.25)" style="color:#f2d27a">${G.SHAPES[sh]}</g><text x="${x}" y="89" text-anchor="middle" fill="rgba(242,210,122,.85)" font-size="13" ${F}>cut ${BURNT_CUTS[i]}</text></g>`; }).join('')}
-    <text x="150" y="111" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="12.5" ${F}>laid on their side · what was cut, not which way up</text>
+    <text text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="12.5" ${F}><tspan x="150" y="108">laid on their side</tspan><tspan x="150" y="125">what was cut, not which way up</tspan></text>
   </svg>`;
 
   /* The Listener's fact, drawn as a lap: eight notes round a ring, and the one it stops on is a

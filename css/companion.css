@@ -45,6 +45,8 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .blk-table th, .blk-table td { border: 1px solid rgba(255,255,255,0.12); padding: 6px 8px; text-align: left; vertical-align: middle; }
 .blk-table th { font-family: var(--display); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: rgba(212,169,78,0.06); }
 .blk-table svg { width: 34px; height: 34px; vertical-align: middle; }
+/* A carved inscription in a table cell is a picture to read, not an icon. */
+.blk-table svg.inscription-svg { width: 100%; height: auto; }
 .blk-list { margin: 6px 0 12px; padding-left: 22px; }
 .blk-list li { margin-bottom: 6px; }
 /* Thread lists (the Binder's pages): the thread drawn in its own left column, the words beside it. */
@@ -91,7 +93,7 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .back-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
 .role-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 .big-btn { width: 100%; font-size: 20px; padding: 16px; }
-.hold-btn { width: 100%; font-size: 18px; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
+.hold-btn { width: 100%; font-size: 16px; letter-spacing: .06em; padding: 16px; touch-action: none; user-select: none; -webkit-user-select: none; }
 
 /* v2: tabs, mark field, audio blocks */
 .unlock .field.mark { flex: 0 0 84px; font-size: 18px; letter-spacing: .12em; padding-left: 8px; padding-right: 8px; }

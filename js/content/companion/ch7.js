@@ -105,13 +105,13 @@
   const placingRule = () => `<svg viewBox="0 0 170 160" style="width:150px;height:141px">
     <circle cx="85" cy="80" r="52" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
     <g stroke="${RED}" stroke-width="2.5" stroke-linecap="round"><path d="M104,19 L120,11"/><path d="M107,25 L122,18"/></g>
-    <text x="76" y="14" text-anchor="middle" fill="${RED}" font-size="9" ${F}>the scratch</text>
+    <text x="71" y="14" text-anchor="middle" fill="${RED}" font-size="9" ${F}>the scratch</text>
     <g stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round"><path d="M16,115 L22,103 L28,115"/></g>
     <text x="26" y="129" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>a notch</text>
     <path d="M129,36 a62,62 0 0 1 0,88" fill="none" stroke="${RED}" stroke-width="2.5"/>
     <path d="M129,124 l-8,-5 l0,10 Z" fill="${RED}"/>
     <text x="128" y="84" text-anchor="end" fill="${RED}" font-size="9" ${F}>clockwise</text>
-    <text x="85" y="156" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the scratch starts it, then clockwise</text>
+    <text x="85" y="156" text-anchor="middle" fill="rgba(255,255,255,.65)" font-size="8" ${F}>the scratch starts it, then clockwise</text>
   </svg>`;
 
   /* Wren, under the chamber: four shadows away from the spark, and one toward it. No names but Wren's. */

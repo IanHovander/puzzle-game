@@ -103,13 +103,13 @@
       const name = firstName(ctx);
       /* the name goes on the side of the dot its shadow does not fall on */
       const fig = (x, y, lab, shadowTo, col) => `<circle cx="${x}" cy="${y}" r="6" fill="#fff"/><path d="M${x},${y} L${shadowTo[0]},${shadowTo[1]}" stroke="${col || '#fff'}" stroke-width="3" opacity=".6" stroke-linecap="round"/><text x="${x}" y="${shadowTo[1] > y ? y - 12 : y + 22}" text-anchor="middle" fill="${col || '#fff'}" font-size="13" font-family="Cinzel,serif">${esc(lab)}</text>`;
-      const under = `<svg viewBox="0 0 360 250"><rect width="360" height="250" fill="#000"/>` +
+      const under = `<svg viewBox="0 0 360 258"><rect width="360" height="258" fill="#000"/>` +
         `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="200"/><path d="M150,150 L150,110 A30,30 0 0 1 210,110 L210,150 Z"/></g>` +
         `<g stroke="#fff" fill="none" stroke-width="1.5"><path d="M180,146 C168,132 172,120 180,110 C188,120 192,132 180,146 Z"/><path d="M180,146 L180,128"/></g>` +
-        `<text x="180" y="192" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".75">the Hearth, which is only a fire</text>` +
+        `<text text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".75"><tspan x="180" y="169">the Hearth,</tspan><tspan x="180" y="185">which is only a fire</tspan></text>` +
         fig(70, 70, 'Reader', [38, 44]) + fig(70, 170, 'Listener', [38, 196]) + fig(290, 70, 'Seer', [322, 44]) + fig(290, 170, 'Binder', [322, 196]) +
         fig(180, 44, 'Wren', [180, 14], '#a482e6') +
-        `<text x="180" y="236" text-anchor="middle" fill="#a482e6" font-size="13" font-family="Cinzel,serif">all five shadows fall away from the fire. At last.</text></svg>`;
+        `<text text-anchor="middle" fill="#a482e6" font-size="13" font-family="Cinzel,serif"><tspan x="180" y="232">all five shadows fall away from the fire.</tspan><tspan x="180" y="249">At last.</tspan></text></svg>`;
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">Don't do the face. I drew it myself, and yes, the fire's wonky.</p>` +
         `<div class="blk-svg underlayer">${under}</div>` +
@@ -208,7 +208,7 @@
     binder: 'Every thread in the room, still. Between you and the ones who walked: red, and thin, and held.',
   };
 
-  const crownSeal = () => `<div class="ch8-seal-crown"><svg viewBox="-60 -60 120 120"><circle r="56" fill="#1a1410" stroke="#d4a94e" stroke-width="3"/><circle r="48" fill="none" stroke="#d4a94e" stroke-width="1" opacity=".6"/><g transform="scale(1.9)" style="color:#f2d27a">${G.inner('CROWN')}</g><path id="ch8arc" d="M-44,0 A44,44 0 0 1 44,0" fill="none"/><text font-size="8" fill="#d4a94e" font-family="Cinzel,serif" letter-spacing="2"><textPath href="#ch8arc" startOffset="50%" text-anchor="middle">BY ORDER OF THE CROWN</textPath></text></svg>` +
+  const crownSeal = () => `<div class="ch8-seal-crown"><svg viewBox="-60 -60 120 120"><circle r="56" fill="#1a1410" stroke="#d4a94e" stroke-width="3"/><circle r="48" fill="none" stroke="#d4a94e" stroke-width="1" opacity=".6"/><g transform="scale(1.9)" style="color:#f2d27a">${G.inner('CROWN')}</g><path id="ch8arc" d="M-34.6,20 A40,40 0 1 1 34.6,20" fill="none"/><text font-size="8" fill="#d4a94e" font-family="Cinzel,serif" letter-spacing="1.5"><textPath href="#ch8arc" startOffset="50%" text-anchor="middle">BY ORDER OF THE CROWN</textPath></text></svg>` +
     `<div class="ch8-decree">Sighting registered.<br>Report to the Envoy at dawn.<br>The Cold is open for business.</div></div>`;
 
   C.chapters.push({
