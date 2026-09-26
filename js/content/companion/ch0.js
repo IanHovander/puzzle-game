@@ -121,7 +121,7 @@
         P.sight.push({ t: 'fine', text: 'Your Ring Page is in the **Book**.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the lamp. Wren\u2019s falls toward it. You decided months ago it was a trick of the light. You are looking straight at it now, in the light you just made. It is not the light. It never was.' });
+        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the lamp. Wren\u2019s falls toward it. You decided months ago it was a trick of the light. You are looking straight at it now, in the light you just made.' });
       }
 
       if (roleId === 'binder') {
