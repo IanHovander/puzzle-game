@@ -184,13 +184,12 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
           { text: 'A sigil is words in slots. This ring has four slots.', cls: 'whisper' },
-          { text: 'The Reader has the words. The Listener has the order. The Seer has the cuts. The Binder has the rule. Nobody has two.', cls: 'whisper' },
           { text: 'Say what you see. Never show your phone.', cls: 'whisper' },
           { text: 'Stuck? Press Hint.', cls: 'small' },
         ],
         config: () => ({
           title: 'THE DORMITORY LAMP',
-          note: 'Two shapes on the collar, worn smooth. The Reader\'s page has them.',
+          note: 'Two shapes on the collar, worn smooth.',
           slots: 4, glyphs: glyphPalette(), answer: { 3: 'ASH', 4: 'EMBER' },
           allowEmpty: true, showArrow: false,
           fourHands: true, fourHandsText: 'FOUR HANDS — all four keys, within a second',
@@ -198,15 +197,14 @@
           onWrong: (m, tries) => tries >= 2 ? 'The brass stays cold. Wren, unhelpfully: “Has everyone actually said their bit?”' : null,
         }),
         hints: [
-          'Reader: which words. Listener: what order. Seer: what is cut. Binder: what a cut means.',
-          'The Listener\'s hum says which word goes first. The Binder knows which cut marks the start.',
+          'Each of you holds one piece. Say yours out loud.',
+          'The hum says which word goes first. Only one cut marks the start.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
           'The brass takes the words. The lamp catches — warm, steady, and against about a dozen school rules.',
           { speaker: 'Wren', text: 'Four hundred years, and it still works. Mum\'ll — the Provost\'ll — kill me.' },
-          'Four hundred years, and it needed all four of you: one to read it, one to put it in order, one to find the cuts, one to know the rule.',
           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
           'And in that light, each of you sees the thing about Wren that you have never said out loud.',
           { text: 'Open your **Wren** tab. Read it aloud, in seat order.', cls: 'whisper' },
