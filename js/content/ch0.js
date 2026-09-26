@@ -49,7 +49,7 @@
           { text: 'Four hundred years ago, four people closed a wound in the world.', cls: 'center' },
           { text: 'They lit a fire on top of it, to hold it shut. The fire is called the Hearth.', cls: 'center' },
           { text: 'It has gone out once. Fourteen years ago, for one night.', cls: 'center' },
-          { text: 'When it came back, a baby was asleep on the stones. Nobody\'s.', cls: 'center' },
+          { text: 'When it came back, a baby was asleep on the stones. Nobody ever came for it.', cls: 'center' },
           { text: 'You were all born that year. Wren was found.', cls: 'center' },
         ],
         next: 'ch0_stone', button: 'Look up',
