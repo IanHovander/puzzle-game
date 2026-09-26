@@ -102,7 +102,7 @@
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice. Once in our letters. Once in letters you cannot read, in the same hand.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name is on our door twice. Once in letters I can’t read. I can read *everything*, Wren. I told myself it was a joke. I never asked whose.”' });
+        P.wren.push({ t: 'letter', text: '“For the record, your name’s on our door twice. I can read one. I can’t read the other. And I can read *everything*.”' });
       }
 
       if (roleId === 'listener') {
@@ -116,7 +116,7 @@
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'p', text: 'You can hear every heart in this tower. Never Wren’s.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear the cook’s heart through two floors. I’ve never heard yours. Not once. I thought my ears were broken. I’m sorry I never said.”' });
+        P.wren.push({ t: 'letter', text: '“Sorry. Um. I hear every heart in this tower. The cook’s. The cat’s. Never yours. I thought it was my ears. …Sorry.”' });
       }
 
       if (roleId === 'seer') {
@@ -128,7 +128,7 @@
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
         P.wren.push({ t: 'p', text: 'Every shadow falls away from the lamp. Wren’s falls toward it.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your shadow’s wrong. Everyone’s points away from the lamp. Yours points at it. I called it a trick of the light. Well. We’re standing in the light.”' });
+        P.wren.push({ t: 'letter', text: '“Look. Your shadow’s backwards. Everyone’s falls away from the lamp. Yours falls toward it. It’s not the light. It’s you.”' });
       }
 
       if (roleId === 'binder') {
@@ -148,7 +148,7 @@
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“You don’t have a single thread, Wren. Not to anyone. Not even to us. I decided my gift was faulty. I should have told you. Friends tell each other. That’s a rule.”' });
+        P.wren.push({ t: 'letter', text: '“Rule one: friends tell each other. So. Everyone has threads, Wren. Even strangers. You have none. Not even to us.”' });
       }
 
       // First night only, like the tab guide: point each page at the Book once its fact has been said.
