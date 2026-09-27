@@ -608,7 +608,7 @@
           out.push({ text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' });
           out.push(f.WREN_SCARED
             ? { speaker: 'Wren', text: '…Thank you. For saying it to my face.' }
-            : { speaker: 'Wren', text: 'You read my name. Nobody\'s ever read it to me before. And you kept my words, and stood in front of a fire, and held on. Right. Nobody cry. I\'m in her chair.' });
+            : { speaker: 'Wren', text: 'You read my name. Nobody\'s ever read it to me before. And you kept my words, and guarded my shadow, and held your end out. Right. Nobody cry. I\'m in her chair.' });
           out.push('The stair creaks. Provost Marrow is back early.' + (f.TAPESTRY ? ' She sees the tapestry, and stops in the doorway.' : ''));
           out.push({ speaker: 'Provost Marrow', text: (f.TAPESTRY ? 'So. The Seer. ' : '') + 'The scroll, then. Read it, all four of you. Then swear, or do not.' });
           out.push({ text: 'No bell counts this one. Argue as long as you need.', cls: 'whisper' });

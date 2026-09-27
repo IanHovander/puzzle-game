@@ -315,7 +315,7 @@
           { speaker: 'Lord Vane', text: s.flags.VANE_ACCEPT
             ? 'You gave me your word in the Hall. Bring the boy up the road and he lives.'
             : 'The fire is out within the hour. Let it go out. Bring the boy up the road, and he lives.' },
-          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. Whatever happens in there, I want to be looking at you. Reader, did you ever eat that biscuit?` },
+          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. Reader, did you ever eat that biscuit?` },
         ],
         prompt: 'The Envoy waits.',
         options: [
@@ -368,7 +368,7 @@
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
         text: (s) => {
           const out = [
-            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read it to me, then. Seer, stand where you like. Listener, you can stay. And Binder — bound. I\'m holding you to it.' },
+            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read me my name first, like you said. Seer, let them see my shadow. I don\'t mind any more. Listener, stay close. And Binder, you said bound, so I\'m holding you to it.' },
             { speaker: 'Provost Marrow', text: 'The ring has been ready for fourteen years. Decide.' },
           ];
           out.push(s.flags.WALK_UNLOCKED

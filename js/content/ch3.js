@@ -540,7 +540,7 @@
            defaults to the passive option, and surrender is the harshest outcome in the chapter. */
         timer: 75, timerText: '*Seventy-five heartbeats. He is counting them.*', timeout: 'fight',
         text: (s) => [
-          { speaker: 'Wren', text: 'Cuffs. Lanterns. *Breathing.* And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
+          { speaker: 'Wren', text: 'Reader, you copied my letters onto your cuff. Seer, you stood on my shadow in the dark. Listener, you held your breath every time I held mine. And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
           'Lantern-light fills the stair behind you. Vane\'s captain, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
           { speaker: 'The captain', text: 'Hand over the boy, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the boy alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
           s.flags.VANE_ACCEPT ? 'He looks at you a beat longer than he looks at Wren.' : 'Behind the Binder, Wren has gone very still.',
