@@ -98,7 +98,7 @@
         P.wren.push({ t: 'h', text: 'Under the paint' });
         P.wren.push({ t: 'p', text: 'The Envoy said *under the paint.* You know every word in this hall. You never once wondered what was underneath them.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cThe Envoy knows something about this hall that I don\u2019t. If it\u2019s about you, that\u2019s unacceptable. I\u2019ll read every wall here before he does. And you\u2019ll hear it first.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cHe said \u2018not coming back\u2019 as if it were written somewhere. It isn\u2019t. And if it is, I\u2019ll find it. I\u2019ll read every wall in this school before he takes you anywhere.\u201d' });
       }
 
       if (roleId === 'listener') {
@@ -112,9 +112,9 @@
         P.sight.push({ t: 'fine', text: 'He never names his cousin. Somebody else at this table can see that.' });
         P.wren.push({ t: 'h', text: 'When the fire bowed' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(skipped twice)</small>', 'normal'], ['The Envoy <small>(fast)</small>', 'fast'], ['Wren <small>(nothing to catch)</small>', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'When the fire bowed, the Envoy\u2019s heart ran fast. The Provost\u2019s skipped twice, while she looked at Wren. Wren\u2019s gave you nothing to catch, as always.' });
+        P.wren.push({ t: 'p', text: 'When the fire bowed, the Provost\u2019s heart skipped twice, while she looked at Wren. Wren\u2019s gave you nothing, as always. But the fire itself beat once, like a heart, and Wren flinched on the beat.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cThe Provost\u2019s heart jumped tonight. Twice. She was looking at you, not the fire. So I\u2019m not the only one who worries about you\u2026 That\u2019s nice. That\u2019s really nice.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen he said it, her heart jumped. Twice. She was looking at you. So I\u2019m not the only one who\u2019d miss you\u2026 That\u2019s nice. That\u2019s really nice.\u201d' });
       }
 
       if (roleId === 'seer') {
@@ -128,9 +128,9 @@
         ] });
         P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** Say those three numbers out loud.' });
         P.wren.push({ t: 'h', text: 'The shadow, and the tapestry' });
-        P.wren.push({ t: 'p', text: 'There is no lamp here, and Wren\u2019s shadow still falls toward the fire. Under the tapestry is older paint, a shape you cannot make out. The Envoy was looking at that wall.' });
+        P.wren.push({ t: 'p', text: 'There is no lamp here. Wren\u2019s shadow reaches the length of the hall toward the fire, farther than any lamp ever pulled it. Under the tapestry is older paint, a shape you cannot make out. The Envoy was looking at that wall.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cNo lamp in here, and your shadow still leans toward the fire. So now I stand between you and fireplaces as well. Lamps were easier. Fireplaces are much bigger.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYour shadow went the length of the hall tonight. I stood in front of it. You were busy holding her sleeve. That\u2019s allowed. Nobody saw either thing but me.\u201d' });
       }
 
       if (roleId === 'binder') {
@@ -146,7 +146,7 @@
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'p', text: 'On the dais you looked for Wren\u2019s thread: *no thread found.* When the fire bowed, you thought you saw one, from the Provost to Wren. The light came back before you saw its color.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cI looked for your thread again tonight. Still nothing. Then the fire bowed, and for one second there was one, to the Provost. I intend to find it again.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen the fire bowed, there was a thread, for one second, from her to you. So you are tied to someone. If he takes you anywhere, I follow it. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;

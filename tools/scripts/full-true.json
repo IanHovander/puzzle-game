@@ -216,7 +216,7 @@
    "key": "Space"
   },
   {
-   "expect": "Wren is not supposed to wave"
+   "expect": "Wren always waves too big when scared"
   },
   {
    "clickText": "The presenting"
@@ -249,7 +249,7 @@
    "key": "Space"
   },
   {
-   "expect": "The Provost is looking at Wren"
+   "expect": "The Provost is watching Wren"
   },
   {
    "clickText": "Look at the lintel"
@@ -378,7 +378,7 @@
    "key": "Space"
   },
   {
-   "expect": "sending you tonight"
+   "expect": "sending you for it tonight"
   },
   {
    "clickText": "The night moves on"

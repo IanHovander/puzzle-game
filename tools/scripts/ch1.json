@@ -1,8 +1,8 @@
 { "start": "ch1_start", "steps": [
-  {"key": "Space"}, {"shot": "ch1_start"}, {"expect": "Wren is not supposed to wave"}, {"clickText": "The presenting"},
+  {"key": "Space"}, {"shot": "ch1_start"}, {"expect": "Wren always waves too big when scared"}, {"clickText": "The presenting"},
   {"wait": 600}, {"key": "Space"}, {"shot": "ch1_dais"}, {"clickText": "The doors"},
   {"wait": 600}, {"key": "Space"}, {"shot": "ch1_vane"}, {"expect": "under the paint"}, {"clickText": "The Provost answers"},
-  {"wait": 600}, {"key": "Space"}, {"shot": "ch1_flicker"}, {"expect": "The Provost is looking at Wren"}, {"clickText": "Look at the lintel"},
+  {"wait": 600}, {"key": "Space"}, {"shot": "ch1_flicker"}, {"expect": "The Provost is watching Wren"}, {"clickText": "Look at the lintel"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_attune"}, {"expect": "THORN"}, {"expect": "Binder"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch1_vote"}, {"expect": "Five of nine keeps the child"},
   {"_": "no glyph geometry on the Great Hall's lintel: it used to carry Chapter VI's eight cuts. The one hit allowed is the Crown on the Chair's banner, which is heraldry."},
@@ -17,7 +17,7 @@
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_won"}, {"expect": "Five to four"}, {"clickText": "What they want"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_prices"}, {"expect": "Sorrel"}, {"expect": "Oriel"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"expect": "Even the parts you don't like"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_offer"}, {"expect": "Ask your Seer"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"expect": "when it costs more"}, {"clickText": "Continue"},
-  {"wait": 800}, {"key": "Space"}, {"shot": "ch1_after"}, {"expect": "sending you tonight"}, {"clickText": "The night moves on"},
+  {"wait": 800}, {"key": "Space"}, {"shot": "ch1_after"}, {"expect": "sending you for it tonight"}, {"clickText": "The night moves on"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow"}, {"expect": "5–4 to keep"}, {"expect": "Oriel's"}, {"expect": "refused"},
   {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, SORREL: VigilStore.state.flags.SORREL, ORIEL: VigilStore.state.flags.ORIEL, NEITHER: VigilStore.state.flags.NEITHER, VANE_PRETEND: VigilStore.state.flags.VANE_PRETEND, VANE_ACCEPT: VigilStore.state.flags.VANE_ACCEPT, WREN_TRUST: VigilStore.state.flags.WREN_TRUST, APPROACHED: VigilStore.state.flags.CH1_APPROACHED})"},
   {"clickText": "The Ember Vault"}, {"wait": 1200}, {"log": true}
