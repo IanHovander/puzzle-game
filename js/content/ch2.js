@@ -407,7 +407,7 @@
           Store.chose('CH2_DOOR', 'crawled') ? 'The door counted once, and you were not what it counted.' : 'The door counted once, and it counted you.',
           s.flags.EMBER_LOST ? 'The Provost does not have the Ember. She says it would not have mattered, and does not say how she knows.' : 'The Provost held the Ember to the Hearth for a long minute. The fire would not take it. Now it is on her desk, and she is not looking at it.',
           'Far above, the Hearth flickers, and this time everyone sees it.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter II — the paths you walked',
         stats: (s) => {

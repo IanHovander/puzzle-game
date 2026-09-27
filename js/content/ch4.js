@@ -777,7 +777,7 @@
       ch4_flow: {
         type: 'flow', art: 'ch4_study', artParams: (s) => ({ scraped: !!s.flags.TAPESTRY }), mood: 'hearth', fx: 'dust',
         enter: () => computeLaw0(),
-        text: ['The bell. Midnight comes up the stair a step at a time.', { text: 'The paths you walked, and the ones you did not.', cls: 'small' }],
+        text: ['The bell. Midnight comes up the stair a step at a time.', { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' }],
         flowTitle: 'Chapter IV — the paths you walked',
         stats: (s) => {
           const f = s.flags;

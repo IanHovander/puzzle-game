@@ -318,11 +318,12 @@
       ch1_flow: {
         type: 'flow', art: 'ch1_hall', mood: 'hearth', fx: 'embers',
         text: [
-          { speaker: 'Wren', text: 'You lot. Every wall in the school. My shadow, guarded. A thread to follow. And somebody would miss me.' },
-          { speaker: 'Wren', text: 'Listener, don\'t tell her about her heart. She thinks she\'s made of stone.' },
-          { speaker: 'Wren', text: '…Right. Nobody look at me. Go on. Bring me back something good.' },
-          'The bell has rung once tonight. It will ring again.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          { speaker: 'Wren', text: 'So if he takes me, the Reader reads every wall in the school, the Seer stands in front of my shadow, and the Binder follows a thread nobody else can see. That\'s the plan?' },
+          { speaker: 'Wren', text: '…Good. It\'s a good plan.' },
+          'Then Wren looks across the hall at the Provost, and goes quiet.',
+          { speaker: 'Wren', text: 'Her heart jumped. For me. …Don\'t tell her I know. She thinks she\'s made of stone.' },
+          'Behind Wren, the Hearth flickers. Midnight is a few hours off.',
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter I — the paths you walked',
         stats: (s) => {

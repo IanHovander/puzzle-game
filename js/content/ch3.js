@@ -641,7 +641,7 @@
           s.flags.DOOR === 'SURRENDERED'
             ? 'The third bell has rung, and the Provost is coming up the stair, alive and furious. The rope came off the beam an hour ago.'
             : 'The Tower stair, and the third bell already rung. Above you is the Provost\'s study, and the Provost in it. The rope came off the beam an hour ago.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter III — the paths you walked',
         stats: (s) => {
