@@ -350,7 +350,7 @@
       ch5_gate2: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [2.5, 5, 7],
         text: [
-          { speaker: 'Wren', text: 'Somewhere warm. My feet, counted. My shadow, guarded. A sleeve.' },
+          { speaker: 'Wren', text: 'So. The Reader is saving my name for somewhere warm. The Listener is counting my feet. The Seer is sitting on my shadow. And the Binder wants me holding a sleeve.' },
           { speaker: 'Wren', text: 'You lot have made a *rota*. …All right. I’ll take the sleeve.' },
           'Five shapes, and five bells the Hearth cannot hear.',
           { text: 'All four out loud, before anybody touches the ring.', cls: 'whisper' },
