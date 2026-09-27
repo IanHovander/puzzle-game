@@ -340,6 +340,7 @@
           'The stair ends at a ledge, and the world ends with it.',
           'Below, drowned arches and four empty thrones. Under it all, glowing like a sky from beneath, the Cold.',
           { speaker: 'Wren', text: 'Four thrones, four Founders. It’s a *theme*. I’m not looking down, by the way. I’ve decided.' },
+          'Then, when Wren thinks nobody is watching, Wren looks down anyway, and goes very still, and then remembers to grin.',
           'Wren sits by the torch, as close as the flame allows.',
           { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],

@@ -314,8 +314,8 @@
         text: (s) => [
           { speaker: 'Lord Vane', text: s.flags.VANE_ACCEPT
             ? 'You gave me your word in the Hall. Bring the boy up the road and he lives.'
-            : 'One child, and the fire is out within the hour. Bring him up the road.' },
-          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. This is the *in there* I meant. Reader, did you ever eat that biscuit?` },
+            : 'The fire is out within the hour. Let it go out. Bring the boy up the road, and he lives.' },
+          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. Whatever happens in there, I want to be looking at you. Reader, did you ever eat that biscuit?` },
         ],
         prompt: 'The Envoy waits.',
         options: [
@@ -341,7 +341,7 @@
           'Four figures walking in. No child. The fourth writes a fire upside down.',
           'Wren stares at that fire, then pretends not to.',
           { speaker: 'Lord Vane', text: 'Twenty-two years ago I stood in your Hall with that paint under my nails. They sent me away to learn manners.' },
-          { speaker: 'Lord Vane', text: 'My offer is withdrawn. I will not be the thing you have to be brave about.' },
+          { speaker: 'Lord Vane', text: 'I came back for the child because nobody in this school would say no to the stone. You have. My offer is withdrawn. I will not be the thing you have to be brave about.' },
         ],
         next: 'ch7_attune', button: 'The word on the rim',
       },

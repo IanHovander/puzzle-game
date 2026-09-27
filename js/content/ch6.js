@@ -842,7 +842,7 @@
                fire is four people, four people is a finite amount of fire, and that is the whole of
                it. It goes in Marrow's mouth at the one beat where the stone has just said what the
                fire is, and it says nobody is to blame, which is the chapter's own line about Wren. */
-            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is why it is going out. Nobody did anything wrong.' },
+            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is why it is going out. They came back up, all four, and never had a Sighting again. Nobody did anything wrong.' },
             /* STONE_TOLD is the losing branch of the reading budget, and this is where it is SAID.
                docs/ADVERSARIAL.md OPEN 2 is settled across ch6, ch7 and ch8 together: the last two
                chapters price a wrong answer as a record rather than a loss, the Walk still opens, and
@@ -854,7 +854,7 @@
               : mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
             { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
             { text: 'The road four people walk together, not one. Binder, the struck Law is back in your **Book**.', cls: 'whisper' },
-            { speaker: 'Wren', text: 'Well. I did say I needed four idiots. Then ask me a third time. In there.' },
+            { speaker: 'Wren', text: 'No. Those are *yours*. The Listener is not going deaf on my account. …I did say I needed four idiots. I didn\'t mean this.' },
           ].filter(Boolean);
         },
         next: 'ch6_flow', button: 'The night moves on',

@@ -499,7 +499,7 @@
         text: [
           'Back in the laundry, while you waited, the woman at the copper did not look up.',
           'Wren sat on the warm lid of the copper, heels drumming. Then the drumming stopped.',
-          { speaker: 'Wren', text: 'One question each. I\'ve been saving them for somewhere dark. Don\'t look at each other. And don\'t just be nice.' },
+          { speaker: 'Wren', text: 'Everyone in this school knows something about me except me. So. One question each. Don\'t look at each other. And don\'t just be nice.' },
           { text: 'Every phone: **Pages**, and the word LINEN. Answer alone, then type back the sealed word your phone gives you.', cls: 'whisper' },
         ],
         prompt: 'Four sealed words, one from each phone.',
@@ -542,7 +542,7 @@
         text: (s) => [
           { speaker: 'Wren', text: 'Cuffs. Lanterns. *Breathing.* And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
           'Lantern-light fills the stair behind you. Vane\'s captain, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
-          { speaker: 'The captain', text: 'Hand over the boy, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. I am not a cruel man. I am a punctual one.' },
+          { speaker: 'The captain', text: 'Hand over the boy, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the boy alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
           s.flags.VANE_ACCEPT ? 'He looks at you a beat longer than he looks at Wren.' : 'Behind the Binder, Wren has gone very still.',
         ],
         prompt: 'The Tower door is warded. Choose, together.',

@@ -241,7 +241,7 @@
         P.wren.push({ t: 'p', text: said(laundry === 'LOUD' ? 'In the laundry you told Wren you could hear it, loud. You have worried at that ever since.' : laundry === 'NO' ? 'In the laundry you said no. It was the one true thing Wren heard that night.' : '')
           + 'Not once has there been anything to catch. You decided years ago the fault was yours.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“No. I’ve never heard it, not once. I kept thinking I was listening wrong. Can I just… put my hand over it, for a minute? In case it’s shy.”' });
+        P.wren.push({ t: 'letter', text: '“No. Never in you. I’ve been hearing it all night, in the fire. Every time it skipped, you flinched. Can I just… put my hand over where it should be? In case it comes back.”' });
       }
       if (roleId === 'seer') {
         P.wren.push({ t: 'h', text: 'The shadow' });
@@ -249,7 +249,7 @@
         P.wren.push({ t: 'p', text: said(laundry === 'TELL' ? 'In the laundry you told Wren. Wren called it poetic.' : laundry === 'NOTHING' ? 'In the laundry you looked at the wall.' : '')
           + 'The fire is straight overhead. Every shadow runs away from it. One walks in.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Toward the fire. Every lamp, since we were seven. I kept standing in the way so nobody would look. I’m moving now. It’s a terrible shadow. I’d know it anywhere.”' });
+        P.wren.push({ t: 'letter', text: '“Toward the fire. Not any fire. That one, up there. Since we were seven I stood in the way so nobody would look. I’m moving now. It’s a terrible shadow. I’d know it anywhere.”' });
       }
       if (roleId === 'binder') {
         P.wren.push({ t: 'h', text: 'No thread found' });

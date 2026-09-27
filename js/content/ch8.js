@@ -279,8 +279,8 @@
       ch8_e0: {
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
-          'White. The white of a forge, too hot to have a color. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
-          'Wren is waiting on the stones, as close to the fire as a person can sit.',
+          'White. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
+          'Wren is waiting on the stones. Beside Wren, the Provost sits on the floor, which nobody has ever seen her do, holding on to Wren\'s sleeve.',
           'There is a pulse in Wren\'s throat. You can see it from here.',
           { speaker: 'Wren', text: 'You took your *time*. I had a speech. I\'ve forgotten all of it, so you\'ll have to go first.' },
           { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
@@ -348,7 +348,7 @@
       ch8_e4: {
         art: 'ch8_cage', mood: 'dread', fx: 'ash', flame: 0.15, speed: 20,
         text: (s) => [
-          'The Envoy is courteous about it. He has always been courteous.',
+          'The Envoy is courteous about it. He has always been courteous. Wren lives, as he promised. It was the only part of the bargain he ever wanted.',
           'Wren climbs into the cage unpushed and does not look back at any of you. It is the only unkind thing Wren has ever done. It is meant kindly.',
           'By spring the Cold feeds the Crown\'s engines. The school is a garrison. The Hearth is a furnace with a schedule.',
           'You are Masters, as promised. Masters of ash. The Seer keeps one secret from the Crown, and will keep it for life.',

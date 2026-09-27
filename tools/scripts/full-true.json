@@ -1874,7 +1874,7 @@
    "expect": "THE FOURFOLD WALK IS OPEN"
   },
   {
-   "expect": "ask me a third time"
+   "expect": "I didn't mean this"
   },
   {
    "expectNot": "wrong reading"

@@ -102,14 +102,14 @@
     <g stroke="#fff" fill="none" stroke-width="1.2">
       <rect x="10" y="10" width="340" height="200"/>
       ${[0, 1, 2, 3, 4].map(i => `<rect x="${24 + i * 58}" y="22" width="40" height="52"/><rect x="${24 + i * 58}" y="150" width="40" height="52"/>`).join('')}
-      <circle cx="330" cy="110" r="10"/><path d="M330,100 L330,88 M324,92 L336,92"/>
-      <text x="344" y="138" text-anchor="end" fill="#fff" font-size="13" font-family="Cinzel,serif" stroke="none">the lamp</text>
+      <circle cx="330" cy="110" r="10" stroke-dasharray="3 3" opacity=".6"/>
+      <text x="344" y="90" text-anchor="end" fill="#fff" font-size="13" font-family="Cinzel,serif" stroke="none" opacity=".75">lamp, out</text>
     </g>
     <g fill="#fff" opacity=".9"><circle cx="90" cy="110" r="6"/><circle cx="130" cy="96" r="6"/><circle cx="150" cy="128" r="6"/><circle cx="190" cy="106" r="6"/><circle cx="250" cy="112" r="5"/></g>
-    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,110 L52,110"/><path d="M130,96 L96,92"/><path d="M150,128 L116,132"/><path d="M190,106 L154,104"/></g>
-    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,112 L300,112"/></g>
+    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round" fill="none"><path d="M250,118 L250,146"/><path d="M243,139 L250,147 L257,139"/></g>
+    <text x="262" y="146" fill="#a482e6" font-size="13" font-family="Cinzel,serif">to the Hall</text>
     <g fill="#fff" font-size="13" font-family="Cinzel,serif" text-anchor="middle"><text x="84" y="132">Reader</text><text x="130" y="85">Listener</text><text x="150" y="146">Seer</text><text x="194" y="126">Binder</text><text x="250" y="134" fill="#a482e6">Wren</text></g>
-    <text x="180" y="230" text-anchor="middle" fill="#fff" font-size="12.5" font-family="Cinzel,serif" opacity=".75">shadows, as they fall — the portraits have none</text>
+    <text x="180" y="230" text-anchor="middle" fill="#fff" font-size="12.5" font-family="Cinzel,serif" opacity=".75">lanterns out — one shadow left, cast by nothing</text>
   </svg>`;
 
   /* ---------- Seer: under the Tower door ----------
@@ -210,7 +210,7 @@
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: hurt ? 'In the dark you heard every heart in the corridors. The porter’s, too fast. Not the one beside you in a sling.' : 'In the dark you heard every heart in the corridors. The porter’s, too fast. Not the one beside you.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Every heart in the corridors, the porter’s too fast. Not the one beside you in a sling. But Wren hummed the whole way, and you know that tune now. It is the Ember’s slow beat, the Hearth’s. Wren keeps its time exactly.' : 'Every heart in the corridors, the porter’s too fast. Not the one beside you. But Wren hummed the whole way, and you know that tune now. It is the Ember’s slow beat, the Hearth’s. Wren keeps its time exactly.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I counted every boot between the gallery and here. Every time you held your breath, I held mine. We should probably both breathe now. You… first. Go on.”' });
       }
@@ -233,9 +233,9 @@
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
-        P.wren.push({ t: 'p', text: hurt ? 'Two hundred painted Masters, and not one shadow. Four living shadows fall away from the lamp. Wren’s falls toward it, one arm hanging wrong.' : 'Two hundred painted Masters, and not one shadow. Four living shadows fall away from the lamp. Wren’s falls toward it.' });
+        P.wren.push({ t: 'p', text: hurt ? 'Between patrols, every lantern went out. No light at all, so no shadows. Except one. Wren’s was still there, one arm hanging wrong, cast by nothing, pointing through the wall at the Great Hall. At the Hearth.' : 'Between patrols, every lantern went out. No light at all, so no shadows. Except one. Wren’s was still there, cast by nothing, pointing through the wall at the Great Hall. At the Hearth.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Every time a lantern came round, I stood between it and you. Nobody saw a thing. You thought I was just slow on corners. I am never slow.”' });
+        P.wren.push({ t: 'letter', text: '“In the dark, your shadow was the only one left. It pointed at the Hall. I stood on it until the lanterns came back. You thought I was just slow on corners. I am never slow.”' });
       }
 
       /* ================= BINDER ================= */
@@ -280,7 +280,7 @@
           P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
         }
         P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
-        P.wren.push({ t: 'p', text: 'You read every thread in the gallery at a glance. You never let yourself follow the Provost’s thread to Wren. You know what color a mother’s thread is.' });
+        P.wren.push({ t: 'p', text: 'Your four threads, each to each, all bend round the place where Wren walks. Thread only goes round a knot like that. And you never let yourself follow the Provost’s thread to Wren. You know what color a mother’s thread is.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go until it shuts behind you. That isn’t a rule. I checked. There isn’t one.”' });
       }

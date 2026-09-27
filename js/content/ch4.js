@@ -350,8 +350,8 @@
         art: 'ch4_study', mood: 'court', fx: 'dust',
         text: (s) => {
           const f = s.flags, out = [];
-          out.push({ speaker: 'Provost Marrow', text: 'Midnight is ninety minutes off. By then I will be under the school.' });
-          out.push({ speaker: 'Provost Marrow', text: 'So I am asking you to swear an oath. Take Wren down into the Cold at midnight, whatever it costs.' });
+          out.push({ speaker: 'Provost Marrow', text: 'Midnight is ninety minutes off. By then I will be under the school. So I am asking you to swear an oath. Take Wren down into the Cold at midnight, whatever it costs.' });
+          out.push('She says it to the four of you. Not once does she look at Wren.');
           out.push({ speaker: 'Provost Marrow', text: 'The scroll is behind the third shelf. Read it. Argue. ' + (f.SURRENDERED ? 'After tonight I will decide what you are.' : 'I will be ten minutes.') });
           out.push(f.WREN_SCARED ? 'The door shuts.' : 'The door shuts. Wren goes straight to the fire.');
           if (!f.WREN_SCARED) out.push({ speaker: 'Wren', text: '"Whatever it costs." She says that about the coal bill. Come on. Ten minutes.' });
@@ -746,6 +746,7 @@
           out.push({ speaker: 'Provost Marrow', text: 'Bound. Good. Then I need not carry it alone.' });
           out.push({ speaker: 'Provost Marrow', text: 'When the bells ring tonight, hold them. I will do the rest.' });
           if (knot) out.push('She puts a hand on the nearest shoulder. Nobody has seen her do that before.');
+          out.push('Then she looks at Wren, for the first time since she asked, and has to look away.');
           out.push(wren(knot
             ? { speaker: 'Wren', text: 'KNOT. The one that does not come undone. Good. I lose everything else.' }
             : { speaker: 'Wren', text: 'EMBER. The one you can think again about. Binder, you\'re shaking. Come and sit by the fire.' },

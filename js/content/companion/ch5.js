@@ -158,9 +158,9 @@
     <text x="180" y="272" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13" ${F}>the cold below throws no shadow you can see</text>
     <g fill="#fff" opacity=".9"><circle cx="80" cy="128" r="6"/><circle cx="100" cy="78" r="6"/><circle cx="150" cy="132" r="6"/><circle cx="178" cy="84" r="6"/><circle cx="140" cy="162" r="6"/></g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M80,128 L114,138"/><path d="M100,78 L134,86"/><path d="M150,132 L184,142"/><path d="M178,84 L212,92"/></g>
-    <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M140,162 L102,152"/></g>
+    <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round" fill="none"><path d="M136,158 L126,140"/><path d="M123,149 L125,139 L134,142"/></g>
     <g fill="#fff" font-size="14" ${F} text-anchor="middle"><text x="80" y="114">Reader</text><text x="100" y="64">Listener</text><text x="150" y="118">Seer</text><text x="178" y="70">Binder</text><text x="152" y="176" fill="${VIOLET}" text-anchor="start">Wren</text></g>
-    <text x="180" y="26" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".7">shadows on the ledge, as they fall</text>
+    <text x="180" y="26" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".7">one shadow points up, at the Hearth</text>
   </svg>`;
 
   /* Nine stones: three hollow (a dashed cavity), four cracked right through (the violet line), two
@@ -297,7 +297,7 @@
         P.wren.push({ t: 'p', text: (f.WREN_HURT
           ? 'Wren has not mentioned the strapped arm since the Vault. '
           : 'In the study you ciphered Wren’s name, and it was not a spelling mistake. ')
-          + 'On the ledge, quietly: “You read something with my name in it. You don’t have to say.”' });
+          + 'All four thrones are cut in the letters from the door, with the word inside Wren’s name. *Hollow.* Four times. On the ledge, quietly: “You read something with my name in it. You don’t have to say.”' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I did read it. In the old letters. I checked it three times, because it’s yours. I’m not saying it on a stair. You’ll get it properly, somewhere warm.”' });
       }
@@ -316,8 +316,8 @@
         P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
-        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. In the Gallery the portraits showed four going down this stair, and four coming back.' });
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['the Hearth, above', 'slow'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
+        P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. But far up the stair, faint through the rock, the Hearth still beats. Slower than at the Vigil. The tune Wren hums. In the Gallery the portraits showed four going down this stair, and four coming back.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humor me.”' });
       }
@@ -332,9 +332,9 @@
         P.sight.push({ t: 'fine', text: 'Which cut a sigil begins at is not yours. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underLedge });
-        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows fall away from it, and Wren’s falls toward it. In the dormitory you blamed the lamp. There is no lamp here.' });
+        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows fall away from it. Wren’s turns its back on the torch and points up, through all that rock, at the Hearth. It was never the light, or the warmth. It was only ever that one fire.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I sat down between you and the others. You didn’t notice. Good. Nobody down here sees your shadow but me. Also, you were too near the edge.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow turned its back on the torch. It points up, at the Hearth, through all that rock. I sat on it before anyone looked. Also, you were too near the edge.”' });
       }
 
       /* ===== BINDER ===== */
@@ -353,6 +353,7 @@
           threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> gray, and it has not changed since the study.',
           threadLine((f.OATH | 0) === 0 ? 'none' : 'red') + ' <strong>The four of you to the Chair:</strong> ' + ((f.OATH | 0) === 0 ? 'nothing. You did not swear.' : 'red, and knotted.'),
           threadLine('gold') + ' <strong>The soldiers above:</strong> gold, every one of them, and none of it theirs.',
+          threadLine('red') + ' <strong>The four thrones:</strong> four old red threads, running down into the Cold. They end where a fifth would begin.',
           threadLine('none') + ' <strong>Wren:</strong> nothing at all.',
         ] });
         P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. You decided years ago it was a blind spot in your gift, and you have never told anyone.' });

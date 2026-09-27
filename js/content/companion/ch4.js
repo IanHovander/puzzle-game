@@ -153,10 +153,10 @@
     <rect width="360" height="258" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="214"/><rect x="20" y="136" width="90" height="16"/><rect x="120" y="24" width="100" height="56"/><path d="M310,160 L310,130 M302,136 L318,136"/></g>
     <g fill="#fff" opacity=".9"><circle cx="70" cy="96" r="6"/><circle cx="110" cy="180" r="6"/><circle cx="160" cy="132" r="6"/><circle cx="210" cy="184" r="6"/><circle cx="268" cy="100" r="6"/><circle cx="250" cy="150" r="6"/></g>
-    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,96 L36,90"/><path d="M110,180 L76,182"/><path d="M160,132 L126,128"/><path d="M210,184 L176,188"/><path d="M268,100 L236,92"/></g>
-    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M250,150 L288,146"/></g>
-    <g fill="#fff" font-size="14" font-family="Cinzel,serif" text-anchor="middle"><text x="70" y="118">Reader</text><text x="110" y="202">Listener</text><text x="160" y="154">Seer</text><text x="210" y="206">Binder</text><text x="272" y="84">the Provost</text><text x="250" y="172" fill="#a482e6">Wren</text><text x="310" y="182">the fire</text></g>
-    <text x="180" y="246" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".7">shadows, as they fall</text>
+    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M70,96 L36,90"/><path d="M110,180 L76,182"/><path d="M160,132 L126,128"/><path d="M210,184 L176,188"/><path d="M268,100 L257,97"/></g>
+    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round" fill="none"><path d="M250,144 L250,30"/><path d="M243,38 L250,29 L257,38"/></g><text x="300" y="32" text-anchor="middle" fill="#a482e6" font-size="13" font-family="Cinzel,serif">to the Hearth</text>
+    <g fill="#fff" font-size="14" font-family="Cinzel,serif" text-anchor="middle"><text x="70" y="118">Reader</text><text x="110" y="202">Listener</text><text x="160" y="154">Seer</text><text x="210" y="206">Binder</text><text x="300" y="120">the Provost</text><text x="250" y="172" fill="#a482e6">Wren</text><text x="310" y="182">the fire</text></g>
+    <text x="180" y="246" text-anchor="middle" fill="#fff" font-size="13" font-family="Cinzel,serif" opacity=".7">shadows, as they fall — one passes the fire by</text>
   </svg>`;
 
   /* ---------- the Binder's figure ----------
@@ -229,7 +229,7 @@
         P.sight.push({ t: 'h', text: 'What you can hear' });
         P.sight.push({ t: 'audio', label: 'The bell on the mantel, struck', strip: CA.strip([-1, -2, 'rest', 2, 1, -3]),
           play: (A) => { CA.playSteps(A, [-1, -2], 58); CA.later(() => CA.announce(2, { rest: true }), 2000); CA.later(() => CA.playSteps(A, [2, 1, -3], 66, { offset: 3 }), 2400); return 2400 + 4 * 650 + 500; },
-          text: 'A low, courteous voice. **The Envoy:** *"The Crown will have the Cold open, one way or another."*\n\nThen hers. **The Provost:** *"Then the Crown will go through me. And through it."*' });
+          text: 'A low, courteous voice. **The Envoy:** *"The Crown wants the Cold open. I want the child alive. Tonight, Ilsabet, those are the same thing."*\n\nThen hers. **The Provost:** *"Then the Crown will go through me. And through it."*' });
         P.sight.push({ t: 'fine', text: 'Say whose voice it was, and her last two words.' });
         P.sight.push({ t: 'audio', label: 'The third shelf, humming', strip: CA.strip([2, 2, 1]), play: (A) => CA.playSteps(A, [2, 2, 1]),
           text: '**Up two, up two, up one.** Four books, and only one order climbs like that.' });
@@ -242,7 +242,7 @@
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'You struck the bell twice more while nobody was looking. It keeps every voice in this room but one. It has never kept Wren’s.' });
+        P.wren.push({ t: 'p', text: 'You struck the bell twice more while nobody was looking. It keeps every voice in this room but Wren’s. Under them all it keeps one more: the fire’s slow hum. The tune Wren hums.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“That bell keeps everyone’s voice. Not yours, not once. So I’ve been… keeping it myself. Every word you’ve said tonight. All of it. Just in case.”' });
       }
@@ -259,9 +259,9 @@
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from the fire. Wren\'s still falls toward it. ' + (scared ? 'You blamed the lamp in the dormitory. There is no lamp here, and it still falls the wrong way.' : 'You blamed the lamp in the dormitory. There is no lamp here.') });
+        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from her fire. Wren\'s passes it by' + (scared ? ', even with Wren curled small on the window seat' : '') + '. It runs across the rug and up the wall, toward the Great Hall. Her fire is not the one it wants.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“No lamp to blame this time. So I’ve stood between you and her fire since we walked in. You thought I was just cold. I’m not. I’m busy.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow walked straight past her fire tonight. It only wants the Hearth. It always has. So I stood by the wall. You thought I was just cold. I’m not. I’m busy.”' });
       }
 
       /* ================= BINDER ================= */
@@ -285,7 +285,7 @@
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
           + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> one thread each, all night.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing going out, to anyone.</li></ul>' });
-        P.wren.push({ t: 'p', text: 'A thread reaches Wren from the Provost. Nothing comes back. ' + (scared ? 'You have looked every hour since the laundry, and twice since the stair. Still nothing.' : 'You have looked every hour since the laundry. There is still nothing to find.') });
+        P.wren.push({ t: 'p', text: 'A gray thread reaches Wren from the Provost. You know gray now: a goodbye someone has already started. Nothing comes back. ' + (scared ? 'You have looked every hour since the laundry, and twice since the stair. Still nothing.' : 'You have looked every hour since the laundry. There is still nothing to find.') });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Nothing goes out from you, Wren. Not one thread. So I will keep holding my end out until one takes. There is no rule against it. I checked.”' });
       }

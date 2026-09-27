@@ -185,7 +185,7 @@
           'When the soldiers look away, Wren points at the stair and mouths something else. This time it is not rude.',
         ] : [
           'Wren is already on the top step. The Provost looks at Wren, and Wren climbs back up.',
-          { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. Seer, don\'t do the face.' },
+          { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. Bring it up, and the fire stays lit, and nobody walks anywhere. No pressure.' },
           { speaker: 'Wren', text: 'Reader, there\'s a biscuit in your pocket. Don\'t argue. Eat it on the way down.' },
         ]),
         next: 'ch2_descent', button: 'Down',
@@ -195,6 +195,7 @@
         text: [
           'The stair goes down further than a school has any right to. Torches, then fewer torches.',
           'Then a light that is not torchlight at all. A cold blue, breathing, somewhere below.',
+          'Nobody says it on the stair. All four of you are doing the same sum: fire lit, nobody walks.',
           'Halfway down, the Listener turns to check on Wren. The step behind is empty.',
         ],
         next: 'ch2_antechamber', button: 'The bottom',
@@ -331,7 +332,7 @@
         art: 'ch2_vault', artParams: { empty: true }, mood: 'wonder', fx: 'motes', sfx: 'magic',
         text: (s) => [
           'The case lifts off the plinth with no ward and no click. It is colder than anything has a right to be.',
-          'The hands that carry it go numb to the wrist. Inside the glass, the flame leans toward whoever holds it.',
+          'The hands that carry it go numb to the wrist. Inside the glass, the flame leans toward whoever holds it, as if it is looking for someone.',
           s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it.' : 'Nobody says anything. The vault is very quiet.',
         ],
         next: 'ch2_road', button: 'The archway',
@@ -360,10 +361,10 @@
         prompt: 'One reach. What do you catch?',
         timer: 30, timerText: '*Thirty heartbeats. The stair is going.*', timeout: 'wren',
         options: [
-          { id: 'wren', text: 'Catch Wren.', sub: 'The case goes where the stair goes.', next: 'ch2_top', set: { EMBER_LOST: true }, note: 'At the stair, you caught Wren and let the Ember fall.',
+          { id: 'wren', text: 'Catch Wren.', sub: 'The Ember goes where the stair goes. So does the sum.', next: 'ch2_top', set: { EMBER_LOST: true }, note: 'At the stair, you caught Wren and let the Ember fall.',
             after: [
               'Four hands close on one thin wrist and haul. The case turns once in the air, and the dark takes it without a sound.',
-              { speaker: 'Wren', text: 'Ow. Thank you. Ow. That was important, wasn\'t it. The box.' },
+              { speaker: 'Wren', text: 'Ow. Thank you. Ow. That was the plan, wasn\'t it. The box was the plan.' },
               'On the landing, Wren sits as close to the torch as a person can get.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
@@ -404,7 +405,7 @@
         type: 'flow', art: 'ch2_stair', mood: 'hearth', fx: 'dust',
         text: (s) => [
           Store.chose('CH2_DOOR', 'crawled') ? 'The door counted once, and you were not what it counted.' : 'The door counted once, and it counted you.',
-          s.flags.EMBER_LOST ? 'The Cold Ember is not coming up tonight.' : 'The Cold Ember is on the Provost\'s desk, and the Provost is not looking at it.',
+          s.flags.EMBER_LOST ? 'The Provost does not have the Ember. She says it would not have mattered, and does not say how she knows.' : 'The Provost held the Ember to the Hearth for a long minute. The fire would not take it. Now it is on her desk, and she is not looking at it.',
           'Far above, the Hearth flickers, and this time everyone sees it.',
           { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
         ],
