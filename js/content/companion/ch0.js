@@ -100,7 +100,7 @@
         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
-        P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice. Once in letters you can read. Once in letters you cannot, in the same hand, which you take personally.' });
+        P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice: once in letters you can read, once in letters you cannot, in the same hand. You have taken this personally for a year.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. I can read one. The other one, I can’t. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
       }
@@ -114,9 +114,9 @@
         P.sight.push({ t: 'fine', text: 'You hear steps, never names.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'You can hear every heart in this tower, which is mostly a comfort. Never Wren’s.' });
+        P.wren.push({ t: 'p', text: 'You can hear every heart in this tower. It is mostly a comfort. At three in the morning, it is mostly loud. You have never once heard Wren’s.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear everyone’s heart. It’s how I know you’re all all right. I’ve never once heard yours. So I just… keep checking on you. You may have noticed.”' });
+        P.wren.push({ t: 'letter', text: '“I can hear everyone’s heart. It’s how I know everyone’s all right. I’ve never once heard yours. So I just… keep checking on you. You may have noticed.”' });
       }
 
       if (roleId === 'seer') {
@@ -126,7 +126,7 @@
         P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
-        P.wren.push({ t: 'p', text: 'Every shadow falls away from the lamp, as shadows are supposed to. Wren’s falls toward it, as if it has somewhere to be.' });
+        P.wren.push({ t: 'p', text: 'Shadows fall away from lamps. It is one of the few rules the world keeps without being asked. Wren’s falls toward the lamp.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way. Toward the lamp. I’ve been standing between you and lamps for years, so nobody else sees. You thought I just liked lamps.”' });
       }
