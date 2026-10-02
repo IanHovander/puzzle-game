@@ -375,7 +375,7 @@
             after: [
               'The case comes over into eight numb hands. Wren does not. Nobody here will forget the sound.',
               { speaker: 'Wren', text: 'I\'m fine. It\'s only my arm. Listener, don\'t look like that. You got the box.' },
-              'It takes the Binder\'s cloak, torn into a rope, to get Wren up. The Listener checks the arm anyway. Wren sits by the torch and never mentions it.',
+              'The Binder\'s cloak, torn into a rope, gets Wren up. The Listener checks the arm anyway. Wren sits by the torch and never mentions it.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
         ],

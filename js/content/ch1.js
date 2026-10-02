@@ -58,7 +58,7 @@
   }
   /* What the hall gives back. Each one teaches the rule that stopped it. */
   const REASONS = {
-    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it.',
+    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it, as Seat 2 always has.',
     quill: 'Seat 2 says yes, then says the rest. "I vote as Seat 1 votes. You spent that on nothing."',
     brack: 'Seat 3 is delighted to be asked. Seat 3 has stood with the Chair, in writing, since before the doors shut. You had him already.',
     hallan: 'Seat 4 does not turn his head. "I vote as my cousin votes. I hear nobody else."',
@@ -276,7 +276,7 @@
         enter: (s) => { if (s.flags.VOTE_LOST) { if (s.flags.NEITHER == null) Store.set('NEITHER', true); if (s.flags.SORREL == null) Store.set('SORREL', false); if (s.flags.ORIEL == null) Store.set('ORIEL', false); } },
         timerText: '*Sixty heartbeats. He is very good at waiting.*',
         text: (s) => [
-          'Later, in a side passage, a gray coat is waiting, with Lord Vane inside it.',
+          'Later, in a side passage, a gray coat is waiting with Lord Vane inside it.',
           { speaker: 'Vane', text: s.flags.VOTE_LOST
             ? 'The Provost will have the boy back within the hour. Then bring him to me, before midnight. He will come if you ask.'
             : 'Bring the boy to me before midnight. He waved at you in front of nine Houses. He will come if you ask.' },
