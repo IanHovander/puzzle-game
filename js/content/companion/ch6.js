@@ -262,7 +262,7 @@
   /* The Binder's Book keeps the year the Order paid nothing — opt-in, and only once Chapter VI is open. */
   C.bookExtras.push((roleId, ctx) => {
     if (roleId !== 'binder' || !ctx.unlocked('ch6')) return [];
-    return [{ t: 'h', text: 'The bell-chamber' }, { t: 'reveal', label: 'Read when the Hearth says the Book has turned a page', blocks: [
+    return [{ t: 'h', text: 'The bell-chamber' }, { t: 'reveal', label: 'Read when the Hearth sends you here', blocks: [
       { t: 'omen', text: 'Four Masters, four Sightings. The Convocation would not pay it. They struck the Law and called it grammar.' },
       { t: 'fine', text: 'Two hundred and twelve years after the Founders the seal failed. Four hands meant four Masters giving up their Sight. The Convocation sent one Warden down instead.' },
     ] }];

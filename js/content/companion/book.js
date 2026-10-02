@@ -152,8 +152,8 @@
       const laws = L.lawsUpTo(L.chapters[Math.max(0, Math.min(8, n))].id);
       const struckRestored = !!(ctx.flags && ctx.flags.LAW0) || (ctx.state.unlocked && Object.values(ctx.state.unlocked).some(u => u.flags && u.flags.LAW0));
       const render = (list) => `<div class="laws">${list.map(l => `<div class="law ${l.era === 'O' ? 'order' : 'founders'}${l.struck && !struckRestored ? ' struck' : ''}"><div class="era"><b>Law ${l.n}</b> · ${l.era === 'F' ? 'Founders\' · Year 0' : 'Order\'s · Year ' + l.year}${l.struck ? (struckRestored ? ' · RESTORED' : ' · STRUCK') : ''}</div><div class="txt">${UI.esc(l.text)}</div>${l.struck ? `<div class="fine">${struckRestored ? 'Older than Law 6. The older binds.' : UI.esc(l.note)}</div>` : ''}</div>`).join('')}</div>`;
-      blocks.push({ t: 'h', text: 'In the order learned' });
-      blocks.push({ t: 'html', html: render(laws) });
+      // A label, not a section: the cards below are still the Book of Laws.
+      blocks.push({ t: 'html', html: '<div class="bk-sub">In the order learned</div>' + render(laws) });
       // The same Laws again, oldest first. Folded away: printed open, it doubled the page.
       blocks.push({ t: 'reveal', label: 'Show them by year', blocks: [{ t: 'html', html: render(laws.slice().sort((a, b) => a.year - b.year || a.n - b.n)) }] });
       blocks.push({ t: 'h', text: 'Threads' });
