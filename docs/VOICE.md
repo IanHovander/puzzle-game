@@ -34,6 +34,33 @@ And the rule that makes the comedy mean anything:
    The oath, "Now, love. Walk.", the Provost's confession, the Cold, the endings: no jokes in the narration there.
    Wren may still joke (that is character), and the narrator lets it sit.
 
+## Balance: rotate the register
+
+The user, after reading a heavier draft of the Prologue:
+
+> "The wryness is awesome, but it does take away from the story at a certain point."
+> "It might be better to flip between wryness, emotional warmth, and normal wit."
+
+Four registers, and a scene moves between them:
+
+- **Dry:** the narrator's wry comment on the world (prophecies, Masters, rules, institutions, four hundred years of
+  people with matches).
+- **Warm:** a small concrete act of care, or the truth under Wren's joke ("It is a good joke. Wren has clearly been
+  working on it.").
+- **Playful:** the characters being funny with each other, in their own voices.
+- **Plain:** no joke at all. The stakes, the clock, the fear, the turns of plot.
+
+Rules:
+
+- Never two dry asides in a row. One, at most two, per scene.
+- **Never be dry about the stakes themselves**: the clock, Wren's fate, the Cold, a goodbye. The clock gets a plain
+  sentence.
+- A dry line is right when it deepens the story and wrong when it shrinks it. Kept: "It is a prophecy: the kind of
+  sentence that only becomes clear once it is too late to do anything about it." (it makes the dread worse). Cut:
+  "The Masters have given it until midnight tomorrow, as if it were an overdue library book." (it makes the clock a
+  joke).
+- After a sad or tender beat, the next line is warm or plain, never a joke.
+
 ## No roll calls
 
 Never have Wren (or anyone) address the four in sequence ("Reader, … Listener, … Seer, … Binder, …"). It is a list
