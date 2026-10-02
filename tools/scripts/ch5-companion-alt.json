@@ -1,7 +1,7 @@
 { "start": "ch5_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_reader_sight"},
   {"expect": "two gates"}, {"expect": "in the order they are cut"},
-  {"tab": "Wren"}, {"expect": "strapped arm"},
+  {"tab": "Wren"}, {"expect": "Mind that arm"},
 
   {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_listener_sight"},
   {"expect": "Three, one, five"}, {"expect": "cracked"}, {"expect": "one each of 1 to 5"}, {"expectNot": "Two, five, one, three, four"},

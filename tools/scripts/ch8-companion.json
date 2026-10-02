@@ -57,7 +57,7 @@
    "tab": "Wren"
   },
   {
-   "expect": "would do it again"
+   "expect": "I know what it says"
   },
   {
    "eval": "document.body.classList.contains('ch8-white')"
@@ -329,7 +329,7 @@
    "expect": "What you keep"
   },
   {
-   "expect": "nobody in the room could spell"
+   "expect": "how to spell your name"
   },
   {
    "expectNot": "Dark."
@@ -406,7 +406,7 @@
    "expect": "The last thing you saw"
   },
   {
-   "expect": "shadow falling toward the fire"
+   "expect": "shadow fell toward the fire"
   },
   {
    "expectNot": "Nothing here."

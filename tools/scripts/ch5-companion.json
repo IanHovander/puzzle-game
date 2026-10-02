@@ -2,7 +2,7 @@
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["ASH", "BEE"]}, {"shot": "c5_reader_sight"},
   {"expect": "two gates"}, {"expect": "worn to nothing"}, {"expect": "in the order they are cut"}, {"expect": "not on this page"}, {"expect": "reads a right-marked line right to left"},
   {"expect": "THORN"}, {"expect": "WELL"}, {"assert": "(function(){var t=document.body.innerText.replace(/\\s+/g,' ');return t.indexOf('the first gate EMBER CROWN VEIL KNOT THORN WELL')>=0 && t.indexOf('the silent gate CROWN EMBER ASH COLD COLD ASH KNOT VEIL WELL THORN')>=0;})()"},
-  {"tab": "Wren"}, {"expect": "On the ledge"}, {"expect": "spelling mistake"}, {"expectNot": "copying error"},
+  {"tab": "Wren"}, {"expect": "On the ledge"}, {"expect": "the word inside your name"}, {"expectNot": "copying error"},
   {"tab": "Speak"}, {"shot": "c5_reader_speak"}, {"expect": "Founders"}, {"clickText": "Start"}, {"wait": 400}, {"shot": "c5_reader_count"}, {"expect": "How many read EMBER"}, {"expect": "how many read CROWN"}, {"click": ".pick-grid .pk:has-text(\"3\")"}, {"wait": 200}, {"expect": "Now your second"}, {"click": ".pick-grid .pk:has-text(\"2\")"}, {"wait": 300}, {"expect": "Sealed"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "DYND"}, {"tab": "Book"}, {"expect": "Lexicon"},
 

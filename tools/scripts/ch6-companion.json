@@ -7,7 +7,7 @@
   {"expectNot": "point-up"}, {"expectNot": "counts down"}, {"expectNot": "right to left"},
   {"tab": "Speak"}, {"shot": "c6_reader_speak"}, {"expect": "Your bells"}, {"expect": "1 · 6 · 10 · 14 · 20 · 24"}, {"expect": "Say what you see. Never show your phone."},
   {"expectNot": "2 · 5 · 11"}, {"expectNot": "3 · 7 · 9"},
-  {"tab": "Wren"}, {"shot": "c6_reader_wren"}, {"expect": "the hollow of a bell"}, {"tab": "Book"}, {"expect": "WRENN"},
+  {"tab": "Wren"}, {"shot": "c6_reader_wren"}, {"expect": "The inside of a bell"}, {"tab": "Book"}, {"expect": "WRENN"},
 
   {"companion": true}, {"role": "Listener"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_listener_sight"},
   {"expect": "Where the lap ends"}, {"expect": "The lap ends on a silence"},
@@ -15,7 +15,7 @@
   {"expectNot": "flame"}, {"expectNot": "crown"}, {"expectNot": "point-up"},
   {"tab": "Speak"}, {"shot": "c6_listener_speak"}, {"expect": "you are the voice"}, {"expect": "the beats, and the number to say on each"}, {"expect": "Say all twenty-four"},
   {"expectNot": "Six of the twenty-four are yours"},
-  {"tab": "Wren"}, {"expect": "the fault was yours"},
+  {"tab": "Wren"}, {"expect": "hearing it all night, in the fire"},
 
   {"companion": true}, {"role": "Seer"}, {"unlock": ["WELL", "AQE"]}, {"shot": "c6_seer_sight"},
   {"expect": "Under the soot"}, {"expect": "struck point-up"}, {"expect": "which way each chisel went in"},

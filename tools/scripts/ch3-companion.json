@@ -8,7 +8,7 @@
 
   {"companion": true}, {"role": "Listener"}, {"unlock": ["VEIL", "CLE"]}, {"shot": "c3_listener_sight"},
   {"expect": "twelve beats"}, {"expect": "Lose the count"}, {"expect": "Never which room that is"}, {"expect": "twelve beats, then round again"},
-  {"tab": "Wren"}, {"expect": "sling"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "Can you hear mine"},
+  {"tab": "Wren"}, {"expect": "in time with the Ember"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "Can you hear mine"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "BAX6"},
   {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "The ward hums"}, {"expect": "one rung above"}, {"shot": "c3_listener_ward"},
   {"tab": "Book"}, {"shot": "c3_listener_book"},
@@ -26,7 +26,7 @@
   {"companion": true}, {"role": "Binder"}, {"unlock": ["VEIL", "E4Z"]}, {"shot": "c3_binder_sight"},
   {"expect": "Bess"}, {"expect": "paid to shout"}, {"expect": "since the Hall, are you"}, {"expect": "Ask for all three"},
   {"expect": "buys four rooms: B5, C5, D5 and C4"}, {"expect": "that turn and three after it"}, {"expectNot": "that beat and three"},
-  {"tab": "Wren"}, {"expect": "not looked at"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "really the one"},
+  {"tab": "Wren"}, {"expect": "the way thread goes round a knot"}, {"clickText": "Pages"}, {"unlock": ["LINEN"]}, {"expect": "really the one"},
   {"click": ".blk-choice .opt >> nth=1"}, {"wait": 400}, {"expect": "8JM9"}, {"shot": "c3_binder_token"},
   {"clickText": "Pages"}, {"unlock": ["WARD"]}, {"expect": "Where a sigil begins"}, {"expect": "comes back to slot 1"},
   {"_": "THE SEAT. This page used to be the Binder's PROLOGUE page word for word -- begin at the scratch, a notch is only a signature -- and the dormitory lamp is worked on the shared screen, so the rule was table knowledge and the Binder-less field was one board at p=1.000. The ward is a Vigil ward and begins at the NOTCH; the accepted board did not move."},
