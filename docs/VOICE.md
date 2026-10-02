@@ -34,6 +34,51 @@ And the rule that makes the comedy mean anything:
    The oath, "Now, love. Walk.", the Provost's confession, the Cold, the endings: no jokes in the narration there.
    Wren may still joke (that is character), and the narrator lets it sit.
 
+## Feel: how a box should read
+
+The user, on a line that "takes me out of the flow of reading":
+
+> "A fifth blanket lies folded on the floor. Each of you has folded it at some point and said nothing. Officially,
+> it is nobody's."
+
+Why it breaks the flow: "folded" twice in a row, the subject jumps from the blanket to "each of you", and a side
+detail asks the reader to solve a small riddle in the middle of a mood. The fix keeps the warmth and reads on the first
+pass, and it comes right after the reader has met Wren, so it connects: "A fifth blanket lies folded on the floor.
+It is Wren's. Officially, Wren sleeps somewhere else."
+
+**Introduce the reader to the wryness first, then to the feeling.** In the first box of the game, put a dry line in
+the first or second sentence, so the table knows at once that the narrator is wry and that they are allowed to smile.
+Then, within a few lines, give the first feeling, small and concrete ("Nobody ever came for it."). That is the
+contract: this narrator is funny, and means it. Each chapter's first box renews the contract with a dry line early,
+unless the chapter opens on grief.
+
+**One focus per box.** Before writing a box, name the one thing the table should look at and the one thing it should
+feel. Everything else in the box serves that, or goes. A side detail never gets its own riddle.
+
+**Read on the first pass.** Only the box's focus may hold a deliberate gap (STYLE.md P1). Every other line must be
+understood by someone reading aloud, once, without slowing down. Symptoms of a line that will stall:
+
+- the same word twice in neighbouring sentences;
+- the subject changing mid-thought;
+- three short sentences that each change topic;
+- a pronoun ("this", "it") whose thing has not been said yet;
+- a fact the reader must work out ("officially… unofficially…") somewhere that is not the focus.
+
+**Let each sentence pick up the last.** A word, an object or a person carries over from one sentence to the next
+(the lamp → the lamp's history → the four in bed → Wren → Wren's blanket). Momentum is what makes a box feel nice
+to read aloud.
+
+**Rhythm.** Vary sentence length. End a paragraph on the word that matters. A long, wry sentence is followed by a
+short plain one.
+
+**How to write a box:**
+
+1. Write down its focus and its feeling.
+2. Draft it plainly.
+3. Add at most one dry line, where it opens the box or turns it. Never on the stakes.
+4. Read it aloud. Rewrite anything you stumbled on, and anything you had to read twice.
+5. Cut whatever does not serve the focus.
+
 ## Balance: rotate the register
 
 The user, after reading a heavier draft of the Prologue:
