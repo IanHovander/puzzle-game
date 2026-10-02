@@ -114,9 +114,9 @@
         P.sight.push({ t: 'fine', text: 'If a strip of three shapes turns up tonight, it reads two ways. From the left: *one went down alone and kept it.* From the other end: *four, as one, went through.*' });
         P.wren.push({ t: 'h', text: 'Four words, and one name' });
         P.wren.push({ t: 'p', text: (lost ? 'Wren was under guard when you went down. ' : '')
-          + 'You read four words in stone tonight without trying. Wren’s name on the dormitory door, you still cannot. The chalk is in a hand you have seen before. You have started to wonder who wrote it.' });
+          + 'You read four words in stone tonight without trying. On any other night you would have mentioned it. Wren’s name on the dormitory door, you still cannot read. The chalk is in a hand you have seen before. You have started to wonder who wrote it.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I read four words in stone tonight, first try. Your name, I still can’t. It’s the only one I want. I’ve copied it into the back of every book I own.”' });
+        P.wren.push({ t: 'letter', text: '“Four words in stone tonight, first try. Your name, still no. It’s the only one I want. I’ve copied it into the back of every book I own. Don’t laugh.”' });
       }
 
       /* ================= LISTENER — the order the door hums ================= */
@@ -129,9 +129,9 @@
         P.sight.push({ t: 'fine', text: 'Guess the order and you spend the count, and the door counts once. You never hear a word’s name, or which dial moved.' });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('slow')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'The Ember has a pulse, slow as the Hearth breathing upstairs. You did not expect that. ' + (lost ? 'Wren was two floors up, under guard.' : 'Wren promised to stay put.') + ' Then light, quick feet on the stair behind you, and no heart with them. You have only ever heard the feet.' });
+        P.wren.push({ t: 'p', text: 'The Ember has a pulse, slow as the Hearth breathing upstairs. Stones, as a rule, do not. ' + (lost ? 'Wren was two floors up, under guard.' : 'Wren promised to stay put.') + ' Then quick, light feet on the stair behind you, and no heart with them. You have only ever heard the feet.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I heard you on the stair behind us. Just your feet… nothing else. I kept turning round to check. Next time, just… walk with us? So I don’t have to wonder.”' });
+        P.wren.push({ t: 'letter', text: '“I heard you on the stair behind us. Just your feet… nothing else. I turned round nine times. Next time, just… walk with us? So I don’t have to wonder.”' });
       }
 
       /* ================= SEER — which hole each plinth was cut to stand in ================= */
@@ -144,9 +144,9 @@
         P.sight.push({ t: 'fine', text: 'Which way of counting the door obeys is not yours to say.' });
         P.wren.push({ t: 'h', text: 'Reaching' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underStair });
-        P.wren.push({ t: 'p', text: 'In the dormitory you blamed the lamp. The Ember gives no light at all. ' + (lost ? 'Wren was meant to be on the dais, under guard.' : 'Wren was meant to be with the Provost.') + ' On the stair, that shadow reached for the case anyway. So it was never the light.' });
+        P.wren.push({ t: 'p', text: 'In the dormitory you blamed the lamp. The Ember gives no light at all, which leaves you short of things to blame. ' + (lost ? 'Wren was meant to be on the dais, under guard.' : 'Wren was meant to be with the Provost.') + ' On the stair, that shadow reached for the case anyway. So it was never the light.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your shadow went for that box before your hands did. Nobody else saw, and nobody will hear it from me. Honestly, Wren. A cold box. Your shadow has no taste.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow went for that box before your hands did. Nobody saw. I made sure. Honestly, Wren. A cold glass box. Your shadow has terrible taste.”' });
       }
 
       /* ================= BINDER — which of the two rules is the older ================= */
@@ -163,9 +163,9 @@
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> the same nothing, for the fourteenth year running.</li>'
           + '<li>' + threadLine('whole') + ' <strong>The Provost and the four of you:</strong> a thin red thread, new tonight.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'Four old red threads run from the plinths into the Ember’s case, and stop there. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs toward the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have never asked why the two nothings feel different.' });
+        P.wren.push({ t: 'p', text: 'Four old red threads run from the plinths into the Ember’s case, and stop there. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs toward the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have checked twice. You have never once asked why the two nothings feel different.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“The stone has no thread. Neither do you. I checked every rule, and none says that makes you the same. So you are not. And I am still tying one.”' });
+        P.wren.push({ t: 'letter', text: '“The Ember has no thread. Neither do you. I have checked every rule, and none says that makes you the same. So you are not. I am still tying one.”' });
       }
 
       return P;

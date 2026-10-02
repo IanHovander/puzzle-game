@@ -58,14 +58,14 @@
   }
   /* What the hall gives back. Each one teaches the rule that stopped it. */
   const REASONS = {
-    sorrel: 'Seat 1 hears you out and nods once: "Since you asked me to my face." Seat 2, unasked, sees that hand go up and puts one up too.',
+    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it, as Seat 2 always has.',
     quill: 'Seat 2 says yes, then says the rest. "I vote as Seat 1 votes. You spent that on nothing."',
-    brack: 'Seat 3 stands with the Chair, in writing, since before the doors shut. You had him already.',
+    brack: 'Seat 3 is delighted to be asked. Seat 3 has stood with the Chair, in writing, since before the doors shut. You had him already.',
     hallan: 'Seat 4 does not turn his head. "I vote as my cousin votes. I hear nobody else."',
-    vey: 'Something at Seat 5\'s cuff catches the light. Seat 5 votes SEND.',
-    orrin: 'A soldier in the Envoy\'s gray steps between you and Seat 6. You never get near.',
+    vey: 'Seat 5 agrees with every word you say. Something at Seat 5\'s cuff catches the light. Seat 5 votes SEND.',
+    orrin: 'A soldier in the Envoy\'s gray steps between you and Seat 6, apologizes, and does not move. You never get near.',
     oriel: 'Seat 7 listens a long time, asks two questions, does not smile. "Very well. Tonight — keep."',
-    tarn: 'Seat 8 smiles with every tooth. Crown coin in it. Seat 8 votes SEND.',
+    tarn: 'Seat 8 smiles with every tooth. The Crown paid for all of them. Seat 8 votes SEND.',
     marrow: 'The Chair does not hear cases. The Chair counts them.',
   };
   function seatCfg() {
@@ -75,6 +75,8 @@
     }));
   }
   const listSeats = (arr) => arr.length ? 'Seat' + (arr.length > 1 ? 's ' : ' ') + UI.list(arr.map(String)) : 'nobody';
+  /* The name Wren gave the four in the Prologue ("That's what I'm saying tomorrow, then."). Tomorrow is now. */
+  const group = (s) => s.flags.GROUP_NAME || 'the Four';
 
   Game.addChapter({
     id: 'ch1', label: 'Chapter I', title: 'The Vigil', start: 'ch1_start', code: L.chapter('ch1').word,
@@ -109,9 +111,9 @@
         art: 'ch1_hall', mood: 'court', fx: 'embers', sfx: 'open', title: 'The Great Hall, an hour before the bell',
         enter: (s) => { if (s.flags.WREN_TRUST == null) Store.set('WREN_TRUST', 0); },
         text: [
-          'Nine banners in the rafters, one for each House. Under each banner, a Master sits in a tall chair.',
+          'Nine Houses, nine banners, nine Masters in nine tall chairs. The Houses have argued for four hundred years, mostly about the chairs.',
           'Tonight is the Vigil. The fire is going out, and the stone says a child walks into the Cold. The nine have come to decide what the child is for.',
-          'At the far end, the Hearth rises and sinks like breathing. Every grown-up here is pretending not to watch it.',
+          'At the far end, the Hearth rises and sinks like breathing. Every grown-up here is very carefully not looking at it.',
           'You are at the back. Wren is up front in a borrowed collar, and waves at you. It is too big a wave. Wren always waves too big when scared.',
           { text: 'The Binder has the keys tonight. The Listener reads the Hearth aloud.', cls: 'whisper' },
         ],
@@ -119,12 +121,12 @@
       },
       ch1_dais: {
         art: 'ch1_dais', mood: 'court', fx: 'embers',
-        text: [
+        text: (s) => [
           { speaker: 'Provost Marrow', text: 'Masters. Fourteen years ago this fire went out, and left a child on the stones. I named the child.' },
           { speaker: 'Provost Marrow', text: 'The stone over your heads says one born of four. Tonight I stop arguing and show you.' },
-          'That is the Provost. She runs the school. On the way in, she fixed Wren\'s collar twice.',
+          'That is Provost Marrow, who runs the school. On the way in, she fixed Wren\'s collar twice. It did not need fixing either time.',
           'Wren goes up alone and stands still, which for Wren is enormous.',
-          { speaker: 'Wren', text: 'Hello. It\'s me. I\'ll try not to fidget.' },
+          { speaker: 'Wren', text: `Hello. It's me. That's ${group(s)} at the back. They're with me. I'll try not to fidget.` },
           'Twelve seconds. Thirteen. At the back, the four of you are counting under your breath.',
         ],
         next: 'ch1_vane', button: 'The doors',
@@ -132,9 +134,9 @@
       ch1_vane: {
         art: 'ch1_vane', mood: 'dread', fx: 'dust', sfx: 'boom',
         text: [
-          'The doors open before anyone asks them to. Cold first, then soldiers. Then Lord Vane, the Crown\'s Envoy, with a writ.',
+          'The doors open before anyone asks them to. Cold first, then soldiers. Then Lord Vane, the Crown\'s Envoy, with a writ. A writ is a letter that brings its own soldiers.',
           { speaker: 'Vane', text: 'His Majesty asks one small thing: the child, tonight, for safekeeping. The child will be kept a very long way from this fire. The child will not be coming back.' },
-          'Wren\'s hand finds the Provost\'s sleeve. Wren has no joke ready. In seven years you have never once seen that.',
+          'Wren\'s hand finds the Provost\'s sleeve. There is no joke. In seven years, you have never once seen Wren without one.',
           'Vane lowers his voice, not quite far enough.',
           { speaker: 'Vane', text: 'I have seen what is under the paint in this hall, Ilsabet.' },
           'Nobody knows what that means. The Provost\'s face does.',
@@ -145,10 +147,10 @@
         art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.7,
         text: [
           { speaker: 'Provost Marrow', text: 'This school does not hand its children to a writ. It puts them to a vote. Nine seats. Five keep Wren here tonight. Four, and Wren leaves with him.' },
-          'Then the Hearth bows, long and low, as if something underneath had pulled it.',
-          'Every face turns to the fire, except two. The Provost is watching Wren. And Wren has taken a step toward the fire, and hasn\'t noticed. At the back, the Seer is watching the floor behind Wren, and says nothing.',
+          'The Hearth bows, as if pulled from underneath. Eight Masters look at it, then at the floor, as if remembering what they are sitting on.',
+          'The Provost is watching Wren. Wren has taken a step toward the fire without noticing. At the back, the Seer looks at the floor behind Wren, and does the face.',
           { speaker: 'Provost Marrow', text: 'The bell is in an hour. Until then, a Master may be spoken to. Go.' },
-          'Wren finds the four of you at the back, and mouths one word, very clearly: *five.*',
+          'Wren mouths one word to the back of the hall, very clearly: *five.*',
           { text: 'Above the Masters\' door, a word is cut into the lintel.', cls: 'whisper' },
         ],
         next: 'ch1_attune', button: 'Look at the lintel',
@@ -173,7 +175,7 @@
           /* The bell is narrative (design §5 Ch1): at 6:00 the Provost stalls the count and the last hint tier fires.
              The vote is the commit — a wrong call is the vote (VOTE_LOST). Fewer than two approaches earns a nudge. */
           let stall = false;
-          const STALL = 'The bell. The Provost rises and does not call the vote: "The Chair has not finished hearing the Masters." She is stalling for you.';
+          const STALL = 'The bell. The Provost rises and does not call the vote. "The Chair has not finished hearing the Masters," she says, into total silence. She is stalling for you.';
           return {
             title: 'THE HOUR BEFORE THE BELL', center: 'the Hearth', startAngle: 20, max: ASKS, timer: 360, submitText: 'Call the vote',
             note: 'The Chair reads out the rule: *Five of nine keeps the child. You may ask **' + ASKS_WORD + '** Masters. A Master you ask votes **KEEP** — unless they will not hear you, you cannot reach them, or the Crown has paid them. A Master sworn to another votes as that Master does, unless you ask them yourself. Everyone else votes **SEND**.*',
@@ -225,11 +227,11 @@
         art: 'ch1_dais', mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: [
           'Five to four. The Provost lets out a breath so small that only the Listener hears it. Wren lets go of her sleeve.',
-          { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, we thank the Crown for its concern.' },
+          { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, the school thanks the Crown for its concern.' },
           'Vane bows. It is a very good bow. He has done it to people he later ruined.',
-          { speaker: 'Wren', text: 'That was you! I watched the Binder walk up to Seat One. The Binder doesn\'t walk up to anyone. I\'m telling everybody.' },
+          { speaker: 'Wren', text: 'That was you! I watched the Binder walk up to Seat One. The Binder doesn\'t walk up to *anyone*. I\'m telling Mom — the Provost — everybody.' },
           { speaker: 'Wren', text: 'Listener, you can breathe now. I\'m staying.' },
-          'Then the two Masters who said yes are at your elbows. Neither is smiling now.',
+          'Then the two Masters who said yes arrive at your elbows. In the Houses, a vote is a loan.',
         ],
         next: 'ch1_prices', button: 'What they want',
       },
@@ -240,7 +242,7 @@
           'Two soldiers step onto the dais. Wren\'s hand is still on the Provost\'s sleeve, and she has to take it off herself. Then Wren finds you at the back, and the grin comes back, for you.',
           { speaker: 'Wren', text: 'Don\'t. You nearly had it. Reader, do not redo that sum all night.' },
           'Then Wren goes with them, and does not fidget once.',
-          'The Provost comes to the back of the hall, where nobody is looking any more, and speaks very low.',
+          'The Provost comes to the back of the hall, where nobody is looking now, and speaks very low. It is how she shouts.',
           { speaker: 'Provost Marrow', text: 'Then bring me the Cold Ember from under the school. I will get the child back myself.' },
         ],
         next: 'ch1_offer', button: 'Later',
@@ -251,7 +253,7 @@
         timerText: '*Forty-five heartbeats. They want an answer before the Provost reaches you.*',
         text: [
           'Seat 1 is Master Sorrel. Seat 7 is Master Oriel. They voted for you, and would like that noticed.',
-          { speaker: 'Master Sorrel', text: 'Under this school is a thing called the Cold Ember. When the Provost sends you down for it, it comes to the nine of us. Not to her.' },
+          { speaker: 'Master Sorrel', text: 'Under this school is a thing called the Cold Ember. When the Provost sends you for it, it comes to the nine of us. Not to her.' },
           { speaker: 'Master Oriel', text: 'Tell me what you find down there. All of it.' },
           'Over Sorrel\'s shoulder, the Provost is already crossing the hall toward you.',
         ],
@@ -259,13 +261,13 @@
         options: [
           { id: 'sorrel', text: 'Binder: "The Ember goes to the nine. You have my word."', if: (s) => (s.flags.CH1_APPROACHED || []).includes('sorrel'), next: 'ch1_offer',
             set: { SORREL: true, ORIEL: false, NEITHER: false }, note: 'You promised Sorrel the Ember.',
-            after: [{ speaker: 'Master Sorrel', text: 'Good. See that you keep yours.' }, 'Oriel says nothing at all.'] },
+            after: [{ speaker: 'Master Sorrel', text: 'Good. See that you keep it.' }, 'Oriel says nothing at all. She is very good at it.'] },
           { id: 'oriel', text: 'Reader: "All of it, Master Oriel. I\'ll write it down."', if: (s) => (s.flags.CH1_APPROACHED || []).includes('oriel'), next: 'ch1_offer',
             set: { ORIEL: true, SORREL: false, NEITHER: false }, note: 'You promised Oriel everything below.',
             after: [{ speaker: 'Master Oriel', text: 'All of it. Even the parts you don\'t like.' }, 'Sorrel does not forget.'] },
           { id: 'neither', text: 'Listener: "Neither… we answer to the Provost."', next: 'ch1_offer',
             set: { NEITHER: true, SORREL: false, ORIEL: false }, note: 'You refused both prices.',
-            after: ['Two mouths go thin. The Provost is watching from across the hall.'] },
+            after: ['Two mouths go thin. Across the hall, the Provost very nearly smiles.'] },
         ],
       },
       /* ---------- the Envoy's offer (60 s) ---------- */
@@ -274,17 +276,17 @@
         enter: (s) => { if (s.flags.VOTE_LOST) { if (s.flags.NEITHER == null) Store.set('NEITHER', true); if (s.flags.SORREL == null) Store.set('SORREL', false); if (s.flags.ORIEL == null) Store.set('ORIEL', false); } },
         timerText: '*Sixty heartbeats. He is very good at waiting.*',
         text: (s) => [
-          'Later, the hall empties. In a side passage, a gray coat is waiting.',
+          'Later, in a side passage, a gray coat is waiting, with Lord Vane inside it.',
           { speaker: 'Vane', text: s.flags.VOTE_LOST
-            ? 'The Provost will have the boy back within the hour. When she does, bring him to me before midnight. He will come if you ask.'
+            ? 'The Provost will have the boy back within the hour. Then bring him to me, before midnight. He will come if you ask.'
             : 'Bring the boy to me before midnight. He waved at you in front of nine Houses. He will come if you ask.' },
-          { speaker: 'Vane', text: 'He lives. I promise you that, which is more than anyone else in this building will promise you. And the Crown makes the four of you Masters.' },
+          { speaker: 'Vane', text: 'He lives. I promise you that, which is more than anyone else here will. And the Crown makes the four of you Masters. I am told the chairs are very comfortable.' },
           { speaker: 'Vane', text: 'You think I am the villain of tonight. Ask your Seer what is under the paint.' },
         ],
         prompt: 'The Envoy waits.',
         options: [
           { id: 'refuse', text: 'Seer: "No. You know the way out."', next: 'ch1_after', set: { VANE_PRETEND: false, VANE_ACCEPT: false },
-            after: ['Vane nods.', { speaker: 'Vane', text: 'Then I will ask again later, when it costs more.' }] },
+            after: ['Vane does not seem disappointed, which is worse.', { speaker: 'Vane', text: 'Then I will ask again later, when it costs more.' }] },
           { id: 'pretend', text: 'Reader: "Before midnight. Of course."', sub: 'A lie he may believe.', next: 'ch1_after', set: { VANE_PRETEND: true, VANE_ACCEPT: false }, note: 'You told the Envoy you would bring him Wren. You did not mean it.',
             after: [{ speaker: 'Vane', text: 'Wise. Or a lie. I can use either.' }] },
           { id: 'accept', text: 'Listener: "If it keeps Wren alive… yes."', cls: 'dark', sub: 'Wren lives, he says. Masters, all four.', next: 'ch1_after', set: { VANE_ACCEPT: true, VANE_PRETEND: false }, note: 'You accepted the Envoy\'s offer.',
@@ -306,7 +308,7 @@
             out.push({ speaker: 'Wren', text: 'They have a warm room, apparently. A very long way away. Listener, stop checking on me. I\'m fine.' });
             out.push('The Listener cannot hear whether that is true. The Listener never can.');
           } else {
-            out.push('Wren flops down on the hearthstone, as near the fire as it is polite to get.');
+            out.push('Wren flops down on the hearthstone, as near the fire as it is polite to get, and then a little nearer.');
             out.push({ speaker: 'Wren', text: '"Not coming back." He said it like he was doing me a favor.' });
             out.push({ speaker: 'Wren', text: 'Anyway. A whole hour, standing still. My record was eleven seconds. Reader, write that down. In ink.' });
           }
@@ -318,8 +320,8 @@
       ch1_flow: {
         type: 'flow', art: 'ch1_hall', mood: 'hearth', fx: 'embers',
         text: [
-          { speaker: 'Wren', text: 'So if he takes me, the Reader reads every wall in the school, the Seer stands in front of my shadow, and the Binder follows a thread nobody else can see. That\'s the plan?' },
-          { speaker: 'Wren', text: '…Good. It\'s a good plan.' },
+          'Wren hears all four of you out without interrupting once, which is a first.',
+          { speaker: 'Wren', text: 'Not a rule. A *promise*. From the Binder. Somebody carve that on something.' },
           'Then Wren looks across the hall at the Provost, and goes quiet.',
           { speaker: 'Wren', text: 'Her heart jumped. For me. …Don\'t tell her I know. She thinks she\'s made of stone.' },
           'Behind Wren, the Hearth flickers. Midnight is a few hours off.',
