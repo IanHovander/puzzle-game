@@ -3,7 +3,7 @@
   {"assert": "document.querySelectorAll('#text .speaker').length === 1"},
   {"assert": "(() => { const e = document.getElementById('text'); return e.scrollHeight <= e.clientHeight + 1; })()"},
   {"click": ".btn.choice >> nth=0"}, {"wait": 900}, {"key": "Space"}, {"wait": 500},
-  {"expect": "Grand."},
+  {"expect": "Four, like the founders"},
   {"assert": "document.querySelectorAll('#text .speaker').length === 1"},
   {"assert": "(() => { const e = document.getElementById('text'); return e.scrollHeight <= e.clientHeight + 1; })()"},
   {"shot": "ch0_name_joined"}
