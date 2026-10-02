@@ -58,7 +58,7 @@
   }
   /* What the hall gives back. Each one teaches the rule that stopped it. */
   const REASONS = {
-    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it, as Seat 2 always has.',
+    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it.',
     quill: 'Seat 2 says yes, then says the rest. "I vote as Seat 1 votes. You spent that on nothing."',
     brack: 'Seat 3 is delighted to be asked. Seat 3 has stood with the Chair, in writing, since before the doors shut. You had him already.',
     hallan: 'Seat 4 does not turn his head. "I vote as my cousin votes. I hear nobody else."',
