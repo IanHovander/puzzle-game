@@ -250,7 +250,7 @@
     const box = UI.el('div', { class: 'attune' }, [
       UI.el('div', { class: 'attune-label', text: scene.codeLabel || (cast ? 'Word of attunement, and the mark beside it — on every phone' : 'Word of attunement — enter it on every phone') }),
       UI.el('div', { class: 'attune-word', html: UI.esc(code) + (cast ? `<span class="attune-cast">·${UI.esc(cast)}</span>` : '') }),
-      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Each of you gets a different page — read yours, and only yours. Say nothing until all four of you have looked up.') }),
+      UI.el('div', { class: 'attune-sub', html: UI.rich(scene.codeSub || 'Type this word into every phone. Read your own page. Talk once all four look up.') }),
     ]);
     if (scene.roles) box.appendChild(UI.el('div', { class: 'attune-roles', html: UI.rich(typeof scene.roles === 'function' ? scene.roles(Store.state) : scene.roles) }));
     dom.actions.appendChild(box);
@@ -381,6 +381,16 @@
   };
 
   /* ---------- Menu ---------- */
+  /* Change the four seat keys. It lives in the Menu (and on the Prologue's key scene), not on the
+     title screen: keys are claimed and tested in the Prologue, so the title does not ask about them. */
+  Game.changeKeys = async function () {
+    const v = await UI.ask('Four keys, left to right, separated by spaces (letters, digits, or . , / ;). Spread them across the keyboard.', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
+    if (!v) return false;
+    const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1 && /[A-Z0-9.,\/;]/.test(x));
+    if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return false; }
+    Store.state.keys = ks; Store.save(); Input.setKeys(ks); UI.toast('Keys set: ' + ks.join(' '));
+    return true;
+  };
   Game.showMenu = function () {
     const box = UI.el('div', {});
     box.appendChild(UI.el('p', { html: `Elapsed: <strong>${Store.elapsedText()}</strong> · Hints used: <strong>${Store.get('hintsTotal', 0)}</strong>` }));
@@ -398,6 +408,7 @@
     box.appendChild(row2);
     const row3 = UI.el('div', { class: 'row' });
     row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
+    row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Change keys', onclick: () => { m.close(); Game.changeKeys(); } }));
     box.appendChild(row3);
     const m = UI.modal(box, { title: 'The Hearth' });
   };

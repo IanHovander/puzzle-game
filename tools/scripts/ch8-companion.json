@@ -150,7 +150,7 @@
    "expect": "Constantinopolis"
   },
   {
-   "expect": "Red. Not grey."
+   "expect": "Red. Not gray."
   },
   {
    "expect": "Law 0"
@@ -406,7 +406,7 @@
    "expect": "The last thing you saw"
   },
   {
-   "expect": "shadow falling towards the fire"
+   "expect": "shadow falling toward the fire"
   },
   {
    "expectNot": "Nothing here."

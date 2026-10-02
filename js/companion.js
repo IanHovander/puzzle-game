@@ -64,7 +64,7 @@
     const p = UI.el('div', { class: 'cpanel' });
     p.appendChild(UI.el('h2', { text: r.nick }));
     p.appendChild(UI.el('p', { html: UI.rich(r.blurb) }));
-    p.appendChild(UI.el('p', { class: 'fine', text: 'Your first name, for the Companion alone. The Hearth will never ask for it. It is used once, at the end.' }));
+    p.appendChild(UI.el('p', { class: 'fine', text: 'Your first name. Only this phone sees it.' }));
     const inp = UI.el('input', { class: 'field plain', placeholder: 'first name', maxlength: 16, value: st.name || '', autocomplete: 'given-name' });
     p.appendChild(inp);
     p.appendChild(UI.el('div', { class: 'row' }, [UI.el('button', { class: 'btn primary', text: 'Keep it', onclick: () => { st.name = inp.value.trim(); save(); showHome(); } })]));
@@ -83,7 +83,7 @@
 
     const u = UI.el('div', { class: 'cpanel' });
     u.appendChild(UI.el('h2', { text: 'Word of attunement' }));
-    u.appendChild(UI.el('p', { class: 'fine', text: 'When the Hearth shows a word, enter it here. If a mark stands beside the word, enter the mark too.' }));
+    u.appendChild(UI.el('p', { class: 'fine', text: 'Enter each word the Hearth shows, and its mark if it has one.' }));
     const row = UI.el('div', { class: 'unlock' });
     const inp = UI.el('input', { class: 'field', placeholder: 'WORD', maxlength: 12, autocomplete: 'off', autocapitalize: 'characters' });
     const mark = UI.el('input', { class: 'field mark', placeholder: 'MARK', maxlength: 3, autocomplete: 'off', autocapitalize: 'characters' });
@@ -170,7 +170,7 @@
         case 'letter': into.appendChild(UI.el('div', { class: 'blk-letter', html: UI.rich(b.text) })); break;
         case 'whisper': into.appendChild(UI.el('p', { class: 'blk-whisper', html: UI.rich(b.text) })); break;
         case 'omen': into.appendChild(UI.el('p', { class: 'blk-omen', html: UI.rich(b.text) })); break;
-        case 'html': into.appendChild(UI.el('div', { html: b.html })); break;
+        case 'html': into.appendChild(UI.el('div', { class: 'blk-html', html: b.html })); break;
         case 'svg': into.appendChild(UI.el('div', { class: 'blk-svg' + (b.cls ? ' ' + b.cls : ''), html: typeof b.svg === 'function' ? b.svg(cx) : b.svg })); break;
         case 'table': {
           const tb = UI.el('table', { class: 'blk-table' });
@@ -178,7 +178,7 @@
           b.rows.forEach(row => tb.appendChild(UI.el('tr', {}, row.map(c => UI.el('td', { html: typeof c === 'string' && !c.startsWith('<') ? UI.rich(c) : c })))));
           into.appendChild(tb); break;
         }
-        case 'list': into.appendChild(UI.el('ul', { class: 'blk-list' }, b.items.map(i => UI.el('li', { html: UI.rich(i) })))); break;
+        case 'list': into.appendChild(UI.el('ul', { class: 'blk-list' }, b.items.map(i => UI.el('li', { html: typeof i === 'string' && i.startsWith('<') ? i : UI.rich(i) })))); break;
         case 'glyphs': into.appendChild(UI.el('div', { class: 'blk-glyphs' }, b.items.map(g => UI.el('div', { class: 'g' }, [UI.el('div', { html: g.svg }), UI.el('span', { html: UI.rich(g.label || '') })])))); break;
         case 'key': into.appendChild(UI.el('div', { class: 'blk-key' }, b.items.map(g => UI.el('div', { class: 'k' }, [UI.el('div', { html: g.svg }), UI.el('b', { text: g.label })])))); break;
         case 'code': into.appendChild(UI.el('div', { class: 'blk-code ' + (b.cls || '') }, [UI.el('div', { class: 'label', text: b.label || 'Token' }), UI.el('div', { class: 'word', text: typeof b.text === 'function' ? b.text(cx) : b.text })])); break;
@@ -197,11 +197,11 @@
           });
           w.appendChild(btn);
           if (b.text) w.appendChild(UI.el('p', { class: 'fine', html: UI.rich(b.text) }));
-          /* Sixteen times a night one player is told to raise the volume on a phone holding a fact the
-             other three must not have -- ch2's vault door is four notes, ch4's third shelf, ch5's two
-             gates. Headphones are the fix and nobody had said so. The second sentence stays: a silent
-             room, a flat speaker or a deaf player loses nothing, because the sound is always written. */
-          w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Use headphones if you have them — what you hear is yours, not the table\'s. No sound? Set the phone to ring, not silent, turn the volume up, and press again. Everything you would hear is also written on this page.' }));
+          /* Sixteen times a night one player needs sound on a phone holding a fact the other three must
+             not have -- ch2's vault door is four notes, ch4's third shelf, ch5's two gates. Kept to a few
+             words: it sits under every sound button, and the sound is always written on the page too. */
+          // Once per page: a page with four sound buttons said it four times.
+          if (!(into.closest('#cmain') || into).querySelector('.nohear')) w.appendChild(UI.el('p', { class: 'fine nohear', text: 'Volume up, silent off. Headphones if you have them.' }));
           into.appendChild(w); break;
         }
         case 'reveal': {

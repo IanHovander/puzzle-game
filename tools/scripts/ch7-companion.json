@@ -7,7 +7,7 @@
   {"click": ".blk-choice .opt:has-text('WALK')"}, {"click": ".blk-choice .opt:has-text('REFUSE')"}, {"clickText": "Seal both"}, {"wait": 600}, {"shot": "c7_reader_token"}, {"expect": "6N6Z"},
 
   {"companion": true}, {"role": "Listener"}, {"unlock": ["CROWN", "XYM"]}, {"shot": "c7_listener_sight"},
-  {"expect": "How it opens"}, {"expect": "one rung above the first"}, {"expect": "Everything you would hear"},
+  {"expect": "How it opens"}, {"expect": "one rung above the first"}, {"expect": "Volume up, silent off"},
   {"expectNot": "THORN"}, {"expectNot": "CROWN"}, {"expectNot": "socket"}, {"expectNot": "count them in"},
   {"tab": "Wren"}, {"expect": "eight hearts"},
   {"tab": "Speak"}, {"click": ".blk-choice .opt:has-text('STAY')"}, {"click": ".blk-choice .opt:has-text('ACCEPT')"}, {"clickText": "Seal both"}, {"wait": 600}, {"expect": "ZHHT"},

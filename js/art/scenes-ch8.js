@@ -3,7 +3,7 @@
   'use strict';
   const A = window.VigilArt, P = A.P, W = A.W, H = A.H;
 
-  // A fire in any two colours (the Prologue's fire() only knows orange and blue).
+  // A fire in any two colors (the Prologue's fire() only knows orange and blue).
   function fire2(x, base, scale, c1, c2, glow) {
     const sc = scale || 1;
     let s = `<g transform="translate(${x},${base}) scale(${sc})">`;
@@ -21,13 +21,13 @@
       `<rect x="600" y="200" width="400" height="110" rx="4" fill="${stoneColor || '#221a20'}" stroke="#3a2c2c" stroke-width="3"/>` +
       P.circleRunes(800, 255, 46, 10, 'rgba(212,169,78,0.35)', 3);
   }
-  // A person standing: silhouette with a lit edge. eye: colour of a faint eye-glint (grey for the spent).
+  // A person standing: silhouette with a lit edge. eye: color of a faint eye-glint (gray for the spent).
   function person(x, base, sc, color, edge) {
     return `<g transform="translate(${x},${base}) scale(${sc || 1})"><ellipse cx="0" cy="-4" rx="18" ry="6" fill="#000" opacity=".35"/><path d="M-15,0 L-11,-72 L11,-72 L15,0 Z" fill="${color}"/><circle cx="0" cy="-84" r="12" fill="${color}"/><path d="M-11,-72 L11,-72 L15,0" fill="none" stroke="${edge}" stroke-width="2" opacity=".55"/><path d="M4,-95 A12,12 0 0 1 11,-80" fill="none" stroke="${edge}" stroke-width="2" opacity=".55"/></g>`;
   }
   A.ch8 = { fire2, hall, person };
 
-  /* The Hearth roaring white: too hot to have a colour. */
+  /* The Hearth roaring white: too hot to have a color. */
   A.define('ch8_white', () => P.wrap(
     P.sky('#1a1410', '#3a2a18') +
     hall('#171210', '#2a2220') +
@@ -37,7 +37,7 @@
     `<defs><radialGradient id="ch8wg" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#fff8e6" stop-opacity=".55"/><stop offset="1" stop-color="#fff8e6" stop-opacity="0"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#ch8wg)"/>`
   ));
 
-  /* The four on the stones, grey-eyed, and Wren waiting. */
+  /* The four on the stones, gray-eyed, and Wren waiting. */
   A.define('ch8_stones', (p) => P.wrap(
     P.sky('#0a0810', '#1a0f0a') +
     hall() +

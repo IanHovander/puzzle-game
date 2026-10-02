@@ -216,7 +216,7 @@
    "key": "Space"
   },
   {
-   "expect": "Wren is not supposed to wave"
+   "expect": "Wren always waves too big when scared"
   },
   {
    "clickText": "The presenting"
@@ -249,7 +249,7 @@
    "key": "Space"
   },
   {
-   "expect": "The Provost is looking at Wren"
+   "expect": "The Provost is watching Wren"
   },
   {
    "clickText": "Look at the lintel"
@@ -378,7 +378,7 @@
    "key": "Space"
   },
   {
-   "expect": "sending you tonight"
+   "expect": "sending you for it tonight"
   },
   {
    "clickText": "The night moves on"
@@ -413,9 +413,7 @@
   {
    "key": "Space"
   },
-  {
-   "expect": "Five to four"
-  },
+  {"expect": "Look at me staying put"},
   {
    "clickText": "Down"
   },
@@ -1045,7 +1043,7 @@
    "wait": 1400
   },
   {
-   "expect": "gutters, and steadies"
+   "expect": "only a bell"
   },
   {
    "clickText": "Back to the room"
@@ -1765,7 +1763,7 @@
    "key": "Space"
   },
   {
-   "expect": "all four were the ones I already knew"
+   "expect": "I knew them all already"
   },
   {
    "expect": "Loved enough to walk back in"
@@ -1876,7 +1874,7 @@
    "expect": "THE FOURFOLD WALK IS OPEN"
   },
   {
-   "expect": "ask me a third time"
+   "expect": "I didn't mean this"
   },
   {
    "expectNot": "wrong reading"
@@ -1927,7 +1925,7 @@
    "shot": "t_ch7_start"
   },
   {
-   "expect": "Master Oriel came down behind you"
+   "expect": "Master Oriel followed you down"
   },
   {
    "expect": "the Crown's soldiers"
@@ -2368,7 +2366,7 @@
    "wait": 300
   },
   {
-   "expect": "grey-eyed and ordinary"
+   "expect": "It is simply a fire"
   },
   {
    "clickText": "Years later"

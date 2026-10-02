@@ -1,6 +1,6 @@
 { "start": "ch5_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_reader_sight"},
-  {"expect": "two gates"}, {"expect": "standing as it was cut"},
+  {"expect": "two gates"}, {"expect": "in the order they are cut"},
   {"tab": "Wren"}, {"expect": "strapped arm"},
 
   {"companion": true}, {"role": "Listener", "name": "Ben"}, {"unlock": ["ASH", "NZW"]}, {"shot": "c5alt_listener_sight"},

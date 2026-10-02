@@ -18,42 +18,40 @@
 
   function render() {
     UI.clear(body);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'A cooperative story for exactly four, in one sitting of about four hours. One screen is the <strong>Hearth</strong>. Each of you keeps a phone as your <strong>Companion</strong> — it shows what only you can see. Talk. Nothing tonight can be solved alone.' }));
-    body.appendChild(UI.el('p', { class: 'warn', text: 'Fair warning: at one clearly announced moment, the bells of Thornhallow will ring and all four of you will need quick hands on this keyboard. You will be told before it happens.' }));
+    // Read top to bottom: what this is, where to sit, then the one button. Keys are claimed and
+    // tested in the Prologue's first scene, and can be changed there or from the Menu.
+    const intro = UI.el('div', { class: 'intro' });
+    intro.appendChild(UI.el('p', { class: 'lead', text: 'Four players. About four hours.' }));
+    intro.appendChild(UI.el('p', { html: 'This screen is the <strong>Hearth</strong>. You all share it.' }));
+    intro.appendChild(UI.el('p', { html: 'Your phone is your <strong>Companion</strong>. It shows what only you can see.' }));
+    body.appendChild(intro);
 
-    const seats = UI.el('div', { class: 'names' });
+    const seating = UI.el('div', { class: 'seating' });
+    seating.appendChild(UI.el('h2', { class: 'command', text: 'Sit in this order, left to right' }));
+    seating.appendChild(UI.el('p', { class: 'sub', text: 'Facing the screen, all within reach of the keyboard.' }));
+    const seats = UI.el('ol', { class: 'names' });
     Lore.roles.forEach((r, i) => {
-      const lab = UI.el('label', { class: 'p' + i });
-      lab.appendChild(UI.el('span', { text: r.name }));
-      /* r.what, not r.gift twice. The two spans are styled as different things (17px italic and 11px
-         dim) and were fed the same string, so the first screen four players ever read printed
-         'Glyph-Sight / Glyph-Sight' in two sizes. r.what -- WHAT / WHEN / WHERE / WHETHER -- is the
-         cleanest statement of the division of labour in the project and appeared nowhere the table
-         could see it. */
-      lab.appendChild(UI.el('span', { class: 'seat-nick', text: r.gift }));
-      lab.appendChild(UI.el('span', { class: 'seat-gift', text: r.what }));
-      lab.appendChild(UI.el('span', { class: 'seat-key', html: `key <b>${UI.esc(Store.state.keys[i] === ' ' ? 'SPACE' : Store.state.keys[i])}</b>` }));
-      seats.appendChild(lab);
+      // r.what is "WHAT the glyphs say" / "WHEN — the order of things": one plain line per seat.
+      const m = /^(\S+)\s*(?:—\s*)?(.*)$/.exec(r.what) || [null, r.what, ''];
+      const seat = UI.el('li', { class: 'p' + i });
+      seat.appendChild(UI.el('span', { class: 'seat-n', text: String(i + 1) }));
+      seat.appendChild(UI.el('span', { class: 'seat-name', text: r.nick }));
+      seat.appendChild(UI.el('span', { class: 'seat-what', html: `<b>${UI.esc(m[1].charAt(0) + m[1].slice(1).toLowerCase())}</b> ${UI.esc(m[2])}` }));
+      seats.appendChild(seat);
     });
-    body.appendChild(seats);
-    body.appendChild(UI.el('p', { class: 'keys', html: `Sit in this order, left to right, facing the screen. <button class="btn small ghost" id="chg-keys">change keys</button>` }));
-    body.querySelector('#chg-keys').addEventListener('click', async () => {
-      const v = await UI.ask('Four keys, left to right, separated by spaces (letters, digits, or . , / ;). Spread them across the keyboard.', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
-      if (!v) return; const ks = v.trim().split(/\s+/).map(x => x.toUpperCase()).filter(x => x.length === 1 && /[A-Z0-9.,\/;]/.test(x));
-      if (ks.length !== 4 || new Set(ks).size !== 4) { await UI.notice('Need four different single keys.'); return; }
-      Store.state.keys = ks; Store.save(); Input.setKeys(ks); render();
-    });
+    seating.appendChild(seats);
+    body.appendChild(seating);
 
     const buttons = UI.el('div', { class: 'buttons' });
     if (hasSave && Store.state.scene) {
-      buttons.appendChild(UI.el('button', { class: 'btn primary', text: 'Resume — ' + Store.elapsedText(), onclick: () => { Audio.init(); start(true); } }));
+      buttons.appendChild(UI.el('button', { class: 'btn primary big', text: 'Resume — ' + Store.elapsedText(), onclick: () => { Audio.init(); start(true); } }));
       buttons.appendChild(UI.el('button', { class: 'btn', text: 'New game', onclick: async () => { if (await UI.confirm('Erase the saved night and begin anew?', { danger: true, ok: 'Erase it' })) { const k = Store.state.keys; Store.reset(); Store.state.keys = k; Store.state.names = Lore.roles.map(r => r.nick); Store.save(); Audio.init(); start(false); } } }));
     } else {
-      buttons.appendChild(UI.el('button', { class: 'btn primary', text: 'Light the Hearth', onclick: () => { Audio.init(); Store.save(); start(false); } }));
+      buttons.appendChild(UI.el('button', { class: 'btn primary big', text: 'Light the Hearth', onclick: () => { Audio.init(); Store.save(); start(false); } }));
     }
     buttons.appendChild(UI.el('button', { class: 'btn ghost', text: 'Phones: how to join', onclick: () => Game.showQR() }));
     body.appendChild(buttons);
-    body.appendChild(UI.el('p', { class: 'fine', html: 'Sound on. Sit where everyone can see this screen and reach the keyboard; a wireless keyboard on the table is ideal. <span class="small">Press space or click the text to hurry the narration.</span>' }));
+    body.appendChild(UI.el('p', { class: 'fine', text: 'Sound on. Space or click skips ahead.' }));
   }
   render();
 

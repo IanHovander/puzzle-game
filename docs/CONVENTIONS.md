@@ -151,7 +151,7 @@ Moods: `hearth, tower, wonder, dread, tense, court, sorrow, triumph, void, silen
 
 ## 7. Writing
 
-Tone: warm and funny at the table, cold underneath. Wren is fourteen, kind, quick, never mawkish; calls players by nickname; slipped and called the Provost "Mum" once. Marrow is precise, tired, never cruel. Vane is courteous and certain. Never state the twist before its chapter (see the clue ladder in the design). Keep Hearth paragraphs short (one to three sentences); the Voice reads them aloud. Each chapter's `code` scene names the chapter's Warden of the Hearth and Voice.
+Tone: warm and funny at the table, cold underneath. Wren is fourteen, kind, quick, never mawkish; calls players by nickname; slipped and called the Provost "Mom" once. Marrow is precise, tired, never cruel. Vane is courteous and certain. Never state the twist before its chapter (see the clue ladder in the design). Keep Hearth paragraphs short (one to three sentences); the Voice reads them aloud. Each chapter's `code` scene names the chapter's Warden of the Hearth and Voice.
 
 ## 8. Testing
 

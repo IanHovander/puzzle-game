@@ -5,7 +5,7 @@
   const G = () => window.VigilGlyphs;
 
   /* ---------- shared pieces ---------- */
-  // A bookcase: x,y,w,h with n shelves of little books. seed for colours.
+  // A bookcase: x,y,w,h with n shelves of little books. seed for colors.
   function bookcase(x, y, w, h, shelves, seed, opts) {
     opts = opts || {};
     const r = A.rng(seed || 17);

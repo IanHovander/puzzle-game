@@ -32,21 +32,22 @@
      carries the lookup and the gap, and the gap is in the caption. */
   const readerLintels = () => {
     const rows = [
-      { items: GATE1, name: 'the first gate', y: 62, cell: 78, s: 1.15 },
-      { items: GATE2, name: 'the silent gate', y: 178, cell: 56, s: 0.85 },
+      { items: GATE1, name: 'the first gate', y: 60, cell: 84, s: 1.2 },
+      { items: GATE2, name: 'the silent gate', y: 188, cell: 61, s: 0.95 },
     ];
-    let s = '<svg viewBox="0 0 320 254" width="100%" style="max-width:320px;display:block;margin:0 auto">';
+    let s = '<svg viewBox="0 0 320 298" width="100%" style="display:block;margin:0 auto">';
     rows.forEach(r => {
       const x0 = 160 - (r.items.length - 1) * r.cell / 2;
-      s += `<text x="8" y="${r.y - 32}" fill="rgba(233,226,210,.55)" font-size="9" ${F}>${r.name}</text>`;
+      s += `<text x="8" y="${r.y - 36}" fill="rgba(233,226,210,.7)" font-size="12" ${F}>${r.name}</text>`;
       r.items.forEach((it, i) => {
         const x = x0 + i * r.cell, up = G.read(it.shape, it.inv), other = G.invert(up);
         s += `<g transform="translate(${x},${r.y}) scale(${r.s})" style="color:${GOLD}">${G.shapeInner(it.shape, it.inv)}</g>`;
-        s += `<text x="${x}" y="${r.y + 30}" text-anchor="middle" fill="${GOLD}" font-size="10" ${F}>${up}</text>`;
-        s += `<text x="${x}" y="${r.y + 43}" text-anchor="middle" fill="rgba(242,210,122,.45)" font-size="9" ${F}>${other}</text>`;
+        s += `<text x="${x}" y="${r.y + 38}" text-anchor="middle" fill="${GOLD}" font-size="13" ${F}>${up}</text>`;
+        s += `<text x="${x}" y="${r.y + 55}" text-anchor="middle" fill="rgba(242,210,122,.6)" font-size="12" ${F}>${other}</text>`;
       });
     });
-    s += `<text x="160" y="248" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="9" ${F}>as it stands, above · the other way up, below</text>`;
+    s += `<text x="160" y="274" text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="12" ${F}>as it stands, above</text>`;
+    s += `<text x="160" y="291" text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="12" ${F}>the other way up, below</text>`;
     return s + '</svg>';
   };
 
@@ -54,15 +55,15 @@
      A bell and its count in tally dots. No ring, no mark, no arrow: where the counting starts is the
      Seer's and which way it runs is the Binder's. */
   const tallyRow = (counts, cracked) => {
-    const cell = 58, w = counts.length * cell + 20, h = 76;
+    const cell = 58, w = counts.length * cell + 20, h = 80;
     let s = `<svg viewBox="0 0 ${w} ${h}" width="100%" style="max-width:${w}px;display:block;margin:0 auto">`;
     counts.forEach((n, i) => {
       const x = 10 + cell / 2 + i * cell, out = cracked === i, col = out ? 'rgba(79,179,191,.3)' : SEA;
       s += `<g transform="translate(${x},24)"><path d="M-13,6 L-13,0 Q-13,-15 0,-16 Q13,-15 13,0 L13,6 Z" fill="none" stroke="${col}" stroke-width="1.6"/><circle cy="10" r="2.5" fill="${col}"/></g>`;
-      if (out) { s += `<path d="M${x - 5},10 l7,16" stroke="${RED}" stroke-width="1.4"/><text x="${x}" y="60" text-anchor="middle" fill="${RED}" font-size="12" ${F}>?</text>`; }
+      if (out) { s += `<path d="M${x - 5},10 l7,16" stroke="${RED}" stroke-width="1.4"/><text x="${x}" y="62" text-anchor="middle" fill="${RED}" font-size="15" ${F}>?</text>`; }
       else {
         for (let k = 0; k < n; k++) s += `<circle cx="${(x - (n - 1) * 4 + k * 8).toFixed(1)}" cy="46" r="2.6" fill="${SEA}"/>`;
-        s += `<text x="${x}" y="68" text-anchor="middle" fill="${SEA}" font-size="11" ${F}>${n}</text>`;
+        s += `<text x="${x}" y="73" text-anchor="middle" fill="${SEA}" font-size="14" ${F}>${n}</text>`;
       }
     });
     return s + '</svg>';
@@ -81,7 +82,7 @@
       const a = (i / n * 360 - 90) * Math.PI / 180, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
       const cut = cuts[i + 1];
       s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" stroke="${cut ? VIOLET : '#fff'}" stroke-width="${cut ? 2.2 : 1.4}"/>`;
-      s += `<text x="${(cx + Math.cos(a) * (R + 24)).toFixed(1)}" y="${(cy + Math.sin(a) * (R + 24) + 4).toFixed(1)}" text-anchor="middle" fill="${cut ? VIOLET : '#fff'}" font-size="10" ${F} stroke="none">${i + 1}</text>`;
+      s += `<text x="${(cx + Math.cos(a) * (R + 26)).toFixed(1)}" y="${(cy + Math.sin(a) * (R + 26) + 5).toFixed(1)}" text-anchor="middle" fill="${cut ? VIOLET : '#fff'}" font-size="14" ${F} stroke="none">${i + 1}</text>`;
       if (cut === 'scratch') s += `<path d="M${(x - 8).toFixed(1)},${(y + 1).toFixed(1)} l16,-4" stroke="${VIOLET}" stroke-width="2.4" stroke-linecap="round"/>`;
       if (cut === 'notch') s += `<path d="M${(x - 3).toFixed(1)},${(y + 3).toFixed(1)} l3,-5 l3,5" stroke="${VIOLET}" stroke-width="2" stroke-linecap="round"/>`;
       if (cut === 'chip') s += `<path d="M${(x - 4).toFixed(1)},${(y - 4).toFixed(1)} l5,2 l-1,5 l-4,-3 z" stroke="${VIOLET}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>`;
@@ -96,81 +97,89 @@
     s += `<path d="M${mx},${y + 6} l${end === 'left' ? -7 : 7},7 l${end === 'left' ? 7 : -7},7 z" fill="${VIOLET}"/>`;
     return s;
   }
-  const gateMarks = `<svg viewBox="0 0 360 300"><rect width="360" height="300" fill="#000"/>
-    <text x="95" y="26" text-anchor="middle" fill="#fff" font-size="10" ${F}>the first gate</text>
-    <text x="265" y="26" text-anchor="middle" fill="#fff" font-size="10" ${F}>the silent gate</text>
-    ${markedStrip(95, 40, 3, 'right')}
-    ${markedStrip(265, 40, 5, 'left')}
-    ${ringCuts(95, 165, 52, 5, { 3: 'scratch', 1: 'notch', 4: 'chip' })}
-    ${ringCuts(265, 165, 52, 5, { 5: 'scratch', 2: 'notch', 3: 'chip' })}
-    <text x="95" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 3, notch 1, chip 4</text>
-    <text x="265" y="248" text-anchor="middle" fill="${VIOLET}" font-size="9" ${F}>scratch 5, notch 2, chip 3</text>
-    <text x="180" y="286" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">where each ring is cut, and which end is marked</text>
+  const gateMarks = `<svg viewBox="0 0 360 330"><rect width="360" height="330" fill="#000"/>
+    <text x="92" y="24" text-anchor="middle" fill="#fff" font-size="14" ${F}>the first gate</text>
+    <text x="268" y="24" text-anchor="middle" fill="#fff" font-size="14" ${F}>the silent gate</text>
+    ${markedStrip(92, 38, 3, 'right')}
+    ${markedStrip(268, 38, 5, 'left')}
+    ${ringCuts(92, 164, 50, 5, { 3: 'scratch', 1: 'notch', 4: 'chip' })}
+    ${ringCuts(268, 164, 50, 5, { 5: 'scratch', 2: 'notch', 3: 'chip' })}
+    <g fill="${VIOLET}" font-size="13" ${F} text-anchor="middle">
+      <text x="92" y="250">scratch 3,</text><text x="92" y="267">notch 1, chip 4</text>
+      <text x="268" y="250">scratch 5,</text><text x="268" y="267">notch 2, chip 3</text>
+    </g>
+    <text x="180" y="300" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".7">where each ring is cut,</text>
+    <text x="180" y="317" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".7">and which end is marked</text>
   </svg>`;
 
   /* ---------- Binder: the two Laws, drawn ---------- */
   const lawClash = () => {
-    const plate = (y, era, txt, struck) => `<rect x="6" y="${y}" width="288" height="34" rx="4" fill="none" stroke="${struck ? 'rgba(217,107,74,.4)' : RED}" stroke-width="1.4"/>`
-      + `<text x="16" y="${y + 14}" fill="${struck ? 'rgba(217,107,74,.55)' : RED}" font-size="9" ${F}>${era}</text>`
-      + `<text x="16" y="${y + 27}" fill="${struck ? 'rgba(233,226,210,.4)' : 'rgba(233,226,210,.85)'}" font-size="9" ${F}>${txt}</text>`
-      + (struck ? `<path d="M10,${y + 17} L290,${y + 17}" stroke="${RED}" stroke-width="1.6"/>` : '');
+    const T = 'font-size="12"';
+    const plate = (y, era, lines, struck) => `<rect x="6" y="${y}" width="288" height="64" rx="4" fill="none" stroke="${struck ? 'rgba(217,107,74,.4)' : RED}" stroke-width="1.4"/>`
+      + `<text x="16" y="${y + 18}" fill="${struck ? 'rgba(217,107,74,.7)' : RED}" ${T} ${F}>${era}</text>`
+      + lines.map((ln, k) => `<text x="16" y="${y + 35 + k * 16}" fill="${struck ? 'rgba(233,226,210,.5)' : 'rgba(233,226,210,.9)'}" ${T} ${F}>${ln}</text>`).join('')
+      + (struck ? lines.map((ln, k) => `<path d="M12,${y + 31 + k * 16} L${Math.round(20 + ln.length * 6.8)},${y + 31 + k * 16}" stroke="${RED}" stroke-width="1.4"/>`).join('') : '');
     const ring = (cx, dir, label) => {
-      let s = `<circle cx="${cx}" cy="150" r="30" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>`;
-      s += `<circle cx="${cx}" cy="120" r="7" fill="rgba(217,107,74,.3)" stroke="${RED}" stroke-width="1.4"/>`;
+      const cy = 192;
+      let s = `<circle cx="${cx}" cy="${cy}" r="30" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>`;
+      s += `<circle cx="${cx}" cy="${cy - 30}" r="7" fill="rgba(217,107,74,.3)" stroke="${RED}" stroke-width="1.4"/>`;
       s += dir > 0
-        ? `<path d="M${cx + 12},127 a30,30 0 0 1 14,26" fill="none" stroke="${RED}" stroke-width="2"/><path d="M${cx + 26},153 l-6,-5 l-2,8 z" fill="${RED}"/>`
-        : `<path d="M${cx - 12},127 a30,30 0 0 0 -14,26" fill="none" stroke="${RED}" stroke-width="2"/><path d="M${cx - 26},153 l6,-5 l2,8 z" fill="${RED}"/>`;
-      s += `<text x="${cx}" y="196" text-anchor="middle" fill="rgba(233,226,210,.75)" font-size="9" ${F}>${label}</text>`;
+        ? `<path d="M${cx + 12},${cy - 23} a30,30 0 0 1 14,26" fill="none" stroke="${RED}" stroke-width="2"/><path d="M${cx + 26},${cy + 3} l-6,-5 l-2,8 z" fill="${RED}"/>`
+        : `<path d="M${cx - 12},${cy - 23} a30,30 0 0 0 -14,26" fill="none" stroke="${RED}" stroke-width="2"/><path d="M${cx - 26},${cy + 3} l6,-5 l2,8 z" fill="${RED}"/>`;
+      s += label.map((ln, k) => `<text x="${cx}" y="${cy + 50 + k * 16}" text-anchor="middle" fill="rgba(233,226,210,.8)" ${T} ${F}>${ln}</text>`).join('');
       return s;
     };
-    return `<svg viewBox="0 0 300 214" width="100%" style="max-width:300px;display:block;margin:0 auto">`
-      + plate(6, 'Year 0', 'carving marked at its right: the other way round', false)
-      + plate(46, 'Year 212', 'every line runs the way the numbers count up', true)
-      + ring(90, -1, 'carving marked at its right') + ring(215, 1, 'carving marked at its left')
-      + `<text x="150" y="210" text-anchor="middle" fill="rgba(233,226,210,.55)" font-size="9" ${F}>where two Laws disagree, the older binds</text></svg>`;
+    return `<svg viewBox="0 0 300 290" width="100%" style="display:block;margin:0 auto">`
+      + plate(6, 'Year 0', ['carving marked at its right:', 'the other way round'], false)
+      + plate(78, 'Year 212', ['every line runs the way', 'the numbers count up'], true)
+      + ring(80, -1, ['carving marked', 'at its right']) + ring(220, 1, ['carving marked', 'at its left'])
+      + `<text x="150" y="282" text-anchor="middle" fill="rgba(233,226,210,.7)" ${T} ${F}>where two Laws disagree, the older binds</text></svg>`;
   };
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:70px;height:14px;vertical-align:middle">${
     kind === 'grey' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="rgba(200,200,210,.7)" stroke-width="2.5" stroke-linecap="round"/>'
       : kind === 'red' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="' + RED + '" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="9" r="3.5" fill="' + RED + '"/>'
         : kind === 'gold' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d4a94e" stroke-width="2.5" stroke-linecap="round"/>'
-          : '<path d="M6,2 L2,2 L2,14 L6,14 M84,2 L88,2 L88,14 L84,14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="2"/>'
+          : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
   }</svg>`;
 
   // The ledge over the cavern: a torch, four shadows away from it, Wren's toward it.
-  const underLedge = `<svg viewBox="0 0 360 230">
-    <rect width="360" height="230" fill="#000"/>
+  const underLedge = `<svg viewBox="0 0 360 282">
+    <rect width="360" height="282" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
-      <path d="M10,150 L120,150 L140,170 L350,170"/><path d="M10,150 L10,220 M350,170 L350,220"/>
-      ${[0, 1, 2, 3].map(i => `<path d="M${200 + i * 36},130 l0,-24 l6,-8 l6,8 l0,24 z"/>`).join('')}
-      <text x="254" y="92" text-anchor="middle" fill="#fff" font-size="9" ${F}>four thrones</text>
-      <path d="M30,120 L30,80 M22,84 L38,84"/><ellipse cx="30" cy="74" rx="6" ry="9"/>
-      <text x="30" y="135" text-anchor="middle" fill="#fff" font-size="9" ${F}>torch</text>
-      <path d="M0,200 C60,190 120,210 180,200 C240,190 300,210 360,200" stroke="rgba(255,255,255,.35)" stroke-dasharray="3 3"/>
-      <text x="180" y="222" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="9" ${F}>the cold below throws no shadow you can see</text>
+      <path d="M10,190 L130,190 L150,210 L350,210"/><path d="M10,190 L10,250 M350,210 L350,250"/>
+      ${[0, 1, 2, 3].map(i => `<path d="M${222 + i * 34},206 l0,-24 l6,-8 l6,8 l0,24 z"/>`).join('')}
+      <path d="M30,170 L30,120 M22,124 L38,124"/><ellipse cx="30" cy="110" rx="6" ry="9"/>
+      <path d="M0,232 C60,222 120,242 180,232 C240,222 300,242 360,232" stroke="rgba(255,255,255,.35)" stroke-dasharray="3 3"/>
     </g>
-    <g fill="#fff" opacity=".9"><circle cx="90" cy="120" r="6"/><circle cx="120" cy="105" r="6"/><circle cx="150" cy="125" r="6"/><circle cx="175" cy="108" r="6"/><circle cx="110" cy="140" r="6"/></g>
-    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M90,120 L124,132"/><path d="M120,105 L154,113"/><path d="M150,125 L184,133"/><path d="M175,108 L208,114"/></g>
-    <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M110,140 L72,130"/></g>
-    <g fill="#fff" font-size="9" ${F}><text x="82" y="112">Reader</text><text x="112" y="97">Listener</text><text x="142" y="118">Seer</text><text x="167" y="100">Binder</text><text x="100" y="158" fill="${VIOLET}">Wren</text></g>
-    <text x="180" y="30" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".7">shadows on the ledge, as they fall</text>
+    <g fill="#fff" font-size="14" ${F} text-anchor="middle">
+      <text x="279" y="160">four thrones</text>
+      <text x="30" y="92">torch</text>
+    </g>
+    <text x="180" y="272" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="13" ${F}>the cold below throws no shadow you can see</text>
+    <g fill="#fff" opacity=".9"><circle cx="80" cy="128" r="6"/><circle cx="100" cy="78" r="6"/><circle cx="150" cy="132" r="6"/><circle cx="178" cy="84" r="6"/><circle cx="140" cy="162" r="6"/></g>
+    <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round"><path d="M80,128 L114,138"/><path d="M100,78 L134,86"/><path d="M150,132 L184,142"/><path d="M178,84 L212,92"/></g>
+    <g stroke="${VIOLET}" stroke-width="3" opacity=".9" stroke-linecap="round" fill="none"><path d="M136,158 L126,140"/><path d="M123,149 L125,139 L134,142"/></g>
+    <g fill="#fff" font-size="14" ${F} text-anchor="middle"><text x="80" y="114">Reader</text><text x="100" y="64">Listener</text><text x="150" y="118">Seer</text><text x="178" y="70">Binder</text><text x="152" y="176" fill="${VIOLET}" text-anchor="start">Wren</text></g>
+    <text x="180" y="26" text-anchor="middle" fill="#fff" font-size="13" ${F} opacity=".7">one shadow points up, at the Hearth</text>
   </svg>`;
 
   /* Nine stones: three hollow (a dashed cavity), four cracked right through (the violet line), two
      neither. The two counts are the Seer's pair in the Founders' Count, and nothing is both, so one
      count cannot be got from the other. */
   const HOLLOW = [2, 5, 7], CRACK = [0, 3, 4, 8];
-  const stonesSvg = `<svg viewBox="0 0 360 250">
-    <rect width="360" height="250" fill="#000"/>
-    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 50 + Math.floor(i / 3) * 75; const hollow = HOLLOW.indexOf(i) >= 0, crack = CRACK.indexOf(i) >= 0; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
-      return `<g transform="translate(${x},${y})"><path d="M${-rx},0 C${-rx},-${ry} ${-rx * 0.4},-${ry + 6} 0,-${ry} C${rx * 0.5},-${ry + 4} ${rx},-${ry * 0.6} ${rx},0 C${rx},${ry} ${rx * 0.3},${ry + 4} 0,${ry} C${-rx * 0.6},${ry + 2} ${-rx},${ry * 0.5} ${-rx},0 Z" fill="none" stroke="#fff" stroke-width="1.4"/>${hollow ? `<path d="M${-rx * 0.55},2 C${-rx * 0.5},-${ry * 0.5} ${-rx * 0.1},-${ry * 0.6} ${rx * 0.2},-${ry * 0.35} C${rx * 0.55},-${ry * 0.1} ${rx * 0.5},${ry * 0.5} ${rx * 0.1},${ry * 0.55} C${-rx * 0.3},${ry * 0.6} ${-rx * 0.55},${ry * 0.3} ${-rx * 0.55},2 Z" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".8"/>` : crack ? `<path d="M${-rx * 0.75},${-ry * 0.35} l${rx * 0.35},${ry * 0.55} l${-rx * 0.12},${ry * 0.3} l${rx * 0.55},${ry * 0.2}" fill="none" stroke="${VIOLET}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>` : `${[0, 1, 2].map(k => `<path d="M${-rx * 0.6 + k * 12},${-ry * 0.5 + k * 8} l${rx * 0.9},${ry * 0.15}" stroke="#fff" stroke-width=".8" opacity=".35"/>`).join('')}`}<text y="${ry + 14}" text-anchor="middle" fill="#fff" font-size="9" ${F} opacity=".6">${i + 1}</text></g>`; }).join('')}
-    <text x="180" y="244" text-anchor="middle" fill="${VIOLET}" font-size="10" ${F}>a cavity is dashed · a crack goes right through</text>
+  const stonesSvg = `<svg viewBox="0 0 360 326">
+    <rect width="360" height="326" fill="#000"/>
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8].map(i => { const x = 60 + (i % 3) * 120, y = 48 + Math.floor(i / 3) * 92; const hollow = HOLLOW.indexOf(i) >= 0, crack = CRACK.indexOf(i) >= 0; const rx = 44 + (i % 2) * 6, ry = 26 + (i % 3) * 3;
+      return `<g transform="translate(${x},${y})"><path d="M${-rx},0 C${-rx},-${ry} ${-rx * 0.4},-${ry + 6} 0,-${ry} C${rx * 0.5},-${ry + 4} ${rx},-${ry * 0.6} ${rx},0 C${rx},${ry} ${rx * 0.3},${ry + 4} 0,${ry} C${-rx * 0.6},${ry + 2} ${-rx},${ry * 0.5} ${-rx},0 Z" fill="none" stroke="#fff" stroke-width="1.4"/>${hollow ? `<path d="M${-rx * 0.55},2 C${-rx * 0.5},-${ry * 0.5} ${-rx * 0.1},-${ry * 0.6} ${rx * 0.2},-${ry * 0.35} C${rx * 0.55},-${ry * 0.1} ${rx * 0.5},${ry * 0.5} ${rx * 0.1},${ry * 0.55} C${-rx * 0.3},${ry * 0.6} ${-rx * 0.55},${ry * 0.3} ${-rx * 0.55},2 Z" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 2" opacity=".8"/>` : crack ? `<path d="M${-rx * 0.75},${-ry * 0.35} l${rx * 0.35},${ry * 0.55} l${-rx * 0.12},${ry * 0.3} l${rx * 0.55},${ry * 0.2}" fill="none" stroke="${VIOLET}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>` : `${[0, 1, 2].map(k => `<path d="M${-rx * 0.6 + k * 12},${-ry * 0.5 + k * 8} l${rx * 0.9},${ry * 0.15}" stroke="#fff" stroke-width=".8" opacity=".35"/>`).join('')}`}<text y="${ry + 19}" text-anchor="middle" fill="#fff" font-size="15" ${F} opacity=".75">${i + 1}</text></g>`; }).join('')}
+    <text x="180" y="300" text-anchor="middle" fill="${VIOLET}" font-size="14.5" ${F}>a cavity is dashed</text>
+    <text x="180" y="319" text-anchor="middle" fill="${VIOLET}" font-size="14.5" ${F}>a crack goes right through</text>
   </svg>`;
 
   /* ---------- Reader: nine worn glyphs, three read EMBER ---------- */
   const NINE = [['Crown', true], ['Crown', false], ['Flame', false], ['Crown', true], ['Hook', false], ['Spike', true], ['Crown', false], ['Flame', true], ['Crown', true]];
-  const nineSvg = `<svg viewBox="0 0 330 260" width="100%" style="max-width:330px;display:block;margin:0 auto">
-    <rect x="2" y="2" width="326" height="256" rx="6" fill="rgba(0,0,0,0.35)" stroke="rgba(212,169,78,0.25)"/>
-    ${NINE.map(([sh, inv], i) => { const x = 55 + (i % 3) * 110, y = 48 + Math.floor(i / 3) * 84; return `<g transform="translate(${x},${y}) scale(1.3)" style="color:#e9e2d2" opacity="${0.55 + (i % 4) * 0.08}">${G.shapeInner(sh, inv)}</g><path d="M${x - 22 + (i * 7) % 15},${y - 16 + (i * 11) % 30} l${18 + (i * 5) % 20},${(i % 3) * 6 - 4}" stroke="rgba(11,10,16,0.9)" stroke-width="${2 + i % 3}"/><text x="${x}" y="${y + 36}" text-anchor="middle" font-size="9" fill="rgba(233,226,210,0.45)" ${F}>${i + 1}</text>`; }).join('')}
+  const nineSvg = `<svg viewBox="0 0 330 272" width="100%" style="max-width:330px;display:block;margin:0 auto">
+    <rect x="2" y="2" width="326" height="268" rx="6" fill="rgba(0,0,0,0.35)" stroke="rgba(212,169,78,0.25)"/>
+    ${NINE.map(([sh, inv], i) => { const x = 55 + (i % 3) * 110, y = 48 + Math.floor(i / 3) * 84; return `<g transform="translate(${x},${y}) scale(1.3)" style="color:#e9e2d2" opacity="${0.55 + (i % 4) * 0.08}">${G.shapeInner(sh, inv)}</g><path d="M${x - 22 + (i * 7) % 15},${y - 16 + (i * 11) % 30} l${18 + (i * 5) % 20},${(i % 3) * 6 - 4}" stroke="rgba(11,10,16,0.9)" stroke-width="${2 + i % 3}"/><text x="${x}" y="${y + 38}" text-anchor="middle" font-size="13" fill="rgba(233,226,210,0.6)" ${F}>${i + 1}</text>`; }).join('')}
   </svg>`;
 
   /* ---------- Binder: five oaths, their locks named ---------- */
@@ -184,8 +193,11 @@
     { name: 'the Well', line: ['WELL', 'ASH'], lock: 'KNOT', year: 0 },
     { name: 'the Chair', line: ['CROWN', 'THORN'], lock: 'EMBER', year: 212 },
   ];
-  const gl = (n, c) => G.svg(n, { size: 26, color: c || GOLD });
-  const oathsHtml = `<table class="blk-table"><tr><th>oath</th><th>line</th><th>lock</th><th>sworn</th></tr>${OATHS.map(o => `<tr><td>${o.name}</td><td>${o.line.map(n => gl(n, RED)).join(' ')}</td><td>${gl(o.lock, RED)} <b>${o.lock}</b></td><td>Year ${o.year}</td></tr>`).join('')}</table>`;
+  /* Sized to fit the count box on a phone: 26px glyphs (inline, so the table's 34px default gives way),
+     tighter cells, and the lock's word under its glyph. */
+  const gl = (n, c) => G.svg(n, { size: 26, color: c || GOLD }).replace('style="', 'style="width:26px;height:26px;');
+  const TD = 'style="padding:6px 5px"';
+  const oathsHtml = `<table class="blk-table" style="font-size:15px"><tr><th ${TD}>oath</th><th ${TD}>line</th><th ${TD}>lock</th><th ${TD}>sworn</th></tr>${OATHS.map(o => `<tr><td ${TD}>${o.name}</td><td ${TD}>${o.line.map(n => gl(n, RED)).join(' ')}</td><td style="padding:6px 5px;text-align:center;white-space:nowrap">${gl(o.lock, RED)}<br><b>${o.lock}</b></td><td ${TD}>Year ${o.year}</td></tr>`).join('')}</table>`;
 
   /* ---------- the Founders' Count task ----------
      Mere's ward asks each seat twice, and the Hearth takes eight digits as one number, in seat order:
@@ -214,7 +226,7 @@
       const prev = (raw == null || !/^\d\d$/.test(String(raw))) ? null : String(raw);
       let ctl = null;
       const mat = MATERIAL[roleId];
-      const said = 'Say them aloud when the Hearth asks — in seat order, the Reader first. Never show the phone.';
+      const said = 'Say them aloud when the Hearth asks, in seat order. Never show the phone.';
       const idle = () => {
         UI.clear(box);
         if (prev != null) { box.appendChild(UI.el('div', { class: 'big-digit', text: prev[0] + ' ' + prev[1] })); box.appendChild(UI.el('p', { class: 'fine', text: 'Your two digits. ' + said })); }
@@ -277,23 +289,23 @@
       /* ===== READER ===== */
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'What is cut on Mere’s two gates' });
-        P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. On your page they are clean.' });
-        P.sight.push({ t: 'p', text: '**A shape says one word standing as it was cut, and the opposite word the other way up.** A carving marked at its left-hand end says the words as they stand. Marked at its right, every shape says its other word.' });
+        P.sight.push({ t: 'p', text: 'The Hearth shows both carvings worn to nothing. You see them clean.' });
         P.sight.push({ t: 'html', html: readerLintels() });
-        P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that.' });
-        P.sight.push({ t: 'fine', text: 'A spare shape in the ring is not decoration. It is a different sigil, and the gate can tell.' });
-        P.sight.push({ t: 'fine', text: 'Which end each carving is marked at is not on this page, and neither is where the words go. Say both words for every shape, in the order they are cut.' });
+        P.sight.push({ t: 'p', text: '**Say both words for every shape, in the order they are cut.** Which end is marked is not on this page.' });
+        P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that. A spare shape in the ring is a different sigil.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
-        P.wren.push({ t: 'p', text: 'Wren stands beside you looking at the four thrones. "You went quiet in the study. You read something with my name in it." A pause. "You don’t have to say."' });
-        P.wren.push({ t: 'p', text: f.WREN_HURT
-          ? 'Wren has not mentioned the strapped arm since the Vault, and has laughed twice on the stair, both times wrongly.'
-          : 'The Vigil roll in your Book still spells her name *Wrenn*, in the old letters. You decided, a year ago, that it was a spelling mistake. You have never asked her.' });
+        P.wren.push({ t: 'p', text: (f.WREN_HURT
+          ? 'Wren has not mentioned the strapped arm since the Vault. '
+          : 'In the study you ciphered Wren’s name, and it was not a spelling mistake. ')
+          + 'All four thrones are cut in the letters from the door, with the word inside Wren’s name. *Hollow.* Four times. On the ledge, quietly: “You read something with my name in it. You don’t have to say.”' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I did read it. In the old letters. I checked it three times, because it’s yours. I’m not saying it on a stair. You’ll get it properly, somewhere warm.”' });
       }
 
       /* ===== LISTENER ===== */
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Eight bells, and what they count' });
-        P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. The Hearth cannot hear them. You can.' });
+        P.sight.push({ t: 'p', text: 'A bell hangs over every shape on both lintels. Only you can hear them.' });
         P.sight.push({ t: 'p', text: '**A bell’s count says which slot its word takes.** Count round the ring from wherever a sigil begins, and that slot is one.' });
         P.sight.push({ t: 'audio', label: 'The first gate — three bells', strip: tallyRow(COUNTS1, -1), button: '♪ Cup your ear',
           play: (A) => playCounts(A, COUNTS1, -1), text: '**Three, one, five**, over the shapes in the order they are cut.' });
@@ -303,11 +315,11 @@
             : '**Two, five, one, three, four**, over the shapes in the order they are cut.' });
         P.sight.push({ t: 'fine', text: 'A bell belongs to the shape it hangs over. It does not move when a carving is read backwards.' });
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
-        P.sight.push({ t: 'fine', text: 'You never hear a word, only how far. The words are the Reader’s, and where a sigil begins is the Binder’s.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
-        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'Boots above, in step. Water below, moving slowly. And beside you, where Wren is standing, the thing you have called a fault in your gift for four years: nothing. Not quiet. *Nothing.*' });
-        P.wren.push({ t: 'p', text: 'In the Gallery the portraits showed four going down the stair and four coming back. You have not stopped hearing it.' });
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['the Hearth, above', 'slow'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
+        P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. But far up the stair, faint through the rock, the Hearth still beats. Slower than at the Vigil. The tune Wren hums. In the Gallery the portraits showed four going down this stair, and four coming back.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humor me.”' });
       }
 
       /* ===== SEER ===== */
@@ -317,32 +329,36 @@
         P.sight.push({ t: 'p', text: '**The second gate’s carving is marked at its left-hand end.** Three cuts again: a scratch at **slot 5**, a notch at **slot 2**, a chip at **slot 3**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: gateMarks });
         P.sight.push({ t: 'fine', text: 'Counted from anywhere else on the ring, the right words in the right order still fail.' });
-        P.sight.push({ t: 'fine', text: 'Somebody meant those cuts. Which one a sigil begins at, and what a marked end obliges, are not yours. Say what is cut, and where.' });
+        P.sight.push({ t: 'fine', text: 'Which cut a sigil begins at is not yours. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underLedge });
-        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows falling away from it, the way shadows do, and Wren’s falling toward it. In the dormitory you blamed the lamp. There is no lamp here.' });
+        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows fall away from it. Wren’s turns its back on the torch and points up, through all that rock, at the Hearth. It was never the light, or the warmth. It was only ever that one fire.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Your shadow turned its back on the torch. It points up, at the Hearth, through all that rock. I sat on it before anyone looked. Also, you were too near the edge.”' });
       }
 
       /* ===== BINDER ===== */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Which cut, and which way round' });
-        P.sight.push({ t: 'p', text: 'Above ground a sigil begins at a scratch. Everyone at this table has heard you say so twice tonight.' });
-        P.sight.push({ t: 'p', text: '**These two doors are older than that Law, and they do not keep it.** On the first gate the sigil begins at the **chip**. On the second it begins at the **notch**. A scratch on a Founders’ door is only where the mason rested the tool.' });
-        P.sight.push({ t: 'p', text: 'Two Laws disagree about which way a carving runs round the ring. The newer says every one runs the way the numbers count up. The older says a carving marked at its right-hand end runs the other way. **The older binds.**' });
+        P.sight.push({ t: 'p', text: 'Above ground a sigil begins at a scratch. **These two doors are older than that Law, and they do not keep it.**' });
+        P.sight.push({ t: 'p', text: 'On the first gate the sigil begins at the **chip**. On the second it begins at the **notch**.' });
         P.sight.push({ t: 'html', html: lawClash() });
+        P.sight.push({ t: 'p', text: 'Two Laws disagree on which way a carving runs, and **the older binds**: marked at its right-hand end, it runs against the slot numbers.' });
         P.sight.push({ t: 'p', text: law0
           ? '**Where a carving shows COLD, the older Law writes it into its slot — and the older Law is back in your Book. Say so: the slot is not left empty.**'
           : '**Where a carving shows COLD, the newer Law leaves that slot empty. Say so: nothing goes in it.**' });
-        P.sight.push({ t: 'fine', text: 'Two frosts and a gate stops answering, and the Provost must break it. Say your rule before the Warden closes the ring — and say it even when it sounds wrong.' });
-        P.sight.push({ t: 'fine', text: 'Both Laws are dated in your **Book**. You cannot read a shape and you cannot find a cut. Ask for both.' });
+        P.sight.push({ t: 'fine', text: 'You cannot read a shape or find a cut. Ask for both.' });
         P.wren.push({ t: 'h', text: 'Still no thread' });
         P.wren.push({ t: 'list', items: [
-          threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> grey, and it has not changed since the study.',
+          threadLine('grey') + ' <strong>Provost Marrow to Wren:</strong> gray, and it has not changed since the study.',
           threadLine((f.OATH | 0) === 0 ? 'none' : 'red') + ' <strong>The four of you to the Chair:</strong> ' + ((f.OATH | 0) === 0 ? 'nothing. You did not swear.' : 'red, and knotted.'),
           threadLine('gold') + ' <strong>The soldiers above:</strong> gold, every one of them, and none of it theirs.',
+          threadLine('red') + ' <strong>The four thrones:</strong> four old red threads, running down into the Cold. They end where a fifth would begin.',
           threadLine('none') + ' <strong>Wren:</strong> nothing at all.',
         ] });
-        P.wren.push({ t: 'p', text: 'Not unbound — you know unbound. You decided years ago it was a blind spot in your own gift. You have never told anyone your gift has one.' });
+        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. You decided years ago it was a blind spot in your gift, and you have never told anyone.' });
+        P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+        P.wren.push({ t: 'letter', text: '“Everyone on this stair is tied to something. Even the soldiers. You aren’t, so we’ll do it by hand. Hold my sleeve on the way down. I’ve decided that counts.”' });
       }
 
       /* ===== SPEAK (all roles) ===== */

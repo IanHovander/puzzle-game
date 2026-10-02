@@ -1,7 +1,7 @@
 { "start": "ch0_start", "steps": [
   {"key": "Space"}, {"shot": "ch0_start"}, {"clickText": "Look up"}, {"wait": 600}, {"key": "Space"}, {"shot": "ch0_stone"},
   {"_": "no glyph geometry anywhere in the Prologue's art: ch0_stone used to draw Chapter VI's eight cuts in full"}, {"assert": "(function(){var S=VigilGlyphs.SHAPES;var d=Object.keys(S).map(function(k){return S[k].match(/d=\"([^\"]+)\"/)[1]});var art=['ch0_hearthfire','ch0_stone','ch0_dorm','ch0_lamp'].map(function(n){return VigilArt.render(n,{})}).join('');return d.every(function(x){return art.indexOf(x)<0})})()"},
-  {"expect": "Nobody alive has read the cuts"}, {"clickText": "The night before"},
+  {"expect": "Nobody alive has read the original"}, {"clickText": "The night before"},
   {"wait": 500}, {"key": "Space"}, {"clickText": "Claim the keys"}, {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_keys"},
   {"keys": "a"}, {"keys": "c"}, {"keys": "m"}, {"keys": "/"}, {"wait": 300}, {"keys": "acm/"}, {"wait": 1500},
   {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"shot": "ch0_practice"}, {"wait": 21000}, {"log": true}, {"clickText": "Continue"},

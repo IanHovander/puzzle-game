@@ -1,5 +1,5 @@
 { "start": "ch2_start", "flags": "VOTE_LOST", "steps": [
-  {"key": "Space"}, {"shot": "ch2_start_lost"}, {"expect": "The vote is lost"}, {"expect": "get the child back myself"}, {"clickText": "Down"},
+  {"key": "Space"}, {"shot": "ch2_start_lost"}, {"expect": "between two soldiers"}, {"expect": "rebuilding was not honest"}, {"clickText": "Down"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "The bottom"},
   {"wait": 600}, {"key": "Space"}, {"clickText": "Attune"},
   {"wait": 800}, {"key": "Space"}, {"expect": "KNOT"}, {"clickText": "All phones are ready"},
