@@ -71,7 +71,7 @@
   const threadSwatch = (kind) => `<svg viewBox="0 0 90 16" class="sw">${kind === 'none'
     ? '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
     : `<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="${THREAD[kind]}" stroke-width="2.5" stroke-linecap="round"/>`}</svg>`;
-  const keyRows = (rows) => `<div class="bk-key">${rows.map(([a, b]) => `<div class="bk-row"><div class="bk-k">${a}</div><div class="bk-v">${b}</div></div>`).join('')}</div>`;
+  const keyRows = (rows, cls) => `<div class="bk-key${cls ? ' ' + cls : ''}">${rows.map(([a, b]) => `<div class="bk-row"><div class="bk-k">${a}</div><div class="bk-v">${b}</div></div>`).join('')}</div>`;
 
   C.book = function (roleId, ctx) {
     const blocks = [];
@@ -108,12 +108,12 @@
       blocks.push({ t: 'fine', text: 'Seven steps and a rest. Every room is tuned differently, so you never hear a glyph\'s *name*, only how far the tune **steps** from one glyph to the next. COLD is the rest.' });
       /* Drawn as a ladder: the top rung is the highest step, so "up" on the page is up in the tune. */
       blocks.push({ t: 'html', html: `<div class="ladder">${G.LADDER.map((nm, i) => ({ nm, i })).reverse().map(({ nm, i }) =>
-        `<div class="rung"><span class="n">${i}</span>${G.svg(nm, { size: 30, color: '#4fb3bf' })}<b>${nm}</b><span class="what">step ${i}</span></div>`).join('')}<div class="rung rest"><span class="n">—</span>${G.svg('COLD', { size: 30, color: '#4fb3bf' })}<b>COLD</b><span class="what">a rest — no step</span></div></div>` });
+        `<div class="rung">${G.svg(nm, { size: 30, color: '#4fb3bf' })}<b>${nm}</b><span class="what">step ${i}</span></div>`).join('')}<div class="rung rest">${G.svg('COLD', { size: 30, color: '#4fb3bf' })}<b>COLD</b><span class="what">a rest — no step</span></div></div>` });
       blocks.push({ t: 'html', html: keyRows([
         ['THORN (1) → KNOT (2)', '<em>up one</em>'],
         ['KNOT (2) → VEIL (5)', '<em>up three</em>'],
         ['VEIL (5) → EMBER (3)', '<em>down two</em>'],
-      ]) });
+      ], 'wide') });
       blocks.push({ t: 'fine', text: 'A rest is a pause, not a new start: the step after it is counted from the last glyph that sounded.' });
       blocks.push({ t: 'h', text: 'Row-player' });
       blocks.push({ t: 'custom', render: (el, cx) => {
@@ -142,7 +142,7 @@
         ['slots', 'numbered like a clock: <b>1</b> at the top, then clockwise'],
         ['cuts', 'a <b>scratch</b>, a <b>notch</b>, or a <b>chip</b> in the glaze. Every ring has them. Say what each one is, and which slot it is by.'],
         ['a carved line', 'has a mark at one end. Mark on the <b>left</b>: it stands upright. Mark on the <b>right</b>: it was carved turned.'],
-      ]) });
+      ], 'narrow') });
       blocks.push({ t: 'h', text: 'Under-Sight' });
       blocks.push({ t: 'fine', text: 'What is beneath a room: doors under plaster, holes under rebuilt stone, and shadows as they truly fall. Look at every shadow. Say what you see.' });
     }

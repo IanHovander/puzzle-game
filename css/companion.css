@@ -121,16 +121,19 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .laws .law.struck { border-color: var(--blood); opacity: .75; }
 .laws .law.struck .txt { text-decoration: line-through; }
 .laws .law .era { font-family: var(--display); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.laws .law .era b { font-size: 13px; color: var(--ink); letter-spacing: .1em; }
 .laws .law.order .era { color: var(--sea); }
-.lexicon { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.lexicon .lx { display: flex; gap: 8px; align-items: center; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 8px; background: rgba(0,0,0,0.25); }
-.lexicon .lx b { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--gold-2); display: block; }
-.lexicon .lx span { font-size: 13px; color: var(--ink-dim); }
+.laws .law.order { border-left-color: rgba(79,179,191,0.5); }
+.laws .law .txt { line-height: 1.35; margin-top: 2px; }
+.lexicon { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; margin: 8px 0 12px; }
 /* Icon and word on one row, the meaning underneath at full tile width: side by side it wrapped to
    one or two words a line. */
-.lexicon .lx { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; padding: 8px 10px; }
+.lexicon .lx { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; row-gap: 2px; align-items: center; align-content: start; padding: 8px 10px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(0,0,0,0.25); }
 .lexicon .lx > div:last-child { display: contents; }
-.lexicon .lx span { grid-column: 1 / -1; font-size: 14px; line-height: 1.3; }
+.lexicon .lx b { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--gold-2); display: block; }
+.lexicon .lx span { grid-column: 1 / -1; font-size: 14px; line-height: 1.3; color: var(--ink-dim); }
+.lexicon .lx-col { font-family: var(--display); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim); text-align: center; }
+.lexicon .lx-shape { grid-column: 1 / -1; font-family: var(--display); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-top: 6px; border-bottom: 1px solid rgba(212,169,78,0.2); padding-bottom: 2px; }
 .heartbeats { margin-bottom: 14px; }
 .heartbeats .hb { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .heartbeats .hb .trace { width: 120px; height: 22px; }
@@ -145,3 +148,32 @@ html:has(body.companion) { overflow: auto; height: auto; }
 .seq-list { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 10px; min-height: 30px; }
 .seq-chip { font-family: var(--display); font-size: 13px; letter-spacing: .08em; padding: 4px 9px; border: 1px solid rgba(79,179,191,0.45); border-radius: 999px; background: rgba(79,179,191,0.1); color: var(--ink); }
 .seq-empty { font-size: 14px; color: var(--ink-dim); font-style: italic; }
+
+/* The Book tab: reference sections, each headed and ruled off, facts in keyed rows rather than paragraphs. */
+.cpanel.book h3 { margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(212,169,78,0.18); }
+.cpanel.book h2 + h3 { margin-top: 6px; padding-top: 0; border-top: 0; }
+.cpanel.book h3 + .fine { margin-top: 0; }
+.bk-key { margin: 8px 0 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(0,0,0,0.2); }
+.bk-row { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); gap: 10px; padding: 8px 10px; border-top: 1px solid rgba(255,255,255,0.07); font-size: 15px; line-height: 1.35; }
+.bk-row:first-child { border-top: 0; }
+.bk-key.wide .bk-row { grid-template-columns: minmax(0, 62%) minmax(0, 1fr); }
+.bk-key.narrow .bk-row { grid-template-columns: minmax(0, 27%) minmax(0, 1fr); }
+.bk-k { color: var(--ink-dim); }
+.bk-k .sw { display: block; width: 52px; height: 12px; margin: 3px 0 4px; }
+.bk-v b, .bk-k b { color: var(--gold-2); font-weight: 600; }
+.gloss { margin: 6px 0 12px; }
+.gloss dt { font-family: var(--display); font-size: 13px; letter-spacing: .08em; color: var(--gold-2); margin-top: 8px; }
+.gloss dt small { font-family: var(--serif); font-style: italic; letter-spacing: 0; color: var(--ink-dim); font-size: 14px; margin-left: 4px; }
+.gloss dd { margin: 2px 0 8px; font-size: 16px; line-height: 1.4; }
+.gloss dd .bk-key { margin-top: 6px; }
+.ladder { margin: 8px 0 12px; padding: 2px 10px; border-left: 2px solid rgba(79,179,191,0.45); border-right: 2px solid rgba(79,179,191,0.45); }
+.ladder .rung { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; padding: 5px 2px; border-bottom: 1px solid rgba(79,179,191,0.28); }
+.ladder .rung svg { width: 30px; height: 30px; }
+.ladder .rung b { font-family: var(--display); font-size: 14px; letter-spacing: .08em; }
+.ladder .rung .what { font-size: 14px; color: var(--ink-dim); }
+.ladder .rung.rest { border-bottom: 0; border-top: 1px dashed rgba(79,179,191,0.35); margin-top: 6px; }
+.eras { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.era-chip { font-family: var(--display); font-size: 10.5px; letter-spacing: .05em; text-transform: uppercase; padding: 4px 8px; white-space: nowrap; border-radius: 999px; border: 1px solid; }
+.era-chip.founders { color: var(--gold); border-color: rgba(212,169,78,0.5); }
+.era-chip.order { color: var(--sea); border-color: rgba(79,179,191,0.5); }
+.cpanel .law-rule { font-size: 16px; border-left: 3px solid var(--gold); padding: 6px 10px; background: rgba(212,169,78,0.08); border-radius: 0 6px 6px 0; margin: 0 0 6px; }

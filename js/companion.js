@@ -141,8 +141,9 @@
     const tabs = UI.el('div', { class: 'ctabs' });
     TABS.forEach(([k, label]) => tabs.appendChild(UI.el('button', { class: 'ctab' + (st.tab === k ? ' on' : ''), text: label, onclick: () => { st.tab = k; save(); showChapter(id); } })));
     main.appendChild(tabs);
-    const p = UI.el('div', { class: 'cpanel' });
-    p.appendChild(UI.el('h2', { text: lc.title }));
+    // The Book is the same reference whichever page is open, so it is titled as the role's Book, not the chapter.
+    const p = UI.el('div', { class: 'cpanel' + (st.tab === 'book' ? ' book' : '') });
+    p.appendChild(UI.el('h2', { text: st.tab === 'book' && r ? `The ${r.nick}’s Book` : lc.title }));
     const cx = ctx(id);
     let blocks = [];
     try {

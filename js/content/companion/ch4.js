@@ -66,8 +66,8 @@
     if (roleId !== 'reader' || ctx.maxChapter < 4) return [];
     const u = (ctx.state && ctx.state.unlocked && ctx.state.unlocked.ch4) || {};
     const out = [
-      { t: 'h', text: 'The primer (from the Provost\'s study)' },
-      { t: 'p', text: 'Twenty-four letters, each with its modern letter written beside it in the Provost\'s hand. No **Q** and no **X**. A plain substitution: slow, and yours.' },
+      { t: 'h', text: 'The Older Alphabet' },
+      { t: 'fine', text: 'From the Provost\'s primer, in her hand. Twenty-four letters, each with its modern letter beside it. No **Q** and no **X**. A plain substitution: slow, and yours.' },
       { t: 'key', items: OLD_ALPHA.split('').map(ch => ({ svg: runeGlyph(ch, 34), label: ch })) },
     ];
     if (u.flags && u.flags.LETTER && ctx.maxChapter >= 5) {
@@ -220,7 +220,7 @@
         P.wren.push({ t: 'h', text: 'The name' });
         P.wren.push({ t: 'html', html: runeLine('WRENN', { height: 60 }) });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I read your name tonight, letter by letter. Two Ns, in her hand, the same hand as our door. You’re not a bird, Wren. You’re the hollow of a bell. The part that rings.”' });
+        P.wren.push({ t: 'letter', text: '“I read your name tonight, letter by letter. Two Ns. She wrote it, and she chalked our door too. You’re not a bird, Wren. You’re the hollow of a bell. The part that rings.”' });
       }
 
       /* ================= LISTENER ================= */
