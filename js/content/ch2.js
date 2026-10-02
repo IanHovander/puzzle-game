@@ -188,7 +188,7 @@
           { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. You bring it up, the fire stays lit, and nobody walks anywhere.' },
           'Wren says the last part quickly, the way you carry something hot.',
         ]).concat([
-          'On the way down, the Reader finds a biscuit in one pocket. Seven years, and Wren has never once been caught.',
+          'On the way down, the Reader finds a biscuit in a pocket. Seven years, and Wren has never once been caught.',
         ]),
         next: 'ch2_descent', button: 'Down',
       },
@@ -198,7 +198,7 @@
           'The stair goes down further than a school has any right to. Torches, then fewer torches.',
           'Then a light that is not torchlight at all. A cold blue, breathing, somewhere below.',
           'Nobody says it out loud. All four of you are doing the same sum: Ember up, fire lit, nobody walks. It is a very short sum. You do it all the way down.',
-          'Halfway, the Listener turns to check on Wren, out of habit. The step behind is empty. The Listener could have sworn.',
+          'Halfway down, the Listener turns to check on Wren, out of habit. The step behind is empty. The Listener could have sworn.',
         ],
         next: 'ch2_antechamber', button: 'The bottom',
       },
@@ -282,7 +282,7 @@
         text: [
           'The vault is round and low, and older than the school on top of it.',
           'On a plinth in the middle stands a glass case. Inside, a blue flame breathes. It burns nothing and gives off no heat.',
-          'The Cold Ember. Upstairs, nothing will wait.',
+          'The Cold Ember. Upstairs, the fire is waiting. So is Wren.',
         ],
         prompt: 'The Ember is two steps away.',
         options: [

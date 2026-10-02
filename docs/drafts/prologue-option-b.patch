@@ -1,0 +1,164 @@
+diff --git a/js/content/ch0.js b/js/content/ch0.js
+index 4e67b2e..779ebf2 100644
+--- a/js/content/ch0.js
++++ b/js/content/ch0.js
+@@ -47,9 +47,9 @@
+         art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 13,
+         text: [
+           { text: 'Four hundred years ago, four people closed a wound in the world.', cls: 'center' },
+-          { text: 'They lit a fire on top of it to keep it shut, which is the sort of idea that seems good at the time and goes on seeming good for quite a while.', cls: 'center' },
+-          { text: 'The fire is called the Hearth. It has gone out exactly once. Fourteen years ago, for one night.', cls: 'center' },
+-          { text: 'When it came back, a baby was asleep on the stones, looking pleased with itself. Nobody ever came for it.', cls: 'center' },
++          { text: 'They did it the way people did things then: thoroughly, with fire, and without leaving notes.', cls: 'center' },
++          { text: 'The fire is called the Hearth. It has burned ever since, which is longer than most promises and all governments.', cls: 'center' },
++          { text: 'It went out exactly once. Fourteen years ago, for one night. When it came back, a baby was asleep on the stones, looking as if it had been expected. Nobody ever came for it.', cls: 'center' },
+           { text: 'You were all born that year. Wren was found.', cls: 'center' },
+         ],
+         next: 'ch0_stone', button: 'Look up',
+@@ -57,11 +57,11 @@
+       ch0_stone: {
+         art: 'ch0_stone', mood: 'hearth', fx: 'embers',
+         text: [
+-          'Above the fire, one sentence is cut into the stone. The school teaches a translation. Nobody alive has read the original, which has never stopped anyone quoting it.',
++          'Above the fire, one sentence is cut into the stone. It is a prophecy: the kind of sentence that only becomes clear once it is too late to do anything about it.',
+           { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
+-          'The Cold is not weather. It is a place, and nobody will tell you where.',
+-          'Everybody agrees who it is about. Nobody finishes it out loud when Wren is in the room.',
+-          'And tonight, for the first time in fourteen years, the Hearth is flickering. The Masters give it until midnight tomorrow.',
++          'Nobody alive has read the original, which has never stopped anyone quoting the translation. The Cold is not weather. It is a place, and the school knows where, and is not saying.',
++          'Everybody agrees who it is about. Nobody finishes it out loud when Wren is in the room, which in a school this size takes real teamwork.',
++          'And tonight, for the first time in fourteen years, the Hearth is flickering. The Masters have given it until midnight tomorrow, as if it were an overdue library book.',
+           { text: 'No need to write anything down.', cls: 'small' },
+         ],
+         next: 'ch0_dorm', button: 'The night before',
+@@ -71,10 +71,11 @@
+         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'step',
+         title: 'Past curfew',
+         text: [
+-          'Past curfew, in a tower room with one round window, four people are not asleep, in four different ways.',
+-          'The Reader is reading by moonlight, which is bad for the eyes and has never stopped the Reader. The Listener is listening to the tower breathe, and checking that everyone in it still is. The Seer is staring at the lamp on the sill as if it owes the Seer money. The Binder is lying very straight, reciting the curfew rules, for comfort.',
+-          'The lamp is brass, older than the school\'s records, and has never been lit. Everybody has tried. A fifth blanket lies folded on the floor. Officially, it is nobody\'s.',
+-          'You have been friends since you were seven. Wren adopted you the first week and never gave you back.',
++          'In a tower room up the east stair are four beds, one round window, and a brass lamp on the sill that has never been lit.',
++          'This is not for want of trying. In four hundred years the lamp has been offered matches, tapers, prayers and one very confident third-year. It has declined them all, the way brass does.',
++          'On the floor lies a fifth blanket, folded with care. Officially, it is nobody\'s. Unofficially, it has been nobody\'s every night for seven years.',
++          'Four of you are in the beds, awake past curfew, in the particular silence of people not talking about tomorrow.',
++          'You have been friends since you were seven. Wren adopted you the first week, the way a cat adopts a house: without asking, and for good.',
+           { text: 'Sit left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Keep these seats all night.', cls: 'whisper' },
+         ],
+         next: 'ch0_keys', button: 'Claim the keys',
+@@ -139,32 +140,34 @@
+       ch0_wren: {
+         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
+         text: [
+-          'The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own.',
+-          { speaker: 'Wren', text: 'You\'re awake! Brilliant. I need four idiots and a lamp. Everyone\'s tried that lamp with a match. Nobody\'s tried *reading* it.' },
+-          'The Reader is already at the collar. Old words are cut round it, and the Reader takes unreadable words personally. A biscuit arrives in the Reader\'s hand.',
+-          'The Listener hears the lamp hum its words in order, over and over. The Listener also checks, without seeming to, whether Wren\'s hands are cold. They always are.',
+-          'The Seer looks under the polish, finds a cut nobody else has ever found, and does the face.',
+-          'The Binder says this breaks four rules. "Five," says Wren, delighted. The Binder counts. Five. Then the Binder, who also knows the older rules for how words go into a ring, gets up anyway.',
++          'The door bangs open. Wren has never knocked on this door. Knocking is for other people\'s rooms.',
++          { speaker: 'Wren', text: 'You\'re awake! Brilliant. I need four idiots and a lamp, and look, the universe has provided.' },
++          'The Binder points out that this breaks at least four rules. "Five," says Wren, pleased. The Binder counts, finds five, and gets up anyway. The Binder knows the older rules too, the ones for how words go into a ring.',
++          { speaker: 'Wren', text: 'Everyone\'s tried that lamp with a match. Nobody\'s ever tried *reading* it.' },
++          'There are words cut round the collar, very old ones. The Reader is out of bed and squinting at them before deciding to be. The Reader takes unreadable words personally, and has not eaten since lunch.',
++          'A biscuit appears in the Reader\'s hand. Nobody sees Wren put it there. Nobody ever does.',
+         ],
+         next: 'ch0_dare', button: 'And you?',
+       },
+       ch0_dare: {
+         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
+         text: [
+-          { speaker: 'Wren', text: 'Me? I\'m the main event. The fire\'s going out, so tomorrow I stand at the front of the hall while the Houses decide what to do with me. I\'ve been practicing standing still. My record is eleven seconds.' },
+-          'It is a good joke. Wren has clearly been working on it.',
+-          { speaker: 'Wren', text: 'Everything I have, somebody gave me. The name. The bed. My birthday is just the night they found me. So tonight I want one good thing that\'s *ours*. Our names in first, so the lamp knows whose it is.' },
++          { speaker: 'Wren', text: 'Me? I\'m the main event. Tomorrow I stand at the front of the hall while the Houses decide what I\'m for. I\'ve been practicing standing still. My record is eleven seconds.' },
++          'It is a good joke. Wren has clearly been working on it. The Listener checks, very casually, whether Wren\'s hands are cold. They always are.',
++          { speaker: 'Wren', text: 'Everything I have, somebody gave me. The name. The bed. My birthday is just the night they found me. So tonight I want one good thing that\'s *ours*.' },
++          'The lamp, as if eavesdropping, begins to hum: two notes, in order, over and over. Only the Listener hears it.',
++          'The Seer looks under the brass, finds a cut nobody has found in four hundred years, and does the face. The face has been saying *terrible idea* since you were seven. It has never once stopped anything.',
+         ],
+         next: 'ch0_carve', button: 'Carve it',
+       },
+       ch0_carve: {
+         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
+-        text: ['A hundred names already in the brass, mostly belonging to people who were very sure about matches. There is room on the collar for one more.', 'Four of you look at the same person.'],
++        text: ['"Our names first," says Wren, "so it knows whose it is."', 'A hundred names are already in the brass, mostly belonging to people who were very sure about matches.', 'There is room for one more.', 'Four of you look at the same person.'],
+         config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: '"That\'s not the one you all looked at," says Wren, who noticed.', submitText: 'Carve' }),
+         solvedText: [
+-          'It flares blue, once, and dies.',
++          'It flares blue, once, and goes out, like a lamp clearing its throat.',
+           { speaker: 'Wren', text: 'That\'s my name. I said *ours*.' },
+-          'Wren looks at the four of you for a long second. For once, Wren does not have the next line ready.',
++          'Wren looks at the four of you for a long second. For once in fourteen years, Wren does not have the next line ready.',
+           { speaker: 'Wren', text: 'Right. Well. It noticed me. Names don\'t burn, though. Words do, the old ones. And the old words need all four of you.' },
+         ],
+         next: 'ch0_attune',
+@@ -202,9 +205,9 @@
+         ],
+         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
+         solvedText: [
+-          'The lamp catches. Warm, steady, and in breach of about a dozen school rules, which the Binder will list later, fondly.',
++          'The lamp catches. It burns warm and steady and gold, the way a thing burns when it has waited four hundred years for someone to ask nicely.',
+           { speaker: 'Wren', text: 'Four hundred years, and it still works. Mom\'ll — the Provost\'ll — kill me.' },
+-          'Wren drags the fifth blanket over and sits right up against the glass, like a cat beside a fire it has personally approved.',
++          'Wren drags the fifth blanket over and sits right up against the glass, as close to the flame as it is possible to get without technically being in it.',
+           { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
+           'In that light, each of you sees the thing about Wren you have never said out loud.',
+           { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
+@@ -214,9 +217,9 @@
+       ch0_name: {
+         type: 'choice', art: 'ch0_dorm', mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
+         text: [
+-          'Nobody says anything. Then Wren laughs.',
++          'Nobody says anything for a while. Then Wren laughs, which is what Wren does instead of the other thing.',
+           { speaker: 'Wren', text: 'Oh, *that*. I know. All four of you. I\'ve known for years.' },
+-          { speaker: 'Wren', text: 'You lot are terrible at secrets. …Thank you. I mean it. Don\'t make it a thing.' },
++          { speaker: 'Wren', text: 'You lot are terrible at secrets. …Thank you. Don\'t make it a thing.' },
+           { speaker: 'Wren', text: 'Now. You need a name, as a set. I want something good to say tomorrow.' },
+         ],
+         options: [
+@@ -229,9 +232,9 @@
+       ch0_flow: {
+         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
+         text: [
+-          'Wren talks until all four of you are asleep. This takes a while, because Wren is very interesting at one in the morning. Nobody sees whether Wren sleeps at all.',
+-          'Below, in the great hall, the Hearth flickers again.',
+-          'The school has a word for what each of you did tonight. A Sighting. One way of seeing, one to a person, and nobody chooses which.',
++          'Wren talks until all four of you are asleep. This takes some time, because Wren is never more interesting than at one in the morning. Nobody sees whether Wren sleeps at all.',
++          'Below, in the great hall, the Hearth flickers again, like someone trying very hard not to cough.',
++          'The school has a word for what each of you did tonight. A *Sighting*. One way of seeing, one to a person, handed out at birth by nobody in particular, with no returns.',
+           'Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years. Not one of them has said what they saw.',
+           { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
+         ],
+diff --git a/js/content/companion/ch0.js b/js/content/companion/ch0.js
+index 0c528b8..e71d75a 100644
+--- a/js/content/companion/ch0.js
++++ b/js/content/companion/ch0.js
+@@ -100,7 +100,7 @@
+         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
+         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
+         P.wren.push({ t: 'h', text: 'The name on the door' });
+-        P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice. Once in letters you can read. Once in letters you cannot, in the same hand, which you take personally.' });
++        P.wren.push({ t: 'p', text: 'Wren’s name is chalked on the dormitory door twice: once in letters you can read, once in letters you cannot, in the same hand. You have taken this personally for a year.' });
+         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+         P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. I can read one. The other one, I can’t. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+       }
+@@ -114,7 +114,7 @@
+         P.sight.push({ t: 'fine', text: 'You hear steps, never names.' });
+         P.wren.push({ t: 'h', text: 'How quiet' });
+         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+-        P.wren.push({ t: 'p', text: 'You can hear every heart in this tower, which is mostly a comfort. Never Wren’s.' });
++        P.wren.push({ t: 'p', text: 'You can hear every heart in this tower. It is mostly a comfort, and at three in the morning it is a lot. You have never once heard Wren’s.' });
+         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+         P.wren.push({ t: 'letter', text: '“I can hear everyone’s heart. It’s how I know you’re all all right. I’ve never once heard yours. So I just… keep checking on you. You may have noticed.”' });
+       }
+@@ -126,7 +126,7 @@
+         P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
+         P.wren.push({ t: 'h', text: 'The shadow' });
+         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
+-        P.wren.push({ t: 'p', text: 'Every shadow falls away from the lamp, as shadows are supposed to. Wren’s falls toward it, as if it has somewhere to be.' });
++        P.wren.push({ t: 'p', text: 'Shadows fall away from lamps. It is one of the few rules the world keeps without being asked. Wren’s falls toward it.' });
+         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
+         P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way. Toward the lamp. I’ve been standing between you and lamps for years, so nobody else sees. You thought I just liked lamps.”' });
+       }
