@@ -153,7 +153,6 @@
     pages: (roleId, ctx) => {
       const P = { sight: [], wren: [], speak: [] };
       const vol = ctx.flags.VOLUNTEER | 0; const volRole = vol >= 1 && vol <= 4 ? L.roles[vol - 1] : null; const isVol = !!(volRole && volRole.id === roleId);
-      const laundry = ctx.answer('ch3', 'whisper');
       /* DELIBERATE, and it reads out of ANOTHER chapter's cast on purpose: LAW0 is declared in ch5's
          cast, bit 3 (js/content/lore.js:22), and ch6's own cast is [VOLUNTEER, PRECRACKED]
          (lore.js:23), so a ch6 code alone cannot carry it. Scanning every stored attunement is how
@@ -224,30 +223,24 @@
 
       /* ---------- WREN ----------
          The Second Asking (P6). Wren asks each of you, out loud, the question you dodged in the
-         laundry. The private line keeps your laundry answer (ch3's whisper token) and the thing you
-         have seen. The letter is the true answer, said in your own voice. The Hearth's option you
-         pick afterwards is still yours: the kind answer is on the board too. */
-      const said = (w) => w ? w + ' ' : 'Wren asked you in the laundry, and you never answered. ';
+         laundry. The letter is the true answer, said in your own voice. (The private setup line that
+         recalled your laundry answer is gone: the Hearth's reply already calls it back from the
+         flags.) The Hearth's option you pick afterwards is still yours: the kind answer is on the
+         board too. */
       if (roleId === 'reader') {
         P.wren.push({ t: 'h', text: 'The name on the roll' });
-        P.wren.push({ t: 'p', text: said(laundry === 'TELL' ? 'In the laundry you told Wren the name meant a small brave bird. You made it up.' : laundry === 'DONTKNOW' ? 'In the laundry you told Wren you did not know yet. It was true then.' : '')
-          + 'Since the study, you know. The old spelling means the hollow of a bell.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“A hollow. The inside of a bell. I checked it four times in the study, hoping I’d read it wrong. I hadn’t. It’s the part that rings. Of course it’s you.”' });
       }
       if (roleId === 'listener') {
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats"><div class="hb"><span>Provost Marrow</span>${D.trace('fast')}</div>${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: said(laundry === 'LOUD' ? 'In the laundry you told Wren you could hear it, loud. You have worried at that ever since.' : laundry === 'NO' ? 'In the laundry you said no. It was the one true thing Wren heard that night.' : '')
-          + 'Not once has there been anything to catch. You decided years ago the fault was yours.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“No. Never in you. I’ve been hearing it all night, in the fire. Every time it skipped, you flinched. Can I just… put my hand over where it should be? In case it comes back.”' });
       }
       if (roleId === 'seer') {
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underChamber });
-        P.wren.push({ t: 'p', text: said(laundry === 'TELL' ? 'In the laundry you told Wren. Wren called it poetic.' : laundry === 'NOTHING' ? 'In the laundry you looked at the wall.' : '')
-          + 'The fire is straight overhead. Every shadow runs away from it. One walks in.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Toward the fire. Not any fire. That one, up there. Since we were seven I stood in the way so nobody would look. I’m moving now. It’s a terrible shadow. I’d know it anywhere.”' });
       }
@@ -258,8 +251,6 @@
           + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> red, each to each, and holding.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing at all.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: said(laundry === 'YES' ? 'In the laundry you told Wren yes. You said it to the one person with no thread.' : laundry === 'DONTKNOW' ? 'In the laundry you said you did not know, and Wren went quiet.' : '')
-          + 'Not unbound. You know unbound. There is nothing there at all.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“None. Not unbound. I know unbound. You’re the knot itself. So I brought real string. It won’t count under any Law. I’m tying it anyway. Give me your wrist.”' });
       }

@@ -191,6 +191,7 @@
      is the one place in this chapter a thread is a picture rather than a color. */
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'whole' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/>'
+      : kind === 'grey' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="rgba(200,200,210,.7)" stroke-width="2.5" stroke-linecap="round"/>'
       : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
   }</svg>`;
 
@@ -201,7 +202,6 @@
     pages: (roleId, ctx) => {
       const f = ctx.flags || {};
       const P = { sight: [], wren: [], speak: [] };
-      const scared = !!f.WREN_SCARED;
       P.speak.push({ t: 'fine', text: 'Nothing to speak this chapter. The Hearth will call you by name.' });
       P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
 
@@ -219,9 +219,8 @@
 
         P.wren.push({ t: 'h', text: 'The name' });
         P.wren.push({ t: 'html', html: runeLine('WRENN', { height: 60 }) });
-        P.wren.push({ t: 'p', text: 'The Provost wrote it on the Vigil roll in the old letters. You ciphered it tonight with her primer. The second N is not a spelling mistake. *Wrenn* is the hollow of a bell.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I read your name tonight, letter by letter. It took me three goes. Don’t tell anyone. You’re not a bird, Wren. You’re the hollow of a bell. The part that rings.”' });
+        P.wren.push({ t: 'letter', text: '“I read your name tonight, letter by letter. Two Ns, in her hand, the same hand as our door. You’re not a bird, Wren. You’re the hollow of a bell. The part that rings.”' });
       }
 
       /* ================= LISTENER ================= */
@@ -242,9 +241,8 @@
 
         P.wren.push({ t: 'h', text: 'What the bell would not keep' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Provost</span>${D.trace(f.SURRENDERED ? 'fast' : 'normal')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'You struck the bell twice more while nobody was looking. It keeps every voice in this room but Wren’s. Under them all it keeps one more: the fire’s slow hum. The tune Wren hums.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“That bell keeps everyone’s voice. Not yours, not once. So I’ve been… keeping it myself. Every word you’ve said tonight. All of it. Just in case.”' });
+        P.wren.push({ t: 'letter', text: '“That bell keeps everyone’s voice. Not yours, not once. Under us all it keeps the fire’s slow hum. Your tune. So I’ve been… keeping your words myself. All of them. Just in case.”' });
       }
 
       /* ================= SEER ================= */
@@ -259,7 +257,6 @@
 
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underShadows });
-        P.wren.push({ t: 'p', text: 'Every shadow in this room falls away from her fire. Wren\'s passes it by' + (scared ? ', even with Wren curled small on the window seat' : '') + '. It runs across the rug and up the wall, toward the Great Hall. Her fire is not the one it wants.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your shadow walked straight past her fire tonight. It only wants the Hearth. It always has. So I stood by the wall. You thought I was just cold. I’m not. I’m busy.”' });
       }
@@ -284,8 +281,8 @@
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
           + '<li>' + threadLine('whole') + ' <strong>the four of you:</strong> one thread each, all night.</li>'
-          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing going out, to anyone.</li></ul>' });
-        P.wren.push({ t: 'p', text: 'A gray thread reaches Wren from the Provost. You know gray now: a goodbye someone has already started. Nothing comes back. ' + (scared ? 'You have looked every hour since the laundry, and twice since the stair. Still nothing.' : 'You have looked every hour since the laundry. There is still nothing to find.') });
+          + '<li>' + threadLine('grey') + ' <strong>the Provost to Wren:</strong> gray. A goodbye already started.</li>'
+          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing going out, to anyone. Nothing comes back.</li></ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Nothing goes out from you, Wren. Not one thread. So I will keep holding my end out until one takes. There is no rule against it. I checked.”' });
       }

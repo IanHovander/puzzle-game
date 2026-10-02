@@ -233,13 +233,12 @@
         }
       } catch (e) {}
 
-      /* The Wren tab, every ending (STYLE P6): one private line of setup, then the line this player
-         says out loud. The Hearth calls for it -- on the stones in ch8_e0 on the true path, on
+      /* The Wren tab, every ending (STYLE P6): the heading, the cue, and the line this player says
+         out loud. (The private setup line above it is gone: the quote carries what it held.) The Hearth calls for it -- on the stones in ch8_e0 on the true path, on
          ch8_code everywhere else -- and Wren answers on the next scene. Where Wren is gone (2, 4) the
          line is what the four say anyway, and they catch themselves carrying his jokes. */
-      const wren = (h, setup, say, line) => {
+      const wren = (h, say, line) => {
         P.wren.push({ t: 'h', text: h });
-        P.wren.push({ t: 'p', text: setup });
         if (stairFine) P.wren.push({ t: 'fine', text: stairFine });
         P.wren.push({ t: 'fine', text: say });
         P.wren.push({ t: 'letter', text: line });
@@ -250,12 +249,7 @@
         /* THE FOURFOLD WALK: every phone gets the goodbye */
         P.sight.push({ t: 'h', text: 'A letter, in Wren\'s hand' });
         P.sight.push(goodbyeBlock(roleId));
-        wren('What you keep', {
-          reader: 'Wren’s letter is three shapes on a page now. You cannot read it. You would do it again.',
-          listener: 'You cannot hear a single heart now. There is a pulse in Wren’s throat, and you can see it.',
-          seer: 'You cannot see under anything now. Wren’s shadow is only a shadow. It falls away from the fire.',
-          binder: 'You cannot see threads now. The last one you saw ran from your name to Wren’s, and it was red.',
-        }[roleId], SAY, {
+        wren('What you keep', SAY, {
           reader: '“I can’t read your letter any more. I tried twice, on the stairs. I won’t have it translated. I know what it says. And yes, I’ll eat something.”',
           listener: '“I can’t hear a single heart now. Not one. But I can see yours, right there. You’re going to say you’re fine. I know. I’m still going to check.”',
           seer: '“I checked your shadow. Old habit. It falls the right way now. So I’m retired from standing between you and lamps. Yes, this is the face. It’s the happy one.”',
@@ -284,10 +278,7 @@
           P.sight.push({ t: 'p', text: STAY_LINE[roleId] });
           if (walked === null) P.sight.push({ t: 'fine', text: 'This phone holds no word from the fire. If you walked, the goodbye was on the phone that spoke for you.' });
         }
-        wren(walked === true ? 'Walker' : 'Master',
-          walked === true ? 'You walked, and your Sighting is gone. Wren lives, with no pulse, and does not seem to mind.'
-            : `Master ${name} of Thornhallow. The Sight is yours for life. Wren has no pulse, and you are the only kind of person who will ever notice.`,
-          SAY, {
+        wren(walked === true ? 'Walker' : 'Master', SAY, {
             reader: '“I read your other name tonight, the one on the door. It took me a year. I’m not telling you what it says yet. You’ll have to keep visiting.”',
             listener: '“You still haven’t got a heartbeat, have you? I… don’t mind. You’re here, and you’re warm. You’ll say you’re fine. I’m going to keep checking anyway. Every visit.”',
             seer: '“No pulse. Wrong shadow, probably. Nobody hears either from me. I’ve kept your secrets for years, and I’m good at it. And no, this isn’t the face. It’s just my face.”',
@@ -297,12 +288,7 @@
         /* THE SEALING: Wren's last line to this player by name, then dark */
         P.sight.push({ t: 'h', text: 'The last thing Wren said to you' });
         P.sight.push(darkBlock(`<div class="ch8-darkline">${esc(SEALING_LINE[roleId])}<br><br><span style="opacity:.6">— W.</span></div>`));
-        wren('What you keep', {
-          reader: 'A name over the Hearth that nobody in the room could spell. You could. You did not offer.',
-          listener: 'A heartbeat you never heard, in a throat you knew by sight. It was never there. You listened anyway.',
-          seer: 'A shadow that fell the wrong way for years. This morning it fell no way at all.',
-          binder: 'A thread you looked for all night. It is tied to a fire now, and it holds.',
-        }[roleId], 'Wren is not here. Say it anyway, out loud:', {
+        wren('What you keep', 'Wren is not here. Say it anyway, out loud:', {
           reader: '“The mason asked how to spell your name. I knew, the old way too. I didn’t say. It’s yours, not his. And I ate something. You don’t have to keep asking.”',
           listener: '“You’d say you’re fine. You always said you were fine. I listened for you right up to the door. Nothing. There never was. I’m going to keep listening anyway.”',
           seer: '“I stood between you and every lamp for seven years, so nobody would see. Then you walked into the biggest one. Rude. I’d do it all again.”',
@@ -314,16 +300,11 @@
         const keeperLine = roleId === 'binder' && oathSworn(ctx) === false ? 'You would not swear to a Chair tonight. Good. Swear, one day, to a person. Wren will need at least one of you to have done that.' : KEEPER_LINE[roleId];
         P.sight.push({ t: 'letter', text: `${name} —\n\n${keeperLine}\n\n— I. M.` });
         P.sight.push({ t: 'fine', text: 'She wrote it on the stair, on the back of the writ, and did not wait to see it read.' });
-        wren('The Provost', {
-          reader: 'Years from now, Provost Wren will have you read the name on the door aloud once a year, properly, and never say why.',
-          listener: 'Years from now, the Provost will ask you once a year whether you can hear it yet. You will say no. The Provost will say good.',
-          seer: 'Years from now, the Provost will ask you once a year which way the shadow falls. You will say toward. The Provost will say good.',
-          binder: 'Years from now, the Provost will ask you once a year whether there is a thread. You will say no. The Provost will say: not unbound. The knot itself. And laugh.',
-        }[roleId], SAY, {
+        wren('The Provost', SAY, {
           reader: '“She chose your name. The one on the door. I can read it now. Whenever you want, I’ll read it to you properly. The way she’d have said it.”',
           listener: '“I can hear everyone crying except you. You’re making jokes instead. That’s… all right. You don’t have to say you’re fine. I’ll just sit here until you are.”',
           seer: '“You’ll have a whole school watching you now. I’ll watch the school. Your shadow stays our secret. And for once, you’re allowed to do the face.”',
-          binder: '“She left you her seal. I’ll help with the rules, all of them. I’m swearing to you now, not to the Chair. No thread needed. You don’t have to say please.”',
+          binder: '“She left you her seal. I’ll help with the rules, all of them. I’m swearing to you now, not to the Chair. No thread needed. You’re the knot itself.”',
         }[roleId]);
       } else {
         /* THE ENVOY'S BARGAIN: a Crown seal */
@@ -331,15 +312,10 @@
         P.sight.push({ t: 'html', html: crownSeal() });
         P.sight.push({ t: 'fine', text: `Master ${name}. Sighting: ${ctx.role.gift}. Assigned: the Cold-works, at the school. There is no page after this one.` });
         /* Wren is in a cage, and asked them to write (ch7_ending). The line is the letter. */
-        wren('The last thing you saw', {
-          reader: 'Wren looked at the writing above the Hearth on the way out, then at the floor. You were the only one who could have read it aloud. Nobody asked you.',
-          listener: 'Wren asked you to write, and then said nothing more. You heard the cage, the boots, and the fire going on exactly as before.',
-          seer: 'Four soldiers, a cage, and Wren’s shadow falling toward the fire the whole way out. Nobody but you will ever know that.',
-          binder: 'Every thread in that hall went Crown gold on the way out, yours included. Wren’s went nowhere. There was nobody left to tie it to.',
-        }[roleId], 'Say it out loud, then write it to Wren:', {
+        wren('The last thing you saw', 'Say it out loud, then write it to Wren:', {
           reader: '“I’m writing this in both alphabets. The Crown can only read one. The other half is just for you. Also, I ate something. You’d have asked.”',
           listener: '“Are you cold? You’d say you’re fine. You always say you’re fine. I can’t hear you from here, but I never could. So I’ll write every week, just to check.”',
-          seer: '“They’ll read this before you do. Hello, the Crown. Wren, I’m doing the face, and you’re not here to stop me. Your secrets stay mine. All of them.”',
+          seer: '“They’ll read this before you do. Hello, the Crown. Wren, your shadow fell toward the fire the whole way out. Nobody saw but me. I’m doing the face. Your secrets stay mine.”',
           binder: '“I looked for a rule that lets me come and get you. There isn’t one yet. So I’m writing one. You’d say please. Consider it said.”',
         }[roleId]);
       }

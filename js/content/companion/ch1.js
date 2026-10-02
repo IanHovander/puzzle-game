@@ -96,7 +96,6 @@
         P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** Say that out loud. You need five.' });
         P.sight.push({ t: 'fine', text: 'Seat 3 is already yours, whatever anyone hears. An ask spent there buys a vote you have.' });
         P.wren.push({ t: 'h', text: 'Under the paint' });
-        P.wren.push({ t: 'p', text: 'The Envoy said *under the paint.* You have read every word on these walls, mostly during speeches. It never occurred to you that the walls were holding some back.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cHe said \u2018not coming back\u2019 like he was quoting. It isn\u2019t written anywhere. I\u2019d know. And if it is, I\u2019ll read every wall in this school before he takes you.\u201d' });
       }
@@ -112,9 +111,8 @@
         P.sight.push({ t: 'fine', text: 'He never names his cousin. Somebody else at this table can see that.' });
         P.wren.push({ t: 'h', text: 'When the fire bowed' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(skipped twice)</small>', 'normal'], ['The Envoy <small>(fast)</small>', 'fast'], ['Wren <small>(nothing to catch)</small>', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'Nine old hearts, ticking like expensive clocks. When the fire bowed, the Provost\u2019s skipped twice. She was looking at Wren. Wren\u2019s gave you nothing, as always. But the fire beat once, like a heart, and Wren flinched on the beat.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cWhen he said it, her heart jumped. Twice. She was looking at you, not at him. So it isn\u2019t only me who\u2019d miss you\u2026 I thought you should know that.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen he said it, her heart jumped. Twice. She was looking at you. So it isn\u2019t only me who\u2019d miss you\u2026 And the fire beat once, like a heart. You flinched. I noticed.\u201d' });
       }
 
       if (roleId === 'seer') {
@@ -128,9 +126,8 @@
         ] });
         P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** Say those three numbers out loud.' });
         P.wren.push({ t: 'h', text: 'The shadow, and the tapestry' });
-        P.wren.push({ t: 'p', text: 'No lamp to blame it on, this time. Wren\u2019s shadow ran the length of the hall toward the fire, like a dog that has heard its name. Under the tapestry is older paint. The Envoy kept looking at that wall.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYour shadow went the length of the hall tonight. I stood in front of it for an hour. You were holding her sleeve. That\u2019s allowed. Nobody saw either thing. Including me.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the length of the hall tonight, to the fire. I stood in front of it for an hour. You held her sleeve. Nobody saw. And the Envoy kept staring at the tapestry. There\u2019s older paint under it.\u201d' });
       }
 
       if (roleId === 'binder') {
@@ -144,7 +141,6 @@
         P.sight.push({ t: 'p', text: 'So **one ask can be worth two votes.** Ask the Master at the top of a thread, and the one below comes too.' });
         P.sight.push({ t: 'fine', text: 'The rest is on other phones. Ask.' });
         P.wren.push({ t: 'h', text: 'No thread found' });
-        P.wren.push({ t: 'p', text: 'Nine Masters, and hardly a thread between them, which is Masters all over. Wren\u2019s, on the dais: *no thread found.* When the fire bowed, one flashed from the Provost to Wren. It was gone before you saw its color.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from her to you. So you are tied to someone. If he takes you, I will follow it. That is not a rule. It is a promise.\u201d' });
       }

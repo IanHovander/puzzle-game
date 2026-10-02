@@ -185,7 +185,6 @@
           P.sight.push({ t: 'fine', text: 'An arch has no first stone. This page cannot tell you which word comes first. Say all three, out loud.' });
         }
         P.wren.push({ t: 'h', text: 'The plaques' });
-        P.wren.push({ t: 'p', text: 'The four oldest plaques in the gallery are cut in the letters from the dormitory door. You still cannot read them.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“The oldest plaques use your letters. The ones from our door. I copied them onto my cuff on the way past. I will crack them. I refuse to lose to a door.”' });
       }
@@ -210,9 +209,8 @@
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: hurt ? 'Every heart in the corridors, the porter’s too fast. Not the one beside you in a sling. But Wren hummed the whole way, and you know that tune now. It is the Ember’s slow beat, the Hearth’s. Wren keeps its time exactly.' : 'Every heart in the corridors, the porter’s too fast. Not the one beside you. But Wren hummed the whole way, and you know that tune now. It is the Ember’s slow beat, the Hearth’s. Wren keeps its time exactly.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I counted every boot between the gallery and here. Every time you held your breath, I held mine. We should probably both breathe now. You… first. Go on.”' });
+        P.wren.push({ t: 'letter', text: '“I counted every boot between the gallery and here. You hummed the whole way, in time with the Ember’s slow beat. Every time you held your breath, I held mine. Breathe now. You… first.”' });
       }
 
       /* ================= SEER ================= */
@@ -233,7 +231,6 @@
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
-        P.wren.push({ t: 'p', text: hurt ? 'Between patrols, every lantern went out. No light at all, so no shadows. Except one. Wren’s was still there, one arm hanging wrong, cast by nothing, pointing through the wall at the Great Hall. At the Hearth.' : 'Between patrols, every lantern went out. No light at all, so no shadows. Except one. Wren’s was still there, cast by nothing, pointing through the wall at the Great Hall. At the Hearth.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“In the dark, your shadow was the only one left. It pointed at the Hall. I stood on it until the lanterns came back. You thought I was just slow on corners. I am never slow.”' });
       }
@@ -279,10 +276,9 @@
           P.sight.push({ t: 'fine', text: 'Say which cut binds **before** anybody places a word. The lamp taught everyone else the scratch.' });
           P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
         }
-        P.wren.push({ t: 'h', text: 'A thread you have not looked at' });
-        P.wren.push({ t: 'p', text: 'Your four threads, each to each, all bend round the place where Wren walks. Thread only goes round a knot like that. And you never let yourself follow the Provost’s thread to Wren. You know what color a mother’s thread is.' });
+        P.wren.push({ t: 'h', text: 'Round a knot' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go until it shuts behind you. That isn’t a rule. I checked. There isn’t one.”' });
+        P.wren.push({ t: 'letter', text: '“Our four threads all bend round you, the way thread goes round a knot. I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go. That isn’t a rule. I checked.”' });
       }
 
       /* ================= SPEAK (gated by LINEN) ================= */

@@ -294,12 +294,8 @@
         P.sight.push({ t: 'p', text: '**Say both words for every shape, in the order they are cut.** Which end is marked is not on this page.' });
         P.sight.push({ t: 'fine', text: 'Your **Book** reads a right-marked line right to left. The words do not change when you do that. A spare shape in the ring is a different sigil.' });
         P.wren.push({ t: 'h', text: 'On the ledge' });
-        P.wren.push({ t: 'p', text: (f.WREN_HURT
-          ? 'Wren has not mentioned the strapped arm since the Vault. '
-          : 'In the study you ciphered Wren’s name, and it was not a spelling mistake. ')
-          + 'All four thrones are cut in the letters from the door, with the word inside Wren’s name. *Hollow.* Four times. On the ledge, quietly: “You read something with my name in it. You don’t have to say.”' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I did read it. In the old letters. I checked it three times, because it’s yours. I’m not saying it on a stair. You’ll get it properly, somewhere warm.”' });
+        P.wren.push({ t: 'letter', text: '“All four thrones are cut in your letters. Each one says *hollow*, the word inside your name. I checked three times, because it’s yours. The rest can wait for somewhere warm.' + (f.WREN_HURT ? ' Mind that arm.' : '') + '”' });
       }
 
       /* ===== LISTENER ===== */
@@ -317,9 +313,8 @@
         P.sight.push({ t: 'fine', text: 'A count heard short puts every shape one place out, and the ring frosts.' });
         P.wren.push({ t: 'h', text: 'What the stair sounds like' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Provost Marrow', 'normal'], ['the soldiers, above', 'fast'], ['the Hearth, above', 'slow'], ['Wren', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
-        P.wren.push({ t: 'p', text: 'Boots above, water below, and beside you, where Wren stands, nothing. But far up the stair, faint through the rock, the Hearth still beats. Slower than at the Vigil. The tune Wren hums. In the Gallery the portraits showed four going down this stair, and four coming back.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I listen for your feet instead. I’ve counted them the whole way down. Stay where I can hear you… please. Humor me.”' });
+        P.wren.push({ t: 'letter', text: '“I still can’t hear your heart. So I count feet instead. The portraits in the Gallery had four going down this stair, and four coming back. There are five of us. Stay where I can hear you… please.”' });
       }
 
       /* ===== SEER ===== */
@@ -332,7 +327,6 @@
         P.sight.push({ t: 'fine', text: 'Which cut a sigil begins at is not yours. Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow, again' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underLedge });
-        P.wren.push({ t: 'p', text: 'One torch on the ledge. Four shadows fall away from it. Wren’s turns its back on the torch and points up, through all that rock, at the Hearth. It was never the light, or the warmth. It was only ever that one fire.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your shadow turned its back on the torch. It points up, at the Hearth, through all that rock. I sat on it before anyone looked. Also, you were too near the edge.”' });
       }
@@ -356,7 +350,6 @@
           threadLine('red') + ' <strong>The four thrones:</strong> four old red threads, running down into the Cold. They end where a fifth would begin.',
           threadLine('none') + ' <strong>Wren:</strong> nothing at all.',
         ] });
-        P.wren.push({ t: 'p', text: 'Not unbound. You know unbound. You decided years ago it was a blind spot in your gift, and you have never told anyone.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Everyone on this stair is tied to something. Even the soldiers. You aren’t, so we’ll do it by hand. Hold my sleeve on the way down. I’ve decided that counts.”' });
       }

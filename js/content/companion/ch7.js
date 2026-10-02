@@ -242,21 +242,18 @@
       /* ---------- WREN: one anomaly, four ways, one last time ---------- */
       if (roleId === 'reader') {
         P.wren.push({ t: 'h', text: 'The word in the socket' });
-        P.wren.push({ t: 'p', text: 'A word is cut into the floor of the empty socket, in the old letters. It is Wren’s name. In the study, you decided you had misread it.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your name is cut in that empty socket, in the old letters. I told myself I’d misread it. I don’t misread. Whatever it means, I’ll read it to you first.”' });
       }
       if (roleId === 'listener') {
         P.wren.push({ t: 'h', text: 'Eight hearts' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['Reader', 'fast'], ['Listener', 'fast'], ['Seer', 'fast'], ['Binder', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'Nine people in this chamber, and eight hearts. You have never said aloud which one is missing.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Every heart in here is racing. Yours is… still not there. It never has been. So I’m staying right beside you tonight. If it starts, I’ll hear it first.”' });
       }
       if (roleId === 'seer') {
         P.wren.push({ t: 'h', text: 'The shadow, still' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underChamber() });
-        P.wren.push({ t: 'p', text: 'Every shadow in the chamber falls away from the spark. Wren’s falls toward it. There is barely any light left to blame.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your shadow still leans toward the fire. In this little light, anyone could see it. So I’m standing between you and the spark. It was never about the lamps.”' });
       }
@@ -267,7 +264,6 @@
           + '<li>' + threadLine('grey') + ' <strong>The Provost, to Wren:</strong> gray since before you were born.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren, to anyone:</strong> nothing at all.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'You decided years ago that your gift had a blind spot. It does not.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Still no thread, Wren. Not to any of us. So I’m saying it the old way, out loud. You are bound to us. I don’t need a thread to keep an oath.”' });
       }

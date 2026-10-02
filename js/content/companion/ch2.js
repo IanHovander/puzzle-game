@@ -70,9 +70,10 @@
     <text x="126" y="165" text-anchor="middle" fill="${RED}" font-size="11" ${F}>the older band is the one that binds</text>
   </svg>`;
 
-  /* A thread, drawn two ways: whole, and absent. */
+  /* A thread, drawn three ways: whole (red), gold, and absent. */
   const threadLine = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'whole' ? `<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="${RED}" stroke-width="2.5" stroke-linecap="round"/>`
+      : kind === 'gold' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d4a94e" stroke-width="2.5" stroke-linecap="round"/>'
       : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
   }</svg>`;
 
@@ -113,10 +114,8 @@
         P.sight.push({ t: 'p', text: '**THORN, VEIL, EMBER, KNOT.** Say them out loud, with their numbers. Any other word wastes the count, and the door counts once.' });
         P.sight.push({ t: 'fine', text: 'If a strip of three shapes turns up tonight, it reads two ways. From the left: *one went down alone and kept it.* From the other end: *four, as one, went through.*' });
         P.wren.push({ t: 'h', text: 'Four words, and one name' });
-        P.wren.push({ t: 'p', text: (lost ? 'Wren was under guard when you went down. ' : '')
-          + 'You read four words in stone tonight without trying. On any other night you would have mentioned it. Wren’s name on the dormitory door, you still cannot read. The chalk is in a hand you have seen before. You have started to wonder who wrote it.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Four words in stone tonight, first try. Your name, still no. It’s the only one I want. I’ve copied it into the back of every book I own. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Four words in stone tonight, first try. Your name, still no. It’s the only one I want. And the chalk on our door is in a hand I’ve seen before. I’m working out whose.”' });
       }
 
       /* ================= LISTENER — the order the door hums ================= */
@@ -128,8 +127,7 @@
         P.sight.push({ t: 'html', html: dialsUnheard() });
         P.sight.push({ t: 'fine', text: 'Guess the order and you spend the count, and the door counts once. You never hear a word’s name, or which dial moved.' });
         P.wren.push({ t: 'h', text: 'The steps behind you' });
-        P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember</span>${D.trace('slow')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
-        P.wren.push({ t: 'p', text: 'The Ember has a pulse, slow as the Hearth breathing upstairs. Stones, as a rule, do not. ' + (lost ? 'Wren was two floors up, under guard.' : 'Wren promised to stay put.') + ' Then quick, light feet on the stair behind you, and no heart with them. You have only ever heard the feet.' });
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>the Ember <small>(slow, like the Hearth)</small></span>${D.trace('slow')}</div><div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“I heard you on the stair behind us. Just your feet… nothing else. I turned round nine times. Next time, just… walk with us? So I don’t have to wonder.”' });
       }
@@ -144,7 +142,6 @@
         P.sight.push({ t: 'fine', text: 'Which way of counting the door obeys is not yours to say.' });
         P.wren.push({ t: 'h', text: 'Reaching' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underStair });
-        P.wren.push({ t: 'p', text: 'In the dormitory you blamed the lamp. The Ember gives no light at all, which leaves you short of things to blame. ' + (lost ? 'Wren was meant to be on the dais, under guard.' : 'Wren was meant to be with the Provost.') + ' On the stair, that shadow reached for the case anyway. So it was never the light.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“Your shadow went for that box before your hands did. Nobody saw. I made sure. Honestly, Wren. A cold glass box. Your shadow has terrible taste.”' });
       }
@@ -159,11 +156,12 @@
         P.sight.push({ t: 'fine', text: 'You cannot read a shape, hear a note, or see under a floor. Ask for all three.' });
         P.wren.push({ t: 'h', text: 'The same nothing' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
-          + '<li>' + threadLine('none') + ' <strong>The Ember:</strong> nothing. It is a stone, and stones are not bound.</li>'
-          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> the same nothing, for the fourteenth year running.</li>'
-          + '<li>' + threadLine('whole') + ' <strong>The Provost and the four of you:</strong> a thin red thread, new tonight.</li>'
+          + '<li>' + threadLine('whole') + ' <strong>The four plinths:</strong> old red threads, into the Ember’s case. They stop there.</li>'
+          + '<li>' + threadLine('none') + ' <strong>The Ember:</strong> no thread of its own. It is a stone.</li>'
+          + '<li>' + threadLine('none') + ' <strong>Wren:</strong> the same nothing, the fourteenth year running.</li>'
+          + '<li>' + threadLine('gold') + ' <strong>Vane to Wren:</strong> gold, still. ' + (lost ? 'It no longer runs toward the dais.' : 'Vane has not left the school.') + '</li>'
+          + '<li>' + threadLine('whole') + ' <strong>The Provost and the four of you:</strong> red, new tonight.</li>'
           + '</ul>' });
-        P.wren.push({ t: 'p', text: 'Four old red threads run from the plinths into the Ember’s case, and stop there. ' + (lost ? 'Vane’s gold still runs to Wren, and it no longer runs toward the dais.' : 'Vane’s gold still runs to Wren, so Vane has not left the school.') + ' You have checked twice. You have never once asked why the two nothings feel different.' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '“The Ember has no thread. Neither do you. I have checked every rule, and none says that makes you the same. So you are not. I am still tying one.”' });
       }
