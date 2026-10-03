@@ -140,9 +140,9 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch** (your Book calls it the *mark*). On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
+          'A **Founders’** sigil starts at the **scratch**. Your Book calls it the *mark*. On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise** (the Book says *sunwise*).',
+          'Each next word goes in the next slot **clockwise**. Your Book says *sunwise*.',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
