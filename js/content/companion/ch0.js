@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name about the length of yours, in letters older than the lamp’s. Nobody here is taught them. Somebody put it there long before we did, Wren, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name about the length of yours, in letters older than the ones on the lamp. Nobody here is taught them. Somebody put it there long before we did, Wren, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -123,7 +123,7 @@
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear hearts. It’s how I fall asleep in here: four of them, all going. I’ve never once heard yours. So I check your hands instead. You may have noticed.”' });
+        P.wren.push({ t: 'letter', text: '“I can hear hearts. I can’t sleep when it’s quiet. In here I fall asleep to four of them, all going. I’ve never once heard yours. So I check your hands instead. Did you notice?”' });
       }
 
       if (roleId === 'seer') {
@@ -153,7 +153,7 @@
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“You don’t have a single thread, Wren. Not to anyone. I’ve tried tying one to you every week since we were seven. It never takes. I’m not stopping.”' });
+        P.wren.push({ t: 'letter', text: '“You don’t have a single thread, Wren. Not to anyone. I’ve tried tying one to you every week since we were seven. It never takes. I keep a list. I’m not stopping.”' });
       }
 
       // First night only, like the tab guide: point each page at the Book once its fact has been said.

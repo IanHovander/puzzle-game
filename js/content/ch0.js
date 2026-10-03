@@ -81,10 +81,10 @@
       ch0_plan: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          "\"We could hide Wren,\" says the Listener. \"Just till after the bell.\"",
-          "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
+          "\"Could we hide Wren?\" says the Listener. \"Just till after the bell?\"",
+          "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody.\"",
           "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
-          "\"They vote on the stone,\" says the Binder. \"The school's translation of it. The Founders don't get a say.\"",
+          "\"They vote on the stone,\" says the Binder. \"Strictly, on the school's translation of it. The Founders don't get a say.\"",
           "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever gotten it to work. Maybe nobody ever asked it anything.\"",
         ],
         next: 'ch0_keys', button: "The knock",
@@ -94,7 +94,7 @@
         text: [
           "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in.",
           "\"Somebody,\" Wren likes to say, \"has to be the door.\"",
-          "Tomorrow, the door stands before the Houses alone. \"Knock it with me,\" says the Listener. \"I want to hear everybody. While everybody's still here.\"",
+          "Tomorrow, the door stands before the Houses alone. \"Knock it with me?\" says the Listener. \"I want to hear everybody. While everybody's still here.\"",
           { text: "One keyboard, one key each. First, learn your key: when it lights up, press it. Then all four at once.", cls: "whisper" },
         ],
         run: (box, api) => new Promise((resolve) => {
@@ -163,7 +163,7 @@
           "The door bangs open. Wren has never once knocked. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Hiding me: no. Spring: try harder. The lamp: yes. What I need is four idiots and a lamp, and this room has always had both." },
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
-          "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the sill. \"Nobody can read those,\" says the Reader, a little too quickly.",
+          "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the sill. \"Nobody can read those,\" says the Reader, a little too quickly. \"Not properly, anyway.\"",
           "\"The Founders never left notes,\" says Wren. \"One sentence in four hundred years, and it's about me. I'd like a second opinion.\"",
           "\"What if it agrees with the first?\" says the Listener. Nobody answers that, for a while. Then the Binder: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
         ],
@@ -236,7 +236,7 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. Two shapes, and in that order they make one word. It's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"The word is *keep*.\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and it's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
           "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
@@ -262,10 +262,10 @@
           { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. For fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
         options: [
-          { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
+          { id: 'vigil', text: "Reader: \"The Night Watch, if that's the word.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
           { id: 'own', text: "Listener: a name of our own (type it, then say it)", next: 'ch0_dawn', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
           { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That Register is finally accurate." }] },
-          { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
+          { id: 'four', text: "Binder: \"The Four. It's not taken. I checked.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
         ],
       },
       ch0_dawn: {
