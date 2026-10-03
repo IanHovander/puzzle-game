@@ -291,7 +291,7 @@
         art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
         /* WREN_TRUST reads here, and this is the only place in the game it is read. It is written four
            times -- ch1.js:213 when the nine vote Wren away, ch3.js:235 on every bell, ch3.js:444 for a
-           true answer in the laundry, ch3.js:478 when the captain is given the boy -- and until this
+           true answer in the laundry, ch3.js:478 when the captain is given Wren -- and until this
            pass `node tools/flag-map.js` printed it "set but never read", which it had been since it
            was written. ch3's owner made the writes honest in this sweep and said plainly that giving
            it a consumer was a cross-chapter decision it could not take alone; this is that decision.
@@ -304,8 +304,9 @@
           { speaker: 'Wren', text: 'Listener, give me your hand. There. That\'s mine. Now all of you stop checking on me, and somebody find breakfast. The Reader hasn\'t eaten since yesterday.' },
           { text: 'Years later.', cls: 'center' },
           'Four unremarkable people share a house too small for them. Every winter they argue about what the ring looked like. They would do it again. They say so at the point in the evening when it becomes true.',
+          `In the Register of the Hearth, one line has never been corrected. *Claimed by:* **${s.flags.GROUP_NAME || 'the Four'}**, in Wren's worst handwriting.`,
           ((s.flags.WREN_TRUST | 0) >= 0 ? 'Wren visits.' : 'Wren visits, in the end.')
-            + ' Grown, and tall, and still never knocks. The Listener checks the pulse, every time.',
+            + ' Grown, and tall, and still never knocks. Except at this door: one, two, three, four, all together, and then one more. The Listener checks the pulse, every time.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',

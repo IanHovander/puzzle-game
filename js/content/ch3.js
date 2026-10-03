@@ -201,7 +201,7 @@
       { name: 'The sentry', short: 'B', path: PATROL_B, alarmCell: 'E4' },
     ],
     /* The world's reaction only. What the cry buys the Envoy, and for how long, is the Binder's page. */
-    alarm: { cells: BOUGHT_ROOMS, turns: 3, text: 'A spyhole slides. A voice out of the lodge: "Here! The boy!" Somewhere east, boots stop walking.' },
+    alarm: { cells: BOUGHT_ROOMS, turns: 3, text: 'A spyhole slides. A voice out of the lodge: "Here! The foundling!" Somewhere east, boots stop walking.' },
     get maxTurns() { return turnBudget(); },     // twelve, then one fewer per bell, floored at eleven
     labels: LABELS,
     /* Read by grid.js one line BEFORE it calls onTimeout, so this bell is not counted yet: the terms
@@ -391,7 +391,7 @@
   const STAND = {
     BLUFF: {
       said: 'It is the Envoy\'s own offer, word for word. The captain heard his master make it, and cannot know how you answered.',
-      captain: 'Then the Envoy will see you at his door. With the boy.',
+      captain: 'Then the Envoy will see you at his door. With the child.',
       wren: 'You lied to a man with a *rope*. With a straight face. I have never been prouder.',
     },
     WORD: {
@@ -542,16 +542,16 @@
         text: (s) => [
           { speaker: 'Wren', text: 'Reader, you copied my letters onto your cuff. Seer, you stood on my shadow in the dark. Listener, you held your breath every time I held mine. And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
           'Lantern-light fills the stair behind you. Vane\'s captain, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
-          { speaker: 'The captain', text: 'Hand over the boy, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the boy alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
+          { speaker: 'The captain', text: 'Hand over the child, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the child alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
           s.flags.VANE_ACCEPT ? 'He looks at you a beat longer than he looks at Wren.' : 'Behind the Binder, Wren has gone very still.',
         ],
         prompt: 'The Tower door is warded. Choose, together.',
         options: [
           { id: 'fight', text: 'Binder: "We wake the ward."', sub: 'Three shapes are cut over it. It takes four hands.', next: 'ch3_fight' },
-          { id: 'bluff', text: 'Seer: "Lord Vane\'s orders. We are bringing him the boy."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
+          { id: 'bluff', text: 'Seer: "Lord Vane\'s orders. We are bringing him the child."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
           { id: 'word', text: 'Reader: "The Envoy has our word. Stand aside."', sub: 'You accepted. His captain knows it.', cls: 'bright', if: (s) => !!s.flags.VANE_ACCEPT, next: 'ch3_stand', set: { DOOR: 'WORD' }, note: 'The captain let Wren pass on Vane\'s word.' },
           { id: 'writ', text: 'Listener: "It\'s the Convocation\'s seal. Read it, captain. Please."', sub: 'Sorrel gave you her writ.', cls: 'bright', if: (s) => !!s.flags.SORREL, next: 'ch3_stand', set: { DOOR: 'WRIT' }, note: 'Sorrel\'s writ turned the captain back.' },
-          { id: 'surrender', text: 'Give the captain the boy.', sub: 'The Provost lives.', cls: 'dark', next: 'ch3_surrender', set: { DOOR: 'SURRENDERED', SURRENDERED: true, WREN_TRUST: (s) => (s.flags.WREN_TRUST || 0) - 2 }, note: 'You handed Wren to the captain at the Tower door.' },
+          { id: 'surrender', text: 'Give Wren to the captain.', sub: 'The Provost lives.', cls: 'dark', next: 'ch3_surrender', set: { DOOR: 'SURRENDERED', SURRENDERED: true, WREN_TRUST: (s) => (s.flags.WREN_TRUST || 0) - 2 }, note: 'You handed Wren to the captain at the Tower door.' },
         ],
       },
       /* ---------- the threshold ---------- */

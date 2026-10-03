@@ -236,7 +236,7 @@
       /* The Wren tab, every ending (STYLE P6): the heading, the cue, and the line this player says
          out loud. (The private setup line above it is gone: the quote carries what it held.) The Hearth calls for it -- on the stones in ch8_e0 on the true path, on
          ch8_code everywhere else -- and Wren answers on the next scene. Where Wren is gone (2, 4) the
-         line is what the four say anyway, and they catch themselves carrying his jokes. */
+         line is what the four say anyway, and they catch themselves carrying Wren's jokes. */
       const wren = (h, say, line) => {
         P.wren.push({ t: 'h', text: h });
         if (stairFine) P.wren.push({ t: 'fine', text: stairFine });

@@ -313,8 +313,8 @@
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_WALL',
         text: (s) => [
           { speaker: 'Lord Vane', text: s.flags.VANE_ACCEPT
-            ? 'You gave me your word in the Hall. Bring the boy up the road and he lives.'
-            : 'The fire is out within the hour. Let it go out. Bring the boy up the road, and he lives.' },
+            ? 'You gave me your word in the Hall. Bring the child up the road and it lives.'
+            : 'The fire is out within the hour. Let it go out. Bring the child up the road, and it lives.' },
           { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. Reader, did you ever eat that biscuit?` },
         ],
         prompt: 'The Envoy waits.',

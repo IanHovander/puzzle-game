@@ -32,7 +32,7 @@
   const settings = () => {
     const st = window.VigilStore && window.VigilStore.state;
     if (!st) return { on: false, listen: false };
-    if (!st.voice) st.voice = { on: !navigator.webdriver, listen: false };
+    if (!st.voice) st.voice = { on: false, listen: false };
     return st.voice;
   };
   Voice.available = () => !!(synth || window.VIGIL_VOICE_FILES);

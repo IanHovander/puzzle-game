@@ -24,7 +24,7 @@
   {"tab": "Wren"}, {"expect": "No thread"}, {"tab": "Book"}, {"shot": "c7_binder_book"}, {"expect": "Law 7"},
 
   {"companion": true}, {"role": "Reader"}, {"unlock": ["CROWN", "DLP"]}, {"tab": "Speak"}, {"shot": "c7_reader_speak_ally"},
-  {"expect": "walk into the fire"}, {"expect": "The Envoy has stood down"}, {"expectNot": "bring the boy to my door"},
+  {"expect": "walk into the fire"}, {"expect": "The Envoy has stood down"}, {"expectNot": "bring the child to my door"},
   {"click": ".blk-choice .opt:has-text('WALK')"}, {"wait": 500}, {"expect": "ZZPN"},
 
   {"companion": true}, {"role": "Seer"}, {"unlock": ["CROWN", "ALK"]}, {"tab": "Speak"}, {"expect": "word, to you alone"},

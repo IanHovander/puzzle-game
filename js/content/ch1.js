@@ -278,8 +278,8 @@
         text: (s) => [
           'Later, in a side passage, a gray coat is waiting with Lord Vane inside it.',
           { speaker: 'Vane', text: s.flags.VOTE_LOST
-            ? 'The Provost will have the boy back within the hour. Then bring him to me, before midnight. He will come if you ask.'
-            : 'Bring the boy to me before midnight. He waved at you in front of nine Houses. He will come if you ask.' },
+            ? 'The Provost will have the child back within the hour. Then bring it to me, before midnight. It will come if you ask.'
+            : 'Bring the child to me before midnight. It waved at you in front of nine Houses. It will come if you ask.' },
           { speaker: 'Vane', text: 'He lives. I promise you that, which is more than anyone else here will. And the Crown makes the four of you Masters. I am told the chairs are very comfortable.' },
           { speaker: 'Vane', text: 'You think I am the villain of tonight. Ask your Seer what is under the paint.' },
         ],

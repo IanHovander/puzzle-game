@@ -144,7 +144,7 @@
     if (!values) return { t: 'fine', text: 'Nothing to speak. The Envoy has stood down and no Walk was read from the stone. The fire will not ask.' };
     const channel = L.channel('finale', ctx.roleId);
     const WALKQ = 'When the ring closes, do you walk into the fire, or stay?';
-    const VANEQ = 'The Envoy\'s word, to you alone: *bring the boy to my door and you live a Master.*';
+    const VANEQ = 'The Envoy\'s word, to you alone: *bring the child to my door and you live a Master.*';
     if (values.length === 2 && values[0] === 'WALK') return { t: 'choice', id: 'finale', prompt: WALKQ, options: [{ id: 'WALK', text: 'WALK' }, { id: 'STAY', text: 'STAY' }], after: 'Sealed. Nobody at the table knows which. Say the word to the Hearth when it asks, never the answer.' };
     if (values.length === 2) return { t: 'choice', id: 'finale', prompt: VANEQ, options: [{ id: 'ACCEPT', text: 'ACCEPT' }, { id: 'REFUSE', text: 'REFUSE' }], after: 'Sealed. Whatever you chose, the Hearth will say it aloud only if it binds you.' };
     return { t: 'custom', render: (el, cx) => {
@@ -188,7 +188,7 @@
       /* ---------- SPEAK ---------- */
       P.speak.push({ t: 'h', text: 'The last sealed word' });
       P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
-      if (!ally) P.speak.push({ t: 'letter', text: `“${ctx.name ? ctx.name + '. ' : ''}To you alone, and I will not say it twice. Bring the boy to my door before the fire is out and you live a Master. The others need never know who opened the door.”` });
+      if (!ally) P.speak.push({ t: 'letter', text: `“${ctx.name ? ctx.name + '. ' : ''}To you alone, and I will not say it twice. Bring the child to my door before the fire is out and you live a Master. The others need never know who opened the door.”` });
       P.speak.push(finaleBlock(ctx));
       if (walkOn) P.speak.push({ t: 'fine', text: {
         reader: 'If you walk, you will not read tomorrow. Not the door, not the lexicon, not whatever Wren leaves you.',
