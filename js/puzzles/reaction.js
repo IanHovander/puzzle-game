@@ -1,6 +1,6 @@
 /* Four-lane reaction sequence ("the Stair"): orbs fall down each player's lane; press your key when the orb crosses the line.
    Prompt types: single (one lane), brace (two lanes together), all (all four), mimic (do NOT press).
-   cfg: { events:[{t:ms, lanes:[i..], kind:'single'|'brace'|'all'|'mimic'}], fallMs, windowMs, practice:bool, laneNames:[..], target: number (0..1 pass ratio), onEnd(score) }
+   cfg: { events:[{t:ms, lanes:[i..], kind:'single'|'brace'|'all'|'mimic', fall?:ms}], fallMs, windowMs, practice:bool, laneNames:[..], target: number (0..1 pass ratio), onEnd(score) }
    Returns { hits, misses, total, ratio, passed } */
 (function () {
   'use strict';
@@ -34,7 +34,7 @@
       if (cfg.dark) lanesEl.classList.add('dark');
       let beatEl = null; if (cfg.bpm) { beatEl = UI.el('div', { class: 'beat-counter', text: '—' }); wrap.appendChild(beatEl); }
       const total = events.filter(e => e.kind !== 'mimic').length + events.filter(e => e.kind === 'mimic').length;
-      let hits = 0, misses = 0, health = 1, started = false, t0 = 0, raf = null, finished = false;
+      let hits = 0, misses = 0, strays = 0, health = 1, started = false, t0 = 0, raf = null, finished = false;
       const scoreEl = hud.lastChild, meterFill = meter.firstChild;
 
       function laneH() { return lanes[0].clientHeight; }
@@ -60,7 +60,7 @@
         else { misses++; Audio.sfx('miss'); if (!cfg.practice) { health = Math.max(0, health - (cfg.damage || 0.12)); window.VigilFX.shake(lanesEl, 300); } }
         if (cfg.practice) { flashBig(ok ? '✓' : '✗', ok ? 'var(--moss)' : '#ff8b8b'); }
         meterFill.style.width = (health * 100) + '%';
-        if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total}`;
+        if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total + strays}`;
       }
       function flashBig(txt, color) { big.textContent = txt; big.style.color = color || ''; big.style.opacity = '1'; setTimeout(() => { big.style.transition = 'opacity .4s'; big.style.opacity = '0'; setTimeout(() => { big.style.transition = ''; }, 400); }, 250); }
 
@@ -76,9 +76,10 @@
           if (d < bestD) { best = e; bestD = d; }
         }
         if (!best || bestD > win) {
-          // stray press: penalize lightly only outside practice
+          // stray press: in practice it counts as a miss, so the table learns the timing; elsewhere it costs a little health
           lanes[idx].classList.add('bad'); setTimeout(() => lanes[idx].classList.remove('bad'), 200);
-          if (!cfg.practice && !cfg.lenient) { health = Math.max(0, health - 0.04); meterFill.style.width = (health * 100) + '%'; Audio.sfx('miss'); }
+          if (cfg.practice) { misses++; strays++; Audio.sfx('miss'); flashBig('✗', '#ff8b8b'); if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total + strays}`; }
+          else if (!cfg.lenient) { health = Math.max(0, health - 0.04); meterFill.style.width = (health * 100) + '%'; Audio.sfx('miss'); }
           return;
         }
         if (best.kind === 'mimic') { judge(best, false); return; }
@@ -101,9 +102,10 @@
         if (beatEl) { const b = Math.floor(now / (60000 / cfg.bpm)) + 1; if (b !== lastBeat && b >= 1) { lastBeat = b; beatEl.textContent = b; beatEl.classList.add('tick'); setTimeout(() => beatEl.classList.remove('tick'), 120); if (cfg.pulse !== false) Audio.sfx('tick'); } }
         for (const e of events) {
           if (e.done) continue;
-          if (!e.spawned && now >= e.t - fall) spawn(e);
+          const ef = e.fall || fall; // an event may fall faster than the rest: the practice knock speeds up
+          if (!e.spawned && now >= e.t - ef) spawn(e);
           if (e.spawned) {
-            const y = hy - (e.t - now) / fall * (hy + 50);
+            const y = hy - (e.t - now) / ef * (hy + 50);
             e.orbs.forEach(o => { o.el.style.top = (y - 23) + 'px'; });
             if (e.chain) e.chain.style.top = (y - 2) + 'px';
             if (now > e.t + win) {
@@ -120,7 +122,7 @@
       }
       function finish(collapsed) {
         if (finished) return; finished = true; cancelAnimationFrame(raf); Input.deactivate();
-        const ratio = total ? hits / total : 1;
+        const ratio = (total + strays) ? hits / (total + strays) : 1;
         const passed = collapsed ? false : ratio >= (cfg.target == null ? 0.6 : cfg.target);
         setTimeout(() => resolve({ hits, misses, total, ratio, passed, collapsed: !!collapsed, health }), 500);
       }

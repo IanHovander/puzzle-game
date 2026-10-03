@@ -17,7 +17,7 @@
     if (children) (Array.isArray(children) ? children : [children]).forEach(c => { if (c == null) return; e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
     return e;
   };
-  UI.clear = (e) => { while (e.firstChild) e.removeChild(e.firstChild); return e; };
+  UI.clear = (e) => { while (e.firstChild) e.removeChild(e.firstChild); if (e.style) e.style.minHeight = ''; return e; };
   UI.sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
   /* Inline markup: *emphasis*, **strong**, [[glyph:name]] handled by caller, ~~small~~ */
@@ -75,6 +75,9 @@
     }
     // What the box had to do to fit, for the layout check in tools/scan-fit.js.
     UI.lastFit = { base, size, over: Math.max(0, container.scrollHeight - avail) };
+    // Hold the box at its finished height, so the text types in from the top instead of pushing
+    // the box upward line by line (the box sits on the bottom edge of the screen).
+    container.style.minHeight = Math.min(maxH, container.scrollHeight + chrome) + 'px';
     ghost.remove();
   };
 

@@ -47,7 +47,7 @@
         art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 13,
         text: [
           { text: "Four hundred years ago, four people closed a wound in the world. They did it with fire, and without leaving notes. The fire is the Hearth.", cls: "center" },
-          { text: "It has burned ever since, gold at the edges, blue at the heart. It has gone out once. Fourteen years ago, for one night, the whole school stood in the dark and found out what cold is.", cls: "center" },
+          { text: "It has burned ever since, orange at the edges, gold at the heart. It has gone out once. Fourteen years ago, for one night, the whole school stood in the dark and found out what cold is.", cls: "center" },
           { text: "When the fire came back, a baby was asleep on the stones. The flames had curled round the baby like a hand. The school, which knows what to do with a miracle, wrote it down.", cls: "center" },
           { text: "*Register of the Hearth. Found: one infant. Condition: warm, and pleased with itself. Claimed by:*", cls: "center" },
           { text: "The clerk left the line blank, for whoever came. Nobody ever came.", cls: "center" },
@@ -136,7 +136,15 @@
           { text: "Press as your light crosses the line.", cls: "whisper" },
           { text: "Purple means everyone.", cls: "whisper" },
         ],
-        config: () => ({ practice: true, laneNames: L.nicks, fallMs: 2000, windowMs: 420, events: window.VigilReaction.generateEvents({ count: 7, seed: 5, mix: { single: 1 }, gapMs: 1500, startMs: 2500 }).concat([{ t: 14500, lanes: [0, 1, 2, 3], kind: 'all' }]) }),
+        /* The knock itself, three times, each time faster: one each in seat order, then all four together. */
+        config: () => {
+          const events = []; let t = 2500;
+          [{ gap: 1100, fall: 2100 }, { gap: 750, fall: 1650 }, { gap: 480, fall: 1250 }].forEach((r) => {
+            for (let lane = 0; lane < 4; lane++) { events.push({ t, lanes: [lane], kind: 'single', fall: r.fall }); t += r.gap; }
+            t += r.gap * 0.4; events.push({ t, lanes: [0, 1, 2, 3], kind: 'all', fall: r.fall }); t += r.gap * 2.2;
+          });
+          return { practice: true, laneNames: L.nicks, fallMs: 2100, windowMs: 360, events };
+        },
         next: 'ch0_wren',
       },
       /* ---------- Wren ---------- */
@@ -146,8 +154,8 @@
           "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own.",
           { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and look, the universe has provided. Everyone's tried that lamp with matches. Nobody's ever tried *reading* it." },
           "Words older than the school are cut round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before deciding to be. \"Those are the stone's letters,\" says the Reader, quietly. Read the lamp, and you might read what the stone really says.",
-          "\"I know the old rules for how words go into a ring,\" says the Binder, already in boots. \"None of them says we can't. I've looked.\"",
-          "The Reader has missed supper. A biscuit turns up in the Reader's lap. Wren knows nothing about it, loudly.",
+          "The Binder is already in boots. \"There are old rules for putting words in a ring. None of them says we can't. I've looked.\"",
+          "The Reader missed supper. A biscuit appears in the Reader's lap. Wren, loudly, knows nothing about it.",
         ],
         next: 'ch0_dare', button: "And you?",
       },
@@ -172,7 +180,7 @@
         ],
         config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: '"That\'s not the one you all looked at," says Wren, who noticed.', submitText: 'Carve' }),
         solvedText: [
-          "The brass flares Hearth-blue, once, and goes out. Far below, for one breath, the great fire answers.",
+          "The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "For once, Wren has no next line. Wren stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tie. Fine. So it knows me. Names won't light it, though. Old words will, and old words need all four of you. Lucky I adopted exactly four." },
@@ -212,7 +220,7 @@
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
         solvedText: [
-          "The lamp catches: small, gold, blue at the heart, and warm all the way to the door. Four hundred years of matches, and all it ever wanted was to be read to. Through the round window, far below, the Hearth stops flickering.",
+          "The lamp catches: small and gold, like a piece of the Hearth, and warm all the way to the door. Four hundred years of matches, and all it ever wanted was to be read to. Through the round window, far below, the Hearth stops flickering.",
           { speaker: "Wren", text: "Look at it. That's *ours*. Mom'll — the Provost'll — kill me." },
           "\"You had it right the first time,\" says the Reader, who corrects everybody. Wren does not argue.",
           { text: "ASH, EMBER. Fire, keep. That is all it ever said.", cls: "small" },

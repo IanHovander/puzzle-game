@@ -5,6 +5,7 @@
   --bg: #0b0a10;
   --bg2: #15121d;
   --panel: rgba(18, 15, 26, 0.82);
+  --panel-glass: rgba(14, 11, 22, 0.58); /* the story text sits over the art: dark enough to read, light enough to see through */
   --panel-solid: #16131f;
   --ink: #e9e2d2;
   --ink-dim: #a99f8c;
