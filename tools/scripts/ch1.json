@@ -2,7 +2,7 @@
   {"key": "Space"}, {"shot": "ch1_start"}, {"expect": "since you were seven"}, {"clickText": "Wren is presented"},
   {"wait": 600}, {"key": "Space"}, {"shot": "ch1_dais"}, {"clickText": "The doors"},
   {"wait": 600}, {"key": "Space"}, {"shot": "ch1_vane"}, {"expect": "under the paint"}, {"clickText": "The Provost answers"},
-  {"wait": 600}, {"key": "Space"}, {"shot": "ch1_flicker"}, {"expect": "The Provost is watching Wren"}, {"clickText": "The Masters' door"},
+  {"wait": 600}, {"key": "Space"}, {"shot": "ch1_flicker"}, {"expect": "Wren has stepped toward the fire"}, {"clickText": "The Masters' door"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_attune"}, {"expect": "THORN"}, {"expect": "Binder"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch1_vote"}, {"expect": "Five of nine keeps the child"},
   {"_": "no glyph geometry on the Great Hall's lintel: it used to carry Chapter VI's eight cuts. The one hit allowed is the Crown on the Chair's banner, which is heraldry."},
