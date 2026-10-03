@@ -73,7 +73,7 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Stay in these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use. There's no rule against tomorrow. I've looked.\"",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has been hunting all week for a way out. \"There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
         ],
         next: 'ch0_plan', button: "The plan",
@@ -95,7 +95,7 @@
           "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in.",
           "\"Somebody,\" Wren likes to say, \"has to be the door.\"",
           "Tomorrow, the door stands before the Houses alone. \"Knock it with me,\" says the Listener. \"I want to hear everybody. While everybody's still here.\"",
-          { text: "One keyboard, one key each. When yours lights up, press it. Then all four at once.", cls: "whisper" },
+          { text: "One keyboard, one key each. First, learn your key: when it lights up, press it. Then all four at once.", cls: "whisper" },
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
@@ -165,7 +165,7 @@
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
           "Worn shapes run round the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the window. \"Nobody can read those,\" says the Reader, a little too quickly.",
           "\"The Founders never left notes,\" says Wren. \"One sentence in four hundred years, and it's about me. I'd like a second opinion.\"",
-          "\"What if it agrees with the first?\" says the Listener. The Binder looks for a rule against that, doesn't find one, and settles for: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
+          "\"What if it agrees with the first?\" says the Listener. Nobody answers that, for a while. Then the Binder: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
         ],
         next: 'ch0_dare', button: "Item two",
       },
@@ -175,7 +175,7 @@
           "\"Item two,\" says Wren. \"That's me. I'm an item.\" Wren's copy of the order of business is folded very small. \"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down, in pencil.",
           { speaker: "Wren", text: "Everything I have, somebody gave me. The name's a bird. Nobody will say who picked it. The blanket was yours first. My birthday's the night they found me. Before they decide what I'm for, I want one thing nobody gave me. Something I get to keep." },
           "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up.",
-          "The Listener checks Wren's hands, instead of saying anything. Cold, as always. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
+          "The Listener says nothing, and checks Wren's hands. Cold, as always. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
         ],
         next: 'ch0_carve', button: "A dare",
       },
@@ -195,7 +195,7 @@
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
-          "Wren does not argue, which is new, and changes the subject fast, which isn't.",
+          "Nobody says a word about the *Mom*. Wren changes the subject before anybody can.",
           { speaker: "Wren", text: "One name, and it answered. Imagine a whole sentence. Reader, you've been reading that collar since I walked in." },
           "\"If those were words,\" says the Reader carefully, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, the hum starts up again. Only the Listener turns.",
         ],
@@ -237,7 +237,7 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. Together, in the Founders' shapes, that's one word. It's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
           "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
