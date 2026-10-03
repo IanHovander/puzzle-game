@@ -106,7 +106,10 @@
     // the fifth name, in pencil, rubbing off: a wobbly scrawl and an underline (at dawn, gone over in ink: bolder)
     s += inked ? `<g fill="none" stroke="#d6d0e4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".85">` : `<g fill="none" stroke="#b9b4c8" stroke-linecap="round" stroke-linejoin="round" opacity=".38">`;
     s += `<path d="M30,84 c3,-16 7,-16 9,-1 c1,-9 6,-11 8,-2 c2,8 6,7 8,-1 c3,-9 8,-7 7,1 c-1,7 5,6 8,-2 c2,-6 6,-8 9,0 c2,6 6,5 9,-3 c2,-5 5,-4 6,1" stroke-width="2"/>`;
-    s += `<path d="M30,94 q40,4 82,-2" stroke-width="1.6" opacity=".7"/></g>`;
+    s += `<path d="M30,94 q40,4 82,-2" stroke-width="1.6" opacity=".7"/>`;
+    // and at dawn, beside it in the same ink, who claimed it
+    if (inked) s += `<path d="M30,116 c3,-7 6,-7 9,0 s6,7 9,0 s6,-7 9,0 s6,7 9,0 s6,-7 9,0 s6,7 9,0" stroke-width="1.4" opacity=".75"/>`;
+    s += `</g>`;
     return s + '</g>';
   }
   const bed = (x) => `<g transform="translate(${x},640)"><rect x="0" y="0" width="200" height="90" rx="8" fill="#1b1626"/><rect x="0" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="174" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="30" y="10" width="140" height="40" rx="6" fill="#2b2340"/></g>`;

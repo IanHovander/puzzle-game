@@ -136,7 +136,7 @@
           "On nights nobody can sleep, the knock becomes a game, faster and faster, until somebody laughs.",
           "Tonight nobody laughs. Practice anyway. Before morning, you will knock it for real.",
           { text: "Press as your light crosses the line.", cls: "whisper" },
-          { text: "Purple means everyone.", cls: "whisper" },
+          { text: "A chain across all four lanes means everyone at once.", cls: "whisper" },
         ],
         /* The knock itself, three times, each time faster: one each in seat order, then all four together. */
         config: () => {
@@ -153,13 +153,13 @@
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
+          "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own door. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
           "Worn shapes run round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before the rest of the Reader has agreed to it. \"Founders' work. Same shapes as the stone.\"",
-          "\"The Founders never left notes,\" says Wren. \"Just one sentence, about me. I'd like to hear them say anything else. Tonight, before the Houses have their say.\"",
+          "\"The Founders never left notes,\" says Wren. \"Just one sentence, about me. I'd like to hear them say anything else. Tonight, before the Houses get their turn.\"",
           "The Binder is already off the bed. \"There are old rules for words in rings. None against this. I checked.\"",
         ],
-        next: 'ch0_dare', button: "And you, Wren?",
+        next: 'ch0_dare', button: "What about you, Wren?",
       },
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
@@ -186,8 +186,8 @@
           "The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "For once, Wren has no next line. Wren stands quite still. \"Eleven,\" says the Binder, who has been counting.",
-          { speaker: "Wren", text: "Tied my record. Don't write that down. Mom'll — the Provost'll — kill me." },
-          "\"It is ours,\" says the Reader, who corrects everybody. Wren, for once, does not argue, and changes the subject before anyone can notice: \"Names won't light it, though. It wants Founders' words, and those take four. Lucky I adopted exactly four.\"",
+          { speaker: "Wren", text: "Tied my record. Don't write that down. And we just carved Founders' brass. Mom'll — the Provost'll — kill me." },
+          "\"It is ours,\" says the Reader, who corrects everybody. Wren does not argue, which is new, and changes the subject before anyone can notice: \"Names won't light it, though. It wants Founders' words, and those take four. Lucky I adopted exactly four.\"",
         ],
         next: 'ch0_attune',
       },
@@ -227,9 +227,9 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "The lamp catches: small and gold, a piece of the Hearth on the sill, and warm all the way to the door. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
-          "Somebody finally admits to reading the Founders' shapes. \"Ash. Ember,\" says the Reader. \"That's only how they sound. *Ash* means fire. *Ember* means keep.\" The school's translation of the stone says \"walk.\" The Founders, in brass, said \"keep.\"",
-          "\"Keep what?\" says Wren. Nobody needs to answer. All four of you are looking at the same person again, and this time it is not a dare.",
-          { speaker: "Wren", text: "Don't look at me. Look at *it*." },
+          "Somebody finally admits to reading the Founders' shapes. \"Ash. Ember,\" says the Reader. \"That's the sound, not the sense.\" Then, slower, a finger on the brass: \"*Fire. Keeps.* The stone downstairs says *walk*. Up here, the Founders said *keep*.\"",
+          "\"Keeps what?\" says Wren. Nobody needs to answer. All four of you are looking at the same person again, and this time it is not a dare.",
+          { speaker: "Wren", text: "Don't. If you all look at me like that, I'll have to stand still again." },
           "Wren drags the fifth blanket right up to the lamp, the way Wren sits by every fire: as close as a blanket can go without joining in. Each of you has one thing about Wren you have never said out loud.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
@@ -239,7 +239,7 @@
         type: 'choice', art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
         text: [
           "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
-          "\"You lot are terrible at secrets,\" says Wren. \"I've known for years that you knew. You never said it, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Wren looks at the door, once, and does not ask.",
+          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years that you knew. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door for a long moment, and lets it be.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "Right. *Keep.* I can work with that. If I'm being kept, I want it in writing. For fourteen years that register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, I will. So: claimed by *who*?" },
         ],
@@ -252,11 +252,11 @@
       },
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', artParams: { dawn: true }, mood: 'hearth', fx: 'dust',
-        text: [
+        text: (s) => [
           "Wren talks until you are nearly asleep, the Reader's biscuit still uneaten, and nobody sees whether Wren sleeps. Then, soft on the floorboards, you knock: one each, then all together. This time the door is in the room. *Everybody's here.*",
           { text: "Knock it on the table now, soft.", cls: "whisper" },
-          "At dawn the lamp burns out, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket, and somebody goes over the pencil name on the door in ink. Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever they write in the register, they will be writing second.",
+          `At dawn the lamp burns out, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket, and somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.* Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.`,
+          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. Tonight the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
           { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
         flowTitle: 'Prologue — the paths you walked',

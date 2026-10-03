@@ -21,7 +21,7 @@
   --display: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
   --hand: 'IM Fell English', 'Cormorant Garamond', serif;
   --shadow: 0 10px 40px rgba(0,0,0,0.55);
-  --p1: #e0b04a; --p2: #4fb3bf; --p3: #d96b4a; --p4: #a482e6;
+  --p1: #e0b04a; --p2: #4fb3bf; --p3: #a482e6; --p4: #d96b4a; /* seat colours, as lore.js: Seer purple, Binder red */
 }
 
 * { box-sizing: border-box; }

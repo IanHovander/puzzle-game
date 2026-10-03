@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Under it there’s chalk, rubbed nearly away. Everyone’s looked straight at it. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away. Everyone looks straight past it. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
@@ -140,9 +140,9 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch** (your Book’s Law 1 calls it the *mark*). On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
+          'A **Founders’** sigil starts at the **scratch**. Your Book’s Law 1 calls it the *mark*. On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise** (the Book says *sunwise*).',
+          'Each next word goes in the next slot **clockwise**. The Book says *sunwise*.',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
