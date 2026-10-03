@@ -243,7 +243,7 @@
         next: 'ch0_tabs',
       },
       ch0_tabs: {
-        art: 'ch0_lamp', artParams: { lit: true, carved: true }, mood: 'tower', fx: 'dust',
+        art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
           "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, for once, does not step in front of the lamp. Each of you has noticed something about Wren, and kept it. Tonight you give it back.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
@@ -267,7 +267,7 @@
         ],
       },
       ch0_dawn: {
-        art: 'ch0_dorm', artParams: { dawn: true }, mood: 'hearth', fx: 'dust',
+        art: 'ch0_dorm', artParams: { lit: true }, mood: 'hearth', fx: 'dust',
         text: (s) => [
           "After that, Wren talks about everything except tomorrow, until you are nearly asleep. Then, soft on the floorboards, you knock.",
           { text: "Knock it on the table now, soft: one each, then all together.", cls: "whisper" },

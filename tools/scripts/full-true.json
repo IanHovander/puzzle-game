@@ -243,7 +243,7 @@
    "key": "Space"
   },
   {
-   "expect": "Wren always waves too big when scared"
+   "expect": "since you were seven"
   },
   {
    "clickText": "Wren is presented"
@@ -342,6 +342,10 @@
    "expect": "Five to four"
   },
   {
+   "clickText": "The fire"
+  },
+  {"wait": 800}, {"key": "Space"}, {"expect": "Tonight it lifts for you"},
+  {
    "clickText": "What they want"
   },
   {
@@ -405,7 +409,7 @@
    "key": "Space"
   },
   {
-   "expect": "sending you for it tonight"
+   "expect": "Binder, write that down"
   },
   {
    "clickText": "The night moves on"

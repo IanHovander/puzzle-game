@@ -2,5 +2,6 @@
   {"wait": 800}, {"key": "Space"}, {"wait": 600}, {"shot": "own_choices"},
   {"clickText": "a name of our own"}, {"wait": 700},
   {"expect": "Bell-Ringers"}, {"shot": "own_named"},
-  {"clickText": "Continue"}, {"wait": 2500}, {"key": "Space"}, {"wait": 1200}, {"expect": "Bell-Ringers"}, {"shot": "own_flow"}
+  {"clickText": "Continue"}, {"wait": 2500}, {"key": "Space"}, {"wait": 1200}, {"expect": "Claimed by the Bell-Ringers"}, {"shot": "own_dawn"},
+  {"clickText": "Morning"}, {"wait": 1500}, {"key": "Space"}, {"wait": 800}, {"expect": "Wren calls you the Bell-Ringers"}, {"shot": "own_flow"}
 ] }
