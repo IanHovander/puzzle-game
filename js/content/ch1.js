@@ -113,7 +113,7 @@
         art: 'ch1_hall', mood: 'court', fx: 'embers', sfx: 'open', title: 'The Great Hall, before the bell',
         enter: (s) => { if (s.flags.WREN_TRUST == null) Store.set('WREN_TRUST', 0); },
         text: [
-          'Nine Houses, nine Masters, nine tall chairs. Together they are the Convocation, and they have argued for four hundred years, mostly about the chairs. The tallest is the Provost\'s, and nobody has ever seen her sit in it. Behind them hangs the school\'s great tapestry, as old as the hall. Somebody has painted over it since. The new paint is thinnest at the edges.',
+          'Nine Houses, nine Masters, nine tall chairs. Together they are the Convocation, and they have argued for four hundred years, mostly about the chairs. The tallest is the Provost\'s, and nobody has ever seen her sit in it. Behind them hangs the school\'s great tapestry, as old as the hall. Somebody has since painted it over, and the new paint is thinnest at the edges.',
           'Tonight is the Vigil. Item one is the fire. Item two is Wren.',
           'At the far end, the fire rises and sinks like breathing. Every grown-up here is carefully not looking at it. Beside the fire lies the Register, open at a line that has been blank for fourteen years: *Claimed by.* At the bell, the nine will decide what goes on it.',
           'You are at the back. Wren is up front in a borrowed collar and a warm coat, as instructed, and waves at you. It is too big a wave. You have known that wave since you were seven.',
@@ -150,7 +150,7 @@
         text: [
           { speaker: 'Provost Marrow', text: 'This school does not hand its children to a writ, or to a stone. It puts them to a vote. Nine seats. Five votes to keep, and Wren stays. Fewer, and Wren leaves with him.' },
           'For fourteen years, in front of the Houses, she has said *the child*. Just now she said *Wren*.',
-          'The Hearth sags, as if something underneath has pulled. Eight Masters look at it, then at the floor, and remember what the school is built on.',
+          'The Hearth sags, as if something underneath has pulled. The Masters look at it, then at the floor, and remember what the school is built on.',
           'Wren has stepped toward the fire without noticing. The Seer looks at the floor between Wren and the fire, and goes still. In the seventh chair, a Master with a black notebook stops writing.',
           { speaker: 'Provost Marrow', text: 'The stone says walk. It never said with soldiers. Lord Vane brought those himself. The bell rings in an hour. By the Vigil\'s rules—' },
           '"Wren may send friends to plead with ' + ASKS_WORD + ' Masters," says the Binder, from the back. "' + ASKS_CAP + '. I found it last night, looking for a rule against tonight." Wren mouths one word at you: *five.* Five votes, or five idiots. With Wren it is always both.',
@@ -283,8 +283,8 @@
         text: [
           'The Provost is barely past when two Masters reach you. Seat 1 is Master Sorrel. Seat 7 is Master Oriel. They voted for you, and would like that noticed. In the Houses, a vote is a loan.',
           { speaker: 'Master Sorrel', text: 'Whatever she sends you down for comes up to all nine of us. Not to her. Nine chairs, four hundred years. I will not watch them become one.' },
-          '"Sorrel\'s shadow leans away from the Provost," the Seer murmurs. "Not from the fire. From her." Sorrel hears, and does not deny it.',
-          { speaker: 'Master Oriel', text: 'I have copied that stone since before you were born. Tonight one of you told me what the Founders\' shapes say. Whatever else is written under this school, I want it read to me. All of it.' },
+          'The Seer says nothing, but stands a little closer to the Binder. Sorrel\'s shadow has turned its back on the Provost\'s.',
+          { speaker: 'Master Oriel', text: 'I have copied that stone since before you were born. Tonight one of you told me what the Founders\' shapes say. Whatever else is under this school, I want to hear about it. All of it.' },
         ],
         prompt: 'Whose price do you honor?',
         options: [

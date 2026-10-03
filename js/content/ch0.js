@@ -73,7 +73,7 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Stay in these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket, looking for the rule that stops item two. \"There's no rule against tomorrow. I've looked.\"",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket. \"There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
         ],
         next: 'ch0_plan', button: "The plan",
@@ -82,8 +82,8 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           "\"Could we hide Wren?\" says the Listener. \"Just till after the bell?\"",
-          "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody. Wren's the only thing here that doesn't.\"",
-          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
+          "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody. Wren's the only thing that doesn't.\"",
+          "\"I keep making plans for next spring,\" says the Seer. \"I can't get Wren into any of them.\" Far below, the Hearth gutters.",
           "\"They vote on the stone,\" says the Binder. \"Strictly, on the school's translation of it. The Founders don't get a say.\"",
           "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever gotten it to work. Maybe nobody ever asked it anything.\"",
         ],
@@ -235,7 +235,7 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
+          "It took all four of you. Like the knock. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and the fire's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
@@ -247,7 +247,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without catching, which is how close Wren always sits. The Seer, who usually gets between Wren and any lamp, for once stays put. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket up to the lamp, as close as it can go without catching. That is how close Wren always tries to sit. The Seer, who usually gets between Wren and any lamp, for once stays put. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
@@ -264,7 +264,7 @@
         options: [
           { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
           { id: 'own', text: "Listener: a name of our own (type it, then say it)", next: 'ch0_dawn', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
-          { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That Register is finally accurate." }] },
+          { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I asked for four idiots. Apparently there are five. Warm, pleased with itself, claimed by idiots. That Register is finally accurate." }] },
           { id: 'four', text: "Binder: \"The Four. It's not taken. I checked.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
         ],
       },
