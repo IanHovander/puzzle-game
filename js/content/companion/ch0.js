@@ -18,9 +18,9 @@
   const ladder3 = () => `<svg viewBox="0 0 200 96" style="width:170px;height:82px">
     ${[0, 1, 2, 3, 4].map(i => `<line x1="30" y1="${84 - i * 16}" x2="86" y2="${84 - i * 16}" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`).join('')}
     <circle cx="58" cy="84" r="7" fill="#4fb3bf"/><circle cx="58" cy="36" r="7" fill="#4fb3bf"/>
-    <path d="M110,84 L110,36" stroke="#4fb3bf" stroke-width="2"/><path d="M110,30 l-5,10 l10,0 Z" fill="#4fb3bf"/>
-    <text x="132" y="46" fill="#4fb3bf" font-size="18" font-family="Cinzel,serif">+3</text>
-    <text x="58" y="16" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="9" font-family="Cinzel,serif">second note</text>
+    <path d="M164,84 L164,36" stroke="#4fb3bf" stroke-width="2"/><path d="M164,30 l-5,10 l10,0 Z" fill="#4fb3bf"/>
+    <text x="172" y="72" fill="#4fb3bf" font-size="18" font-family="Cinzel,serif">+3</text>
+    <text x="92" y="39" fill="rgba(255,255,255,.55)" font-size="9" font-family="Cinzel,serif">second note</text>
   </svg>`;
 
   /* The Binder's rule, drawn: a ring, a mark, and the count running clockwise from it. */
@@ -40,25 +40,34 @@
     : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'
   }</svg>`;
 
-  // Seer under-layer of the dormitory: four shadows away from the lamp, Wren's toward it.
-  const underDorm = `<svg viewBox="0 0 360 252">
+  // Seer under-layer of the dormitory, as the Hearth draws the room: four beds in one row, one round
+  // window in the right wall and the lamp on its sill. Four shadows fall away from the lamp; Wren's
+  // points toward it.
+  const underDorm = (() => {
+    const L = [312, 128];
+    const shadow = (x, y, len, toward) => { const dx = L[0] - x, dy = L[1] - y, d = Math.hypot(dx, dy), k = (toward ? 1 : -1) * len / d; return `M${x},${y} L${(x + dx * k).toFixed(1)},${(y + dy * k).toFixed(1)}`; };
+    const four = [[96, 112], [150, 168], [178, 98], [232, 150]];
+    return `<svg viewBox="0 0 360 252">
     <rect width="360" height="252" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
-      <rect x="10" y="10" width="340" height="210"/>
-      <rect x="20" y="30" width="60" height="30"/><rect x="20" y="90" width="60" height="30"/><rect x="20" y="150" width="60" height="30"/><rect x="280" y="30" width="60" height="30"/>
-      <circle cx="300" cy="150" r="14"/><path d="M300,136 L300,120 M292,124 L308,124"/>
+      <rect x="10" y="10" width="330" height="210"/>
+      ${[0, 1, 2, 3].map(i => `<rect x="${22 + i * 62}" y="20" width="50" height="30"/>`).join('')}
+      <circle cx="340" cy="128" r="14" fill="#000"/><path d="M326,128 L354,128 M340,114 L340,142" stroke-width=".8"/>
+      <circle cx="${L[0]}" cy="${L[1]}" r="8"/>
     </g>
-    <text x="300" y="189" text-anchor="middle" fill="#fff" font-size="14" font-family="Cinzel,serif">the lamp</text>
+    <g stroke="#fff" stroke-width="1.2" stroke-linecap="round">${[0, 1, 2, 3, 4, 5, 6, 7].map(i => { const a = i / 8 * Math.PI * 2; return `<path d="M${(L[0] + Math.cos(a) * 11).toFixed(1)},${(L[1] + Math.sin(a) * 11).toFixed(1)} L${(L[0] + Math.cos(a) * 15).toFixed(1)},${(L[1] + Math.sin(a) * 15).toFixed(1)}"/>`; }).join('')}</g>
+    <text x="304" y="164" text-anchor="middle" fill="#fff" font-size="14" font-family="Cinzel,serif">the lamp</text>
     <g fill="#fff" opacity=".9">
-      <circle cx="120" cy="100" r="6"/><circle cx="160" cy="70" r="6"/><circle cx="170" cy="140" r="6"/><circle cx="210" cy="110" r="6"/><circle cx="240" cy="150" r="6"/>
+      ${four.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6"/>`).join('')}<circle cx="262" cy="104" r="6"/>
     </g>
     <g stroke="#fff" stroke-width="3" opacity=".55" stroke-linecap="round">
-      <path d="M120,100 L80,88"/><path d="M160,70 L124,52"/><path d="M170,140 L134,138"/><path d="M210,110 L178,96"/>
+      ${four.map(([x, y]) => `<path d="${shadow(x, y, 36)}"/>`).join('')}
     </g>
-    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="M240,150 L276,150"/></g>
-    <g fill="#fff" font-size="14" font-family="Cinzel,serif"><text x="120" y="124" text-anchor="middle">Reader</text><text x="171" y="75">Listener</text><text x="170" y="164" text-anchor="middle">Seer</text><text x="221" y="115">Binder</text><text x="240" y="136" text-anchor="middle" fill="#a482e6">Wren</text></g>
+    <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round"><path d="${shadow(262, 104, 30, true)}"/></g>
+    <g fill="#fff" font-size="14" font-family="Cinzel,serif"><text x="96" y="136" text-anchor="middle">Reader</text><text x="150" y="192" text-anchor="middle">Listener</text><text x="178" y="86" text-anchor="middle">Seer</text><text x="232" y="174" text-anchor="middle">Binder</text><text x="262" y="92" text-anchor="middle" fill="#a482e6">Wren</text></g>
     <text x="180" y="242" text-anchor="middle" fill="#fff" font-size="14" font-family="Cinzel,serif" opacity=".75">shadows, as they fall</text>
   </svg>`;
+  })();
 
   /* Under the lamp's foot: four slots, numbered as the Hearth numbers them, and TWO cuts.
      No carving, no arrow, no rule — the Seer reports cuts, not meanings. */

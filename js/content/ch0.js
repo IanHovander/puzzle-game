@@ -22,6 +22,7 @@
       body[data-chapter="ch0"] .ring-pz .palette-grid .glyph { width: 62px; height: 66px; }
       body[data-chapter="ch0"] .ring-pz .palette-grid .glyph svg { width: 34px; height: 34px; }
       body[data-chapter="ch0"] .ring-pz .pz-note { font-size: 14px; line-height: 1.35; }
+      body[data-chapter="ch0"] .ring-pz .wheel .slot text.lbl { font-size: 28px; fill: var(--ink); }
     }
   ` }));
 
