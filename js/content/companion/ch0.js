@@ -123,7 +123,7 @@
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear hearts. I can’t sleep when it’s quiet. In here I fall asleep to four of them, all going. I’ve never once heard yours. So I check your hands instead. Did you notice?”' });
+        P.wren.push({ t: 'letter', text: '“I can hear hearts. I can’t sleep when it’s quiet. In here I fall asleep to four of them, all going. I’ve never once heard yours. So I check your hands instead. You always let me.”' });
       }
 
       if (roleId === 'seer') {

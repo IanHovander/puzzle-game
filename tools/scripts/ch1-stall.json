@@ -8,6 +8,6 @@
   {"assert": "VigilStore.state.hintsUsed.ch1_vote === 3 && VigilStore.state.flags.hintsTotal === 3"},
   {"click": "#hint"}, {"wait": 400}, {"shot": "ch1_vote_stall_hint"}, {"expect": "Seat 1 and Seat 7"}, {"clickText": "Back to the ward"}, {"wait": 300},
   {"click": ".seat:has-text(\"Harrowden\")"}, {"click": ".seat:has-text(\"Sable\")"}, {"clickText": "Call the vote"}, {"wait": 500}, {"expect": "Five of nine. Wren stays."},
-  {"wait": 1800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"}, {"wait": 800}, {"key": "Space"}, {"expect": "Five to four"},
+  {"wait": 1800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"}, {"wait": 800}, {"key": "Space"}, {"expect": "one finger at a time"},
   {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, APPROACHED: VigilStore.state.flags.CH1_APPROACHED, hint: VigilStore.state.hintsUsed.ch1_vote})"}
 ] }

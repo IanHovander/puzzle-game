@@ -160,7 +160,7 @@
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          "The door bangs open. Wren has never once knocked. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
+          "The door bangs open. Wren does not knock. Wren never has. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Hiding me: no. Spring: try harder. The lamp: yes. What I need is four idiots and a lamp, and this room has always had both." },
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
           "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the sill. \"Nobody can read those,\" says the Reader, a little too quickly. \"Not properly, anyway.\"",
@@ -195,7 +195,7 @@
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
-          "Nobody says a word about *Mom*. \"One name, and it answered,\" says Wren, already talking. \"Reader, you've been reading that collar since I walked in.\"",
+          "Nobody says a word about *Mom*. \"One name, and it answered,\" says Wren, too quickly, the way you change a subject. \"Reader, you've been reading that collar since I walked in.\"",
           "\"If those were words,\" says the Reader carefully, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, the hum starts up again. Only the Listener turns.",
         ],
         next: 'ch0_attune',
@@ -235,7 +235,7 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "It took all four of you. Like the knock. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
+          "It took all four of you, like the knock. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and the fire's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
@@ -257,7 +257,7 @@
         text: [
           "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
           "\"You lot are terrible at secrets,\" says Wren. \"No heartbeat? Knew. Wrong-way shadow? Knew. No thread? Guessed. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\"",
-          "Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and this time the Binder does not count.",
+          "Then Wren looks at the chalk on the door. That one is news. Wren stands very still, and this time the Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. For fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
