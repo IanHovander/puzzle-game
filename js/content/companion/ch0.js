@@ -134,7 +134,7 @@
           'A sigil starts at the **scratch**. A notch is only a maker’s signature.',
           'The **first** word goes **in** the scratched slot.',
           'Each next word goes in the next slot **clockwise**.',
-          'One word per slot. **Every other slot stays empty.**',
+          'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
         P.sight.push({ t: 'fine', text: 'You cannot see the cuts or read the words. Ask for both.' });
