@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name, in your place, in letters nobody here is taught. Somebody wrote you a name long before we did, Wren, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name, in letters older than the lamp’s. Nobody here is taught them. Somebody put it there long before we did, Wren, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -123,7 +123,7 @@
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear every heart in this tower. It’s how I know we’re all right. I’ve never once heard yours. So I just… check your hands instead. You may have noticed.”' });
+        P.wren.push({ t: 'letter', text: '“I can hear hearts. It’s how I fall asleep in here: four of them, all going. I’ve never once heard yours. So I check your hands instead. You may have noticed.”' });
       }
 
       if (roleId === 'seer') {
@@ -134,7 +134,7 @@
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way. Toward the lamp. I’ve been standing between you and lamps for years, so nobody else sees. You thought I just liked lamps.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way, Wren. Toward the lamp, like it’s trying to get home. I’ve stood between you and every lamp in this school for years, so nobody else sees. Tonight I didn’t move. You thought I just liked lamps.”' });
       }
 
       if (roleId === 'binder') {
@@ -149,8 +149,7 @@
         P.sight.push({ t: 'fine', text: 'You cannot see the cuts, read the words or hear which comes first. Ask for all three.' });
         P.wren.push({ t: 'h', text: 'No thread' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
-          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> red, old and well knotted. Some promise from years ago, still kept.</li>'
-          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> red, new, still slipping. A promise you are both still making.</li>'
+          + '<li>' + threadLine('whole') + ' <strong>The four of you:</strong> red, every which way. Years of promises, all kept.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
