@@ -86,7 +86,7 @@
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in. Somebody, Wren says, has to be the door. You do it now, on the bedframes, because it is something to do.",
+          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in. Somebody, Wren says, has to be the door. Tomorrow, the door stands before the Houses alone. Tonight, on the bedframes, you practice the only answer you have.",
           { text: "One keyboard, one key each. Press yours when it glows.", cls: "whisper" },
           { text: "Then all four at once.", cls: "whisper" },
         ],
@@ -153,12 +153,11 @@
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own.",
-          { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and this room has always had both. Four hundred years of people have tried that lamp with matches. Nobody's ever tried *reading* it." },
-          "Shapes as old as the school are cut round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before deciding to be. \"That's Founders' work,\" says the Reader, quietly. \"Those are the stone's shapes.\"",
-          "\"Read the lamp,\" says Wren, \"and maybe we read what the stone really says. About me. Before they do.\"",
-          "The Binder is already off the bed. \"There are old rules for putting words in a ring. Not one of them is against it. I checked.\"",
-          "A biscuit lands in the Reader's lap: supper, forgotten again. Wren, loudly, knows nothing about it.",
+          "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own. A biscuit lands in the Reader's lap: supper, forgotten again. Wren, loudly, knows nothing about it.",
+          { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
+          "Worn shapes run round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before deciding to be. \"Founders' work. Same shapes as the stone.\"",
+          "\"The Founders never left notes,\" says Wren. \"Just one sentence, about me. I'd like to hear them say anything else. Tonight, before the Houses have their say.\"",
+          "The Binder is already off the bed. \"There are old rules for words in rings. None against this. I checked.\"",
         ],
         next: 'ch0_dare', button: "And you?",
       },
@@ -177,22 +176,24 @@
         text: [
           "\"Our names first,\" says Wren, \"so the lamp knows whose it is. I dare you.\"",
           "The Seer turns Wren's old penknife over, looks at the lamp, and does the terrible-idea face. Wren does it back.",
-          "Four hundred years of dares are carved in the brass. There is room for one more name.",
-          "All four of you look at the same person.",
+          "Generations of dares are carved in the brass: initials, mostly, and one rude word. There is room for one more name, and all four of you look at the same person.",
           { text: "Type the one name all four of you are looking at.", cls: "whisper" },
         ],
         config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: '"That\'s not the one you all looked at," says Wren, who noticed.', submitText: 'Carve' }),
+        clearWidget: true, clearText: true,
         solvedText: [
           "The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "For once, Wren has no next line. Wren stands quite still. \"Eleven,\" says the Binder, who has been counting.",
-          { speaker: "Wren", text: "Tied my record. Don't write that down. So it knows me. Names won't light it, though. It wants Founders' words, and those take four. Lucky I adopted exactly four." },
+          { speaker: "Wren", text: "Tied my record. Don't write that down. Mom'll — the Provost'll — kill me." },
+          "\"You had it right the first time,\" says the Reader, who corrects everybody. Wren does not argue. Wren changes the subject, which is nearly the same thing: \"Names won't light it, though. It wants Founders' words, and those take four. Lucky I adopted exactly four.\"",
         ],
         next: 'ch0_attune',
       },
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
         text: [
+          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Tonight the lamp needs all four.",
           { text: 'Open the Companion on your phone and pick your seat. This big screen is the Hearth. Type the word on this screen into your phone.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
@@ -222,12 +223,13 @@
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true }); } catch (e) {} },
+        clearWidget: true, clearText: true,
         solvedText: [
-          "The lamp catches: small and gold, like a piece of the Hearth, and warm all the way to the door. Four hundred years of matches, and all it ever wanted was to be read to. Far below, under all the floors, the Hearth stops flickering.",
-          { speaker: "Wren", text: "Look at it. That's *ours*. Mom'll — the Provost'll — kill me." },
-          "\"You had it right the first time,\" says the Reader, who corrects everybody. Wren does not argue.",
-          "\"Ash. Ember,\" the Reader reads, slowly, as if the words might bite. \"That's how they sound. What they mean is: Fire. Keep.\" Two words of the stone, read out loud by somebody willing to admit it. That is all the lamp ever said. The stone says a great deal more.",
-          "\"Keep what?\" says Wren. Nobody says. All four of you look at the same person, again. Then Wren drags the fifth blanket right up to the lamp, the way Wren sits by every fire: as close as a blanket can go without joining in. In that light, each of you is holding the thing about Wren you have never said out loud.",
+          "The lamp catches: small and gold, a piece of the Hearth on the sill, and warm all the way to the door. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
+          "Somebody finally admits to reading the Founders' shapes. \"Ash. Ember,\" says the Reader. \"That's how they sound. What they mean is: *Fire. Keep.*\" The school's translation of the stone says *walk*. The Founders, in brass, said *keep*.",
+          "\"Keep what?\" says Wren. Nobody needs to answer. All four of you are looking at the same person again, and this time it is not a dare.",
+          { speaker: "Wren", text: "Don't look at me. Look at *it*." },
+          "Wren drags the fifth blanket right up to the lamp, the way Wren sits by every fire: as close as a blanket can go without joining in. Each of you has one thing about Wren you have never said out loud.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name',
@@ -235,10 +237,10 @@
       ch0_name: {
         type: 'choice', art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
         text: [
-          "For a while, nobody speaks. The lamp hums, for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
+          "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
           "\"You lot are terrible at secrets,\" says Wren. \"I've known for years that you knew. You never said it, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\"",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
-          { speaker: "Wren", text: "Right. I need something to say tomorrow. For fourteen years the register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, I will." },
+          { speaker: "Wren", text: "Right. *Keep.* I can work with that. If I'm being kept, I want it in writing. For fourteen years that register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, I will. So: claimed by *who*?" },
         ],
         options: [
           { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
@@ -250,10 +252,10 @@
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
         text: [
-          "Wren talks until you are nearly asleep, the Reader's biscuit still uneaten, and nobody sees whether Wren sleeps. Then, soft on the floorboards, you knock: one each, then all together. This time it counts. *Everybody's here.*",
+          "Wren talks until you are nearly asleep, the Reader's biscuit still uneaten, and nobody sees whether Wren sleeps. Then, soft on the floorboards, you knock: one each, then all together. This time the door is in the room. *Everybody's here.*",
           { text: "Knock it on the table now, soft.", cls: "whisper" },
           "At dawn the lamp burns out, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket, and somebody goes over the pencil name on the door in ink. Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. Four gifts, one to each of you, given at birth: the school calls such a gift a Sighting. Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years, and never said what they saw. Whatever they write in the register, they will be writing second.",
+          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever they write in the register, they will be writing second.",
           { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
         flowTitle: 'Prologue — the paths you walked',

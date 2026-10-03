@@ -139,6 +139,7 @@ function scenesOf(chIds) {
       let paras; try { paras = typeof s.solvedText === 'function' ? s.solvedText(window.VigilStore.state, {}) : s.solvedText; } catch (e) { return null; }
       if (!Array.isArray(paras) || !paras.length) return null;
       if (s.clearWidget) { const w = document.getElementById('widget'); if (w) { w.innerHTML = ''; w.classList.add('hidden'); } el.classList.remove('narrow'); }
+      if (s.clearText) { UI.clear(el); el.__tw = null; }
       await UI.typewrite(el, paras, { instant: true, voice: false });
       return Object.assign({}, UI.lastFit, { scroll: el.scrollHeight > el.clientHeight + 1 });
     }, id);

@@ -233,6 +233,7 @@
     Store.save();
     if (scene.solvedText) {
       if (scene.clearWidget) { UI.clear(dom.widget); dom.widget.classList.add('hidden'); dom.text.classList.remove('narrow'); }
+      if (scene.clearText) { UI.clear(dom.text); dom.text.__tw = null; } // the scene's own text has been read: the solved text gets the whole box
       await UI.typewrite(dom.text, typeof scene.solvedText === 'function' ? scene.solvedText(Store.state, result) : scene.solvedText);
       if (!api.alive()) return;
     }

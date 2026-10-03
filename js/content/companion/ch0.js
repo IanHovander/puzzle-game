@@ -92,7 +92,7 @@
 
       /* First night only: which tab is for what. Later chapters assume the table has learned it. */
       P.sight.push({ t: 'table', head: ['tab', 'use it'], rows: [
-        ['<b>Sight</b>', 'Your clue. Read it now.'],
+        ['<b>Sight</b>', 'Your Sighting. Read it now.'],
         ['<b>Wren</b>', 'Only when the Hearth says.'],
         ['<b>Speak</b>', 'Only when the Hearth asks.'],
         ['<b>Book</b>', 'Your notes. Any time.'],
@@ -102,7 +102,7 @@
         P.sight.push({ t: 'h', text: 'The lamp’s collar' });
         P.sight.push({ t: 'p', text: 'Two shapes are cut round the collar. The Hearth shows them worn away. You see them clean.' });
         P.sight.push({ t: 'html', html: collar() });
-        P.sight.push({ t: 'table', head: ['cut into the band', 'it says'], rows: [
+        P.sight.push({ t: 'table', head: ['cut into the band', 'its name'], rows: [
           [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })}`, '<b>EMBER</b>'],
           [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })}`, '<b>ASH</b>'],
         ] });
