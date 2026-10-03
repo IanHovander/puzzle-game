@@ -24,6 +24,15 @@
    "key": "Space"
   },
   {
+   "clickText": "The plan"
+  },
+  {
+   "wait": 500
+  },
+  {
+   "key": "Space"
+  },
+  {
    "clickText": "The knock"
   },
   {
@@ -180,6 +189,15 @@
    "key": "Space"
   },
   {
+   "clickText": "Read to Wren"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
+  },
+  {
    "click": ".btn.choice >> nth=2"
   },
   {
@@ -205,6 +223,15 @@
   },
   {
    "expect": "the Idiots"
+  },
+  {
+   "clickText": "Morning"
+  },
+  {
+   "wait": 800
+  },
+  {
+   "key": "Space"
   },
   {
    "clickText": "The Vigil"
