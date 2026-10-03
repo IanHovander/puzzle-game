@@ -80,7 +80,7 @@
     `<rect x="0" y="520" width="${W}" height="${H - 520}" fill="url(#stonefog)"/><defs><linearGradient id="stonefog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3c" stop-opacity="0"/><stop offset="1" stop-color="#ff9a3c" stop-opacity=".55"/></linearGradient></defs>`
   ));
 
-  A.define('ch0_dorm', () => P.wrap(
+  A.define('ch0_dorm', (p) => P.wrap(
     P.sky('#0b0a12', '#15121d') +
     // window with stars
     `<rect x="1180" y="120" width="260" height="360" rx="130" fill="#070812"/>` + `<g clip-path="inset(0)">${P.stars(60, 12, 480).replace(/<circle /g, '<circle transform="translate(1180,120) scale(0.16,0.4)" ')}</g>` +
@@ -88,7 +88,7 @@
     // beds
     `${[0, 1, 2, 3].map(i => `<g transform="translate(${140 + i * 250},640)"><rect x="0" y="0" width="200" height="90" rx="8" fill="#1b1626"/><rect x="0" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="174" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="30" y="10" width="140" height="40" rx="6" fill="#2b2340"/></g>`).join('')}` +
     // sill lamp
-    `<g transform="translate(1310,500)"><rect x="-60" y="0" width="120" height="14" fill="#2a2438"/><rect x="-14" y="-70" width="28" height="70" rx="4" fill="#3a2f1a"/><circle cx="0" cy="-90" r="24" fill="#5a4a2a" stroke="#8a7040" stroke-width="3"/><circle cx="0" cy="-90" r="10" fill="#ffd27a" opacity=".55"><animate attributeName="opacity" values=".55;.2;.6;.3;.55" dur="2.4s" repeatCount="indefinite"/></circle></g>` +
+    `<g transform="translate(1310,500)"><rect x="-60" y="0" width="120" height="14" fill="#2a2438"/><rect x="-14" y="-70" width="28" height="70" rx="4" fill="#3a2f1a"/><circle cx="0" cy="-90" r="24" fill="#5a4a2a" stroke="#8a7040" stroke-width="3"/>${p && p.lit ? '<circle cx="0" cy="-90" r="10" fill="#ffd27a" opacity=".55"><animate attributeName="opacity" values=".55;.2;.6;.3;.55" dur="2.4s" repeatCount="indefinite"/></circle>' : '<circle cx="0" cy="-90" r="10" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>'}</g>` +
     P.floorTiles(740, '#0d0b14', 'rgba(255,255,255,0.03)') +
     P.fog(560, 260, '#241d33', 0.35)
   ));
@@ -102,7 +102,7 @@
     `<circle cx="0" cy="-170" r="70" fill="#5a4a2a" stroke="#8a7040" stroke-width="5"/>` +
     `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
     `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
-    `<circle cx="0" cy="-170" r="14" fill="#ffd27a" opacity=".5"><animate attributeName="opacity" values=".5;.2;.55;.25;.5" dur="2s" repeatCount="indefinite"/></circle>` +
+    `<circle cx="0" cy="-170" r="14" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>` + // unlit: nobody has ever lit it
     // Two marks are cut here, but four hundred years have taken them: the Hearth shows the
     // wear, not the shapes. Only the Reader's page has them clean.
     `${[-60, 60].map((x, i) => `<g transform="translate(${x},-290)" opacity=".5">` +

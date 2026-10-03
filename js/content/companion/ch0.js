@@ -101,7 +101,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Under it there’s chalk, rubbed nearly away. You’ve all looked straight at it. I see it clean: your name, written properly, in letters nobody here is taught. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Under it there’s chalk, rubbed nearly away. Everyone’s looked straight at it. I see it clean: a name, in letters nobody here is taught, right where yours goes. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
@@ -118,7 +118,7 @@
       }
 
       if (roleId === 'seer') {
-        P.sight.push({ t: 'h', text: 'Under the lamp’s foot' });
+        P.sight.push({ t: 'h', text: 'Under the polish' });
         P.sight.push({ t: 'p', text: 'Under the polish are **two** old cuts. A long **scratch** by slot **3**. A small **notch** by slot **1**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
         P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
