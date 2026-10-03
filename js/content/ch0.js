@@ -72,11 +72,11 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'step',
         title: 'Past curfew',
         text: [
-          "The tower room has four beds, one round window and, on the sill, a brass lamp that everyone has tried and nobody has lit.",
+          "The tower room has four beds, one round window and, on the sill, a brass lamp that everyone has tried and nobody has lit. It cost one third-year both eyebrows.",
           "The fifth blanket on the floor is Wren's. So is the fifth name on the door, in pencil. Officially, Wren sleeps at the Provost's.",
-          "*Item two: the foundling, to stand before the Houses, who will decide its use.* The Binder has read it until the paper has gone soft. \"Its,\" says the Binder. \"There's no rule against tomorrow. I've looked.\"",
-          "\"We could hide Wren,\" says the Listener. \"Where?\" says the Seer. \"Every room in this school belongs to somebody.\"",
-          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Nobody says anything after that. On the sill, the lamp says nothing either.",
+          "The Binder is rereading the Vigil's order of business. *Item two: the foundling, to stand before the Houses, who will decide its use.* \"Its,\" says the Binder. \"There's no rule against tomorrow. I've looked.\"",
+          "\"We could hide Wren,\" says the Listener. \"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
+          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Nobody has anything to add. On the sill, neither has the lamp.",
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Keep these seats all night.", cls: "whisper" },
         ],
         next: 'ch0_keys', button: "The knock",
@@ -84,7 +84,7 @@
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          "Wren adopted you at seven, by announcement, and invented a knock that same week: one each, then all four together. It means *everybody's here*. You do it now, on the bedframes, because it is something to do.",
+          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren takes no part. Somebody, Wren says, has to be the door. You do it now, on the bedframes, because it is something to do.",
           { text: "One keyboard, one key each. Press yours when it glows.", cls: "whisper" },
           { text: "Then all four at once.", cls: "whisper" },
         ],
@@ -132,7 +132,7 @@
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
           "On nights like this the knock becomes a game, faster and faster, until somebody laughs.",
-          "Tonight nobody laughs. Later tonight, this counts.",
+          "Tonight nobody laughs. Practice anyway. Before morning, it will count.",
           { text: "Press as your light crosses the line.", cls: "whisper" },
           { text: "Purple means everyone.", cls: "whisper" },
         ],
@@ -145,7 +145,7 @@
         text: [
           "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own.",
           { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and look, the universe has provided. Everyone's tried that lamp with matches. Nobody's ever tried *reading* it." },
-          "Words older than the school are cut round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before deciding to be. The letters are the stone's letters. Read the lamp, and you might read what the stone really says.",
+          "Words older than the school are cut round the lamp's collar. The Reader, who takes unreadable words personally, is at the window before deciding to be. \"Those are the stone's letters,\" says the Reader, very quietly. Read the lamp, and you might read what the stone really says.",
           "\"Rule Fourteen says no lamps after curfew,\" says the Binder, already in boots. \"The old rules say how words go into a ring. Somebody who knows both had better come.\"",
           "The Reader has missed supper. A biscuit turns up in the Reader's lap. Wren knows nothing about it, loudly.",
         ],
@@ -155,7 +155,7 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           "\"Me?\" says Wren. \"I'm the main event. Item two.\" Wren's copy is folded small. \"I've been practicing standing still. My record is eleven seconds.\"",
-          "\"Good joke,\" says the Seer. \"How long have you been working on it?\" \"Since Tuesday,\" says Wren. \"It's not finished.\"",
+          "\"Good joke,\" says the Seer. \"How long have you been working on it?\" Wren considers. \"Since Tuesday. It's not finished.\"",
           { speaker: "Wren", text: "Everything I have, somebody gave me. The name's a bird the clerk could see from the desk. The bed's on loan. My birthday's the night they found me. Before they decide what I'm for, I want one good thing that's ours." },
           "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up. This is the first time any of you has heard Wren ask for anything.",
           "The Listener checks Wren's hands. Cold, as always. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
@@ -231,7 +231,7 @@
           { speaker: "Wren", text: "Right. I need something to say tomorrow. For fourteen years, that line in the register has said \"Claimed by,\" and then nothing. Before the Houses get a word in, I'm filling it in." },
         ],
         options: [
-          { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Good. Four, like the founders. We'll leave better notes." }] },
+          { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the founders. We'll leave better notes." }] },
           { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "Finally, something in that register that's accurate." }] },
           { id: 'vigil', text: "Reader: \"The Vigil-in-waiting.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: "Wren", text: "A vigil's just people staying up for someone. Stay up for me tomorrow." }] },
           { id: 'own', text: "Listener: \"Something that's ours?\"", next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: "\"" + (s.flags.GROUP_NAME || 'the Four') + ".\" Nobody gave us that one. We made it, so it goes in ink." }] },
@@ -240,10 +240,10 @@
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
         text: [
-          "Wren talks until you are nearly asleep. Then Wren hums the lamp's two notes, the ones only the Listener heard. Nobody sees whether Wren sleeps.",
-          "Toward dawn the lamp burns low. The Seer, awake, watches the Hearth flicker again.",
-          "By morning, the penknife, the marble and the good pillow are back on the fifth blanket, and somebody has inked over the pencil on the door. Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "The school calls what you did in that light a Sighting: one way of seeing, one to a person, given at birth.",
+          "Wren talks until you are nearly asleep. Then, soft on the floorboards, comes the knock: one, two, three, four, then all together. Nobody sees whether Wren sleeps.",
+          "At dawn the lamp burns out. Below, the Hearth flickers again.",
+          "The penknife, the marble and the pillow are back on the fifth blanket, and the pencil on the door is inked over. Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
+          "The school calls what you did tonight a Sighting: one way of seeing, one to a person, given at birth.",
           "Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years, and never said what they saw. Whatever they write in the register, they will be writing second.",
           { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
