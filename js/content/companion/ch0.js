@@ -27,7 +27,7 @@
   const lawRing = () => `<svg viewBox="0 0 180 162" style="width:130px;height:117px">
     <circle cx="90" cy="78" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
     ${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 135) * Math.PI / 180, x = 90 + Math.cos(a) * 46, y = 78 + Math.sin(a) * 46;
-      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="#16131f"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${i === 0 ? 'rgba(164,130,230,.25)' : 'none'}" stroke="${i === 0 ? '#a482e6' : 'rgba(255,255,255,.4)'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="11" font-family="Cinzel,serif">${i + 1}</text>`; }).join('')}
+      return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="#16131f"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="11" fill="${i === 0 ? 'rgba(164,130,230,.25)' : 'none'}" stroke="${i === 0 ? '#a482e6' : 'rgba(255,255,255,.4)'}" stroke-width="1.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="9" font-family="Cinzel,serif">${['1st', '2nd', '3rd', '4th'][i]}</text>`; }).join('')}
     <path d="M111,21 a60,60 0 0 1 34,40" fill="none" stroke="#a482e6" stroke-width="2"/><path d="M145,61 l-8,-3 l1,9 Z" fill="#a482e6"/>
     <text x="55" y="27" text-anchor="middle" fill="#a482e6" font-size="9" font-family="Cinzel,serif">the scratch</text>
     <text x="90" y="152" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="9" font-family="Cinzel,serif">first word in it, then clockwise</text>
@@ -109,8 +109,8 @@
         P.sight.push({ t: 'p', text: 'Nobody else can hear it. Two notes, over and over.' });
         P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note is **three steps above** the first.' });
         P.sight.push({ t: 'html', html: ladder3() });
-        P.sight.push({ t: 'p', text: 'Two notes, two words. When you hear the two words, find both on the ladder in your **Book**. The order that climbs three is right.' });
-        P.sight.push({ t: 'fine', text: 'You hear steps, never names.' });
+        P.sight.push({ t: 'p', text: 'Two notes, two words. When the two words are said aloud, find both on the ladder in your **Book**. The order that climbs three is right.' });
+        P.sight.push({ t: 'fine', text: 'You hear the climb, never the words. Someone else has those.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
@@ -119,7 +119,7 @@
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the lamp’s foot' });
-        P.sight.push({ t: 'p', text: 'Under the polish are **two** old cuts. A long **scratch** under slot **3**. A small **notch** under slot **1**.' });
+        P.sight.push({ t: 'p', text: 'Under the polish are **two** old cuts. A long **scratch** by slot **3**. A small **notch** by slot **1**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
         P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
@@ -131,7 +131,7 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A sigil starts at the **scratch**. A notch is only a maker’s signature.',
+          'A **Founders’** sigil starts at the **scratch**. On Founders’ brass, a notch is only a maker’s signature.',
           'The **first** word goes **in** the scratched slot.',
           'Each next word goes in the next slot **clockwise**.',
           'One word per slot. **Any slot left over stays empty.**',
@@ -140,8 +140,8 @@
         P.sight.push({ t: 'fine', text: 'You cannot see the cuts or read the words. Ask for both.' });
         P.wren.push({ t: 'h', text: 'No thread' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
-          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> an old red thread, well knotted.</li>'
-          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> last week’s practice thread still will not hold.</li>'
+          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> an old thread, well knotted, from years of sitting together.</li>'
+          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> a new thread, still slipping.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
