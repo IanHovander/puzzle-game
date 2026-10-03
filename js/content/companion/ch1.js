@@ -148,7 +148,7 @@
         P.sight.push({ t: 'fine', text: 'The tapestry behind the chairs has been painted over, and there\u2019s older paint underneath, a whole other picture. Where the new paint is thinnest, you can make out a hand, then a sleeve. The Envoy keeps looking at exactly the place you are looking.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did, and wrote something down. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did. She stopped writing to watch it. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
       }
 
       if (roleId === 'binder') {
