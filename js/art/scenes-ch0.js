@@ -97,14 +97,14 @@
     }
     return s;
   }
-  function dormDoor() {
+  function dormDoor(inked) {
     let s = `<g transform="translate(990,400)">`;
     s += `<rect x="-10" y="-10" width="160" height="350" fill="#1a1524"/>`; // frame
     s += `<rect x="0" y="0" width="140" height="340" fill="#241d30" stroke="#2f2740" stroke-width="3"/>`;
     s += `<rect x="16" y="18" width="108" height="130" rx="3" fill="none" stroke="#2f2740" stroke-width="3"/><rect x="16" y="176" width="108" height="146" rx="3" fill="none" stroke="#2f2740" stroke-width="3"/>`;
     s += `<circle cx="120" cy="170" r="6" fill="#5a4a2a" stroke="#8a7040" stroke-width="1.5"/>`;
-    // the fifth name, in pencil, rubbing off: a wobbly scrawl and an underline
-    s += `<g fill="none" stroke="#b9b4c8" stroke-linecap="round" stroke-linejoin="round" opacity=".38">`;
+    // the fifth name, in pencil, rubbing off: a wobbly scrawl and an underline (at dawn, gone over in ink: bolder)
+    s += inked ? `<g fill="none" stroke="#d6d0e4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".85">` : `<g fill="none" stroke="#b9b4c8" stroke-linecap="round" stroke-linejoin="round" opacity=".38">`;
     s += `<path d="M30,84 c3,-16 7,-16 9,-1 c1,-9 6,-11 8,-2 c2,8 6,7 8,-1 c3,-9 8,-7 7,1 c-1,7 5,6 8,-2 c2,-6 6,-8 9,0 c2,6 6,5 9,-3 c2,-5 5,-4 6,1" stroke-width="2"/>`;
     s += `<path d="M30,94 q40,4 82,-2" stroke-width="1.6" opacity=".7"/></g>`;
     return s + '</g>';
@@ -120,7 +120,7 @@
     `<path d="M-34,-30 C-22,-26 -18,-16 -17,-2 L-16,8 C-12,56 -8,110 -4,152" fill="none" stroke="#ffd27a" stroke-width="2.5" opacity=".35"/></g>`;
 
   A.define('ch0_dorm', (p) => {
-    const lit = !!(p && p.lit);
+    const lit = !!(p && p.lit), dawn = !!(p && p.dawn); // dawn (ch0_flow): the lamp has burned out, the blanket is still by the sill, the door is in ink
     return P.wrap(
       P.sky('#0b0a12', '#15121d') +
       // warm cast over the room while the lamp burns
@@ -129,18 +129,18 @@
       `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="#070812"/>` + dormStars() +
       `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="none" stroke="#2a2438" stroke-width="12"/>` +
       `<path d="M${WIN.x},${WIN.y - WIN.r} L${WIN.x},${WIN.y + WIN.r} M${WIN.x - WIN.r},${WIN.y} L${WIN.x + WIN.r},${WIN.y}" stroke="#2a2438" stroke-width="5"/>` +
-      dormDoor() +
+      dormDoor(dawn) +
       P.floorTiles(740, '#0d0b14', 'rgba(255,255,255,0.03)') +
       // four beds in one row
       [110, 325, 540, 755].map(bed).join('') +
-      (lit ? '' : blanketFolded) +
+      (lit || dawn ? '' : blanketFolded) +
       // the sill, and the lamp on it
       `<g transform="translate(${WIN.x},${SILL})"><rect x="-80" y="0" width="160" height="16" fill="#2a2438"/>` +
       (lit ? `${halo('dormhalo')}<circle cx="0" cy="-90" r="190" fill="url(#dormhalo)"/>` : '') +
       `<rect x="-14" y="-70" width="28" height="70" rx="4" fill="#3a2f1a"${lit ? ' stroke="#c9a85a" stroke-width="1.5"' : ''}/><circle cx="0" cy="-90" r="24" fill="#5a4a2a" stroke="${lit ? '#e8c070' : '#8a7040'}" stroke-width="3"/>` +
       (lit ? '<circle cx="0" cy="-90" r="11" fill="#ffe08a" opacity=".95"><animate attributeName="opacity" values=".95;.7;1;.8;.95" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="0" cy="-90" r="4" fill="#fff4d6"/>' : '<circle cx="0" cy="-90" r="10" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>') +
       `</g>` +
-      (lit ? blanketPulled : '') +
+      (lit || dawn ? blanketPulled : '') +
       P.fog(560, 260, '#241d33', lit ? 0.22 : 0.35)
     );
   });
@@ -152,7 +152,7 @@
      them clean. They are deliberately nowhere near the head's four slots.
      The column carries four hundred years of dares — tallies, initials, plain scratches — with a
      bare patch left for one more name. Plain strokes only: nothing here is a glyph path. */
-  function dares() {
+  function dares(carved) {
     const r = A.rng(4041);
     const LET = { H: 'M0,0 l0,12 M8,0 l0,12 M0,6 l8,0', L: 'M0,0 l0,12 l7,0', N: 'M0,12 l0,-12 l8,12 l0,-12', E: 'M8,0 l-8,0 l0,12 l8,0 M0,6 l6,0', K: 'M0,0 l0,12 M8,0 l-8,6 l8,6', F: 'M8,0 l-8,0 l0,12 M0,6 l6,0', Z: 'M0,0 l8,0 l-8,12 l8,0', P: 'M0,12 l0,-12 l7,0 l0,6 l-7,0', D: 'M0,0 l0,12 l5,0 l3,-4 l0,-4 l-3,-4 Z' };
     const keys = Object.keys(LET);
@@ -186,6 +186,11 @@
         x += it.w + 7 + r() * 6;
       }
     });
+    // once the four have cut it (ch0_carve): WREN in the bare patch, fresh, so bright where the old dares are dark
+    if (carved) {
+      const W4 = ['M0,0 l2,12 l2,-8 l2,8 l2,-12', 'M0,12 l0,-12 l5,0 q3,0 3,3 q0,3 -3,3 l-5,0 M3,6 l5,6', LET.E, LET.N];
+      s += `<g transform="translate(-21,12) rotate(-3)">` + W4.map((d, i) => `<g transform="translate(${i * 11},0)"><path d="${d}" stroke="#241a0c" stroke-width="1.8" opacity=".5"/><path d="${d}" transform="translate(.6,.6)" stroke="#f2d48a" stroke-width="1.1" opacity=".85"/></g>`).join('') + '</g>';
+    }
     return s + '</g>';
   }
   function collarBand() {
@@ -199,7 +204,7 @@
   }
 
   A.define('ch0_lamp', (p) => {
-    const lit = !!(p && p.lit);
+    const lit = !!(p && p.lit), carved = !!(p && p.carved);
     return P.wrap(
       P.sky('#0b0a12', '#1a1520') +
       `<rect x="0" y="600" width="${W}" height="300" fill="#100d16"/>` +
@@ -208,7 +213,7 @@
       (lit ? `${halo('lamphalo')}<circle cx="0" cy="-170" r="280" fill="url(#lamphalo)"><animate attributeName="opacity" values="1;.85;1;.9;1" dur="2.6s" repeatCount="indefinite"/></circle>` : '') +
       `<rect x="-200" y="80" width="400" height="30" fill="#2a2438"/>` +
       `<rect x="-48" y="-120" width="96" height="200" rx="8" fill="#4a3c22" stroke="${lit ? '#c9a85a' : '#8a7040'}" stroke-width="3"/>` +
-      dares() +
+      dares(carved) +
       `<circle cx="0" cy="-170" r="70" fill="#5a4a2a" stroke="${lit ? '#e8c070' : '#8a7040'}" stroke-width="5"/>` +
       `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
       `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
