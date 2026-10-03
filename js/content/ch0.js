@@ -61,10 +61,9 @@
         text: [
           "Above the fire, a line is cut into the stone. It is a prophecy: the kind of sentence that makes perfect sense the morning after.",
           { text: "\"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them.\"", cls: "omen" },
-          "That is the school's translation. The original is cut in the Founders' shapes, which nobody at the school will admit to reading. The Cold is a place. The Masters will tell you that much, and no more.",
+          "That is the school's translation. The original is cut in the Founders' shapes, which nobody at the school will admit to reading. The Cold is a place, the Masters say, and then they change the subject.",
           "Only one thing has ever come for Wren, and it is cut in stone.",
           "Tonight, for the first time since Wren was found, the Hearth is flickering. Tomorrow night, at the Vigil, the Houses decide who Wren belongs to: the school, or the stone. If it is the stone, Wren walks into the Cold. Wren has been told to wear something warm.",
-          { text: "No need to write anything down.", cls: "small" },
         ],
         next: 'ch0_dorm', button: "The night before",
       },
@@ -155,7 +154,7 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
           "The door bangs open. Wren has never knocked on this door, on the principle that nobody knocks on their own. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
-          { speaker: "Wren", text: "You're awake! Brilliant. I heard you through the door, so no, you can't hide me. You're getting faster at the knock, too. What I need is four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
+          { speaker: "Wren", text: "You're awake! Brilliant. I heard you through the door, so no, you can't hide me. What I need is four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
           "Worn shapes run round the lamp's collar. The Reader, who takes unreadable words personally, is already at the window. \"Founders' work. Same shapes as the stone.\"",
           "\"The Founders never left notes,\" says Wren. \"Four hundred years, one sentence about anybody, and it's about me. I'd like to hear them say something else. Tonight, before the Houses get their turn.\"",
           "The Binder gets off the bed. \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
@@ -196,7 +195,7 @@
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four of you. Later, so does Wren.",
+          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four of you, out loud.",
           { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type in the word of attunement shown here.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
@@ -228,8 +227,7 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to.",
-          "Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
+          "The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. Nobody breathes, in case it notices.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire, so it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
           "\"The stone says *walk*,\" says the Seer.",
           "The Reader shakes their head. \"The school's translation says *walk*. The Founders' own lamp says *keep*.\" All four of you are looking at the same person again, and this time it is not a dare.",
@@ -249,7 +247,7 @@
         ],
         options: [
           { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is just people staying up for someone. Stay up for me tomorrow. I'll be the one standing still." }] },
-          { id: 'own', text: "Listener: \"Something that's ours.\" (type it)", next: 'ch0_flow', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
+          { id: 'own', text: "Listener: a name of our own (type it, then say it)", next: 'ch0_flow', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
           { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That register is finally accurate." }] },
           { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
         ],
