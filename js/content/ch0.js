@@ -249,7 +249,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, who always steps between Wren and any lamp, doesn't step. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, for once, stays exactly where the Seer is. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
