@@ -83,7 +83,7 @@
 .orb { position: absolute; left: 50%; width: 46px; height: 46px; margin-left: -23px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff4c0, var(--gold) 55%, rgba(212,169,78,0.2)); box-shadow: 0 0 22px rgba(242,210,122,0.7); will-change: top; }
 .orb.mimic { background: radial-gradient(circle at 35% 35%, #e8f4ff, #8fb7d9 55%, rgba(143,183,217,0.2)); box-shadow: 0 0 22px rgba(200,225,255,0.6); }
 .orb.brace { background: radial-gradient(circle at 35% 35%, #ffe0d0, var(--ember) 55%, rgba(255,122,61,0.2)); box-shadow: 0 0 22px rgba(255,122,61,0.7); }
-.orb.all { background: radial-gradient(circle at 35% 35%, #ecdcff, var(--violet) 55%, rgba(155,123,216,0.2)); box-shadow: 0 0 26px rgba(155,123,216,0.8); }
+.orb.all { background: radial-gradient(circle at 35% 35%, #ffffff, #e8e4f2 55%, rgba(232,228,242,0.2)); box-shadow: 0 0 28px rgba(255,255,255,0.85); } /* everyone: white, no seat's colour */
 .orb .orb-chain { position: absolute; top: 50%; height: 4px; background: rgba(255,200,150,0.7); }
 .react-meter { height: 14px; border-radius: 7px; background: rgba(255,255,255,0.08); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 .react-meter > div { height: 100%; background: linear-gradient(90deg, var(--blood), var(--gold), var(--moss)); transition: width .2s; }

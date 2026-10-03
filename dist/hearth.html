@@ -11,6 +11,7 @@
   --bg: #0b0a10;
   --bg2: #15121d;
   --panel: rgba(18, 15, 26, 0.82);
+  --panel-glass: rgba(14, 11, 22, 0.58); /* the story text sits over the art: dark enough to read, light enough to see through */
   --panel-solid: #16131f;
   --ink: #e9e2d2;
   --ink-dim: #a99f8c;
@@ -26,7 +27,7 @@
   --display: 'Cinzel', 'Trajan Pro', 'Georgia', serif;
   --hand: 'IM Fell English', 'Cormorant Garamond', serif;
   --shadow: 0 10px 40px rgba(0,0,0,0.55);
-  --p1: #e0b04a; --p2: #4fb3bf; --p3: #d96b4a; --p4: #a482e6;
+  --p1: #e0b04a; --p2: #4fb3bf; --p3: #a482e6; --p4: #d96b4a; /* seat colours, as lore.js: Seer purple, Binder red */
 }
 
 * { box-sizing: border-box; }
@@ -127,8 +128,12 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
    a flow scene's own text is one or two short lines. This belongs beside the other #panel rules in
    css/hearth.css; it sits here with the rest of the flowchart because it exists only for the chart,
    and it carries `body` so it outranks the rule loaded after this file. */
-body #panel:has(.flow-panel) { grid-template-columns: minmax(180px, 210px) 1fr; }
-body #panel:has(.flow-panel) #text { font-size: 18px; }
+/* The story text on a flow screen is read in full, at full width, before the chart is built (the chart
+   only appears on the keypress after it). Once the chart is up, the text has done its job: squeezing
+   it into a 210px column beside the chart left a six-paragraph ending scrolling 1350px. So the chart
+   takes the whole width and the text steps aside. */
+body #panel:has(.flow-panel) { grid-template-columns: minmax(0, 1fr); }
+body #panel:has(.flow-panel) #text { display: none; }
 /* A `1fr` grid track has an automatic minimum of its content's min-content width, and the chart no
    longer shrinks to fit -- so without this the whole #panel grew to 1405px at a 1280px viewport and
    the right-hand third of the flow panel was simply off the screen, unreachable, because nothing above
@@ -200,8 +205,8 @@ body .modal.wide:has(.map-box) { max-width: min(1120px, 96vw); padding: 20px 22p
 #timer { font-variant-numeric: tabular-nums; color: var(--ink); }
 
 /* main panel */
-#panel { position: relative; z-index: 5; display: grid; grid-template-columns: minmax(340px, 560px) 1fr; gap: 20px; padding: 10px 28px 26px; height: 100%; min-height: 0; align-items: end; }
-#text { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 22px 28px; max-height: calc(100vh - 96px); overflow-y: auto; backdrop-filter: blur(8px); box-shadow: var(--shadow); font-size: 21px; cursor: default; scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.4) transparent; }
+#panel { position: relative; z-index: 5; display: grid; grid-template-columns: minmax(340px, 600px) minmax(0, 1fr); gap: 20px; padding: 10px 28px 26px; height: 100%; min-height: 0; align-items: end; }
+#text { background: var(--panel-glass); border: 1px solid var(--line); border-radius: 10px; padding: 22px 28px; max-height: calc(100vh - 96px); overflow-y: auto; backdrop-filter: blur(1.5px); text-shadow: 0 1px 2px rgba(0,0,0,0.9), 0 0 14px rgba(0,0,0,0.6); box-shadow: var(--shadow); font-size: 21px; cursor: default; scrollbar-width: thin; scrollbar-color: rgba(212,169,78,.4) transparent; }
 #text.narrow { font-size: 18px; max-height: 44vh; }
 #text .para { margin: 0 0 14px; animation: fadeUp .4s ease both; }
 /* When a long scene has been shrunk to fit the box, close the gaps to match. */
@@ -341,6 +346,24 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 .night-map { width: 100%; height: auto; display: block; }
 .modal.wide { max-width: min(980px, 94vw); }
 
+/* ---------- narrator voice (js/core/voice.js) ---------- */
+/* The paragraph being read gets a faint rule; a player's line lights up in that player's colour,
+   with a small card under the box saying whose turn it is to read it aloud. */
+#text .para.voice-reading { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--gold, #d8b45a) 55%, transparent); }
+.voice-quote { border-radius: 3px; transition: background .25s, color .25s; }
+.voice-quote.voice-cue-on { padding: 0 2px; font-weight: 600; }
+.voice-quote.voice-cue-on.p0 { color: var(--p1); background: color-mix(in srgb, var(--p1) 16%, transparent); }
+.voice-quote.voice-cue-on.p1 { color: var(--p2); background: color-mix(in srgb, var(--p2) 16%, transparent); }
+.voice-quote.voice-cue-on.p2 { color: var(--p3); background: color-mix(in srgb, var(--p3) 16%, transparent); }
+.voice-quote.voice-cue-on.p3 { color: var(--p4); background: color-mix(in srgb, var(--p4) 16%, transparent); }
+.voice-cue { position: fixed; z-index: 40; top: 64px; right: 24px; max-width: min(620px, calc(100vw - 32px)); display: flex; flex-wrap: wrap; align-items: center; gap: .6em; padding: .55em .9em; border: 1px solid currentColor; border-left-width: 4px; border-radius: 6px; background: var(--panel, #15121c); box-shadow: 0 6px 24px rgba(0,0,0,.45); font-size: 16px; letter-spacing: .03em; animation: voiceCueIn .25s ease-out; }
+@keyframes voiceCueIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) { .voice-cue { right: 16px; left: 16px; } }
+.voice-cue.p0 { color: var(--p1); } .voice-cue.p1 { color: var(--p2); } .voice-cue.p2 { color: var(--p3); } .voice-cue.p3 { color: var(--p4); }
+.voice-cue-who { font-weight: 700; text-transform: uppercase; }
+.voice-cue-line { font-style: italic; color: var(--ink, inherit); }
+.voice-cue .btn { margin-left: auto; }
+
 </style>
 
 <style>
@@ -429,7 +452,7 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 .orb { position: absolute; left: 50%; width: 46px; height: 46px; margin-left: -23px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff4c0, var(--gold) 55%, rgba(212,169,78,0.2)); box-shadow: 0 0 22px rgba(242,210,122,0.7); will-change: top; }
 .orb.mimic { background: radial-gradient(circle at 35% 35%, #e8f4ff, #8fb7d9 55%, rgba(143,183,217,0.2)); box-shadow: 0 0 22px rgba(200,225,255,0.6); }
 .orb.brace { background: radial-gradient(circle at 35% 35%, #ffe0d0, var(--ember) 55%, rgba(255,122,61,0.2)); box-shadow: 0 0 22px rgba(255,122,61,0.7); }
-.orb.all { background: radial-gradient(circle at 35% 35%, #ecdcff, var(--violet) 55%, rgba(155,123,216,0.2)); box-shadow: 0 0 26px rgba(155,123,216,0.8); }
+.orb.all { background: radial-gradient(circle at 35% 35%, #ffffff, #e8e4f2 55%, rgba(232,228,242,0.2)); box-shadow: 0 0 28px rgba(255,255,255,0.85); } /* everyone: white, no seat's colour */
 .orb .orb-chain { position: absolute; top: 50%; height: 4px; background: rgba(255,200,150,0.7); }
 .react-meter { height: 14px; border-radius: 7px; background: rgba(255,255,255,0.08); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
 .react-meter > div { height: 100%; background: linear-gradient(90deg, var(--blood), var(--gold), var(--moss)); transition: width .2s; }
@@ -3325,12 +3348,12 @@ var qrcode = function() {
     if (children) (Array.isArray(children) ? children : [children]).forEach(c => { if (c == null) return; e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
     return e;
   };
-  UI.clear = (e) => { while (e.firstChild) e.removeChild(e.firstChild); return e; };
+  UI.clear = (e) => { while (e.firstChild) e.removeChild(e.firstChild); if (e.style) e.style.minHeight = ''; return e; };
   UI.sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
   /* Inline markup: *emphasis*, **strong**, [[glyph:name]] handled by caller, ~~small~~ */
   UI.rich = function (s) {
-    return UI.esc(s)
+    return UI.esc(String(s).replace(/\s*‸\s*/g, ' '))
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/~~(.+?)~~/g, '<span class="small">$1</span>')
@@ -3383,6 +3406,9 @@ var qrcode = function() {
     }
     // What the box had to do to fit, for the layout check in tools/scan-fit.js.
     UI.lastFit = { base, size, over: Math.max(0, container.scrollHeight - avail) };
+    // Hold the box at its finished height, so the text types in from the top instead of pushing
+    // the box upward line by line (the box sits on the bottom edge of the screen).
+    container.style.minHeight = Math.min(maxH, container.scrollHeight + chrome) + 'px';
     ghost.remove();
   };
 
@@ -3403,10 +3429,11 @@ var qrcode = function() {
       UI.fitBox(container, ghost);
     }
 
+    const made = []; // the paragraph elements, in order, for the narrator
     for (const para of paragraphs) {
       const b = buildPara(para, st);
       const p = b.p, span = b.span, html = b.html;
-      container.appendChild(p);
+      container.appendChild(p); made.push(p);
       container.__tw = { speaker: st.speaker, el: st.el };
       // reveal by characters of the plain text while keeping markup: simple approach, progressively slice HTML at tag-safe points
       if (skipRequested || opts.instant) { span.innerHTML = html; continue; }
@@ -3425,6 +3452,7 @@ var qrcode = function() {
       container.scrollTop = container.scrollHeight;
     }
     skipRequested = false;
+    if (window.VigilVoice && opts.voice !== false) window.VigilVoice.read(paragraphs, made);
   };
 
   /* Countdown bar: returns {promise, cancel}. onTick(secondsLeft). */
@@ -3666,6 +3694,285 @@ var qrcode = function() {
 })();
 
 </script>
+<script>/* js/core/voice.js */
+/* Voice: a narrator reads the story aloud, Wren and the other characters have voices of their
+   own, and the four players read their own characters' lines.
+
+   The table still does the reading that matters. When one of the four speaks in the text ("Its,"
+   says the Binder), the quote lights up in that player's colour and the narrator waits: for the
+   microphone to hear someone speak and stop (Listen on), for that player's key, or, failing both,
+   for about as long as the line takes to say. Nothing is transcribed and no audio leaves the
+   machine: listening is a level meter, not speech recognition.
+
+   Where the wry lines land is timing, not the voice. The narrator reads a sentence at a time, takes
+   a beat before the short last sentence of a paragraph (where the turn usually is), slows for the
+   prophecy, and leaves a pause after every box for the table. A caret (‸) in the text, which the
+   screen never shows, asks for an extra beat at that exact point.
+
+   The voices are the browser's own (speechSynthesis), picked by name from a preference list per
+   character. Recorded files can replace them later without touching the content: see docs/VOICE-ACTING.md. */
+(function () {
+  'use strict';
+  const Voice = {};
+  const ROLES = ['Reader', 'Listener', 'Seer', 'Binder'];
+  const synth = window.speechSynthesis || null;
+
+  /* Who sounds like what. `names` are tried in order against the installed voices (macOS, Windows,
+     Chrome and Edge ship different sets), then `lang`, then any English voice. */
+  const CAST = {
+    Narrator: { names: ['Daniel', 'Google UK English Male', 'Microsoft Ryan', 'Microsoft George', 'Arthur', 'Oliver', 'Microsoft Thomas'], lang: 'en-GB', rate: 0.94, pitch: 0.92 },
+    Wren: { names: ['Google UK English Female', 'Serena', 'Martha', 'Microsoft Libby', 'Microsoft Sonia', 'Kate', 'Samantha'], lang: 'en-GB', rate: 1.08, pitch: 1.18 },
+    Provost: { names: ['Martha', 'Microsoft Sonia', 'Stephanie', 'Google UK English Female', 'Kate'], lang: 'en-GB', rate: 0.9, pitch: 0.85 },
+    Other: { names: ['Google UK English Male', 'Daniel', 'Microsoft Ryan', 'Arthur'], lang: 'en-GB', rate: 0.95, pitch: 0.78 },
+  };
+
+  const settings = () => {
+    const st = window.VigilStore && window.VigilStore.state;
+    if (!st) return { on: false, listen: false };
+    if (!st.voice) st.voice = { on: false, listen: false };
+    return st.voice;
+  };
+  Voice.available = () => !!(synth || window.VIGIL_VOICE_FILES);
+  Voice.isOn = () => !!(Voice.available() && settings().on);
+
+  /* ---------- voices ---------- */
+  let voices = [];
+  const loadVoices = () => { voices = synth ? synth.getVoices() : []; };
+  if (synth) { loadVoices(); synth.addEventListener && synth.addEventListener('voiceschanged', loadVoices); }
+  const castFor = (who) => CAST[who] || (/Provost/.test(who) ? CAST.Provost : (who === 'Narrator' ? CAST.Narrator : CAST.Other));
+  function pickVoice(c) {
+    if (!voices.length) loadVoices();
+    for (const n of c.names) { const v = voices.find(x => x.name === n || x.name.startsWith(n + ' ') || x.name.includes(n)); if (v) return v; }
+    return voices.find(x => x.lang && x.lang.replace('_', '-').startsWith(c.lang)) || voices.find(x => /^en/i.test(x.lang)) || null;
+  }
+
+  /* ---------- turning a box into a script ---------- */
+  const plain = (s) => String(s).replace(/\*\*(.+?)\*\*/g, '$1').replace(/\*(.+?)\*/g, '$1').replace(/~~(.+?)~~/g, '$1')
+    .replace(/\{\{(.+?)\}\}/g, '$1').replace(/\[\[[^\]]*\]\]/g, '').replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+  let names = ROLES.concat(['Wren', 'Provost Marrow', 'Provost', 'Marrow', 'Lord Vane', 'Vane', 'Master Sorrel', 'Sorrel', 'Master Oriel', 'Oriel', 'The captain', 'captain']);
+  Voice.addNames = (list) => { for (const n of list) if (n && !names.includes(n)) names.push(n); names.sort((a, b) => b.length - a.length); };
+  Voice.addNames([]);
+  const nameAlt = () => names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+  const canon = (n) => (/^Provost|^Marrow$/.test(n) ? 'Provost' : n);
+
+  /* Split one paragraph of narration into what the narrator says and what a character says.
+     A quote belongs to whoever "says" it straight after it, else to a "says the X" just before it
+     (a second quote from the same speaker), else to a short "Wren considers." sentence right
+     before it. Anything else ("one born of four") is the narrator quoting, and the narrator reads it. */
+  function segment(text) {
+    const t = plain(text), out = [], re = /"([^"]+)"/g, alt = nameAlt();
+    const after = new RegExp('^\\s*,?\\s*(?:says|asks|whispers|adds|answers|calls|said)\\s+(?:the\\s+)?(' + alt + ')\\b');
+    const prevSays = new RegExp('(?:says|asks|whispers|adds|answers|calls)\\s+(?:the\\s+)?(' + alt + ')\\b[^"]*$');
+    const prevSubject = new RegExp('(?:^\\s*|[.!?]\\s+)(?:the\\s+|The\\s+)?(' + alt + ')\\b[^.!?"]{0,40}[.:,]\\s*$');
+    let last = 0, m;
+    while ((m = re.exec(t))) {
+      const gap = t.slice(last, m.index), rest = t.slice(m.index + m[0].length);
+      const who = (rest.match(after) || [])[1] || (gap.match(prevSays) || [])[1] || (gap.match(prevSubject) || [])[1] || null;
+      if (!who) continue; // narrator quoting: leave it in the narration
+      if (gap.trim()) out.push({ who: 'Narrator', text: gap });
+      out.push({ who: canon(who), text: m[1] });
+      last = m.index + m[0].length;
+    }
+    if (t.slice(last).trim()) out.push({ who: 'Narrator', text: t.slice(last) });
+    return out;
+  }
+
+  function scriptFor(paras) {
+    const lines = [];
+    paras.forEach((para, pi) => {
+      const o = typeof para === 'object' ? para : { text: para };
+      if (o.cls && /\b(whisper|small)\b/.test(o.cls)) return; // instructions are for the screen
+      if (o.speaker) { lines.push({ who: canon(o.speaker), text: plain(o.text), para: pi }); return; }
+      const omen = !!(o.cls && /\bomen\b/.test(o.cls));
+      for (const s of segment(o.text)) lines.push(Object.assign(s, { para: pi, omen }));
+    });
+    return lines;
+  }
+  Voice.scriptFor = scriptFor; // for tools and tests
+
+  /* Sentence-sized phrases with the pause that follows each. The beat before a paragraph's short last
+     sentence is where the wry turn usually sits ("...and was gone a long time."). */
+  function phrases(line) {
+    const t = line.text.replace(/\s+/g, ' ').trim();
+    if (!t) return [];
+    const parts = t.split(/(?<=[.!?…:])\s+(?=["'A-Z0-9(])|\s*‸\s*|\s+—\s+/).filter(Boolean);
+    return parts.map((p, i) => {
+      const lastShort = parts.length > 1 && i === parts.length - 2 && parts[i + 1].split(' ').length <= 8;
+      return { text: p.replace(/‸/g, ''), pause: line.omen ? 700 : lastShort ? 520 : /:$/.test(p) ? 320 : 200 };
+    });
+  }
+
+  /* ---------- recorded performances ----------
+     A line that has been recorded (tools/voice/render.js) plays from its file; anything else falls
+     back to the browser's voice. Lines are looked up by who says them and what they say, so an
+     edited line simply stops matching and is spoken by the browser until it is recorded again. */
+  Voice.key = function (who, text) {
+    const s = who + '|' + String(text).replace(/\s+/g, ' ').trim();
+    let h = 0x811c9dc5;
+    for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+    return ('0000000' + h.toString(16)).slice(-8);
+  };
+  const recorded = (line) => { const f = window.VIGIL_VOICE_FILES; return f ? f[Voice.key(line.who, line.text)] : null; };
+  let current = null;
+  function playFile(file, my) {
+    return new Promise((resolve) => {
+      if (my !== session) return resolve();
+      const a = new Audio((window.VIGIL_VOICE_BASE || 'audio/voice/') + file);
+      current = a;
+      const fin = () => { if (current === a) current = null; resolve(); };
+      a.onended = fin; a.onerror = fin;
+      const p = a.play(); if (p && p.catch) p.catch(fin);
+    });
+  }
+
+  /* ---------- playing ---------- */
+  let session = 0;
+  Voice.stop = function () { session++; if (synth) synth.cancel(); if (current) { current.pause(); current = null; } clearCue(); };
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+  function say(text, who, omen, my) {
+    return new Promise((resolve) => {
+      if (my !== session || !synth) return resolve();
+      const c = castFor(who), u = new SpeechSynthesisUtterance(text);
+      const v = pickVoice(c); if (v) { u.voice = v; u.lang = v.lang; } else u.lang = c.lang;
+      u.rate = c.rate * (omen ? 0.82 : 1); u.pitch = c.pitch; u.volume = 1;
+      let done = false; const fin = () => { if (!done) { done = true; resolve(); } };
+      u.onend = fin; u.onerror = fin;
+      // A safety net for engines that never fire onend: about 0.5 s a word, plus a little.
+      setTimeout(fin, 1500 + text.split(' ').length * 520 / u.rate);
+      synth.speak(u);
+    });
+  }
+
+  /* ---------- the four players' lines ---------- */
+  let cueEl = null, cueResolve = null, keyListener = null;
+  function clearCue() {
+    if (cueEl) { cueEl.remove(); cueEl = null; }
+    document.querySelectorAll('.voice-cue-on').forEach(e => e.classList.remove('voice-cue-on'));
+    if (keyListener) { window.removeEventListener('keydown', keyListener, true); keyListener = null; }
+    if (cueResolve) { const r = cueResolve; cueResolve = null; r(); }
+  }
+  /* Light the quote in the paragraph it came from. */
+  function markQuote(p, text) {
+    if (!p) return null;
+    const walker = document.createTreeWalker(p, NodeFilter.SHOW_TEXT);
+    let n; const key = text.slice(0, 24);
+    while ((n = walker.nextNode())) {
+      const at = n.nodeValue.replace(/[“”]/g, '"').indexOf(key);
+      if (at < 0) continue;
+      const r = document.createRange(); r.setStart(n, at);
+      r.setEnd(n, Math.min(n.nodeValue.length, at + text.length));
+      const span = document.createElement('span'); span.className = 'voice-quote';
+      try { r.surroundContents(span); } catch (e) { return null; }
+      return span;
+    }
+    return null;
+  }
+  async function cue(line, p, my) {
+    const idx = ROLES.indexOf(line.who);
+    const span = markQuote(p, line.text);
+    if (span) span.classList.add('voice-cue-on', 'p' + idx);
+    const nm = (window.VigilStore && window.VigilStore.state.names[idx]) || line.who;
+    cueEl = document.createElement('div');
+    cueEl.className = 'voice-cue p' + idx;
+    cueEl.innerHTML = `<span class="voice-cue-who">${nm}</span> read this aloud <span class="voice-cue-line">“${line.text.replace(/[<&]/g, c => c === '<' ? '&lt;' : '&amp;')}”</span><button class="btn small ghost" type="button">Said it</button>`;
+    document.body.appendChild(cueEl);
+    const words = line.text.split(/\s+/).length;
+    await new Promise((resolve) => {
+      cueResolve = resolve;
+      cueEl.querySelector('button').onclick = () => clearCue();
+      const keys = window.VigilInput ? window.VigilInput.keys() : [];
+      keyListener = (e) => { const k = e.key.length === 1 ? e.key.toUpperCase() : e.key; if (k === keys[idx] || k === 'Enter') clearCue(); };
+      window.addEventListener('keydown', keyListener, true);
+      if (settings().listen) Listen.waitForSpeech(words).then(() => { if (my === session) clearCue(); });
+      else setTimeout(() => { if (my === session) clearCue(); }, 1800 + words * 420);
+    });
+    if (span) span.classList.remove('voice-cue-on');
+  }
+
+  /* Read a box that has just been typed. `ps` are the paragraph elements, in order. Reads queue:
+     a choice's reply is read after the box it joins. */
+  let chain = Promise.resolve();
+  Voice.read = function (paras, ps) {
+    if (!Voice.isOn()) return;
+    const my = session, lines = scriptFor(paras);
+    chain = chain.then(async () => {
+      for (const line of lines) {
+        if (my !== session) return;
+        const p = ps[line.para];
+        if (ROLES.includes(line.who)) { await cue(line, p, my); await sleep(250); continue; }
+        if (p) p.classList.add('voice-reading');
+        const file = recorded(line);
+        if (file) { await playFile(file, my); await sleep(320); if (p) p.classList.remove('voice-reading'); continue; }
+        for (const ph of phrases(line)) { if (my !== session) return; await say(ph.text, line.who, line.omen, my); await sleep(ph.pause); }
+        if (p) p.classList.remove('voice-reading');
+      }
+      await sleep(450);
+    }).catch((e) => console.error(e));
+  };
+
+  /* ---------- listening: a level meter, not a transcriber ---------- */
+  const Listen = {};
+  let stream = null, analyser = null, buf = null;
+  Listen.start = async function () {
+    if (analyser) return true;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+      const AC = window.AudioContext || window.webkitAudioContext; const ac = new AC();
+      analyser = ac.createAnalyser(); analyser.fftSize = 1024; buf = new Float32Array(analyser.fftSize);
+      ac.createMediaStreamSource(stream).connect(analyser);
+      return true;
+    } catch (e) { analyser = null; return false; }
+  };
+  Listen.stop = function () { if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; analyser = null; };
+  const level = () => { analyser.getFloatTimeDomainData(buf); let s = 0; for (const x of buf) s += x * x; return Math.sqrt(s / buf.length); };
+  /* Resolves once someone has spoken for a moment and stopped, or after a generous timeout. The
+     narrator's own voice is not playing while it listens, so the room's noise floor is the baseline. */
+  Listen.waitForSpeech = function (words) {
+    return new Promise(async (resolve) => {
+      if (!analyser && !(await Listen.start())) { setTimeout(resolve, 1800 + words * 420); return; }
+      let base = 0, n = 0; const t0 = performance.now(); let heard = 0, quietSince = 0;
+      const limit = 6000 + words * 700;
+      const tick = () => {
+        if (!cueResolve) return resolve();
+        const now = performance.now(), l = level();
+        if (now - t0 < 300) { base = (base * n + l) / (++n); return requestAnimationFrame(tick); }
+        const loud = l > Math.max(0.015, base * 3);
+        if (loud) { heard += 16; quietSince = 0; } else if (heard > 250) { quietSince = quietSince || now; }
+        if ((heard > 250 && quietSince && now - quietSince > 650) || now - t0 > limit) return resolve();
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  };
+  Voice.Listen = Listen;
+
+  /* ---------- settings ---------- */
+  Voice.setOn = function (on) { settings().on = !!on; window.VigilStore.save(); if (!on) Voice.stop(); };
+  Voice.setListen = async function (on) {
+    if (on && !(await Listen.start())) { if (window.VigilUI) window.VigilUI.notice('The microphone is not available. The narrator will wait a moment for each line instead, or for that player\'s key.'); on = false; }
+    if (!on) Listen.stop();
+    settings().listen = !!on; window.VigilStore.save();
+  };
+  Voice.test = function () {
+    Voice.stop(); const my = session;
+    chain = Promise.resolve().then(async () => {
+      for (const [who, t] of [['Narrator', 'The school, which knows what to do with a miracle, wrote it down.'], ['Wren', 'You\'re awake! Brilliant. I need four idiots and a lamp.']]) { await say(t, who, false, my); await sleep(400); }
+    });
+  };
+
+  Voice.phrases = phrases;
+  window.VigilVoice = Voice;
+})();
+
+</script>
+<script>/* js/content/voice-manifest.js */
+/* Recorded performances, by line key (VigilVoice.key(who, text)). Written by tools/voice/render.js;
+   do not edit by hand. Lines not listed here are spoken by the browser's own voice. */
+window.VIGIL_VOICE_BASE = 'audio/voice/';
+window.VIGIL_VOICE_FILES = {};
+
+</script>
 <script>/* js/core/engine.js */
 /* Scene runner for the Hearth (main screen). Data-driven: chapters -> scenes. */
 (function () {
@@ -3784,6 +4091,7 @@ var qrcode = function() {
     dom.hint.classList.toggle('hidden', !scene.hints);
     dom.hint.classList.remove('attention');
 
+    if (window.VigilVoice) window.VigilVoice.stop();
     UI.clear(dom.text); UI.clear(dom.actions); UI.clear(dom.widget);
     dom.widget.classList.toggle('hidden', scene.type !== 'puzzle' && scene.type !== 'custom' && scene.type !== 'reaction' && scene.type !== 'token');
     dom.text.classList.toggle('narrow', !!(scene.type === 'puzzle' || scene.type === 'custom' || scene.type === 'reaction'));
@@ -3901,6 +4209,7 @@ var qrcode = function() {
     Store.save();
     if (scene.solvedText) {
       if (scene.clearWidget) { UI.clear(dom.widget); dom.widget.classList.add('hidden'); dom.text.classList.remove('narrow'); }
+      if (scene.clearText) { UI.clear(dom.text); dom.text.__tw = null; } // the scene's own text has been read: the solved text gets the whole box
       await UI.typewrite(dom.text, typeof scene.solvedText === 'function' ? scene.solvedText(Store.state, result) : scene.solvedText);
       if (!api.alive()) return;
     }
@@ -4079,6 +4388,17 @@ var qrcode = function() {
     row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
     row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Change keys', onclick: () => { m.close(); Game.changeKeys(); } }));
     box.appendChild(row3);
+    const V = window.VigilVoice;
+    if (V && V.available()) {
+      const vs = Store.state.voice || {};
+      const row4 = UI.el('div', { class: 'row' });
+      const nb = UI.el('button', { class: 'btn small' + (V.isOn() ? '' : ' ghost'), text: 'Narrator: ' + (V.isOn() ? 'on' : 'off'), onclick: () => { V.setOn(!V.isOn()); nb.textContent = 'Narrator: ' + (V.isOn() ? 'on' : 'off'); nb.classList.toggle('ghost', !V.isOn()); } });
+      const lb = UI.el('button', { class: 'btn small' + (vs.listen ? '' : ' ghost'), text: 'Listen for our lines: ' + (vs.listen ? 'on' : 'off'), onclick: async () => { await V.setListen(!(Store.state.voice || {}).listen); const on = !!(Store.state.voice || {}).listen; lb.textContent = 'Listen for our lines: ' + (on ? 'on' : 'off'); lb.classList.toggle('ghost', !on); } });
+      row4.appendChild(nb); row4.appendChild(lb);
+      row4.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Test voices', onclick: () => V.test() }));
+      box.appendChild(row4);
+      box.appendChild(UI.el('p', { class: 'small', text: 'The narrator reads the story. When one of you speaks, your words light up in your colour: read them aloud, and the story goes on. With Listen on, the microphone only notices that someone has spoken; nothing is recorded or sent anywhere.' }));
+    }
     const m = UI.modal(box, { title: 'The Hearth' });
   };
   /* THE RECOVERY THIS GAME DOCUMENTS AND DID NOT HAVE. Every attunement writes its mark into the save
@@ -4371,7 +4691,8 @@ var qrcode = function() {
     `<rect x="560" y="330" width="480" height="430" fill="#120d12"/>` +
     `<path d="M560,330 A240,240 0 0 1 1040,330" fill="#120d12"/>` +
     `<rect x="600" y="200" width="400" height="110" rx="4" fill="#221a20" stroke="#3a2c2c" stroke-width="3"/>` +
-    P.circleRunes(800, 255, 46, 10, 'rgba(212,169,78,0.35)', 3) +
+    // the line cut into the stone, as the next scene shows it: a row of worn cuts, not a ring
+    `<g transform="translate(632,255)" opacity=".9">${wornCuts(8, '#7a6a5a', 48, 0.9)}</g>` +
     fire(800, 760, 1, false) +
     P.floorTiles(760, '#0b0910', 'rgba(255,255,255,0.04)') +
     P.fog(600, 300, '#2a1a12', 0.35)
@@ -4425,43 +4746,156 @@ var qrcode = function() {
     P.sky('#0a0810', '#1a0f0a') +
     `<rect x="380" y="120" width="840" height="300" rx="6" fill="#1d1619" stroke="#3a2c2c" stroke-width="4"/>` +
     `<g transform="translate(470,250)" opacity=".9">${wornCuts(8, '#7a6a5a', 94, 1.9)}</g>` +
-    `<text x="800" y="380" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="22" font-family="Cinzel,serif" letter-spacing="6">THE ORDER'S READING</text>` +
     fire(800, 900, 1.6, false) +
     `<rect x="0" y="520" width="${W}" height="${H - 520}" fill="url(#stonefog)"/><defs><linearGradient id="stonefog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3c" stop-opacity="0"/><stop offset="1" stop-color="#ff9a3c" stop-opacity=".55"/></linearGradient></defs>`
   ));
 
-  A.define('ch0_dorm', () => P.wrap(
-    P.sky('#0b0a12', '#15121d') +
-    // window with stars
-    `<rect x="1180" y="120" width="260" height="360" rx="130" fill="#070812"/>` + `<g clip-path="inset(0)">${P.stars(60, 12, 480).replace(/<circle /g, '<circle transform="translate(1180,120) scale(0.16,0.4)" ')}</g>` +
-    `<rect x="1180" y="120" width="260" height="360" rx="130" fill="none" stroke="#2a2438" stroke-width="10"/>` +
-    // beds
-    `${[0, 1, 2, 3].map(i => `<g transform="translate(${140 + i * 250},640)"><rect x="0" y="0" width="200" height="90" rx="8" fill="#1b1626"/><rect x="0" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="174" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="30" y="10" width="140" height="40" rx="6" fill="#2b2340"/></g>`).join('')}` +
-    // sill lamp
-    `<g transform="translate(1310,500)"><rect x="-60" y="0" width="120" height="14" fill="#2a2438"/><rect x="-14" y="-70" width="28" height="70" rx="4" fill="#3a2f1a"/><circle cx="0" cy="-90" r="24" fill="#5a4a2a" stroke="#8a7040" stroke-width="3"/><circle cx="0" cy="-90" r="10" fill="#ffd27a" opacity=".55"><animate attributeName="opacity" values=".55;.2;.6;.3;.55" dur="2.4s" repeatCount="indefinite"/></circle></g>` +
-    P.floorTiles(740, '#0d0b14', 'rgba(255,255,255,0.03)') +
-    P.fog(560, 260, '#241d33', 0.35)
-  ));
+  /* ---------- the tower room ----------
+     "Four beds, one round window and, on the sill, a brass lamp nobody has ever lit. On the floor, a
+     fifth blanket: Wren's. On the door, a fifth name, in pencil." The window is round, the door has
+     its pencil, the blanket is folded on the floor; once the lamp is lit (the naming scene,
+     artParams {lit:true}) the room is warm and the blanket has been dragged up under the sill.
+     The pencil name is a scrawl of plain strokes: no letters, no glyphs. */
+  // a lit lamp's halo: gold at the heart, orange at the edge, fading to nothing (never blue)
+  const halo = (id) => `<defs><radialGradient id="${id}"><stop offset="0" stop-color="#fff0c0" stop-opacity=".6"/><stop offset=".16" stop-color="#ffe08a" stop-opacity=".38"/><stop offset=".4" stop-color="#ffd27a" stop-opacity=".2"/><stop offset=".7" stop-color="#ffa850" stop-opacity=".08"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs>`;
+  const WIN = { x: 1340, y: 290, r: 140 }, SILL = 462;
+  function dormStars() {
+    const r = A.rng(12); let s = '';
+    for (let i = 0; i < 46; i++) {
+      const a = r() * Math.PI * 2, d = Math.sqrt(r()) * (WIN.r - 10), o = 0.3 + r() * 0.7;
+      s += `<circle cx="${(WIN.x + Math.cos(a) * d).toFixed(0)}" cy="${(WIN.y + Math.sin(a) * d).toFixed(0)}" r="${(0.6 + r() * 1.5).toFixed(1)}" fill="#e8ecff" opacity="${o.toFixed(2)}"><animate attributeName="opacity" values="${o.toFixed(2)};${(o * 0.3).toFixed(2)};${o.toFixed(2)}" dur="${(2 + r() * 5).toFixed(1)}s" repeatCount="indefinite"/></circle>`;
+    }
+    return s;
+  }
+  function dormDoor(inked) {
+    let s = `<g transform="translate(990,400)">`;
+    s += `<rect x="-10" y="-10" width="160" height="350" fill="#1a1524"/>`; // frame
+    s += `<rect x="0" y="0" width="140" height="340" fill="#241d30" stroke="#2f2740" stroke-width="3"/>`;
+    s += `<rect x="16" y="18" width="108" height="130" rx="3" fill="none" stroke="#2f2740" stroke-width="3"/><rect x="16" y="176" width="108" height="146" rx="3" fill="none" stroke="#2f2740" stroke-width="3"/>`;
+    s += `<circle cx="120" cy="170" r="6" fill="#5a4a2a" stroke="#8a7040" stroke-width="1.5"/>`;
+    // the fifth name, in pencil, rubbing off: a wobbly scrawl and an underline (at dawn, gone over in ink: bolder)
+    s += inked ? `<g fill="none" stroke="#d6d0e4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".85">` : `<g fill="none" stroke="#b9b4c8" stroke-linecap="round" stroke-linejoin="round" opacity=".38">`;
+    s += `<path d="M30,84 c3,-16 7,-16 9,-1 c1,-9 6,-11 8,-2 c2,8 6,7 8,-1 c3,-9 8,-7 7,1 c-1,7 5,6 8,-2 c2,-6 6,-8 9,0 c2,6 6,5 9,-3 c2,-5 5,-4 6,1" stroke-width="2"/>`;
+    s += `<path d="M30,94 q40,4 82,-2" stroke-width="1.6" opacity=".7"/>`;
+    // and at dawn, beside it in the same ink, who claimed it
+    if (inked) s += `<path d="M30,116 c3,-7 6,-7 9,0 s6,7 9,0 s6,-7 9,0 s6,7 9,0 s6,-7 9,0 s6,7 9,0" stroke-width="1.4" opacity=".75"/>`;
+    s += `</g>`;
+    return s + '</g>';
+  }
+  const bed = (x) => `<g transform="translate(${x},640)"><rect x="0" y="0" width="200" height="90" rx="8" fill="#1b1626"/><rect x="0" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="174" y="-40" width="26" height="130" rx="4" fill="#241d33"/><rect x="30" y="10" width="140" height="40" rx="6" fill="#2b2340"/></g>`;
+  // Wren's blanket: folded on the floor by the last bed; or, once the lamp is lit, dragged up under the sill
+  const blanketFolded = `<g transform="translate(1035,752)"><rect x="0" y="16" width="150" height="22" rx="6" fill="#3a2c46"/><rect x="6" y="0" width="140" height="22" rx="6" fill="#463554"/><path d="M14,11 L138,11" stroke="#5a4668" stroke-width="2" stroke-dasharray="6 8"/><path d="M6,19 q70,6 140,0" fill="none" stroke="#2a2034" stroke-width="2"/></g>`;
+  const blanketPulled = `<g transform="translate(${WIN.x},${SILL})">` +
+    // bunched on the sill beside the lamp, as close as a blanket can go, and hanging over the edge
+    `<path d="M-96,2 C-100,-26 -62,-40 -34,-30 C-22,-26 -18,-16 -17,-2 L-16,8 C-12,56 -8,110 -4,152 Q-22,140 -38,148 C-50,132 -62,128 -76,126 Q-92,114 -110,112 C-110,74 -104,36 -96,2 Z" fill="#463554"/>` +
+    `<path d="M-88,14 C-92,50 -96,80 -100,108 M-64,12 C-64,56 -66,96 -70,124 M-40,12 C-36,64 -34,110 -36,144" fill="none" stroke="#3a2c46" stroke-width="5" stroke-linecap="round"/>` +
+    `<path d="M-88,-12 C-70,-28 -46,-30 -30,-22" fill="none" stroke="#5a4668" stroke-width="4" stroke-linecap="round"/>` +
+    `<path d="M-34,-30 C-22,-26 -18,-16 -17,-2 L-16,8 C-12,56 -8,110 -4,152" fill="none" stroke="#ffd27a" stroke-width="2.5" opacity=".35"/></g>`;
 
-  A.define('ch0_lamp', () => P.wrap(
-    P.sky('#0b0a12', '#1a1520') +
-    `<rect x="0" y="600" width="${W}" height="300" fill="#100d16"/>` +
-    `<g transform="translate(800,520)">` +
-    `<rect x="-200" y="80" width="400" height="30" fill="#2a2438"/>` +
-    `<rect x="-40" y="-120" width="80" height="200" rx="8" fill="#4a3c22" stroke="#8a7040" stroke-width="3"/>` +
-    `<circle cx="0" cy="-170" r="70" fill="#5a4a2a" stroke="#8a7040" stroke-width="5"/>` +
-    `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
-    `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
-    `<circle cx="0" cy="-170" r="14" fill="#ffd27a" opacity=".5"><animate attributeName="opacity" values=".5;.2;.55;.25;.5" dur="2s" repeatCount="indefinite"/></circle>` +
-    // Two marks are cut here, but four hundred years have taken them: the Hearth shows the
-    // wear, not the shapes. Only the Reader's page has them clean.
-    `${[-60, 60].map((x, i) => `<g transform="translate(${x},-290)" opacity=".5">` +
-      `<circle cx="0" cy="0" r="21" fill="none" stroke="#6a5a3c" stroke-width="2" stroke-dasharray="${i ? '5 7' : '8 6'}"/>` +
-      `<path d="${i ? 'M-10 7 L-1 -8 M3 9 L8 -5 M-9 -6 L7 -2' : 'M-8 9 L6 -7 M-2 10 L-6 -8 M-10 0 L9 4'}" fill="none" stroke="#6a5a3c" stroke-width="3" stroke-linecap="round" opacity=".6"/>` +
-      `</g>`).join('')}` +
-    `</g>` +
-    P.fog(600, 300, '#241d33', 0.3)
-  ));
+  A.define('ch0_dorm', (p) => {
+    const lit = !!(p && p.lit), dawn = !!(p && p.dawn); // dawn (ch0_flow): the lamp has burned out, the blanket is still by the sill, the door is in ink
+    return P.wrap(
+      P.sky('#0b0a12', '#15121d') +
+      // warm cast over the room while the lamp burns
+      (lit ? `<defs><radialGradient id="dormwarm" cx="${(WIN.x / W).toFixed(3)}" cy="${((SILL - 90) / H).toFixed(3)}" r=".75"><stop offset="0" stop-color="#ffb860" stop-opacity=".22"/><stop offset=".45" stop-color="#ff9a3c" stop-opacity=".07"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#dormwarm)"/>` : '') +
+      // one round window, stars inside it
+      `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="#070812"/>` + dormStars() +
+      `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="none" stroke="#2a2438" stroke-width="12"/>` +
+      `<path d="M${WIN.x},${WIN.y - WIN.r} L${WIN.x},${WIN.y + WIN.r} M${WIN.x - WIN.r},${WIN.y} L${WIN.x + WIN.r},${WIN.y}" stroke="#2a2438" stroke-width="5"/>` +
+      dormDoor(dawn) +
+      P.floorTiles(740, '#0d0b14', 'rgba(255,255,255,0.03)') +
+      // four beds in one row
+      [110, 325, 540, 755].map(bed).join('') +
+      (lit || dawn ? '' : blanketFolded) +
+      // the sill, and the lamp on it
+      `<g transform="translate(${WIN.x},${SILL})"><rect x="-80" y="0" width="160" height="16" fill="#2a2438"/>` +
+      (lit ? `${halo('dormhalo')}<circle cx="0" cy="-90" r="190" fill="url(#dormhalo)"/>` : '') +
+      `<rect x="-14" y="-70" width="28" height="70" rx="4" fill="#3a2f1a"${lit ? ' stroke="#c9a85a" stroke-width="1.5"' : ''}/><circle cx="0" cy="-90" r="24" fill="#5a4a2a" stroke="${lit ? '#e8c070' : '#8a7040'}" stroke-width="3"/>` +
+      (lit ? '<circle cx="0" cy="-90" r="11" fill="#ffe08a" opacity=".95"><animate attributeName="opacity" values=".95;.7;1;.8;.95" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="0" cy="-90" r="4" fill="#fff4d6"/>' : '<circle cx="0" cy="-90" r="10" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>') +
+      `</g>` +
+      (lit || dawn ? blanketPulled : '') +
+      P.fog(560, 260, '#241d33', lit ? 0.22 : 0.35)
+    );
+  });
+
+  /* ---------- the lamp ----------
+     The collar is a band round the neck, where the head meets the column; the two marks sit on its
+     left and right ends, as the Reader's page draws them (companion/ch0.js collar()). Four hundred
+     years have taken them: the Hearth shows the wear, not the shapes — only the Reader's page has
+     them clean. They are deliberately nowhere near the head's four slots.
+     The column carries four hundred years of dares — tallies, initials, plain scratches — with a
+     bare patch left for one more name. Plain strokes only: nothing here is a glyph path. */
+  function dares(carved) {
+    const r = A.rng(4041);
+    const LET = { H: 'M0,0 l0,12 M8,0 l0,12 M0,6 l8,0', L: 'M0,0 l0,12 l7,0', N: 'M0,12 l0,-12 l8,12 l0,-12', E: 'M8,0 l-8,0 l0,12 l8,0 M0,6 l6,0', K: 'M0,0 l0,12 M8,0 l-8,6 l8,6', F: 'M8,0 l-8,0 l0,12 M0,6 l6,0', Z: 'M0,0 l8,0 l-8,12 l8,0', P: 'M0,12 l0,-12 l7,0 l0,6 l-7,0', D: 'M0,0 l0,12 l5,0 l3,-4 l0,-4 l-3,-4 Z' };
+    const keys = Object.keys(LET);
+    const cut = (d, w) => `<path d="${d}" stroke="#241a0c" stroke-width="${w}" opacity=".55"/><path d="${d}" transform="translate(.8,.8)" stroke="#d8b870" stroke-width="${(w * 0.55).toFixed(2)}" opacity=".28"/>`;
+    const item = (kind) => {
+      if (kind === 0) { // initials
+        const a = keys[Math.floor(r() * keys.length)], b = keys[Math.floor(r() * keys.length)];
+        return { w: 22, d: LET[a], d2: LET[b] };
+      }
+      if (kind === 1) { // a tally
+        const n = 3 + Math.floor(r() * 3); let d = '';
+        for (let k = 0; k < n; k++) d += `M${k * 4},0 l${(r() - 0.5).toFixed(1)},12 `;
+        if (n === 5) d = d.replace(/M16,0 l[-\d.]+,12 $/, 'M-2,10 l18,-8 ');
+        return { w: n * 4, d };
+      }
+      // a plain scratch, sometimes crossed out
+      const len = 10 + r() * 12; let d = `M0,${(r() * 8).toFixed(1)} l${len.toFixed(1)},${(r() * 6 - 3).toFixed(1)}`;
+      if (r() > 0.5) d += ` M${(len * 0.3).toFixed(1)},-2 l${(len * 0.4).toFixed(1)},12`;
+      return { w: len, d };
+    };
+    let s = '<g fill="none" stroke-linecap="round" stroke-linejoin="round">';
+    const rows = [-64, -42, -20, 2, 24, 46, 66];
+    rows.forEach((y, ri) => {
+      let x = -42 + r() * 6;
+      while (x < 30) {
+        // room for one more name: a bare patch in the middle of the column
+        const bare = (ri === 3 || ri === 4) && x > -16 && x < 36;
+        const it = item(Math.floor(r() * 3));
+        if (x + it.w > 44) break;
+        if (!bare) s += `<g transform="translate(${x.toFixed(1)},${(y + r() * 4 - 2).toFixed(1)}) rotate(${(r() * 16 - 8).toFixed(1)})" opacity="${(0.55 + r() * 0.45).toFixed(2)}">${cut(it.d, 1.5)}${it.d2 ? `<g transform="translate(12,0)">${cut(it.d2, 1.5)}</g>` : ''}</g>`;
+        x += it.w + 7 + r() * 6;
+      }
+    });
+    // once the four have cut it (ch0_carve): WREN in the bare patch, fresh, so bright where the old dares are dark
+    if (carved) {
+      const W4 = ['M0,0 l2,12 l2,-8 l2,8 l2,-12', 'M0,12 l0,-12 l5,0 q3,0 3,3 q0,3 -3,3 l-5,0 M3,6 l5,6', LET.E, LET.N];
+      s += `<g transform="translate(-21,12) rotate(-3)">` + W4.map((d, i) => `<g transform="translate(${i * 11},0)"><path d="${d}" stroke="#241a0c" stroke-width="1.8" opacity=".5"/><path d="${d}" transform="translate(.6,.6)" stroke="#f2d48a" stroke-width="1.1" opacity=".85"/></g>`).join('') + '</g>';
+    }
+    return s + '</g>';
+  }
+  function collarBand() {
+    let s = `<path d="M-78,-106 Q0,-92 78,-106 L78,-78 Q0,-64 -78,-78 Z" fill="#5a4a2a" stroke="#8a7040" stroke-width="3"/>`;
+    s += `<path d="M-74,-100 Q0,-86 74,-100" fill="none" stroke="#c9a85a" stroke-width="1.5" opacity=".45"/>`;
+    s += [-58, 58].map((x, i) => `<g transform="translate(${x},-90) scale(.55)" opacity=".6">` +
+      `<circle cx="0" cy="0" r="21" fill="none" stroke="#2a2010" stroke-width="3" stroke-dasharray="${i ? '5 7' : '8 6'}"/>` +
+      `<path d="${i ? 'M-10 7 L-1 -8 M3 9 L8 -5 M-9 -6 L7 -2' : 'M-8 9 L6 -7 M-2 10 L-6 -8 M-10 0 L9 4'}" fill="none" stroke="#2a2010" stroke-width="4" stroke-linecap="round" opacity=".7"/>` +
+      `</g>`).join('');
+    return s;
+  }
+
+  A.define('ch0_lamp', (p) => {
+    const lit = !!(p && p.lit), carved = !!(p && p.carved);
+    return P.wrap(
+      P.sky('#0b0a12', '#1a1520') +
+      `<rect x="0" y="600" width="${W}" height="300" fill="#100d16"/>` +
+      `<g transform="translate(1010,420)">` +
+      // lit: a warm halo behind the lamp, orange at the edge and gold at the heart
+      (lit ? `${halo('lamphalo')}<circle cx="0" cy="-170" r="280" fill="url(#lamphalo)"><animate attributeName="opacity" values="1;.85;1;.9;1" dur="2.6s" repeatCount="indefinite"/></circle>` : '') +
+      `<rect x="-200" y="80" width="400" height="30" fill="#2a2438"/>` +
+      `<rect x="-48" y="-120" width="96" height="200" rx="8" fill="#4a3c22" stroke="${lit ? '#c9a85a' : '#8a7040'}" stroke-width="3"/>` +
+      dares(carved) +
+      `<circle cx="0" cy="-170" r="70" fill="#5a4a2a" stroke="${lit ? '#e8c070' : '#8a7040'}" stroke-width="5"/>` +
+      `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
+      `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
+      collarBand() +
+      (lit ? `<circle cx="0" cy="-170" r="32" fill="#ffd27a" opacity=".35"/><circle cx="0" cy="-170" r="15" fill="#ffe08a" opacity=".95"><animate attributeName="opacity" values=".95;.75;1;.82;.95" dur="2s" repeatCount="indefinite"/></circle><circle cx="0" cy="-170" r="6" fill="#fff4d6"/>` : `<circle cx="0" cy="-170" r="14" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>`) + // unlit until the ring is read
+      `</g>` +
+      P.fog(600, 300, '#241d33', 0.3)
+    );
+  });
 })();
 
 </script>
@@ -5820,7 +6254,7 @@ var qrcode = function() {
 <script>/* js/puzzles/reaction.js */
 /* Four-lane reaction sequence ("the Stair"): orbs fall down each player's lane; press your key when the orb crosses the line.
    Prompt types: single (one lane), brace (two lanes together), all (all four), mimic (do NOT press).
-   cfg: { events:[{t:ms, lanes:[i..], kind:'single'|'brace'|'all'|'mimic'}], fallMs, windowMs, practice:bool, laneNames:[..], target: number (0..1 pass ratio), onEnd(score) }
+   cfg: { events:[{t:ms, lanes:[i..], kind:'single'|'brace'|'all'|'mimic', fall?:ms}], fallMs, windowMs, practice:bool, laneNames:[..], target: number (0..1 pass ratio), onEnd(score) }
    Returns { hits, misses, total, ratio, passed } */
 (function () {
   'use strict';
@@ -5854,7 +6288,7 @@ var qrcode = function() {
       if (cfg.dark) lanesEl.classList.add('dark');
       let beatEl = null; if (cfg.bpm) { beatEl = UI.el('div', { class: 'beat-counter', text: '—' }); wrap.appendChild(beatEl); }
       const total = events.filter(e => e.kind !== 'mimic').length + events.filter(e => e.kind === 'mimic').length;
-      let hits = 0, misses = 0, health = 1, started = false, t0 = 0, raf = null, finished = false;
+      let hits = 0, misses = 0, strays = 0, health = 1, started = false, t0 = 0, raf = null, finished = false;
       const scoreEl = hud.lastChild, meterFill = meter.firstChild;
 
       function laneH() { return lanes[0].clientHeight; }
@@ -5867,7 +6301,7 @@ var qrcode = function() {
         });
         if (e.kind === 'brace' || e.kind === 'all') {
           // draw a chain across lanes visually via a full-width bar element in wrap
-          const bar = UI.el('div', { class: 'orb-chain', style: { position: 'absolute', height: '4px', background: e.kind === 'all' ? 'rgba(155,123,216,0.6)' : 'rgba(255,200,150,0.6)', left: (Math.min(...e.lanes) / 4 * 100 + 12.5) + '%', width: ((Math.max(...e.lanes) - Math.min(...e.lanes)) / 4 * 100) + '%', top: '-50px', zIndex: 2 } });
+          const bar = UI.el('div', { class: 'orb-chain', style: { position: 'absolute', height: '4px', background: e.kind === 'all' ? 'rgba(255,255,255,0.6)' : 'rgba(255,200,150,0.6)', left: (Math.min(...e.lanes) / 4 * 100 + 12.5) + '%', width: ((Math.max(...e.lanes) - Math.min(...e.lanes)) / 4 * 100) + '%', top: '-50px', zIndex: 2 } });
           wrap.appendChild(bar); e.chain = bar;
         }
         e.spawned = true;
@@ -5880,7 +6314,7 @@ var qrcode = function() {
         else { misses++; Audio.sfx('miss'); if (!cfg.practice) { health = Math.max(0, health - (cfg.damage || 0.12)); window.VigilFX.shake(lanesEl, 300); } }
         if (cfg.practice) { flashBig(ok ? '✓' : '✗', ok ? 'var(--moss)' : '#ff8b8b'); }
         meterFill.style.width = (health * 100) + '%';
-        if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total}`;
+        if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total + strays}`;
       }
       function flashBig(txt, color) { big.textContent = txt; big.style.color = color || ''; big.style.opacity = '1'; setTimeout(() => { big.style.transition = 'opacity .4s'; big.style.opacity = '0'; setTimeout(() => { big.style.transition = ''; }, 400); }, 250); }
 
@@ -5896,9 +6330,10 @@ var qrcode = function() {
           if (d < bestD) { best = e; bestD = d; }
         }
         if (!best || bestD > win) {
-          // stray press: penalize lightly only outside practice
+          // stray press: in practice it counts as a miss, so the table learns the timing; elsewhere it costs a little health
           lanes[idx].classList.add('bad'); setTimeout(() => lanes[idx].classList.remove('bad'), 200);
-          if (!cfg.practice && !cfg.lenient) { health = Math.max(0, health - 0.04); meterFill.style.width = (health * 100) + '%'; Audio.sfx('miss'); }
+          if (cfg.practice) { misses++; strays++; Audio.sfx('miss'); flashBig('✗', '#ff8b8b'); if (!cfg.hideScore) scoreEl.textContent = `${hits} / ${total + strays}`; }
+          else if (!cfg.lenient) { health = Math.max(0, health - 0.04); meterFill.style.width = (health * 100) + '%'; Audio.sfx('miss'); }
           return;
         }
         if (best.kind === 'mimic') { judge(best, false); return; }
@@ -5921,9 +6356,10 @@ var qrcode = function() {
         if (beatEl) { const b = Math.floor(now / (60000 / cfg.bpm)) + 1; if (b !== lastBeat && b >= 1) { lastBeat = b; beatEl.textContent = b; beatEl.classList.add('tick'); setTimeout(() => beatEl.classList.remove('tick'), 120); if (cfg.pulse !== false) Audio.sfx('tick'); } }
         for (const e of events) {
           if (e.done) continue;
-          if (!e.spawned && now >= e.t - fall) spawn(e);
+          const ef = e.fall || fall; // an event may fall faster than the rest: the practice knock speeds up
+          if (!e.spawned && now >= e.t - ef) spawn(e);
           if (e.spawned) {
-            const y = hy - (e.t - now) / fall * (hy + 50);
+            const y = hy - (e.t - now) / ef * (hy + 50);
             e.orbs.forEach(o => { o.el.style.top = (y - 23) + 'px'; });
             if (e.chain) e.chain.style.top = (y - 2) + 'px';
             if (now > e.t + win) {
@@ -5940,7 +6376,7 @@ var qrcode = function() {
       }
       function finish(collapsed) {
         if (finished) return; finished = true; cancelAnimationFrame(raf); Input.deactivate();
-        const ratio = total ? hits / total : 1;
+        const ratio = (total + strays) ? hits / (total + strays) : 1;
         const passed = collapsed ? false : ratio >= (cfg.target == null ? 0.6 : cfg.target);
         setTimeout(() => resolve({ hits, misses, total, ratio, passed, collapsed: !!collapsed, health }), 500);
       }
@@ -6766,6 +7202,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       body[data-chapter="ch0"] .ring-pz .palette-grid .glyph { width: 62px; height: 66px; }
       body[data-chapter="ch0"] .ring-pz .palette-grid .glyph svg { width: 34px; height: 34px; }
       body[data-chapter="ch0"] .ring-pz .pz-note { font-size: 14px; line-height: 1.35; }
+      body[data-chapter="ch0"] .ring-pz .wheel .slot text.lbl { font-size: 28px; fill: var(--ink); }
     }
   ` }));
 
@@ -6781,7 +7218,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         { id: 'ch0_carve', label: 'A name in the brass', col: 4, row: 0 },
         { id: 'ch0_lamp', label: 'The lamp, lit the old way', col: 5, row: 0 },
         { id: 'ch0_name', label: 'What Wren calls you', col: 6, row: 0, kind: 'choice' },
-        { id: 'ch1_start', label: 'Tomorrow', col: 7, row: 0 },
+        { id: 'ch1_start', label: 'The Vigil', col: 7, row: 0 },
       ],
       edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_practice'], ['ch0_practice', 'ch0_dare'], ['ch0_dare', 'ch0_carve'], ['ch0_carve', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start']],
     },
@@ -6790,50 +7227,54 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch0_start: {
         art: 'ch0_hearthfire', mood: 'hearth', fx: 'embers', speed: 13,
         text: [
-          { text: 'Four hundred years ago, four people closed a wound in the world.', cls: 'center' },
-          { text: 'They lit a fire on top of it, to hold it shut. The fire is called the Hearth.', cls: 'center' },
-          { text: 'It has gone out once. Fourteen years ago, for one night.', cls: 'center' },
-          { text: 'When it came back, a baby was asleep on the stones. Nobody ever came for it.', cls: 'center' },
-          { text: 'You were all born that year. Wren was found.', cls: 'center' },
+          { text: "Four hundred years ago, four people closed a wound in the world. They did it with fire, and without leaving notes. Their fire is the Hearth.", cls: "center" },
+          { text: "It has burned ever since, orange at the edges, gold at the heart. It has gone out once. Fourteen years ago, for one night, the whole school stood in the dark and found out what cold is.", cls: "center" },
+          { text: "When the fire came back, a baby was asleep on the stones. The flames had curled round the baby like a hand. The school, which knows what to do with a miracle, wrote it down.", cls: "center" },
+          { text: "*Register of the Hearth. Found: one infant. Condition: warm, and pleased with itself. Claimed by:*", cls: "center" },
+          { text: "The clerk left the line blank, for whoever came. Nobody ever came.", cls: "center" },
+          { text: "You were all born that year. Wren was found.", cls: "center" },
         ],
-        next: 'ch0_stone', button: 'Look up',
+        next: 'ch0_stone', button: "Look up",
       },
       ch0_stone: {
         art: 'ch0_stone', mood: 'hearth', fx: 'embers',
         text: [
-          'Above the fire, one sentence is cut into the stone. The school teaches a translation. Nobody alive has read the original.',
-          { text: '"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them."', cls: 'omen' },
-          'You cannot walk into weather. The Cold is a place, and nobody will tell you where.',
-          'Everybody agrees who it is about. Nobody finishes it out loud when Wren is in the room.',
-          'And tonight, for the first time in fourteen years, the Hearth is flickering.',
-          { text: 'No need to write anything down.', cls: 'small' },
+          "Above the fire, a line is cut into the stone. It is a prophecy: the kind of sentence that makes perfect sense the morning after.",
+          { text: "\"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them.\"", cls: "omen" },
+          "That is the school's translation. The original is cut in the Founders' shapes, which nobody at the school will admit to reading. The Cold is a place, and no Master will say where.",
+          "People who start reciting it near Wren get as far as \"one born of four,\" and remember an errand. Only one thing has ever come for Wren, and it is cut in stone.",
+          "Tonight the Hearth is flickering. Tomorrow night, at the Vigil, the Houses decide who Wren belongs to. If they give Wren to the prophecy, Wren walks into the Cold. Wren has been told to wear something warm.",
+          { text: "No need to write anything down.", cls: "small" },
         ],
-        next: 'ch0_dorm', button: 'The night before',
+        next: 'ch0_dorm', button: "The night before",
       },
       /* ---------- dormitory & setup ---------- */
       ch0_dorm: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'step',
         title: 'Past curfew',
         text: [
-          'Four of you, awake past curfew, in a room with four beds and one round window.',
-          'On the sill, a brass lamp older than the school\'s records. Nobody has ever got it to light. Everybody has tried.',
-          'A fifth blanket lies folded on the floor. Officially, it is nobody\'s.',
-          'You have been friends since you were seven. Five of you, not four: Wren adopted you the first week and never gave you back.',
-          { text: 'Sit left to right: the **Reader**, the **Listener**, the **Seer**, the **Binder**. Keep these seats all night.', cls: 'whisper' },
+          { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Keep these seats all night.", cls: "whisper" },
+          "The tower room has four beds, one round window and, on the sill, a brass lamp nobody has ever lit.",
+          "On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's.",
+          "The Binder is rereading the Vigil's order of business. *Item two: the foundling, to stand before the Houses, who will decide its use.* \"Its use,\" the Binder reads again, as if it might change. \"There's no rule against tomorrow. I've looked.\"",
+          "\"We could hide Wren,\" says the Listener.",
+          "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
+          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Nobody answers. Far below, the Hearth gutters.",
         ],
-        next: 'ch0_keys', button: 'Claim the keys',
+        next: 'ch0_keys', button: "The knock",
       },
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          { text: 'One keyboard, one key each. Press yours when it glows.', cls: 'whisper' },
-          { text: 'Then all four at once.', cls: 'whisper' },
+          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in. Somebody, Wren says, has to be the door. Tomorrow, the door stands before the Houses alone. Tonight, on the bedframes, you practice the only answer you have.",
+          { text: "One keyboard, one key each. Press yours when it glows.", cls: "whisper" },
+          { text: "Then all four at once.", cls: "whisper" },
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
           const st = UI.el('div', { class: 'pz-status' });
           const pads = UI.el('div', {});
-          wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
+          wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE KNOCK' }));
           wrap.appendChild(pads); wrap.appendChild(st);
           const remap = UI.el('button', { class: 'btn small ghost', text: 'Key not working? Change keys', onclick: async () => {
             const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
@@ -6847,7 +7288,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           const arm = () => {
             for (let i = 0; i < 4; i++) Input.setPadState(i, 'armed', i === step);
             st.className = 'pz-status';
-            st.textContent = step < 4 ? `${nick(step)} — your key.` : 'Now all four together.';
+            st.textContent = step < 4 ? `${nick(step)}, your knock.` : 'Now all four together.';
             // Hands may already be on the keys from the round just finished: those count, without a fresh press.
             if (step === 4) setTimeout(() => { const h = Input.held ? Input.held() : []; h.forEach((isDown, i) => { if (isDown) onPress(i); }); }, 60);
           };
@@ -6861,7 +7302,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
             const set = times.filter(x => x != null);
             if (set.length === 4) {
               const spread = Math.max(...set) - Math.min(...set);
-              if (spread <= 1000) { Audio.sfx('success'); st.className = 'pz-status good'; st.textContent = 'Four hands. The room holds still.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
+              if (spread <= 1000) { Audio.sfx('success'); st.className = 'pz-status good'; st.textContent = 'Four hands. Everybody\'s here. Nearly.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
               else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
             }
             setTimeout(() => { const now = performance.now(); for (let i = 0; i < 4; i++) if (times[i] != null && now - times[i] > 1000) { times[i] = null; Input.setPadState(i, 'glow', false); } }, 1100);
@@ -6872,52 +7313,69 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch0_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
-          'Practice. Later tonight, it counts.',
-          { text: 'Press as your light crosses the line.', cls: 'whisper' },
-          { text: 'Purple means everyone.', cls: 'whisper' },
+          "On nights nobody can sleep, the knock becomes a game, faster and faster, until somebody laughs.",
+          "Tonight nobody laughs. Practice anyway. Before morning, you will knock it for real.",
+          { text: "Press as your light crosses the line.", cls: "whisper" },
+          { text: "A chain across all four lanes means everyone at once.", cls: "whisper" },
         ],
-        config: () => ({ practice: true, laneNames: L.nicks, fallMs: 2000, windowMs: 420, events: window.VigilReaction.generateEvents({ count: 7, seed: 5, mix: { single: 1 }, gapMs: 1500, startMs: 2500 }).concat([{ t: 14500, lanes: [0, 1, 2, 3], kind: 'all' }]) }),
+        /* The knock itself, three times, each time faster: one each in seat order, then all four together. */
+        config: () => {
+          const events = []; let t = 2500;
+          [{ gap: 1100, fall: 2100 }, { gap: 750, fall: 1650 }, { gap: 480, fall: 1250 }].forEach((r) => {
+            for (let lane = 0; lane < 4; lane++) { events.push({ t, lanes: [lane], kind: 'single', fall: r.fall }); t += r.gap; }
+            t += r.gap * 0.4; events.push({ t, lanes: [0, 1, 2, 3], kind: 'all', fall: r.fall }); t += r.gap * 2.2;
+          });
+          return { practice: true, laneNames: L.nicks, fallMs: 2100, windowMs: 360, events };
+        },
         next: 'ch0_wren',
       },
       /* ---------- Wren ---------- */
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          'The door bangs open. Wren never knocks.',
-          { speaker: 'Wren', text: 'You\'re awake! Brilliant. I need four idiots and a lamp, and look — both, already here.' },
-          { speaker: 'Wren', text: 'Everyone\'s tried that lamp with a match. Nobody\'s tried reading it. There are old words round the collar, and our Reader reads everything and eats nothing. Tonight you can do both. Here. Biscuit.' },
-          { speaker: 'Wren', text: 'Listener, I can see you checking whether I\'m cold. I\'m fine. Listen to the lamp instead. It hums its words in order, and you\'re the only one who can hear it.' },
-          { speaker: 'Wren', text: 'Seer, don\'t do the face. I know it\'s a terrible idea. Something\'s cut under the brass, and you see under things. You always do. It\'s very annoying.' },
-          { speaker: 'Wren', text: 'And Binder, yes, it\'s against the rules. You know every one of them, and who\'s tied to who. So you\'re the one who knows how the old words fit together. Please?' },
+          "The door bangs open. Wren does not knock on this door either. It has Wren's name on it. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
+          { speaker: "Wren", text: "You're awake! Brilliant. I need four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
+          "Worn shapes run round the lamp's collar. The Reader, who takes unreadable words personally, is already at the window. \"Founders' work. Same shapes as the stone.\"",
+          "\"The Founders never left notes,\" says Wren. \"Just one sentence, about me. I'd like to hear them say anything else. Tonight, before the Houses get their turn.\"",
+          "The Binder is already off the bed. \"There are old rules for words in rings. None against this. I checked.\"",
         ],
-        next: 'ch0_dare', button: 'And you?',
+        next: 'ch0_dare', button: "What about you, Wren?",
       },
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          { speaker: 'Wren', text: 'Me? I\'m the main event. Tomorrow I stand at the front of a hall while the grown-ups decide about me.' },
-          { speaker: 'Wren', text: 'I\'ve been practicing standing still. My record is eleven seconds.' },
-          { speaker: 'Wren', text: 'Everything I have, somebody gave me. The name. The bed. My birthday is just the night they found me.' },
-          { speaker: 'Wren', text: 'So tonight I want one good thing. Ours. That lamp.' },
-          { speaker: 'Wren', text: 'A hundred people have tried it with a match. Nobody\'s tried a sigil. Carve my name in first, so it knows whose it is.' },
+          "\"Me?\" says Wren. \"I'm the main event. Item two.\" Wren's copy of the order of business is folded very small. \"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down, in pencil.",
+          { speaker: "Wren", text: "Everything I have, somebody gave me. The name's a bird. Nobody will say who picked it. The bed's on loan. My birthday's the night they found me. Before they decide what I'm for, I want one good thing that's ours." },
+          "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up. Now, for the first time in seven years, Wren is asking to keep something.",
+          "The Listener checks Wren's hands. Cold. Always cold. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
         ],
-        next: 'ch0_carve', button: 'Carve it',
+        next: 'ch0_carve', button: "One good thing",
       },
       ch0_carve: {
         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
-        text: ['A hundred names already in the brass. A hundred people who tried a match.'],
-        config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: 'Wren, delighted: "Close! It\'s W-R-E-N. Four letters. I believe in you."', submitText: 'Carve' }),
+        text: [
+          "\"Our names first,\" says Wren, \"so the lamp knows whose it is. I dare you.\"",
+          "The Seer turns over the penknife Wren gave away this week, looks at the lamp, and does the terrible-idea face. Wren does it back.",
+          "Generations of dares are carved in the brass: initials, mostly, and one rude word. There is room for one more name, and all four of you look at the same person.",
+          { text: "Type the one name all four of you are looking at.", cls: "whisper" },
+        ],
+        config: () => ({ title: 'CARVE A NAME', fields: [{ label: 'the name', placeholder: 'four letters', len: 8 }], accept: (v) => v[0] === 'WREN', wrongText: '"That\'s not the one you all looked at," says Wren, who noticed.', submitText: 'Carve' }),
+        onSolve: () => { try { Game.setArt('ch0_lamp', { carved: true }); } catch (e) {} },
+        clearWidget: true, clearText: true,
         solvedText: [
-          'It flares blue, once, and dies.',
-          { speaker: 'Wren', text: 'Ha! It *noticed* me. Names don\'t burn, though. Words do — the old ones.' },
-          { speaker: 'Wren', text: 'And the old words need all four of you. Nobody else has all four. That\'s the whole trick of it.' },
+          "The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
+          { speaker: "Wren", text: "That's my name. I said *ours*." },
+          "For once, Wren has no next line. Wren stands quite still. \"Eleven,\" says the Binder, who has been counting.",
+          { speaker: "Wren", text: "Tied my record. Don't write that down. And we just carved Founders' brass. Mom'll — the Provost'll — kill me." },
+          "\"It is ours,\" says the Reader, who has never once let Wren have the last word. Wren does not argue, which is new, and changes the subject before anyone can notice: \"Names won't light it, though. It wants the Founders' own words, and there were four Founders. Lucky I adopted exactly four.\"",
         ],
         next: 'ch0_attune',
       },
       ch0_attune: {
-        type: 'code', art: 'ch0_lamp', mood: 'tower', fx: 'dust',
+        type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
-          { text: 'Open the Companion on your phone. Pick your seat. Type this word.', cls: 'whisper' },
+          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what yours is. Tonight the lamp needs all four.",
+          { text: 'Open the Companion on your phone and pick your seat. This big screen is the Hearth. Type the word on this screen into your phone.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
         roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,
@@ -6925,7 +7383,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       },
       /* ---------- the tutorial sigil ---------- */
       ch0_lamp: {
-        type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
+        type: 'puzzle', puzzle: 'ring', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust', puzzleId: 'ch0_lamp', par: [3, 6],
         text: [
           { text: 'A sigil is words in slots. This ring has four slots.', cls: 'whisper' },
           { text: 'Say what you see. Never show your phone.', cls: 'whisper' },
@@ -6945,44 +7403,46 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           'The hum says which word goes first. Only one cut marks the start.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
-        onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
+        onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
+        clearWidget: true, clearText: true,
         solvedText: [
-          'The lamp catches. Warm, steady, and against about a dozen school rules.',
-          { speaker: 'Wren', text: 'Four hundred years, and it still works. Mom\'ll — the Provost\'ll — kill me.' },
-          'Wren drags the fifth blanket over and sits right up against the glass.',
-          { text: 'ASH, EMBER. *Fire, keep.* That is all it ever said.', cls: 'small' },
-          'In that light, each of you sees the thing about Wren you have never said out loud.',
-          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
+          "The lamp catches: small and gold, a piece of the Hearth on the sill, and warm all the way to the door. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
+          "Somebody finally admits to reading the Founders' shapes. \"Ash. Ember,\" says the Reader. \"That's only how it sounds.\" Then, slower, a finger on the brass: \"What it says is: *the fire keeps.* The stone downstairs says *walk*. Up here, the Founders said *keep*.\"",
+          "\"Keeps what?\" says Wren. Nobody needs to answer. All four of you are looking at the same person again, and this time it is not a dare.",
+          { speaker: "Wren", text: "Don't. If you all look at me like that, I'll have to stand still again." },
+          "Wren drags the fifth blanket right up to the lamp, the way Wren sits by every fire: as close as a blanket can go without joining in. Each of you has one thing about Wren you have never said out loud.",
+          { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name',
       },
       ch0_name: {
-        type: 'choice', art: 'ch0_dorm', mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
+        type: 'choice', art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP',
         text: [
-          'Nobody says anything. Then Wren laughs.',
-          { speaker: 'Wren', text: 'Oh, *that*. I know. All four of you. I\'ve known for years.' },
-          { speaker: 'Wren', text: 'You lot are terrible at secrets. …Thank you.' },
-          { speaker: 'Wren', text: 'Now. You need a name, as a set. I want something good to say tomorrow.' },
+          "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
+          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years. I knew you knew. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door for a long moment, and lets it be.",
+          "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
+          { speaker: "Wren", text: "Right. *Keep.* I can work with that. If I'm being kept, I want it in writing. For fourteen years that register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, I will. So: claimed by *who*?" },
         ],
         options: [
-          { id: 'four', text: 'Binder: "The Four."', next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: 'Wren', text: 'Grand. Very carved-in-stone.' }] },
-          { id: 'idiots', text: 'Seer: "The Idiots."', next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: 'Wren', text: 'Finally, honesty.' }] },
-          { id: 'vigil', text: 'Reader: "The Vigil-in-waiting."', next: 'ch0_flow', set: { GROUP_NAME: 'the Vigil-in-waiting' }, after: [{ speaker: 'Wren', text: 'The Provost will *hate* that. Perfect.' }] },
-          { id: 'own', text: 'Listener: "Something of our own?"', next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => [{ speaker: 'Wren', text: '"' + (s.flags.GROUP_NAME || 'the Four') + '." Right. That\'s what I\'m saying tomorrow, then.' }] },
+          { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
+          { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That register is finally accurate." }] },
+          { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is just people staying up for someone. Stay up for me tomorrow. I'll be the one standing still." }] },
+          { id: 'own', text: "Listener: \"Something that's ours.\" (type it)", next: 'ch0_flow', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
         ],
       },
       ch0_flow: {
-        type: 'flow', art: 'ch0_dorm', mood: 'hearth', fx: 'dust',
-        text: [
-          'Wren talks until all four of you are asleep. Nobody sees whether Wren sleeps at all.',
-          'Below, in the great hall, the Hearth flickers again.',
-          'The school has a word for what each of you did tonight. A Sighting. One way of seeing, one to a person, and nobody chooses which.',
-          'Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years. Not one of them has said what they saw.',
-          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
+        type: 'flow', art: 'ch0_dorm', artParams: { dawn: true }, mood: 'hearth', fx: 'dust',
+        text: (s) => [
+          "Wren talks until you are nearly asleep, the Reader's biscuit still uneaten, and nobody sees whether Wren sleeps. Then, soft on the floorboards, you knock.",
+          { text: "Knock it on the table now, soft: one each, then all together.", cls: "whisper" },
+          "This time the door is in the room. *Everybody's here.*",
+          `At dawn the lamp burns out, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket, and somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.* Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.`,
+          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. Tonight the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
+          { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,
-        next: 'ch1_start', button: 'The Vigil',
+        next: 'ch1_start', button: "The Vigil",
       },
     },
   });
@@ -7050,14 +7510,14 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
   }
   /* What the hall gives back. Each one teaches the rule that stopped it. */
   const REASONS = {
-    sorrel: 'Seat 1 hears you out and nods once: "Since you asked me to my face." Seat 2, unasked, sees that hand go up and puts one up too.',
+    sorrel: 'Seat 1 hears you out and nods once. "Since you asked me to my face." Seat 2, unasked, sees that hand go up and follows it, as Seat 2 always has.',
     quill: 'Seat 2 says yes, then says the rest. "I vote as Seat 1 votes. You spent that on nothing."',
-    brack: 'Seat 3 stands with the Chair, in writing, since before the doors shut. You had him already.',
+    brack: 'Seat 3 is delighted to be asked. Seat 3 has stood with the Chair, in writing, since before the doors shut. You had him already.',
     hallan: 'Seat 4 does not turn his head. "I vote as my cousin votes. I hear nobody else."',
-    vey: 'Something at Seat 5\'s cuff catches the light. Seat 5 votes SEND.',
-    orrin: 'A soldier in the Envoy\'s gray steps between you and Seat 6. You never get near.',
+    vey: 'Seat 5 agrees with every word you say. Something at Seat 5\'s cuff catches the light. Seat 5 votes SEND.',
+    orrin: 'A soldier in the Envoy\'s gray steps between you and Seat 6, apologizes, and does not move. You never get near.',
     oriel: 'Seat 7 listens a long time, asks two questions, does not smile. "Very well. Tonight — keep."',
-    tarn: 'Seat 8 smiles with every tooth. Crown coin in it. Seat 8 votes SEND.',
+    tarn: 'Seat 8 smiles with every tooth. The Crown paid for all of them. Seat 8 votes SEND.',
     marrow: 'The Chair does not hear cases. The Chair counts them.',
   };
   function seatCfg() {
@@ -7067,6 +7527,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
     }));
   }
   const listSeats = (arr) => arr.length ? 'Seat' + (arr.length > 1 ? 's ' : ' ') + UI.list(arr.map(String)) : 'nobody';
+  /* The name Wren gave the four in the Prologue ("That's what I'm saying tomorrow, then."). Tomorrow is now. */
+  const group = (s) => s.flags.GROUP_NAME || 'the Four';
 
   Game.addChapter({
     id: 'ch1', label: 'Chapter I', title: 'The Vigil', start: 'ch1_start', code: L.chapter('ch1').word,
@@ -7101,34 +7563,33 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         art: 'ch1_hall', mood: 'court', fx: 'embers', sfx: 'open', title: 'The Great Hall, an hour before the bell',
         enter: (s) => { if (s.flags.WREN_TRUST == null) Store.set('WREN_TRUST', 0); },
         text: [
-          'Nine banners in the rafters, one for each House. Under each banner, a Master sits in a tall chair.',
-          'Tonight is the Vigil. The Houses have come to look at the child the fire left.',
-          'At the far end, the Hearth rises and sinks like breathing. Every grown-up here is pretending not to watch it.',
-          'You are at the back. Wren is up front in a borrowed collar, and waves at you. Wren is not supposed to wave.',
-          'Then Wren catches the Reader\'s eye, mimes eating, and points sternly.',
+          'Nine Houses, nine banners, nine Masters in nine tall chairs. The Houses have argued for four hundred years, mostly about the chairs.',
+          'Tonight is the Vigil. The fire is going out, and the stone says a child walks into the Cold. The nine have come to decide what the child is for.',
+          'At the far end, the Hearth rises and sinks like breathing. Every grown-up here is very carefully not looking at it.',
+          'You are at the back. Wren is up front in a borrowed collar, and waves at you. It is too big a wave. Wren always waves too big when scared.',
           { text: 'The Binder has the keys tonight. The Listener reads the Hearth aloud.', cls: 'whisper' },
         ],
         next: 'ch1_dais', button: 'The presenting',
       },
       ch1_dais: {
         art: 'ch1_dais', mood: 'court', fx: 'embers',
-        text: [
+        text: (s) => [
           { speaker: 'Provost Marrow', text: 'Masters. Fourteen years ago this fire went out, and left a child on the stones. I named the child.' },
           { speaker: 'Provost Marrow', text: 'The stone over your heads says one born of four. Tonight I stop arguing and show you.' },
-          'That is the Provost. She runs the school. On the way in, she fixed Wren\'s collar twice.',
+          'That is Provost Marrow, who runs the school. On the way in, she fixed Wren\'s collar twice. It did not need fixing either time.',
           'Wren goes up alone and stands still, which for Wren is enormous.',
-          { speaker: 'Wren', text: 'Hello. It\'s me. I\'ll try not to fidget.' },
-          'At the back, the Seer is doing the face. Wren very carefully does not look.',
+          { speaker: 'Wren', text: `Hello. It's me. That's ${group(s)} at the back. They're with me. I'll try not to fidget.` },
+          'Twelve seconds. Thirteen. At the back, the four of you are counting under your breath.',
         ],
         next: 'ch1_vane', button: 'The doors',
       },
       ch1_vane: {
         art: 'ch1_vane', mood: 'dread', fx: 'dust', sfx: 'boom',
         text: [
-          'The doors open before anyone asks them to. Cold first, then soldiers, then a gray coat.',
-          'Lord Vane, the Crown\'s Envoy. His writ has a seal the size of a saucer.',
-          { speaker: 'Vane', text: 'His Majesty asks one small thing: the child, tonight, for safekeeping.' },
-          'Wren takes one small step back, toward the fire. Vane lowers his voice, not quite far enough.',
+          'The doors open before anyone asks them to. Cold first, then soldiers. Then Lord Vane, the Crown\'s Envoy, with a writ. A writ is a letter that brings its own soldiers.',
+          { speaker: 'Vane', text: 'His Majesty asks one small thing: the child, tonight, for safekeeping. The child will be kept a very long way from this fire. The child will not be coming back.' },
+          'Wren\'s hand finds the Provost\'s sleeve. There is no joke. In seven years, you have never once seen Wren without one.',
+          'Vane lowers his voice, not quite far enough.',
           { speaker: 'Vane', text: 'I have seen what is under the paint in this hall, Ilsabet.' },
           'Nobody knows what that means. The Provost\'s face does.',
         ],
@@ -7137,11 +7598,11 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch1_flicker: {
         art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.7,
         text: [
-          { speaker: 'Provost Marrow', text: 'This school does not hand its children to a writ. It puts them to a vote. Does the child stay tonight? Nine seats. Five keeps.' },
-          'Then the Hearth bows, long and low. Every face turns to the fire, except two.',
-          'The Provost is looking at Wren. Wren is looking at the Binder, and mouths one word: *please?*',
-          'The Binder nods once, as if signing something. The Provost sees it.',
+          { speaker: 'Provost Marrow', text: 'This school does not hand its children to a writ. It puts them to a vote. Nine seats. Five keep Wren here tonight. Four, and Wren leaves with him.' },
+          'The Hearth bows, as if pulled from underneath. Eight Masters look at it, then at the floor, as if remembering what they are sitting on.',
+          'The Provost is watching Wren. Wren has taken a step toward the fire without noticing. At the back, the Seer looks at the floor behind Wren, and does the face.',
           { speaker: 'Provost Marrow', text: 'The bell is in an hour. Until then, a Master may be spoken to. Go.' },
+          'Wren mouths one word to the back of the hall, very clearly: *five.*',
           { text: 'Above the Masters\' door, a word is cut into the lintel.', cls: 'whisper' },
         ],
         next: 'ch1_attune', button: 'Look at the lintel',
@@ -7166,7 +7627,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           /* The bell is narrative (design §5 Ch1): at 6:00 the Provost stalls the count and the last hint tier fires.
              The vote is the commit — a wrong call is the vote (VOTE_LOST). Fewer than two approaches earns a nudge. */
           let stall = false;
-          const STALL = 'The bell. The Provost rises and does not call the vote: "The Chair has not finished hearing the Masters." She is stalling for you.';
+          const STALL = 'The bell. The Provost rises and does not call the vote. "The Chair has not finished hearing the Masters," she says, into total silence. She is stalling for you.';
           return {
             title: 'THE HOUR BEFORE THE BELL', center: 'the Hearth', startAngle: 20, max: ASKS, timer: 360, submitText: 'Call the vote',
             note: 'The Chair reads out the rule: *Five of nine keeps the child. You may ask **' + ASKS_WORD + '** Masters. A Master you ask votes **KEEP** — unless they will not hear you, you cannot reach them, or the Crown has paid them. A Master sworn to another votes as that Master does, unless you ask them yourself. Everyone else votes **SEND**.*',
@@ -7217,12 +7678,12 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch1_won: {
         art: 'ch1_dais', mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: [
-          'Five to four. The Provost lets out a breath so small that only the Listener hears it.',
-          { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, we thank the Crown for its concern.' },
+          'Five to four. The Provost lets out a breath so small that only the Listener hears it. Wren lets go of her sleeve.',
+          { speaker: 'Provost Marrow', text: 'The child stays. Lord Vane, the school thanks the Crown for its concern.' },
           'Vane bows. It is a very good bow. He has done it to people he later ruined.',
-          { speaker: 'Wren', text: 'That was you! I watched the Binder walk up to Seat One. The Binder doesn\'t walk up to anyone. I\'m telling everybody.' },
+          { speaker: 'Wren', text: 'That was you! I watched the Binder walk up to Seat One. The Binder doesn\'t walk up to *anyone*. I\'m telling Mom — the Provost — everybody.' },
           { speaker: 'Wren', text: 'Listener, you can breathe now. I\'m staying.' },
-          'Then the two Masters who said yes are at your elbows. Neither is smiling now.',
+          'Then the two Masters who said yes arrive at your elbows. In the Houses, a vote is a loan.',
         ],
         next: 'ch1_prices', button: 'What they want',
       },
@@ -7230,10 +7691,10 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         art: 'ch1_dais', mood: 'sorrow', fx: 'dust', flame: 0.7, sfx: 'fail',
         text: [
           'Vane thanks the school. His Majesty, he says, will not forget it.',
-          'Two soldiers step onto the dais. Wren looks at you, and is not frightened, only surprised. The grin comes back anyway, for you.',
+          'Two soldiers step onto the dais. Wren\'s hand is still on the Provost\'s sleeve, and she has to take it off herself. Then Wren finds you at the back, and the grin comes back, for you.',
           { speaker: 'Wren', text: 'Don\'t. You nearly had it. Reader, do not redo that sum all night.' },
           'Then Wren goes with them, and does not fidget once.',
-          'The Provost comes to the back of the hall, where nobody is looking any more, and speaks very low.',
+          'The Provost comes to the back of the hall, where nobody is looking now, and speaks very low. It is how she shouts.',
           { speaker: 'Provost Marrow', text: 'Then bring me the Cold Ember from under the school. I will get the child back myself.' },
         ],
         next: 'ch1_offer', button: 'Later',
@@ -7244,21 +7705,21 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         timerText: '*Forty-five heartbeats. They want an answer before the Provost reaches you.*',
         text: [
           'Seat 1 is Master Sorrel. Seat 7 is Master Oriel. They voted for you, and would like that noticed.',
-          { speaker: 'Master Sorrel', text: 'Under this school is a thing called the Cold Ember. When the Provost sends you down for it, it comes to the nine of us. Not to her.' },
+          { speaker: 'Master Sorrel', text: 'Under this school is a thing called the Cold Ember. When the Provost sends you for it, it comes to the nine of us. Not to her.' },
           { speaker: 'Master Oriel', text: 'Tell me what you find down there. All of it.' },
-          'Over Sorrel\'s shoulder, Wren is doing an impression of Sorrel. "Accurate," says the Seer, without moving. The Provost is already crossing the hall.',
+          'Over Sorrel\'s shoulder, the Provost is already crossing the hall toward you.',
         ],
         prompt: 'Whose price do you honor?',
         options: [
           { id: 'sorrel', text: 'Binder: "The Ember goes to the nine. You have my word."', if: (s) => (s.flags.CH1_APPROACHED || []).includes('sorrel'), next: 'ch1_offer',
             set: { SORREL: true, ORIEL: false, NEITHER: false }, note: 'You promised Sorrel the Ember.',
-            after: [{ speaker: 'Master Sorrel', text: 'Good. See that you keep yours.' }, 'Oriel says nothing at all.'] },
+            after: [{ speaker: 'Master Sorrel', text: 'Good. See that you keep it.' }, 'Oriel says nothing at all. She is very good at it.'] },
           { id: 'oriel', text: 'Reader: "All of it, Master Oriel. I\'ll write it down."', if: (s) => (s.flags.CH1_APPROACHED || []).includes('oriel'), next: 'ch1_offer',
             set: { ORIEL: true, SORREL: false, NEITHER: false }, note: 'You promised Oriel everything below.',
             after: [{ speaker: 'Master Oriel', text: 'All of it. Even the parts you don\'t like.' }, 'Sorrel does not forget.'] },
           { id: 'neither', text: 'Listener: "Neither… we answer to the Provost."', next: 'ch1_offer',
             set: { NEITHER: true, SORREL: false, ORIEL: false }, note: 'You refused both prices.',
-            after: ['Two mouths go thin. The Provost is watching from across the hall.'] },
+            after: ['Two mouths go thin. Across the hall, the Provost very nearly smiles.'] },
         ],
       },
       /* ---------- the Envoy's offer (60 s) ---------- */
@@ -7267,21 +7728,21 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         enter: (s) => { if (s.flags.VOTE_LOST) { if (s.flags.NEITHER == null) Store.set('NEITHER', true); if (s.flags.SORREL == null) Store.set('SORREL', false); if (s.flags.ORIEL == null) Store.set('ORIEL', false); } },
         timerText: '*Sixty heartbeats. He is very good at waiting.*',
         text: (s) => [
-          'Later, the hall empties. In a side passage, a gray coat is waiting.',
+          'Later, in a side passage, a gray coat is waiting with Lord Vane inside it.',
           { speaker: 'Vane', text: s.flags.VOTE_LOST
-            ? 'The Provost will have the boy back by morning. When she does, bring him to me before dawn. He will come if you ask.'
-            : 'Bring the boy to me before dawn. He waved at you in front of nine Houses. He will come if you ask.' },
-          { speaker: 'Vane', text: 'He lives. I promise you that. And the Crown makes the four of you Masters.' },
+            ? 'The Provost will have the child back within the hour. Then bring it to me, before midnight. It will come if you ask.'
+            : 'Bring the child to me before midnight. It waved at you in front of nine Houses. It will come if you ask.' },
+          { speaker: 'Vane', text: 'He lives. I promise you that, which is more than anyone else here will. And the Crown makes the four of you Masters. I am told the chairs are very comfortable.' },
           { speaker: 'Vane', text: 'You think I am the villain of tonight. Ask your Seer what is under the paint.' },
         ],
         prompt: 'The Envoy waits.',
         options: [
           { id: 'refuse', text: 'Seer: "No. You know the way out."', next: 'ch1_after', set: { VANE_PRETEND: false, VANE_ACCEPT: false },
-            after: ['Vane nods.', { speaker: 'Vane', text: 'Then I will ask again later, when it costs more.' }] },
-          { id: 'pretend', text: 'Reader: "Before dawn. Of course."', sub: 'A lie he may believe.', next: 'ch1_after', set: { VANE_PRETEND: true, VANE_ACCEPT: false }, note: 'You told the Envoy you would bring him Wren. You did not mean it.',
+            after: ['Vane does not seem disappointed, which is worse.', { speaker: 'Vane', text: 'Then I will ask again later, when it costs more.' }] },
+          { id: 'pretend', text: 'Reader: "Before midnight. Of course."', sub: 'A lie he may believe.', next: 'ch1_after', set: { VANE_PRETEND: true, VANE_ACCEPT: false }, note: 'You told the Envoy you would bring him Wren. You did not mean it.',
             after: [{ speaker: 'Vane', text: 'Wise. Or a lie. I can use either.' }] },
           { id: 'accept', text: 'Listener: "If it keeps Wren alive… yes."', cls: 'dark', sub: 'Wren lives, he says. Masters, all four.', next: 'ch1_after', set: { VANE_ACCEPT: true, VANE_PRETEND: false }, note: 'You accepted the Envoy\'s offer.',
-            after: [{ speaker: 'Vane', text: 'Before dawn. My captain will know your faces.' }, 'For a moment he looks like a man handed something heavier than he asked for.'] },
+            after: [{ speaker: 'Vane', text: 'Before midnight. My captain will know your faces.' }, 'For a moment he looks like a man handed something heavier than he asked for.'] },
         ],
       },
       ch1_after: {
@@ -7292,15 +7753,16 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
              cannot know how the vote went (no cast in ch1), so the four lines fit either branch. */
           const out = [
             'The last Master goes. The Provost stands with her back to the fire, and it coughs behind her.',
-            { speaker: 'Provost Marrow', text: 'It has not done that in fourteen years. If it goes out, the Cold Ember under this school lights it again.' },
-            { speaker: 'Provost Marrow', text: 'I meant to send you in the morning. No. I am sending you tonight.' },
+            { speaker: 'Provost Marrow', text: 'It has not done that in fourteen years. If it goes out, the Cold Ember under this school lights it again. I am sending you for it tonight.' },
           ];
           if (s.flags.VOTE_LOST) {
             out.push('Wren sits on the step between two soldiers, as near the fire as they allow.');
-            out.push({ speaker: 'Wren', text: 'It\'s fine. They have a warm room. I\'ve never had a warm room. Listener, stop checking on me. I\'m fine.' });
+            out.push({ speaker: 'Wren', text: 'They have a warm room, apparently. A very long way away. Listener, stop checking on me. I\'m fine.' });
+            out.push('The Listener cannot hear whether that is true. The Listener never can.');
           } else {
-            out.push('Wren flops down on the hearthstone, as near the fire as it is polite to get.');
-            out.push({ speaker: 'Wren', text: 'A whole hour, standing still. My record was eleven seconds. Reader, write that down. In ink.' });
+            out.push('Wren flops down on the hearthstone, as near the fire as it is polite to get, and then a little nearer.');
+            out.push({ speaker: 'Wren', text: '"Not coming back." He said it like he was doing me a favor.' });
+            out.push({ speaker: 'Wren', text: 'Anyway. A whole hour, standing still. My record was eleven seconds. Reader, write that down. In ink.' });
           }
           out.push({ text: 'Before you go, open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' });
           return out;
@@ -7310,10 +7772,12 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch1_flow: {
         type: 'flow', art: 'ch1_hall', mood: 'hearth', fx: 'embers',
         text: [
-          { speaker: 'Wren', text: 'You lot. Reading walls, guarding me from fireplaces, hunting threads. I\'m the best-guarded disaster in this school.' },
-          { speaker: 'Wren', text: 'Listener, don\'t tell her about her heart. She thinks she\'s made of stone. …Go on. Bring me back something good.' },
-          'The bell has rung once tonight. It will ring again.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          'Wren hears all four of you out without interrupting once, which is a first.',
+          { speaker: 'Wren', text: 'Not a rule. A *promise*. From the Binder. Somebody carve that on something.' },
+          'Then Wren looks across the hall at the Provost, and goes quiet.',
+          { speaker: 'Wren', text: 'Her heart jumped. For me. …Don\'t tell her I know. She thinks she\'s made of stone.' },
+          'Behind Wren, the Hearth flickers. Midnight is a few hours off.',
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter I — the paths you walked',
         stats: (s) => {
@@ -7510,15 +7974,17 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         title: 'The Great Hall, after the bell',
         /* The errand itself is given at the end of Chapter I (ch1_after, ch1_lost). This is the leaving. */
         text: (s) => [
-          'The Provost holds the tapestry aside. Behind it, a stair goes down into the dark.',
+          'Behind the tapestry, a stair goes down into the dark. Most old schools have a stair like this. Most of them end at the laundry.',
           { speaker: 'Provost Marrow', text: 'Take the Seer\'s eyes with you. That vault was rebuilt once, and the rebuilding was not honest.' },
         ].concat(s.flags.VOTE_LOST ? [
           'By the fire, Wren sits between two soldiers and mouths something at you. It is probably rude.',
           'When the soldiers look away, Wren points at the stair and mouths something else. This time it is not rude.',
         ] : [
-          'Wren is already on the top step. The Provost looks at Wren, and Wren climbs back up.',
-          { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. Seer, don\'t do the face.' },
-          { speaker: 'Wren', text: 'Reader, there\'s a biscuit in your pocket. Don\'t argue. Eat it on the way down.' },
+          'Wren is already on the top step. The Provost looks at Wren, which is all she has ever needed to do, and Wren climbs back up.',
+          { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. You bring it up, the fire stays lit, and nobody walks anywhere.' },
+          'Wren says the last part quickly, the way you carry something hot.',
+        ]).concat([
+          'On the way down, the Reader finds a biscuit in a pocket. Seven years, and Wren has never once been caught.',
         ]),
         next: 'ch2_descent', button: 'Down',
       },
@@ -7527,7 +7993,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         text: [
           'The stair goes down further than a school has any right to. Torches, then fewer torches.',
           'Then a light that is not torchlight at all. A cold blue, breathing, somewhere below.',
-          'Halfway down, the Listener turns to check on Wren. The step behind is empty.',
+          'Nobody says it out loud. All four of you are doing the same sum: Ember up, fire lit, nobody walks. It is a very short sum. You do it all the way down.',
+          'Halfway down, the Listener turns to check on Wren, out of habit. The step behind is empty. The Listener could have sworn.',
         ],
         next: 'ch2_antechamber', button: 'The bottom',
       },
@@ -7535,10 +8002,10 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         art: 'ch2_antechamber', mood: 'wonder', fx: 'dust', sfx: 'open',
         title: 'The bottom of the stair',
         text: [
-          'Four hooded Founders stand in a row, one on each plinth. Each plinth has one shape cut into it, worn nearly smooth.',
-          'The Reader leans in close to the worn shapes, and looks personally offended.',
+          'Four hooded Founders stand in a row, one on each plinth, carved by somebody who could not do faces.',
+          'Each plinth has one shape cut into it, worn nearly smooth. The Reader leans in close and looks personally offended.',
           'Before each statue, a bronze dial in the floor. Plinths and dials are numbered one to four. Every statue looks straight down at its dial.',
-          'Beyond them, a door with no handle and no lock.',
+          'Beyond them is a door with no handle and no lock, which is the most locked a door can be.',
           { text: 'This floor is newer than the room. Only one of you can see how much newer.', cls: 'whisper' },
         ],
         next: 'ch2_attune', button: 'Attune',
@@ -7599,8 +8066,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           receipt(true, why);
           return [
             why,
-            'It counts to four and stops. Stone does not argue.',
-            'The Seer finds the way the rebuilders used. A gap behind the row, and a crawl on your hands and knees.',
+            'It counts to four and stops. Stone does not argue. That is most of what makes it stone.',
+            'The Seer finds the way the rebuilders used: a gap behind the row, and a crawl on your hands and knees.',
             '"They didn\'t trust their door either," says the Seer, and goes first.',
           ];
         },
@@ -7610,8 +8077,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'choice', art: 'ch2_vault', mood: 'wonder', fx: 'motes', choice: 'CH2_VAULT', sfx: 'reveal',
         text: [
           'The vault is round and low, and older than the school on top of it.',
-          'On a plinth in the middle stands a glass case. Inside, a blue flame breathes. It is not burning, and it gives off no heat at all.',
-          'The Cold Ember. Nothing up there will wait.',
+          'On a plinth in the middle stands a glass case. Inside, a blue flame breathes. It burns nothing and gives off no heat.',
+          'The Cold Ember. Upstairs, the fire is waiting. So is Wren.',
         ],
         prompt: 'The Ember is two steps away.',
         options: [
@@ -7624,10 +8091,10 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'custom', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust', sfx: 'reveal',
         enter: () => { if (!Store.chose('CH2_NICHE', 'mere')) { Store.choose('CH2_NICHE', 'mere'); Store.note('You found the niche behind the first plinth.'); } },
         text: [
-          'The first plinth stands a hand\'s breadth from the wall. Behind it, at knee height, a hollow the rebuilders missed.',
+          'Behind the first plinth, at knee height, is a hollow the rebuilders missed.',
           'Inside: a strip of stone with three shapes cut into it, and a sheet folded small.',
           'The sheet is in the same letters as Wren\'s name on the dormitory door. None of you can read them.',
-          'The name worn off the front of the plinth is cut fresh on its back. Mere.',
+          'The name worn off the front of the plinth is cut again on its back, where only the wall can read it. Mere.',
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz ch2-niche' });
@@ -7640,7 +8107,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           const say = (cls, t) => { status.className = 'pz-status ' + cls; status.textContent = t; };
           api.button('Read it left to right', () => {
             Store.choose('CH2_STRIP', 'left'); api.audio.sfx('wrong');
-            say('bad', 'WELL, EMBER, VEIL — one went down alone and kept it. It is the reading the school teaches, and the mark on this stone is at the other end.');
+            say('bad', 'WELL, EMBER, VEIL — one went down alone and kept it. The school teaches this reading. The school has not noticed the mark is at the other end.');
           }, '');
           api.button('Read it from its mark', () => {
             Store.choose('CH2_STRIP', 'right'); api.audio.sfx('reveal');
@@ -7662,8 +8129,9 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch2_ember: {
         art: 'ch2_vault', artParams: { empty: true }, mood: 'wonder', fx: 'motes', sfx: 'magic',
         text: (s) => [
-          'The case lifts off the plinth with no ward and no click. It is colder than anything has a right to be.',
-          'The hands that carry it go numb to the wrist. Inside the glass, the flame leans toward whoever holds it.',
+          'The case lifts off its plinth with no ward and no click. Four hundred years of guarding, and it simply lets you.',
+          'The hands that carry it go numb to the wrist, so you take turns.',
+          'Inside the glass, the flame leans toward whoever holds it, as if it is looking for someone in particular.',
           s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it.' : 'Nobody says anything. The vault is very quiet.',
         ],
         next: 'ch2_road', button: 'The archway',
@@ -7671,8 +8139,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch2_road: {
         art: 'ch2_vault', artParams: { empty: true, arch: true }, mood: 'dread', fx: 'motes', flame: 0.75,
         text: [
-          'Behind the empty plinth, an archway is bricked shut with newer stone. It is gray, where everything down here is black.',
-          'The Hearth is a long way up. Wren will want to hear every word of this.',
+          'Behind the empty plinth, an archway is bricked shut with newer stone. Nobody bricks up a door that nobody ever went through.',
+          'Wren will want every word of this, twice, with the boring parts left in.',
         ],
         next: 'ch2_stairfall', button: 'Up',
       },
@@ -7680,7 +8148,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch2_stairfall: {
         type: 'choice', art: 'ch2_stair', artParams: { broken: true }, mood: 'tense', fx: 'ash', sfx: 'boom', choice: 'CH2_STAIR', flame: 0.75,
         text: (s) => [
-          'Halfway up, the stair gives. A dozen steps drop into the blue dark. You are on the upper side. The case is not.',
+          'Halfway up, the stair gives. A dozen steps drop into the blue dark. You are on the upper side. The case, somehow, is not.',
           s.flags.VOTE_LOST
             ? 'Across the gap, hugging the case and grinning, is a child who was under guard twenty minutes ago.'
             : 'Across the gap, hugging the case and grinning, is a child who promised to stay put.',
@@ -7692,18 +8160,18 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         prompt: 'One reach. What do you catch?',
         timer: 30, timerText: '*Thirty heartbeats. The stair is going.*', timeout: 'wren',
         options: [
-          { id: 'wren', text: 'Catch Wren.', sub: 'The case goes where the stair goes.', next: 'ch2_top', set: { EMBER_LOST: true }, note: 'At the stair, you caught Wren and let the Ember fall.',
+          { id: 'wren', text: 'Catch Wren.', sub: 'The Ember goes where the stair goes. So does the sum.', next: 'ch2_top', set: { EMBER_LOST: true }, note: 'At the stair, you caught Wren and let the Ember fall.',
             after: [
               'Four hands close on one thin wrist and haul. The case turns once in the air, and the dark takes it without a sound.',
-              { speaker: 'Wren', text: 'Ow. Thank you. Ow. That was important, wasn\'t it. The box.' },
-              'On the landing, Wren sits as close to the torch as a person can get.',
+              { speaker: 'Wren', text: 'Ow. Thank you. Ow. That was the plan, wasn\'t it. The box was the plan.' },
+              'It is not much of a joke. Wren has not had time to work on it.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
           { id: 'ember', text: 'Catch the case.', cls: 'dark', sub: 'Wren is quick. Wren will manage.', next: 'ch2_top', set: { WREN_HURT: true }, note: 'At the stair, you caught the Ember and Wren fell.',
             after: [
               'The case comes over into eight numb hands. Wren does not. Nobody here will forget the sound.',
               { speaker: 'Wren', text: 'I\'m fine. It\'s only my arm. Listener, don\'t look like that. You got the box.' },
-              'It takes the Binder\'s cloak, torn into a rope, to get Wren up. Wren sits by the torch and never mentions the arm.',
+              'The Binder\'s cloak, torn into a rope, gets Wren up. The Listener checks the arm anyway. Wren sits by the torch and never mentions it.',
               { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
             ] },
         ],
@@ -7715,19 +8183,22 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         /* Opens on Wren's answer to the four Wren-tab lines read on the landing (ch2_stairfall). */
         text: (s) => {
           const wren = Store.chose('CH2_STAIR', 'wren');
-          const out = [{ speaker: 'Wren', text: 'All four of you, on a *stair*, in the dark. …I didn\'t follow the box, you know. I followed you. The box was just shiny.' }];
-          out.push('Then the tapestry at the top is pulled aside. The Provost stands in it, as if she had not moved since she sent you. '
+          const out = [{ speaker: 'Wren', text: 'Fine. Next time I\'ll walk *with* you. I didn\'t follow the box. I followed you. The box was just shiny.' }];
+          out.push('Wren holds out ' + (wren ? 'a wrist' : 'the good wrist') + ' to the Binder, for the thread only the Binder can see.');
+          out.push('Then the tapestry is pulled aside. The Provost stands in it, as if she had not moved since she sent you. '
             + (s.flags.SORREL
-              ? 'Behind her, two of the Convocation\'s guards and a writ. You promised them the Ember. They have come for it.'
+              ? 'Behind her are two of the Convocation\'s guards and a writ, which is how the Convocation says please. You promised them the Ember. They have come for it.'
               : s.flags.ORIEL
-                ? 'Behind her, Master Oriel, with a lamp she does not need. You promised her everything you found below.'
+                ? 'Behind her is Master Oriel, with a lamp she does not need and a notebook she does. You promised her everything you found below.'
                 : 'Behind her, nobody. You promised nobody anything tonight, and that turns out to have been clever.'));
           out.push(wren
             ? 'You tell her all of it. She does not look down the stair once. She looks at Wren.'
             : 'She takes the case in both hands. Then she sees how Wren is holding one arm.');
           out.push({ speaker: 'Provost Marrow', text: wren ? 'Then we do without it. Come up. All of you.' : 'Who did —' });
-          if (!wren) out.push('She has never finished that sentence in fourteen years, and she does not finish it now.');
-          if (s.flags.VOTE_LOST) out.push('At the end of the corridor waits Vane\'s captain, come for what the vote gave him. The Provost puts herself between him and the child.');
+          /* Six paragraphs on the worst branch (VOTE_LOST, the case caught): the captain shares the last one. */
+          const guard = s.flags.VOTE_LOST ? 'Down the corridor, Vane\'s captain waits for what the vote gave him. The Provost puts herself between him and Wren.' : '';
+          if (!wren) out.push('She has never finished that sentence in fourteen years, and she does not finish it now.' + (guard ? ' ' + guard : ''));
+          else if (guard) out.push(guard);
           return out;
         },
         next: 'ch2_flow', button: 'The night moves on',
@@ -7736,9 +8207,9 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'flow', art: 'ch2_stair', mood: 'hearth', fx: 'dust',
         text: (s) => [
           Store.chose('CH2_DOOR', 'crawled') ? 'The door counted once, and you were not what it counted.' : 'The door counted once, and it counted you.',
-          s.flags.EMBER_LOST ? 'The Cold Ember is not coming up tonight.' : 'The Cold Ember is on the Provost\'s desk, and the Provost is not looking at it.',
+          s.flags.EMBER_LOST ? 'The Provost does not have the Ember. She says it would not have mattered, and does not say how she knows.' : 'The Provost held the Ember to the Hearth for a long minute. The fire would not take it. Now it is on her desk, and she is carefully not looking at it.',
           'Far above, the Hearth flickers, and this time everyone sees it.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter II — the paths you walked',
         stats: (s) => {
@@ -7963,7 +8434,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       { name: 'The sentry', short: 'B', path: PATROL_B, alarmCell: 'E4' },
     ],
     /* The world's reaction only. What the cry buys the Envoy, and for how long, is the Binder's page. */
-    alarm: { cells: BOUGHT_ROOMS, turns: 3, text: 'A spyhole slides. A voice out of the lodge: "Here! The boy!" Somewhere east, boots stop walking.' },
+    alarm: { cells: BOUGHT_ROOMS, turns: 3, text: 'A spyhole slides. A voice out of the lodge: "Here! The foundling!" Somewhere east, boots stop walking.' },
     get maxTurns() { return turnBudget(); },     // twelve, then one fewer per bell, floored at eleven
     labels: LABELS,
     /* Read by grid.js one line BEFORE it calls onTimeout, so this bell is not counted yet: the terms
@@ -8153,7 +8624,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
   const STAND = {
     BLUFF: {
       said: 'It is the Envoy\'s own offer, word for word. The captain heard his master make it, and cannot know how you answered.',
-      captain: 'Then the Envoy will see you at his door. With the boy.',
+      captain: 'Then the Envoy will see you at his door. With the child.',
       wren: 'You lied to a man with a *rope*. With a straight face. I have never been prouder.',
     },
     WORD: {
@@ -8261,7 +8732,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         text: [
           'Back in the laundry, while you waited, the woman at the copper did not look up.',
           'Wren sat on the warm lid of the copper, heels drumming. Then the drumming stopped.',
-          { speaker: 'Wren', text: 'One question each. I\'ve been saving them for somewhere dark. Don\'t look at each other. And don\'t just be nice.' },
+          { speaker: 'Wren', text: 'Everyone in this school knows something about me except me. So. One question each. Don\'t look at each other. And don\'t just be nice.' },
           { text: 'Every phone: **Pages**, and the word LINEN. Answer alone, then type back the sealed word your phone gives you.', cls: 'whisper' },
         ],
         prompt: 'Four sealed words, one from each phone.',
@@ -8302,18 +8773,18 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
            defaults to the passive option, and surrender is the harshest outcome in the chapter. */
         timer: 75, timerText: '*Seventy-five heartbeats. He is counting them.*', timeout: 'fight',
         text: (s) => [
-          { speaker: 'Wren', text: 'Cuffs. Lanterns. *Breathing.* And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
+          { speaker: 'Wren', text: 'Reader, you copied my letters onto your cuff. Seer, you stood on my shadow in the dark. Listener, you held your breath every time I held mine. And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
           'Lantern-light fills the stair behind you. Vane\'s captain, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
-          { speaker: 'The captain', text: 'Hand over the boy, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. I am not a cruel man. I am a punctual one.' },
+          { speaker: 'The captain', text: 'Hand over the child, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the child alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
           s.flags.VANE_ACCEPT ? 'He looks at you a beat longer than he looks at Wren.' : 'Behind the Binder, Wren has gone very still.',
         ],
         prompt: 'The Tower door is warded. Choose, together.',
         options: [
           { id: 'fight', text: 'Binder: "We wake the ward."', sub: 'Three shapes are cut over it. It takes four hands.', next: 'ch3_fight' },
-          { id: 'bluff', text: 'Seer: "Lord Vane\'s orders. We are bringing him the boy."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
+          { id: 'bluff', text: 'Seer: "Lord Vane\'s orders. We are bringing him the child."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
           { id: 'word', text: 'Reader: "The Envoy has our word. Stand aside."', sub: 'You accepted. His captain knows it.', cls: 'bright', if: (s) => !!s.flags.VANE_ACCEPT, next: 'ch3_stand', set: { DOOR: 'WORD' }, note: 'The captain let Wren pass on Vane\'s word.' },
           { id: 'writ', text: 'Listener: "It\'s the Convocation\'s seal. Read it, captain. Please."', sub: 'Sorrel gave you her writ.', cls: 'bright', if: (s) => !!s.flags.SORREL, next: 'ch3_stand', set: { DOOR: 'WRIT' }, note: 'Sorrel\'s writ turned the captain back.' },
-          { id: 'surrender', text: 'Give the captain the boy.', sub: 'The Provost lives.', cls: 'dark', next: 'ch3_surrender', set: { DOOR: 'SURRENDERED', SURRENDERED: true, WREN_TRUST: (s) => (s.flags.WREN_TRUST || 0) - 2 }, note: 'You handed Wren to the captain at the Tower door.' },
+          { id: 'surrender', text: 'Give Wren to the captain.', sub: 'The Provost lives.', cls: 'dark', next: 'ch3_surrender', set: { DOOR: 'SURRENDERED', SURRENDERED: true, WREN_TRUST: (s) => (s.flags.WREN_TRUST || 0) - 2 }, note: 'You handed Wren to the captain at the Tower door.' },
         ],
       },
       /* ---------- the threshold ---------- */
@@ -8403,7 +8874,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           s.flags.DOOR === 'SURRENDERED'
             ? 'The third bell has rung, and the Provost is coming up the stair, alive and furious. The rope came off the beam an hour ago.'
             : 'The Tower stair, and the third bell already rung. Above you is the Provost\'s study, and the Provost in it. The rope came off the beam an hour ago.',
-          { text: 'The paths you walked, and the ones you did not.', cls: 'small' },
+          { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter III — the paths you walked',
         stats: (s) => {
@@ -8774,8 +9245,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         art: 'ch4_study', mood: 'court', fx: 'dust',
         text: (s) => {
           const f = s.flags, out = [];
-          out.push({ speaker: 'Provost Marrow', text: 'Midnight is ninety minutes off. By then I will be under the school.' });
-          out.push({ speaker: 'Provost Marrow', text: 'So I am asking you to swear an oath. Take Wren down into the Cold at midnight, whatever it costs.' });
+          out.push({ speaker: 'Provost Marrow', text: 'Midnight is ninety minutes off. By then I will be under the school. So I am asking you to swear an oath. Take Wren down into the Cold at midnight, whatever it costs.' });
+          out.push('She says it to the four of you. Not once does she look at Wren.');
           out.push({ speaker: 'Provost Marrow', text: 'The scroll is behind the third shelf. Read it. Argue. ' + (f.SURRENDERED ? 'After tonight I will decide what you are.' : 'I will be ten minutes.') });
           out.push(f.WREN_SCARED ? 'The door shuts.' : 'The door shuts. Wren goes straight to the fire.');
           if (!f.WREN_SCARED) out.push({ speaker: 'Wren', text: '"Whatever it costs." She says that about the coal bill. Come on. Ten minutes.' });
@@ -9032,7 +9503,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           out.push({ text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' });
           out.push(f.WREN_SCARED
             ? { speaker: 'Wren', text: '…Thank you. For saying it to my face.' }
-            : { speaker: 'Wren', text: 'You read my name. Nobody\'s ever read it to me before. And you kept my words, and stood in front of a fire, and held on. Right. Nobody cry. I\'m in her chair.' });
+            : { speaker: 'Wren', text: 'You read my name. Nobody\'s ever read it to me before. And you kept my words, and guarded my shadow, and held your end out. Right. Nobody cry. I\'m in her chair.' });
           out.push('The stair creaks. Provost Marrow is back early.' + (f.TAPESTRY ? ' She sees the tapestry, and stops in the doorway.' : ''));
           out.push({ speaker: 'Provost Marrow', text: (f.TAPESTRY ? 'So. The Seer. ' : '') + 'The scroll, then. Read it, all four of you. Then swear, or do not.' });
           out.push({ text: 'No bell counts this one. Argue as long as you need.', cls: 'whisper' });
@@ -9170,6 +9641,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           out.push({ speaker: 'Provost Marrow', text: 'Bound. Good. Then I need not carry it alone.' });
           out.push({ speaker: 'Provost Marrow', text: 'When the bells ring tonight, hold them. I will do the rest.' });
           if (knot) out.push('She puts a hand on the nearest shoulder. Nobody has seen her do that before.');
+          out.push('Then she looks at Wren, for the first time since she asked, and has to look away.');
           out.push(wren(knot
             ? { speaker: 'Wren', text: 'KNOT. The one that does not come undone. Good. I lose everything else.' }
             : { speaker: 'Wren', text: 'EMBER. The one you can think again about. Binder, you\'re shaking. Come and sit by the fire.' },
@@ -9200,7 +9672,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch4_flow: {
         type: 'flow', art: 'ch4_study', artParams: (s) => ({ scraped: !!s.flags.TAPESTRY }), mood: 'hearth', fx: 'dust',
         enter: () => computeLaw0(),
-        text: ['The bell. Midnight comes up the stair a step at a time.', { text: 'The paths you walked, and the ones you did not.', cls: 'small' }],
+        text: ['The bell. Midnight comes up the stair a step at a time.', { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' }],
         flowTitle: 'Chapter IV — the paths you walked',
         stats: (s) => {
           const f = s.flags;
@@ -9561,6 +10033,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           'The stair ends at a ledge, and the world ends with it.',
           'Below, drowned arches and four empty thrones. Under it all, glowing like a sky from beneath, the Cold.',
           { speaker: 'Wren', text: 'Four thrones, four Founders. It’s a *theme*. I’m not looking down, by the way. I’ve decided.' },
+          'Then, when Wren thinks nobody is watching, Wren looks down anyway, and goes very still, and then remembers to grin.',
           'Wren sits by the torch, as close as the flame allows.',
           { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
         ],
@@ -9570,7 +10043,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch5_gate2: {
         type: 'puzzle', puzzle: 'ring', art: 'ch5_gate', artParams: { n: 2, cold: 0.5 }, mood: 'tense', fx: 'dust', puzzleId: 'ch5_gate2', par: [2.5, 5, 7],
         text: [
-          { speaker: 'Wren', text: 'Somewhere warm. My feet, counted. My shadow, guarded. A sleeve.' },
+          { speaker: 'Wren', text: 'So. The Reader is saving my name for somewhere warm. The Listener is counting my feet. The Seer is sitting on my shadow. And the Binder wants me holding a sleeve.' },
           { speaker: 'Wren', text: 'You lot have made a *rota*. …All right. I’ll take the sleeve.' },
           'Five shapes, and five bells the Hearth cannot hear.',
           { text: 'All four out loud, before anybody touches the ring.', cls: 'whisper' },
@@ -10700,7 +11173,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
                fire is four people, four people is a finite amount of fire, and that is the whole of
                it. It goes in Marrow's mouth at the one beat where the stone has just said what the
                fire is, and it says nobody is to blame, which is the chapter's own line about Wren. */
-            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is why it is going out. Nobody did anything wrong.' },
+            { speaker: 'Provost Marrow', text: 'Four people\'s worth of fire, and four hundred years to spend it in. That is why it is going out. They came back up, all four, and never had a Sighting again. Nobody did anything wrong.' },
             /* STONE_TOLD is the losing branch of the reading budget, and this is where it is SAID.
                docs/ADVERSARIAL.md OPEN 2 is settled across ch6, ch7 and ch8 together: the last two
                chapters price a wrong answer as a record rather than a loss, the Walk still opens, and
@@ -10712,7 +11185,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
               : mis ? { speaker: 'Provost Marrow', text: `And ${readings(mis)} first. The stone keeps that too. Walk anyway.` } : null,
             { text: 'THE FOURFOLD WALK IS OPEN.', cls: 'big' },
             { text: 'The road four people walk together, not one. Binder, the struck Law is back in your **Book**.', cls: 'whisper' },
-            { speaker: 'Wren', text: 'Well. I did say I needed four idiots. Then ask me a third time. In there.' },
+            { speaker: 'Wren', text: 'No. Those are *yours*. The Listener is not going deaf on my account. …I did say I needed four idiots. I didn\'t mean this.' },
           ].filter(Boolean);
         },
         next: 'ch6_flow', button: 'The night moves on',
@@ -11052,9 +11525,9 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'dread', fx: 'ash', flame: 0.06, choice: 'FINALE_WALL',
         text: (s) => [
           { speaker: 'Lord Vane', text: s.flags.VANE_ACCEPT
-            ? 'You gave me your word in the Hall. Bring the boy up the road and he lives.'
-            : 'One child, and the fire is out within the hour. Bring him up the road.' },
-          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. This is the *in there* I meant. Reader, did you ever eat that biscuit?` },
+            ? 'You gave me your word in the Hall. Bring the child up the road and it lives.'
+            : 'The fire is out within the hour. Let it go out. Bring the child up the road, and it lives.' },
+          { speaker: 'Wren', text: `Don't look at him. Look at me, ${group(s)}. Reader, did you ever eat that biscuit?` },
         ],
         prompt: 'The Envoy waits.',
         options: [
@@ -11080,7 +11553,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           'Four figures walking in. No child. The fourth writes a fire upside down.',
           'Wren stares at that fire, then pretends not to.',
           { speaker: 'Lord Vane', text: 'Twenty-two years ago I stood in your Hall with that paint under my nails. They sent me away to learn manners.' },
-          { speaker: 'Lord Vane', text: 'My offer is withdrawn. I will not be the thing you have to be brave about.' },
+          { speaker: 'Lord Vane', text: 'I came back for the child because nobody in this school would say no to the stone. You have. My offer is withdrawn. I will not be the thing you have to be brave about.' },
         ],
         next: 'ch7_attune', button: 'The word on the rim',
       },
@@ -11107,7 +11580,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         type: 'choice', art: 'ch7_edge', artParams: artP, mood: 'tense', fx: 'ash', flame: 0.06, choice: 'FINALE_DECISION',
         text: (s) => {
           const out = [
-            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read it to me, then. Seer, stand where you like. Listener, you can stay. And Binder — bound. I\'m holding you to it.' },
+            { speaker: 'Wren', text: 'Stop it. I had my brave face on. Reader, read me my name first, like you said. Seer, let them see my shadow. I don\'t mind any more. Listener, stay close. And Binder, you said bound, so I\'m holding you to it.' },
             { speaker: 'Provost Marrow', text: 'The ring has been ready for fourteen years. Decide.' },
           ];
           out.push(s.flags.WALK_UNLOCKED
@@ -11872,8 +12345,8 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch8_e0: {
         art: 'ch8_white', mood: 'triumph', fx: 'motes', flame: 1, speed: 20,
         text: [
-          'White. The white of a forge, too hot to have a color. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
-          'Wren is waiting on the stones, as close to the fire as a person can sit.',
+          'White. For the first time in four hundred years, the Hearth is not holding anything shut. It is simply a fire.',
+          'Wren is waiting on the stones. Beside Wren, the Provost sits on the floor, which nobody has ever seen her do, holding on to Wren\'s sleeve.',
           'There is a pulse in Wren\'s throat. You can see it from here.',
           { speaker: 'Wren', text: 'You took your *time*. I had a speech. I\'ve forgotten all of it, so you\'ll have to go first.' },
           { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
@@ -11884,7 +12357,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
         art: 'ch8_years', mood: 'wonder', fx: 'snow', flame: 1, speed: 18,
         /* WREN_TRUST reads here, and this is the only place in the game it is read. It is written four
            times -- ch1.js:213 when the nine vote Wren away, ch3.js:235 on every bell, ch3.js:444 for a
-           true answer in the laundry, ch3.js:478 when the captain is given the boy -- and until this
+           true answer in the laundry, ch3.js:478 when the captain is given Wren -- and until this
            pass `node tools/flag-map.js` printed it "set but never read", which it had been since it
            was written. ch3's owner made the writes honest in this sweep and said plainly that giving
            it a consumer was a cross-chapter decision it could not take alone; this is that decision.
@@ -11897,8 +12370,9 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
           { speaker: 'Wren', text: 'Listener, give me your hand. There. That\'s mine. Now all of you stop checking on me, and somebody find breakfast. The Reader hasn\'t eaten since yesterday.' },
           { text: 'Years later.', cls: 'center' },
           'Four unremarkable people share a house too small for them. Every winter they argue about what the ring looked like. They would do it again. They say so at the point in the evening when it becomes true.',
+          `In the Register of the Hearth, one line has never been corrected. *Claimed by:* **${s.flags.GROUP_NAME || 'the Four'}**, in Wren's worst handwriting.`,
           ((s.flags.WREN_TRUST | 0) >= 0 ? 'Wren visits.' : 'Wren visits, in the end.')
-            + ' Grown, and tall, and still never knocks. The Listener checks the pulse, every time.',
+            + ' Grown, and tall, and still never knocks. Except at this door: one, two, three, four, all together, and then one more. The Listener checks the pulse, every time.',
           { speaker: 'Wren', text: 'You\'re all *awake*. Excellent.' },
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -11941,7 +12415,7 @@ window.VigilMeta = { title: 'What the Fire Keeps' };
       ch8_e4: {
         art: 'ch8_cage', mood: 'dread', fx: 'ash', flame: 0.15, speed: 20,
         text: (s) => [
-          'The Envoy is courteous about it. He has always been courteous.',
+          'The Envoy is courteous about it. He has always been courteous. Wren lives, as he promised. It was the only part of the bargain he ever wanted.',
           'Wren climbs into the cage unpushed and does not look back at any of you. It is the only unkind thing Wren has ever done. It is meant kindly.',
           'By spring the Cold feeds the Crown\'s engines. The school is a garrison. The Hearth is a furnace with a schedule.',
           'You are Masters, as promised. Masters of ash. The Seer keeps one secret from the Crown, and will keep it for life.',

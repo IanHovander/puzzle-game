@@ -47,7 +47,7 @@
         });
         if (e.kind === 'brace' || e.kind === 'all') {
           // draw a chain across lanes visually via a full-width bar element in wrap
-          const bar = UI.el('div', { class: 'orb-chain', style: { position: 'absolute', height: '4px', background: e.kind === 'all' ? 'rgba(155,123,216,0.6)' : 'rgba(255,200,150,0.6)', left: (Math.min(...e.lanes) / 4 * 100 + 12.5) + '%', width: ((Math.max(...e.lanes) - Math.min(...e.lanes)) / 4 * 100) + '%', top: '-50px', zIndex: 2 } });
+          const bar = UI.el('div', { class: 'orb-chain', style: { position: 'absolute', height: '4px', background: e.kind === 'all' ? 'rgba(255,255,255,0.6)' : 'rgba(255,200,150,0.6)', left: (Math.min(...e.lanes) / 4 * 100 + 12.5) + '%', width: ((Math.max(...e.lanes) - Math.min(...e.lanes)) / 4 * 100) + '%', top: '-50px', zIndex: 2 } });
           wrap.appendChild(bar); e.chain = bar;
         }
         e.spawned = true;

@@ -38,7 +38,7 @@
         { id: 'ch0_carve', label: 'A name in the brass', col: 4, row: 0 },
         { id: 'ch0_lamp', label: 'The lamp, lit the old way', col: 5, row: 0 },
         { id: 'ch0_name', label: 'What Wren calls you', col: 6, row: 0, kind: 'choice' },
-        { id: 'ch1_start', label: 'Tomorrow', col: 7, row: 0 },
+        { id: 'ch1_start', label: 'The Vigil', col: 7, row: 0 },
       ],
       edges: [['ch0_start', 'ch0_dorm'], ['ch0_dorm', 'ch0_practice'], ['ch0_practice', 'ch0_dare'], ['ch0_dare', 'ch0_carve'], ['ch0_carve', 'ch0_lamp'], ['ch0_lamp', 'ch0_name'], ['ch0_name', 'ch1_start']],
     },
