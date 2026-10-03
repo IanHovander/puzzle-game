@@ -46,8 +46,9 @@
   /* Nine banners in perspective along both walls, the Chair's at the far end. */
   function bannerRow(dim) {
     let s = bannerDefs;
-    // left wall: seats 1-4 nearest first; right wall: 8-5; the Chair's over the Hearth
-    const left = [0, 1, 2, 3], right = [7, 6, 5, 4];
+    // as the vote ring and the phone maps have it: the Chair at the far end, seats 1-4 down the right wall
+    // and 5-8 up the left, so seat 4 and seat 5 hang nearest (nearest first in each list)
+    const left = [4, 5, 6, 7], right = [3, 2, 1, 0];
     left.forEach((k, i) => { const t = i / 3; s += hanging(HOUSES[k], 140 + t * 330, 90 + t * 60, 120 - t * 55, 300 - t * 150, dim); });
     right.forEach((k, i) => { const t = i / 3; s += hanging(HOUSES[k], 1460 - t * 330, 90 + t * 60, 120 - t * 55, 300 - t * 150, dim); });
     s += hanging(HOUSES[8], 800, 60, 70, 150, dim);
@@ -114,7 +115,7 @@
     // soldiers in rows, then the Envoy
     P.figures([{ x: 660, s: 0.7 }, { x: 720, s: 0.72 }, { x: 880, s: 0.72 }, { x: 940, s: 0.7 }, { x: 690, s: 0.8 }, { x: 910, s: 0.8 }], 700, '#0a0910') +
     `${[660, 720, 880, 940].map(x => `<line x1="${x + 14}" y1="700" x2="${x + 14}" y2="590" stroke="#3a3540" stroke-width="3"/>`).join('')}` +
-    `<g transform="translate(800,730)"><ellipse cx="0" cy="-6" rx="26" ry="8" fill="#000" opacity=".4"/><path d="M-20,0 L-14,-140 L14,-140 L20,0 Z" fill="#2a2a30"/><circle cx="0" cy="-156" r="14" fill="#1a1a20"/><path d="M-20,0 L-28,-30 L-14,-140" fill="#2a2a30"/><path d="M14,-140 L28,-30 L20,0" fill="#2a2a30"/><rect x="-6" y="-100" width="12" height="40" rx="2" fill="#c9a85a" opacity=".8"/><circle cx="0" cy="-80" r="7" fill="#8a2f2f"/></g>` +
+    `<g transform="translate(800,730)"><ellipse cx="0" cy="-6" rx="26" ry="8" fill="#000" opacity=".4"/><path d="M-20,0 L-14,-140 L14,-140 L20,0 Z" fill="#3a3a46"/><circle cx="0" cy="-156" r="14" fill="#1a1a20"/><path d="M-20,0 L-28,-30 L-14,-140" fill="#2a2a30"/><path d="M14,-140 L28,-30 L20,0" fill="#2a2a30"/><rect x="-6" y="-100" width="12" height="40" rx="2" fill="#c9a85a" opacity=".8"/><circle cx="0" cy="-80" r="7" fill="#8a2f2f"/></g>` +
     P.floorTiles(720, '#0b0910', 'rgba(255,255,255,0.04)') +
     P.fog(560, 340, '#1a1a24', 0.35)
   ));
@@ -128,7 +129,9 @@
     P.torch(700, 250, 1.4) +
     // soldiers' shadows down the passage, and the Envoy in the light
     P.figures([{ x: 1180, s: 0.6, color: '#08070c' }, { x: 1300, s: 0.6, color: '#08070c' }], 470, '#08070c') +
-    `<g transform="translate(980,480)"><ellipse cx="0" cy="-6" rx="30" ry="9" fill="#000" opacity=".4"/><path d="M-22,0 L-16,-160 L16,-160 L22,0 Z" fill="#26262c"/><circle cx="0" cy="-178" r="16" fill="#18181e"/><path d="M-16,-160 L-22,0" stroke="#ffb86a" stroke-width="2" opacity=".5"/><rect x="-6" y="-110" width="12" height="44" rx="2" fill="#c9a85a" opacity=".7"/></g>` +
+    // his captain at his shoulder, studying your faces
+    P.figures([{ x: 912, s: 1.35 }], 482, '#24242e') +
+    `<g transform="translate(980,480)"><ellipse cx="0" cy="-6" rx="30" ry="9" fill="#000" opacity=".4"/><path d="M-22,0 L-16,-160 L16,-160 L22,0 Z" fill="#3a3a46"/><circle cx="0" cy="-178" r="16" fill="#18181e"/><path d="M-16,-160 L-22,0" stroke="#ffb86a" stroke-width="2" opacity=".5"/><rect x="-6" y="-110" width="12" height="44" rx="2" fill="#c9a85a" opacity=".7"/></g>` +
     P.floorTiles(800, '#0a0810', 'rgba(255,255,255,0.03)') +
     P.fog(500, 400, '#1a1410', 0.4)
   ));
