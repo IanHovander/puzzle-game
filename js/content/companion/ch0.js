@@ -115,7 +115,7 @@
 
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'The lamp is humming' });
-        P.sight.push({ t: 'p', text: 'Nobody else can hear it. Two notes, over and over.' });
+        P.sight.push({ t: 'p', text: 'Only you can hear it. Two notes, over and over.' });
         P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note is **three steps above** the first.' });
         P.sight.push({ t: 'html', html: ladder3() });
         P.sight.push({ t: 'p', text: 'Two notes, two words. When someone says the two words, find both on the ladder in your **Book**. Whichever order climbs three steps is right.' });

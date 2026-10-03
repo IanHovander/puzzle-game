@@ -225,7 +225,7 @@
           const won = (r && 'ok' in r) ? !!r.ok : !s.flags.VOTE_LOST;
           if (won) return [
             'The Binder walks the length of the hall to Seat 1, still counting, and asks. Seat 1 nods once. "Since you asked me to my face." Seat 2 nods too.',
-            'The Reader tells Seat 7 what you came to tell the Houses. "Ash over ember. The fire keeps. *Walk* is the school\'s word. *Keep* is the lamp\'s." Seat 7 looks past the Reader at the stone for a long time. Forty years, and nobody ever brought her a second opinion. "Very well. Tonight — keep."',
+            'The Reader tells Seat 7 what you came to tell the Houses. "Ash over ember. The fire keeps. *Walk* is the school\'s word. *Keep* is the Founders\'." Seat 7 looks past the Reader at the stone for a long time. Forty years, and nobody ever brought her a second opinion. "Very well. Tonight — keep."',
             'Then the vote. The Chair: one. Seat 3: two. Seats 1 and 2: three, four. Seat 7 shuts a black notebook and raises her hand. Five of nine. Wren stays.',
           ];
           const sel = (r && r.selected) || [];
@@ -240,7 +240,7 @@
         art: 'ch1_hall', artParams: { seated: true }, mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: (s) => [
           'Five to four. Wren lets go of the Provost\'s sleeve, one finger at a time. The Binder stops counting.',
-          '"The school keeps its own," says the Provost. *Keeps.* Last night it was the lamp\'s word. Now it is the school\'s. "Lord Vane, the school thanks the Crown for its concern."',
+          '"The school keeps its own," says the Provost. *Keeps.* Last night that was the Founders\' word. Tonight the school has borrowed it. "Lord Vane, the school thanks the Crown for its concern."',
           'Lord Vane rolls up the writ, like a letter he means to send again.',
           `The Register's clerk dips his pen. Wren gets there first, and on the empty line — *Claimed by* — writes *${group(s)}*, in the worst handwriting the Register has ever held. The clerk looks at the Provost. The Provost looks at the ceiling. The clerk, writing second, writes nothing.`,
           { speaker: 'Wren', text: 'That was you! The Binder walked up to Seat One. The Binder doesn\'t walk up to *anyone*. Listener, breathe. I\'m staying.' },
