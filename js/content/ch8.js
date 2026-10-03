@@ -329,7 +329,7 @@
           { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Nobody do the face.' },
           'Wren goes into the Hearth without knocking, the way Wren goes through every door. It closes behind. Four hundred years of fire, again, from a spark.',
           'In the morning a mason carves a fifth name over the Hearth. He has to ask how to spell it. The Reader does not offer. Then the Reader eats breakfast without being told.',
-          'The Provost stands at the fire with a thread only the Binder can see. It has been gray for fourteen years.',
+          'The Provost stands at the fire with a thread only the Binder can see. It went gray at the Vigil, for one second. Now it stays gray.',
           'On the chart of the night, beside the road you took, there are four boxes you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',
@@ -361,7 +361,7 @@
       /* ---------- the whole night ---------- */
       ch8_night: {
         type: 'custom', art: 'ch8_dawn', mood: 'hearth', fx: 'dust',
-        text: ['Eight hours, from the dormitory to the Cold. At every note, the Listener looks round the table, checking.'],
+        text: ['Eight hours that counted, from the dormitory to the Cold. At every note, the Listener looks around the table, checking.'],
         run: (box, api) => new Promise((resolve) => {
           const s = api.state;
           /* An hour with no visited scene is dimmed, not dropped -- a table that came in from the

@@ -113,7 +113,7 @@
       return `<div class="ch8-goodbye"><div class="ch8-name">${esc(name)}</div>` +
         `<p class="ch8-line">Don't do the face. I drew it myself, and yes, the fire's wonky.</p>` +
         `<div class="blk-svg underlayer">${under}</div>` +
-        `<p class="ch8-line">You stood between me and every lamp for years, and never once said why. You can sit down now, ${esc(name)}. Thank you.</p>` +
+        `<p class="ch8-line">You stood between me and every lamp for years, and only told me why once. You can sit down now, ${esc(name)}. Thank you.</p>` +
         `<div class="ch8-sign">— W.</div></div>`;
     },
     binder: (ctx) => {
