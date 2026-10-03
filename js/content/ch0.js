@@ -76,7 +76,7 @@
           "\"*Item two,*\" the Binder reads from the Vigil's order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use. There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp nobody has ever lit. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
           "\"We could hide Wren,\" says the Listener.",
-          "\"Where?\" says the Reader. \"Every room here belongs to somebody. Including this one.\"",
+          "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
           "\"Then we find one thing that's ours,\" says the Listener. \"By the bell.\"",
           "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
         ],
@@ -256,7 +256,7 @@
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', artParams: { dawn: true }, mood: 'hearth', fx: 'dust',
         text: (s) => [
-          "Wren talks about everything except tomorrow, until you are nearly asleep. Then, soft on the floorboards, you knock.",
+          "After that, Wren talks about everything except tomorrow, until you are nearly asleep. Then, soft on the floorboards, you knock.",
           { text: "Knock it on the table now, soft: one each, then all together.", cls: "whisper" },
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           `At dawn the lamp goes out, having kept till morning, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. Somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,

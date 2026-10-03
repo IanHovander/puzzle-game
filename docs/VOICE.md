@@ -132,11 +132,11 @@ years; never raises her voice). **Lord Vane** (the Crown's Envoy; courteous, rut
 child being sacrificed; the Crown's interest is his cover). **Masters Sorrel and Oriel** and the Houses (fair game for
 the narrator).
 
-Wren takes no pronoun in narration: say "Wren". Vane calls Wren "the boy"; that is his voice, keep it.
+Wren takes no pronoun in narration: say "Wren". Vane calls Wren "the child", or "it"; that is his voice, keep it.
 
 ## Motifs that cross chapters (keep them recognisable; they are callbacks)
 
-"You're awake! Brilliant." · "four idiots" · Wren never knocks · the biscuit for the Reader · "Mom'll — the
+"You're awake. Good." · "four idiots" · Wren never knocks · the biscuit for the Reader · "Mom'll — the
 Provost'll —" · the Seer's face · the eleven-second record for standing still · the sleeve (Wren holds the Provost's
 in I; she holds Wren's at the end) · "Not coming back" · "made of stone" · the fifth blanket · Wren always sits nearest
 the fire · "I'm fine" (the Listener checks anyway) · "Now, love. Walk." · "I know, Mom." · "Loved enough to walk back

@@ -260,7 +260,7 @@
   Voice.test = function () {
     Voice.stop(); const my = session;
     chain = Promise.resolve().then(async () => {
-      for (const [who, t] of [['Narrator', 'The school, which knows what to do with a miracle, wrote it down.'], ['Wren', 'You\'re awake! Brilliant. I need four idiots and a lamp.']]) { await say(t, who, false, my); await sleep(400); }
+      for (const [who, t] of [['Narrator', 'The school, which knows what to do with a miracle, wrote it down.'], ['Wren', 'You\'re awake. Good. What I need is four idiots and a lamp.']]) { await say(t, who, false, my); await sleep(400); }
     });
   };
 
