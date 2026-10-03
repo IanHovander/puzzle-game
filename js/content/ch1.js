@@ -231,7 +231,7 @@
           const sel = (r && r.selected) || [];
           const t = tally(sel);
           const out = sel.map(id => REASONS[id]);
-          out.push(`Then the Chair calls the vote, as it stands. ${listSeats(t.keep)} for keeping. It is not enough.`);
+          out.push(`Then the bell, and the Chair calls the vote, as it stands. ${t.keep.length} keep, ${t.send.length} send. ${listSeats(t.keep)} for keeping. It is not enough.`);
           return out;
         },
         next: (s, r) => ((r && 'ok' in r) ? r.ok : !s.flags.VOTE_LOST) ? 'ch1_won' : 'ch1_lost',
@@ -262,7 +262,7 @@
         next: 'ch1_prices', button: 'What they want',
       },
       ch1_lost: {
-        art: 'ch1_hall', artParams: { seated: true }, mood: 'sorrow', fx: 'dust', flame: 0.8, sfx: 'fail',
+        art: 'ch1_hall', artParams: { seated: true, soldiers: true }, mood: 'sorrow', fx: 'dust', flame: 0.8, sfx: 'fail',
         /* ch8_after reads "Claimed by: GROUP, in Wren's worst handwriting" on every path, so Wren writes it here too. */
         text: (s) => [
           'Two soldiers step onto the dais. Wren\'s hand is still on the Provost\'s sleeve, and the Provost has to take it off herself. Then Wren finds you at the back, and grins, for you.',
@@ -323,7 +323,7 @@
         ],
       },
       ch1_after: {
-        art: 'ch1_hall', artParams: { low: true }, mood: 'hearth', fx: 'embers', flame: 0.7,
+        art: 'ch1_hall', artParams: (s) => ({ low: true, wren: true, soldiers: !!s.flags.VOTE_LOST }), mood: 'hearth', fx: 'embers', flame: 0.7,
         text: (s) => {
           /* The Wren tab is read here, after the Envoy and before the four go below. Wren's answer opens
              ch1_flow, as ch0_tabs' instruction is answered by ch0_name. The phone cannot know how the vote
@@ -363,7 +363,7 @@
         next: 'ch1_flow', button: 'The night moves on',
       },
       ch1_flow: {
-        type: 'flow', art: 'ch1_hall', artParams: { low: true }, mood: 'hearth', fx: 'embers', flame: 0.65,
+        type: 'flow', art: 'ch1_hall', artParams: (s) => ({ low: true, wren: true, soldiers: !!s.flags.VOTE_LOST, aside: true }), mood: 'hearth', fx: 'embers', flame: 0.65,
         /* The ending turns, not reprises: the fire coughs again and the shadow points down, at what is under
            the stones, and the Provost is at the tapestry (ch2 opens behind it). The captain and the clock
            mark a yes or a pretended yes to the Envoy. */

@@ -61,21 +61,101 @@
     const chairs = list.map(f => `<g transform="translate(${f.x},700) scale(${f.s})"><rect x="-24" y="-128" width="48" height="128" rx="6" fill="#231a1e" stroke="#4a3628" stroke-width="2"/><rect x="-18" y="-120" width="36" height="6" rx="2" fill="#2a1e1a"/></g>`).join('');
     return chairs + P.figures(list.map(f => ({ x: f.x, s: f.s })), 700, '#08070a');
   }
-  // The ninth chair, the Chair: the tallest, in front of the Hearth, under the crown. Empty until ch1_vote,
-  // where the Provost sits in it for the first time anyone can remember, and Wren stands beside it.
-  function theChair(seated) {
-    let s = `<g transform="translate(800,770)"><ellipse cx="0" cy="-4" rx="52" ry="9" fill="#000" opacity=".4"/>` +
+  // A Crown soldier as ch1_vane draws them (P.figures + a spear), larger, here in the hall. side: the spear hand
+  // (-1 left, 1 right); the fire-side edge takes a rim of light.
+  function soldier(x, base, s, side, rim) {
+    const sx = x + side * 14 * s, top = base - 150 * s;
+    return P.figures([{ x, s }], base, '#0a0910') +
+      `<path d="M${x - 13 * s},${base - 84 * s} L${x},${base - 100 * s} L${x + 13 * s},${base - 84 * s} Z" fill="#0a0910"/><path d="M${x - 14 * s},${base - 84 * s} H${x + 14 * s}" stroke="#3a3540" stroke-width="2"/>` +
+      `<line x1="${sx}" y1="${base}" x2="${sx}" y2="${top}" stroke="#3a3540" stroke-width="3"/><path d="M${sx - 3},${top} L${sx},${top - 12} L${sx + 3},${top} Z" fill="#6a6470"/>` +
+      `<path d="M${x + rim * 10 * s},${base - 70 * s} L${x + rim * 14 * s},${base}" stroke="#ff9a3c" stroke-width="1.5" opacity=".45"/>`;
+  }
+  // The tapestry, on the left wall behind Seats 7-8 (the Seer's map), painted over so long ago that nobody
+  // remembers the first picture: dim cloth, a later coat of paint in broad patches, a scrap of the older picture
+  // where it has flaked. aside (ch1_flow): its right edge drawn back on a dark doorway and the top of a stair,
+  // the Provost beside it, holding it.
+  function tapestry(aside) {
+    // a slight trapezoid: the near (left) edge longer
+    const L = 392, R = 556, tl = 316, tr = 334, bl = 700, br = 686;
+    let s = '';
+    if (aside) {
+      // the doorway the cloth has been hiding, and the first steps down
+      s += `<path d="M478,690 L478,470 A34,34 0 0 1 546,470 L546,686 Z" fill="#050407" stroke="#2a2026" stroke-width="3"/>`;
+      [0, 1, 2, 3].forEach(i => { const y = 560 + i * 20, inset = 6 + i * 6;
+        s += `<rect x="${478 + inset}" y="${y}" width="${68 - inset * 2}" height="3" fill="#ff9a3c" opacity="${(0.32 - i * 0.07).toFixed(2)}"/>`; });
+    }
+    // the rod
+    s += `<rect x="${L - 10}" y="${tl - 8}" width="${R - L + 20}" height="8" rx="3" fill="#3a2f28" transform="rotate(${((tr - tl) / (R - L) * 57.3).toFixed(2)} ${L} ${tl})"/>`;
+    const cloth = aside
+      ? `M${L},${tl} L${R},${tr} C${R - 20},${tr + 90} ${R - 70},${tr + 150} ${R - 74},${tr + 200} C${R - 78},${tr + 260} ${R - 92},${bl - 60} ${R - 96},${bl - 6} L${L},${bl} Z`
+      : `M${L},${tl} L${R},${tr} L${R},${br} L${L},${bl} Z`;
+    s += `<path d="${cloth}" fill="#241b20"/>`;
+    // the later coat of paint, in broad dull patches
+    s += `<g opacity=".7"><path d="M${L + 8},${tl + 30} Q${L + 70},${tl + 14} ${R - 30},${tr + 40} L${R - 40},${tr + 120} Q${L + 60},${tl + 150} ${L + 10},${tl + 110} Z" fill="#2c2226"/>` +
+      `<path d="M${L + 20},${tl + 190} Q${L + 90},${tl + 170} ${R - 60},${tr + 210} L${R - 70},${br - 40} Q${L + 70},${bl - 20} ${L + 14},${bl - 50} Z" fill="#1d1619"/></g>`;
+    // where it has flaked: a scrap of older paint, warmer, low on the near edge
+    s += `<path d="M${L + 12},${bl - 150} l24,-4 l-4,7 l6,5 l-25,3 Z" fill="#6a4a28" opacity=".3"/><path d="M${L + 16},${bl - 148} l16,-2" stroke="#c9a85a" stroke-width="1.2" opacity=".3"/>`;
+    s += `<path d="M${L + 7},${bl - 8} L${L + 7},${tl + 9} L${aside ? R - 30 : R - 7},${tr + 9}${aside ? '' : ` L${R - 7},${br - 8} Z`}" fill="none" stroke="#4a3628" stroke-width="2" opacity=".45"/>`;
+    // folds, and a fringe
+    s += `<path d="${cloth}" fill="url(#bannerShade)" opacity=".7"/>`;
+    for (let i = 0; i <= 20; i++) { const x = L + i * (R - L) / 20, y = bl + (br - bl) * i / 20; if (aside && x > R - 100) break; s += `<path d="M${x.toFixed(0)},${y.toFixed(0)} v8" stroke="#3a2c2c" stroke-width="2"/>`; }
+    return s;
+  }
+  // The Provost at the tapestry's drawn edge (drawn after the Masters, in front of them), one hand holding it back.
+  function provostAside() {
+    return `<g transform="translate(452,700) scale(.86)"><ellipse cx="0" cy="-6" rx="24" ry="8" fill="#000" opacity=".35"/><path d="M-22,0 L-16,-150 L16,-150 L22,0 Z" fill="#0c0a12"/><circle cx="0" cy="-166" r="15" fill="#0c0a12"/>` +
+      `<path d="M12,-138 L40,-196" stroke="#0c0a12" stroke-width="9" stroke-linecap="round"/><path d="M16,-150 L22,0" stroke="#3a2a22" stroke-width="1.5"/></g>`;
+  }
+  // The hearthstone, the Register open on its stand beside the fire, and (wren) Wren sitting on the stone,
+  // as near the fire as it is polite to get, both hands out to it; with soldiers, one either side, a little further off.
+  function hearth(wren, soldiers) {
+    let s = `<rect x="640" y="700" width="320" height="16" rx="3" fill="#1a1310"/><path d="M642,701 H958" stroke="#ff9a3c" stroke-width="1.5" opacity=".3"/>`;
+    // the Register: a lectern, the book open at *Claimed by*
+    s += `<g transform="translate(666,700)"><rect x="-12" y="-4" width="24" height="4" rx="1" fill="#2a1e1a"/><rect x="-2.5" y="-46" width="5" height="44" fill="#2a1e1a"/>` +
+      `<path d="M-26,-44 L0,-38 L26,-44 L24,-52 L0,-47 L-24,-52 Z" fill="#3a2420"/>` +
+      `<path d="M-23,-49 L0,-44 L0,-56 L-22,-60 Z" fill="#d9cdb0" opacity=".6"/><path d="M0,-44 L23,-49 L22,-60 L0,-56 Z" fill="#f4ecd8" opacity=".75"/>` +
+      `<path d="M-18,-53 L-5,-50 M-18,-49 L-8,-47 M5,-50 L17,-53" stroke="#3a2420" stroke-width="1" opacity=".6"/><path d="M0,-44 L0,-36" stroke="#8a2f2f" stroke-width="2"/></g>`;
+    if (!wren) return s;
+    const wx = soldiers ? 920 : 886;
+    if (soldiers) s += soldier(864, 718, 1.35, -1, -1);
+    s += `<g transform="translate(${wx},701)"><ellipse cx="-8" cy="1" rx="24" ry="4" fill="#000" opacity=".35"/>` +
+      `<path d="M-30,-18 L-4,-20 L-4,-2 L-30,-4 Z" fill="#0c0a12"/><path d="M-32,-16 L-24,-16 L-22,13 L-31,13 Z" fill="#0c0a12"/>` +
+      `<path d="M-9,0 L-7,-50 Q1,-56 9,-50 L13,0 Z" fill="#0c0a12"/><circle cx="-2" cy="-62" r="11" fill="#0c0a12"/>` +
+      `<path d="M-3,-42 L-34,-36" stroke="#0c0a12" stroke-width="6" stroke-linecap="round"/>` +
+      `<path d="M-7,-50 L-9,-2 M-13,-62 A11,11 0 0 1 -6,-72" stroke="#ff9a3c" stroke-width="1.5" fill="none" opacity=".6"/><circle cx="-36" cy="-36" r="3" fill="#ff9a3c" opacity=".5"/></g>`;
+    if (soldiers) s += soldier(980, 718, 1.35, 1, -1);
+    return s;
+  }
+  // The low dais under the Chair: two steps, lit along their edges by the fire.
+  const dais = `<rect x="580" y="782" width="440" height="22" rx="4" fill="#1e1712"/><rect x="624" y="764" width="352" height="22" rx="4" fill="#251c15"/>` +
+    `<path d="M628,765 H972 M584,783 H1016" stroke="#ff9a3c" stroke-width="1.5" opacity=".22"/>`;
+  // The ninth chair, the Chair: the tallest, on its dais in front of the Hearth, under the crown. Empty until ch1_vote,
+  // where the Provost sits in it for the first time anyone can remember, and Wren stands beside it, a hand on her
+  // sleeve. soldiers (ch1_lost): the hand has been taken off, and a soldier stands either side of Wren.
+  function theChair(seated, soldiers) {
+    let s = dais + `<g transform="translate(800,770)"><ellipse cx="0" cy="-4" rx="52" ry="9" fill="#000" opacity=".4"/>` +
       `<path d="M-30,0 L-30,-250 Q-30,-262 -20,-268 L0,-284 L20,-268 Q30,-262 30,-250 L30,0 Z" fill="#160f12" stroke="#5a4028" stroke-width="2.5"/>` +
       `<path d="M-10,-276 L0,-296 L10,-276 Z" fill="#c9a85a" opacity=".8"/>` +
       `<rect x="-42" y="-96" width="84" height="16" rx="4" fill="#22181a"/>`;
     if (seated) s += `<path d="M-22,-80 L-16,-190 L16,-190 L22,-80 Z" fill="#0c0a12"/><circle cx="0" cy="-206" r="15" fill="#0c0a12"/><path d="M16,-190 L22,-80" stroke="#3a2a22" stroke-width="1.5"/>`;
     s += `</g>`;
-    // Wren, small, standing still beside it, one hand on her sleeve
-    if (seated) s += `<g transform="translate(872,770)"><ellipse cx="0" cy="-4" rx="18" ry="6" fill="#000" opacity=".35"/><path d="M-12,0 L-9,-92 L9,-92 L12,0 Z" fill="#0c0a12"/><circle cx="0" cy="-104" r="12" fill="#0c0a12"/><path d="M-9,-80 L-46,-118" stroke="#0c0a12" stroke-width="7" stroke-linecap="round"/><path d="M9,-92 L12,0" stroke="#ff9a3c" stroke-width="1.5" opacity=".6"/></g>`;
+    if (!seated) return s;
+    const wx = soldiers ? 916 : 872;
+    if (soldiers) s += soldier(866, 772, 1.55, -1, -1);
+    // Wren, small, standing still beside it, one hand on her sleeve (or, under guard, at Wren's side)
+    s += `<g transform="translate(${wx},770)"><ellipse cx="0" cy="-4" rx="18" ry="6" fill="#000" opacity=".35"/><path d="M-12,0 L-9,-92 L9,-92 L12,0 Z" fill="#0c0a12"/><circle cx="0" cy="-104" r="12" fill="#0c0a12"/>` +
+      (soldiers ? `<path d="M-8,-84 L-13,-40" stroke="#0c0a12" stroke-width="6" stroke-linecap="round"/>` : `<path d="M-9,-80 L-46,-118" stroke="#0c0a12" stroke-width="7" stroke-linecap="round"/>`) +
+      `<path d="M9,-92 L12,0" stroke="#ff9a3c" stroke-width="1.5" opacity=".6"/></g>`;
+    if (soldiers) s += soldier(972, 772, 1.55, 1, -1);
     return s;
   }
 
-  A.define('ch1_hall', (p) => P.wrap(
+  /* p.seated: the Provost in the Chair, Wren beside her (ch1_vote, ch1_won, ch1_lost).
+     p.low: the fire has coughed and gone small (ch1_errand, ch1_prices, ch1_after, ch1_flow).
+     p.wren: Wren on the hearthstone (ch1_after, ch1_flow). p.soldiers: two Crown soldiers either side of Wren
+     (the lost vote: ch1_lost with seated, ch1_after/ch1_flow with wren). p.aside: the Provost holding the tapestry
+     aside on the stair down (ch1_flow). */
+  A.define('ch1_hall', (p = {}) => P.wrap(
     P.sky('#07060c', '#1a120e') +
     `<rect x="0" y="0" width="${W}" height="560" fill="#0b0912"/>` +
     P.pillars(8, 720, 640, '#0a0810') +
@@ -86,14 +166,18 @@
     // carry Chapter VI's STONE in full at scale(0.8), and it is the art behind six ch1 scenes, ch1_vote
     // among them. See the note above A.wornCuts in js/art/scenes-ch0.js for what that cost Chapter VI.
     `<g transform="translate(670,275)" opacity=".55">${A.wornCuts(8, '#7a6a5a', 37, 0.8, 4409)}</g>` +
-    // low: the fire has coughed and gone small (ch1_errand, ch1_prices, ch1_after, ch1_flow)
-    A.fire(800, 700, p && p.low ? 0.4 : 0.62, false) +
+    // low: the fire has coughed and gone small, and spread low on the hearth, so its tongues still show either
+    // side of the empty Chair (at 0.4 and full width the Chair's back and arms hid nearly all of it)
+    (p.low ? `<g transform="translate(800,0) scale(1.3,1) translate(-800,0)">${A.fire(800, 700, 0.45, false)}</g>` : A.fire(800, 700, 0.62, false)) +
+    tapestry(!!p.aside) + // its fold shading is bannerRow's #bannerShade
     bannerRow(false) +
     P.floorTiles(720, '#0b0910', 'rgba(255,255,255,0.04)') +
+    hearth(!!p.wren && !p.seated, !!p.soldiers) +
     // long tables
     `<rect x="120" y="740" width="520" height="14" fill="#1c1510"/><rect x="960" y="740" width="520" height="14" fill="#1c1510"/>` +
     masters() +
-    theChair(!!(p && p.seated)) +
+    (p.aside ? provostAside() : '') +
+    theChair(!!p.seated, !!p.soldiers) +
     P.torch(90, 420, 1.1) + P.torch(1510, 420, 1.1) +
     P.fog(560, 340, '#2a1a12', 0.35)
   ));
