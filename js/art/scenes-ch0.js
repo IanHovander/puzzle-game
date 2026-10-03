@@ -75,7 +75,6 @@
     P.sky('#0a0810', '#1a0f0a') +
     `<rect x="380" y="120" width="840" height="300" rx="6" fill="#1d1619" stroke="#3a2c2c" stroke-width="4"/>` +
     `<g transform="translate(470,250)" opacity=".9">${wornCuts(8, '#7a6a5a', 94, 1.9)}</g>` +
-    `<text x="800" y="380" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="22" font-family="Cinzel,serif" letter-spacing="6">THE SCHOOL'S READING</text>` +
     fire(800, 900, 1.6, false) +
     `<rect x="0" y="520" width="${W}" height="${H - 520}" fill="url(#stonefog)"/><defs><linearGradient id="stonefog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3c" stop-opacity="0"/><stop offset="1" stop-color="#ff9a3c" stop-opacity=".55"/></linearGradient></defs>`
   ));
@@ -93,7 +92,7 @@
     P.fog(560, 260, '#241d33', 0.35)
   ));
 
-  A.define('ch0_lamp', () => P.wrap(
+  A.define('ch0_lamp', (p) => P.wrap(
     P.sky('#0b0a12', '#1a1520') +
     `<rect x="0" y="600" width="${W}" height="300" fill="#100d16"/>` +
     `<g transform="translate(800,520)">` +
@@ -102,7 +101,7 @@
     `<circle cx="0" cy="-170" r="70" fill="#5a4a2a" stroke="#8a7040" stroke-width="5"/>` +
     `<circle cx="0" cy="-170" r="46" fill="none" stroke="#c9a85a" stroke-width="3" opacity=".8"/>` +
     `${[0, 1, 2, 3].map(i => { const a = (i / 4 * 360 - 90) * Math.PI / 180; return `<circle cx="${Math.cos(a) * 46}" cy="${-170 + Math.sin(a) * 46}" r="12" fill="#2a2010" stroke="#c9a85a" stroke-width="2"/>`; }).join('')}` +
-    `<circle cx="0" cy="-170" r="14" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>` + // unlit: nobody has ever lit it
+    (p && p.lit ? `<circle cx="0" cy="-170" r="34" fill="#ffd27a" opacity=".18"/><circle cx="0" cy="-170" r="14" fill="#ffd27a" opacity=".85"><animate attributeName="opacity" values=".85;.6;.9;.7;.85" dur="2s" repeatCount="indefinite"/></circle>` : `<circle cx="0" cy="-170" r="14" fill="#2a2010" stroke="#6a5a3c" stroke-width="2"/>`) + // unlit until the ring is read
     // Two marks are cut here, but four hundred years have taken them: the Hearth shows the
     // wear, not the shapes. Only the Reader's page has them clean.
     `${[-60, 60].map((x, i) => `<g transform="translate(${x},-290)" opacity=".5">` +

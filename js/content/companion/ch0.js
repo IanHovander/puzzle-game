@@ -94,8 +94,8 @@
         P.sight.push({ t: 'p', text: 'Two shapes are cut round the collar. The Hearth shows them worn away. You see them clean.' });
         P.sight.push({ t: 'html', html: collar() });
         P.sight.push({ t: 'table', head: ['cut into the band', 'it says'], rows: [
-          [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })} Crown, turned over`, '<b>EMBER</b>'],
-          [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} Flame, upright`, '<b>ASH</b>'],
+          [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })}`, '<b>EMBER</b>'],
+          [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })}`, '<b>ASH</b>'],
         ] });
         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });

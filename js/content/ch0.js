@@ -220,7 +220,7 @@
           'The hum says which word goes first. Only one cut marks the start.',
           'ASH in slot 3, EMBER in slot 4. The other two stay empty. Then four hands.',
         ],
-        onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); },
+        onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true }); } catch (e) {} },
         solvedText: [
           "The lamp catches: small and gold, like a piece of the Hearth, and warm all the way to the door. Four hundred years of matches, and all it ever wanted was to be read to. Far below, under all the floors, the Hearth stops flickering.",
           { speaker: "Wren", text: "Look at it. That's *ours*. Mom'll — the Provost'll — kill me." },
@@ -243,7 +243,7 @@
           { id: 'four', text: "Binder: \"The Four.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
           { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That register is finally accurate." }] },
           { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_flow', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is just people staying up for someone. Stay up for me tomorrow. I'll be the one standing still." }] },
-          { id: 'own', text: "Listener: \"Something that's ours.\" (type it)", next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || 'the Four').replace(/[.!?,:;\s]+$/, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
+          { id: 'own', text: "Listener: \"Something that's ours.\" (type it)", next: 'ch0_flow', ask: { prompt: 'What does Wren call the four of you?', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
         ],
       },
       ch0_flow: {
@@ -252,7 +252,7 @@
           "Wren talks until you are nearly asleep, the Reader's biscuit still uneaten, and nobody sees whether Wren sleeps. Then, soft on the floorboards, you knock: one each, then all together. This time it counts. *Everybody's here.*",
           { text: "Knock it on the table now, soft.", cls: "whisper" },
           "At dawn the lamp burns out, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket, and somebody goes over the pencil name on the door in ink. Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. The school calls each of those a Sighting: one way of seeing, one to a person, given at birth. Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years, and never said what they saw. Whatever they write in the register, they will be writing second.",
+          "Worn letters, seen clean. No heartbeat. A wrong-way shadow. No thread. Four gifts, one to each of you, given at birth: the school calls such a gift a Sighting. Tomorrow the hall fills with grown-ups who have Sightings too. They have watched Wren for fourteen years, and never said what they saw. Whatever they write in the register, they will be writing second.",
           { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
         flowTitle: 'Prologue — the paths you walked',
