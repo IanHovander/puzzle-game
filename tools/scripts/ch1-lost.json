@@ -1,7 +1,7 @@
 { "start": "ch1_attune", "steps": [
   {"key": "Space"}, {"clickText": "All phones are ready"}, {"wait": 800}, {"key": "Space"}, {"wait": 400},
   {"clickText": "Call the vote"}, {"wait": 400}, {"expect": "spoken to nobody"},
-  {"click": ".seat:has-text(\"Goldmarch\")"}, {"clickText": "Call the vote"}, {"wait": 400}, {"expect": "One Master spoken to"},
+  {"click": ".seat:has-text(\"Goldmarch\")"}, {"clickText": "Call the vote"}, {"wait": 400}, {"expect": "One Master is not enough"},
   {"click": ".seat:has-text(\"Goldmarch\")"}, {"click": ".seat:has-text(\"Ossery\")"}, {"clickText": "Call the vote"}, {"expect": "The vote has been called"}, {"shot": "ch1_vote_wrong"},
   {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"expect": "Seat 5's cushion clinks"}, {"expect": "Seat 2 says yes"}, {"expect": "3 keep, 6 send"}, {"expect": "not enough"}, {"shot": "ch1_vote_lost_text"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_lost"}, {"expect": "I will get Wren back myself"}, {"clickText": "Later"},
