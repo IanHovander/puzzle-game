@@ -53,45 +53,46 @@
           { text: "The clerk left that last line blank, for whoever came. Nobody ever came.", cls: "center" },
           { text: "You were all born that year. Wren was found.", cls: "center" },
         ],
-        next: 'ch0_stone', button: 'Look up',
+        next: 'ch0_stone', button: "Look up",
       },
       ch0_stone: {
         art: 'ch0_stone', mood: 'hearth', fx: 'embers',
         text: [
           "Above the fire, a line is cut into the stone. It is a prophecy: the kind of sentence that only becomes clear once it is too late to do anything about it.",
           { text: "\"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them.\"", cls: "omen" },
-          "That is the school's translation. The original is in letters no one alive can read. The Cold is not weather. It is a place, and no Master will say where.",
-          "Everybody knows who it is about. Near Wren, people get as far as \"one born of four,\" and remember an errand. It is the only thing that has ever tried to claim Wren.",
-          "Tonight the Hearth is flickering. At midnight tomorrow the Houses hold the Vigil, and decide who Wren belongs to. Wren has been told to wear something warm.",
+          "That is the school's translation. The original is in letters no one alive can read. The Cold is a place, and no Master will say where.",
+          "Near Wren, people get as far as \"one born of four,\" and remember an errand. The prophecy is the only thing that has ever tried to claim Wren.",
+          "Tonight the Hearth is flickering. At midnight tomorrow the Houses decide who Wren belongs to. If they choose the prophecy, Wren walks into the Cold and does not come back. Wren has been told to wear something warm.",
           { text: "No need to write anything down.", cls: "small" },
         ],
-        next: 'ch0_dorm', button: 'The night before',
+        next: 'ch0_dorm', button: "The night before",
       },
       /* ---------- dormitory & setup ---------- */
       ch0_dorm: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'step',
         title: 'Past curfew',
         text: [
-          "The tower room has four beds, one round window and, on the sill, a brass lamp that everyone has tried and nobody has lit. It cost one third-year both eyebrows.",
-          "Wren adopted you at seven, by announcement, and has never allowed an appeal. The fifth blanket on the floor is Wren's. So is the fifth name on the door, in pencil. Officially, Wren sleeps at the Provost's.",
-          "You are awake, carefully not talking about tomorrow. The Binder is reading the Vigil's order of business instead. The paper has gone soft.",
-          "*Item two: the foundling, to stand before the Houses, who will decide its use.* \"Its,\" says the Binder. \"There's no rule against tomorrow. I've looked.\"",
-          "\"So what do we do?\" says the Listener. Nobody answers. The lamp says nothing either.",
+          "The tower room has four beds, one round window and, on the sill, a brass lamp that everyone has tried and nobody has lit.",
+          "The fifth blanket on the floor is Wren's. So is the fifth name on the door, in pencil. Officially, Wren sleeps at the Provost's.",
+          "*Item two: the foundling, to stand before the Houses, who will decide its use.* The Binder has read it until the paper has gone soft. \"Its,\" says the Binder. \"There's no rule against tomorrow. I've looked.\"",
+          "\"We could hide Wren,\" says the Listener. \"Where?\" says the Seer. \"Every room in this school belongs to somebody.\"",
+          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Nobody says anything after that. On the sill, the lamp says nothing either.",
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Keep these seats all night.", cls: "whisper" },
         ],
-        next: 'ch0_keys', button: 'Claim the keys',
+        next: 'ch0_keys', button: "The knock",
       },
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          { text: 'One keyboard, one key each. Press yours when it glows.', cls: 'whisper' },
-          { text: 'Then all four at once.', cls: 'whisper' },
+          "Wren adopted you at seven, by announcement, and invented a knock that same week: one each, then all four together. It means *everybody's here*. You do it now, on the bedframes, because it is something to do.",
+          { text: "One keyboard, one key each. Press yours when it glows.", cls: "whisper" },
+          { text: "Then all four at once.", cls: "whisper" },
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz' });
           const st = UI.el('div', { class: 'pz-status' });
           const pads = UI.el('div', {});
-          wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE FOUR KEYS' }));
+          wrap.appendChild(UI.el('div', { class: 'pz-title', text: 'THE KNOCK' }));
           wrap.appendChild(pads); wrap.appendChild(st);
           const remap = UI.el('button', { class: 'btn small ghost', text: 'Key not working? Change keys', onclick: async () => {
             const v = await UI.ask('Four keys, left to right, separated by spaces:', Store.state.keys.join(' '), { plain: true, ok: 'Set keys' });
@@ -105,7 +106,7 @@
           const arm = () => {
             for (let i = 0; i < 4; i++) Input.setPadState(i, 'armed', i === step);
             st.className = 'pz-status';
-            st.textContent = step < 4 ? `${nick(step)} — your key.` : 'Now all four together.';
+            st.textContent = step < 4 ? `${nick(step)}, your knock.` : 'Now all four together.';
             // Hands may already be on the keys from the round just finished: those count, without a fresh press.
             if (step === 4) setTimeout(() => { const h = Input.held ? Input.held() : []; h.forEach((isDown, i) => { if (isDown) onPress(i); }); }, 60);
           };
@@ -119,7 +120,7 @@
             const set = times.filter(x => x != null);
             if (set.length === 4) {
               const spread = Math.max(...set) - Math.min(...set);
-              if (spread <= 1000) { Audio.sfx('success'); st.className = 'pz-status good'; st.textContent = 'Four hands. The room holds still.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
+              if (spread <= 1000) { Audio.sfx('success'); st.className = 'pz-status good'; st.textContent = 'Four hands. Everybody\'s here. Nearly.'; Input.deactivate(); setTimeout(() => resolve('ch0_practice'), 900); }
               else { st.className = 'pz-status bad'; st.textContent = `Too far apart (${(spread / 1000).toFixed(1)} s). Count in — one, two, three, press.`; for (let i = 0; i < 4; i++) { times[i] = null; Input.setPadState(i, 'glow', false); } }
             }
             setTimeout(() => { const now = performance.now(); for (let i = 0; i < 4; i++) if (times[i] != null && now - times[i] > 1000) { times[i] = null; Input.setPadState(i, 'glow', false); } }, 1100);
@@ -130,7 +131,8 @@
       ch0_practice: {
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
-          "Practice. Later tonight, this counts.",
+          "On nights like this the knock becomes a game, faster and faster, until somebody laughs.",
+          "Tonight nobody laughs. Later tonight, this counts.",
           { text: "Press as your light crosses the line.", cls: "whisper" },
           { text: "Purple means everyone.", cls: "whisper" },
         ],
@@ -147,7 +149,7 @@
           "\"Rule Fourteen says no lamps after curfew,\" says the Binder, already in boots. \"The old rules say how words go into a ring. Somebody who knows both had better come.\"",
           "The Reader has missed supper. A biscuit turns up in the Reader's lap. Wren knows nothing about it, loudly.",
         ],
-        next: 'ch0_dare', button: 'And you?',
+        next: 'ch0_dare', button: "And you?",
       },
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
@@ -158,7 +160,7 @@
           "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up. This is the first time any of you has heard Wren ask for anything.",
           "The Listener checks Wren's hands. Cold, as always. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
         ],
-        next: 'ch0_carve', button: 'Carve it',
+        next: 'ch0_carve', button: "Carve it",
       },
       ch0_carve: {
         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
@@ -247,7 +249,7 @@
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,
-        next: 'ch1_start', button: 'The Vigil',
+        next: 'ch1_start', button: "The Vigil",
       },
     },
   });
