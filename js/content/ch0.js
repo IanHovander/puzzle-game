@@ -63,7 +63,7 @@
           { text: "\"When the Hearth goes cold, one born of four shall walk into the Cold, and it shall close behind them.\"", cls: "omen" },
           "That is the school's translation. The original is cut in the Founders' shapes, which nobody at the school will admit to reading. The Cold is a place, the Masters say, and then they change the subject.",
           "Only one thing has ever come for Wren, and it is cut in stone.",
-          "Tonight, for the first time since Wren was found, the Hearth is flickering. Tomorrow night, at the Vigil, the Houses decide who Wren belongs to: the school, or the stone. If it is the stone, Wren walks into the Cold. Wren has been told to wear something warm.",
+          "Tonight, for the first time since Wren was found, the Hearth is flickering. Tomorrow night, at the Vigil, the Houses decide who Wren belongs to: the school, or the stone. If it is the stone, Wren walks into the Cold, and it closes behind. Wren has been told to wear something warm.",
         ],
         next: 'ch0_dorm', button: "The night before",
       },
@@ -134,7 +134,7 @@
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
           "On nights nobody can sleep, the knock becomes a game on the bedframes, faster and faster, until somebody laughs.",
-          "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder says it. By the third time all four of you are saying it, and nobody laughs. Before morning, you will knock it for real.",
+          "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder says it. By the third time all four of you are saying it, and nobody laughs. Before morning, you will knock it once more, and mean it.",
           { text: "Press as your light crosses the line.", cls: "whisper" },
           { text: "A chain across all four lanes means everyone at once.", cls: "whisper" },
         ],
@@ -195,7 +195,7 @@
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four of you, out loud.",
+          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight, the lamp asks.",
           { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type in the word of attunement shown here.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
@@ -241,7 +241,7 @@
         type: 'choice', art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP', prompt: 'Choose one together. The player named beside it says it to Wren.',
         text: [
           "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
-          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and nobody counts.",
+          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and this time the Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "Right. *Keep.* I can work with that. If I'm being kept, I want it in writing. For fourteen years that register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, we will. So: claimed by *who*?" },
         ],
@@ -260,7 +260,7 @@
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           "At dawn the lamp goes out, having kept till morning, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket.",
           `Somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.* Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.`,
-          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. By nightfall, at the Vigil, the hall will fill with Masters who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
+          "What you told Wren tonight: a name in chalk. No heartbeat. A wrong-way shadow. No thread. By nightfall, at the Vigil, the hall will fill with Masters who have Sightings too. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
           { text: "The chart shows the paths you took, and the ones you didn't.", cls: "small" },
         ],
         flowTitle: 'Prologue — the paths you walked',
