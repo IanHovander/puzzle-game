@@ -81,7 +81,8 @@
     : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'}</svg>`;
 
   const murmur = (n, text, steps, base) => ({
-    t: 'audio', label: `Seat ${n}`, strip: `<div class="fine">overheard: <em>"${text}"</em></div>`, button: '♪ Cup your ear',
+    /* The words go in `text` (printed under the button), not the strip: the murmur is the fact, and the page must read without sound. */
+    t: 'audio', text: `**Seat ${n}:** *\u201c${text}\u201d*`, button: '♪ Cup your ear',
     play: (A) => CA.playSteps(A, steps, base),
   });
 
@@ -97,23 +98,23 @@
         P.sight.push({ t: 'p', text: 'Two Houses filed tonight, in writing, before the doors shut. You can read the roll from here.' });
         P.sight.push({ t: 'table', head: ['filed', 'and it says'], rows: [
           [seatLabel(9), '<b>KEEP</b> \u2014 the Chair\u2019s own hand.'],
-          [seatLabel(3), '<b>KEEP</b> \u2014 two words: <em>with the Chair.</em>'],
+          [seatLabel(3), '<b>KEEP</b> \u2014 three words: <em>with the Chair.</em>'],
         ] });
         P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** Say that out loud. You need five.' });
         P.sight.push({ t: 'fine', text: 'Seat 3 is already yours, whatever anyone hears. An ask spent there buys a vote you have.' });
         P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand again: *Item two: the foundling.* After it, a name, in the older alphabet, the letters of the chalk on your door. You can\u2019t read it. Yet.' });
         P.wren.push({ t: 'h', text: 'Item two' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cHe said \u2018not coming back\u2019 like he was quoting. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We wrote you first.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cHe said \u2018not coming back\u2019 like he was quoting. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
       }
 
       if (roleId === 'listener') {
         P.sight.push({ t: 'h', text: 'Four murmurs' });
         P.sight.push({ t: 'p', text: 'Four Masters are muttering. Only you can hear them.' });
-        P.sight.push(murmur(1, 'The child goes to the capital \u2014 unless somebody comes and asks me to my face.', [-1, 1, -2], 52));
-        P.sight.push(murmur(3, 'Ask me where I stand. Go on. Ask me.', [2, -1], 50));
-        P.sight.push(murmur(4, 'I vote as my cousin votes. I hear nobody else.', [1, 1, -3], 48));
-        P.sight.push(murmur(7, 'Nobody has asked me anything. I have not decided anything.', [-2, 2, 1], 54));
+        P.sight.push(murmur(1, 'Thirty years in this chair, and nobody asks me to my face. They send letters. The child goes to the capital, unless somebody walks over here.', [-1, 1, -2], 52));
+        P.sight.push(murmur(3, 'Ask me where I stand. Go on. Somebody ask me.', [2, -1], 50));
+        P.sight.push(murmur(4, 'I vote as my cousin votes. I hear nobody else. I have stopped listening, to be safe.', [1, 1, -3], 48));
+        P.sight.push(murmur(7, 'Four hundred years of staring at that stone, and nobody has asked me what it says. I have not decided anything.', [-2, 2, 1], 54));
         P.sight.push({ t: 'p', text: '**Seats 1, 3 and 7 are still open** to being talked to. **Seat 4 has shut his ears.** An ask spent on him is spent.' });
         P.sight.push({ t: 'fine', text: 'Seat 4 never says which seat his cousin sits in. Another phone at this table shows that.' });
         P.wren.push({ t: 'h', text: 'What I heard tonight' });
@@ -154,7 +155,7 @@
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray. The Book says gray is grief. Nothing ran back. The Envoy has a gold one on you, and I don\u2019t like it. Mine still won\u2019t take. When it does, it will be red. Red means a promise. And it will hold. That is not a rule. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you, and I don\u2019t like it. Mine still won\u2019t take. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;
