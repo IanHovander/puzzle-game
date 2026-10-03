@@ -94,14 +94,14 @@
         P.sight.push({ t: 'p', text: 'Two shapes are cut round the collar. The Hearth shows them worn away. You see them clean.' });
         P.sight.push({ t: 'html', html: collar() });
         P.sight.push({ t: 'table', head: ['cut into the band', 'it says'], rows: [
-          [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })} upside down`, '<b>EMBER</b>'],
-          [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} standing up`, '<b>ASH</b>'],
+          [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })} Crown, turned over`, '<b>EMBER</b>'],
+          [`${G.shapeSvg('Flame', false, { size: 44, color: '#f2d27a' })} Flame, upright`, '<b>ASH</b>'],
         ] });
         P.sight.push({ t: 'p', text: '**EMBER and ASH.** Say both words out loud, now.' });
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. The chalk one, somebody else wrote, carefully, in letters nobody here is taught. Somebody wanted you named properly, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Under it there’s chalk, rubbed nearly away. You’ve all looked straight at it. I see it clean: your name, written properly, in letters nobody here is taught. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
@@ -131,7 +131,7 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch**: that is the mark in Law 1. On Founders’ brass, a notch is only a maker’s signature.',
+          'A **Founders’** sigil starts at the **scratch**: your Book’s Law 1 calls it the mark. On Founders’ brass, a notch is only a maker’s signature.',
           'The **first** word goes **in** the scratched slot.',
           'Each next word goes in the next slot **clockwise** (the Book says *sunwise*).',
           'One word per slot. **Any slot left over stays empty.**',
