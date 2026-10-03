@@ -394,7 +394,7 @@
               ? 'Behind her are two of the Convocation\'s guards and a writ, which is how the Convocation says please. You promised them the Ember. They have come for it.'
               : s.flags.ORIEL
                 ? 'Behind her is Master Oriel, with a lamp she does not need and a notebook she does. You promised her everything you found below.'
-                : 'Behind her, nobody. You promised nobody anything tonight, and that turns out to have been clever.'));
+                : 'Behind her, nobody. You promised no Master anything tonight, and that turns out to have been clever.'));
           out.push(wren
             ? 'You tell her all of it. She does not look down the stair once. She looks at Wren.'
             : 'She takes the case in both hands. Then she sees how Wren is holding one arm.');

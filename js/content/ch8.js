@@ -141,7 +141,7 @@
   };
   const HOURS = [
     { ch: 'ch0', word: 'KINDLE', where: 'the dormitory',
-      text: 'You lit a lamp the old way, past curfew, on a dare.' },
+      text: 'You carved a name on a dare, then lit a lamp the old way, past curfew.' },
     { ch: 'ch1', word: 'THORN', where: 'the Great Hall',
       text: (s) => s.flags.VOTE_LOST
         ? 'Nine Masters, and five votes needed. The two you asked were not enough.'
@@ -329,7 +329,7 @@
           { speaker: 'Wren', text: 'It\'s alright. I knew. I\'ve known since the laundry. Nobody do the face.' },
           'Wren goes into the Hearth without knocking, the way Wren goes through every door. It closes behind. Four hundred years of fire, again, from a spark.',
           'In the morning a mason carves a fifth name over the Hearth. He has to ask how to spell it. The Reader does not offer. Then the Reader eats breakfast without being told.',
-          'The Provost stands at the fire with a thread only the Binder can see. It went gray at the Vigil, for one second. Now it stays gray.',
+          'The Provost stands at the fire with a thread only the Binder can see. It went gray at the Vigil, for one second. It has been gray ever since.',
           'On the chart of the night, beside the road you took, there are four boxes you did not open.',
         ],
         next: 'ch8_night', button: 'The whole night',

@@ -11,7 +11,7 @@
     <circle cx="150" cy="88" r="62" fill="none" stroke="rgba(212,169,78,.35)" stroke-width="11"/>
     <g transform="translate(88,88) scale(1.15)" style="color:#f2d27a">${G.shapeInner('Crown', true)}</g>
     <g transform="translate(212,88) scale(1.15)" style="color:#f2d27a">${G.shapeInner('Flame', false)}</g>
-    <g text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="13" font-family="Cinzel,serif"><text x="150" y="174">the band runs all the way round</text><text x="150" y="193">no first, no last</text></g>
+    <g text-anchor="middle" fill="rgba(233,226,210,.7)" font-size="13" font-family="Cinzel,serif"><text x="150" y="174">the band runs all the way around</text><text x="150" y="193">no first, no last</text></g>
   </svg>`;
 
   /* The Listener's interval, drawn: two rungs of the ladder and the climb between them. */
@@ -100,7 +100,7 @@
 
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The lamp’s collar' });
-        P.sight.push({ t: 'p', text: 'Two shapes are cut round the collar. The Hearth shows them worn away. You see them clean.' });
+        P.sight.push({ t: 'p', text: 'Two shapes are cut around the collar. The Hearth shows them worn away. You see them clean.' });
         P.sight.push({ t: 'html', html: collar() });
         P.sight.push({ t: 'table', head: ['cut into the band', 'its name'], rows: [
           [`${G.shapeSvg('Crown', true, { size: 44, color: '#f2d27a' })}`, '<b>EMBER</b>'],
