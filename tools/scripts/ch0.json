@@ -13,6 +13,6 @@
   {"expectNot": "SUNWISE"}, {"expectNot": "widdershins"},
   {"assert": "document.querySelectorAll('#widget .wheel .slot').length === 4"},
   {"slots": [[3, "ASH"], [4, "EMBER"]]}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch0_fourhands"}, {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
-  {"wait": 800}, {"key": "Space"}, {"shot": "ch0_name"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"clickText": "Continue"},
+  {"wait": 800}, {"key": "Space"}, {"shot": "ch0_name"}, {"click": ".btn.choice >> nth=2"}, {"wait": 800}, {"key": "Space"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch0_flow"}, {"expect": "the Idiots"}, {"log": true}
 ] }

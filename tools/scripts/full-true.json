@@ -180,7 +180,7 @@
    "key": "Space"
   },
   {
-   "click": ".btn.choice >> nth=1"
+   "click": ".btn.choice >> nth=2"
   },
   {
    "wait": 800
