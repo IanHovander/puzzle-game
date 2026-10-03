@@ -3,3 +3,4 @@ node_modules/
 *.log
 dist/*-hosted.html
 tmp/
+tools/voice/.cache/

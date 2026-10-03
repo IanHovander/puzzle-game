@@ -22,7 +22,7 @@
 
   /* Inline markup: *emphasis*, **strong**, [[glyph:name]] handled by caller, ~~small~~ */
   UI.rich = function (s) {
-    return UI.esc(s)
+    return UI.esc(String(s).replace(/\s*‸\s*/g, ' '))
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/~~(.+?)~~/g, '<span class="small">$1</span>')
@@ -95,10 +95,11 @@
       UI.fitBox(container, ghost);
     }
 
+    const made = []; // the paragraph elements, in order, for the narrator
     for (const para of paragraphs) {
       const b = buildPara(para, st);
       const p = b.p, span = b.span, html = b.html;
-      container.appendChild(p);
+      container.appendChild(p); made.push(p);
       container.__tw = { speaker: st.speaker, el: st.el };
       // reveal by characters of the plain text while keeping markup: simple approach, progressively slice HTML at tag-safe points
       if (skipRequested || opts.instant) { span.innerHTML = html; continue; }
@@ -117,6 +118,7 @@
       container.scrollTop = container.scrollHeight;
     }
     skipRequested = false;
+    if (window.VigilVoice && opts.voice !== false) window.VigilVoice.read(paragraphs, made);
   };
 
   /* Countdown bar: returns {promise, cancel}. onTick(secondsLeft). */

@@ -160,3 +160,21 @@ code { font-family: ui-monospace, monospace; font-size: 0.85em; color: var(--sea
 .map-box { min-width: min(900px, 88vw); }
 .night-map { width: 100%; height: auto; display: block; }
 .modal.wide { max-width: min(980px, 94vw); }
+
+/* ---------- narrator voice (js/core/voice.js) ---------- */
+/* The paragraph being read gets a faint rule; a player's line lights up in that player's colour,
+   with a small card under the box saying whose turn it is to read it aloud. */
+#text .para.voice-reading { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--gold, #d8b45a) 55%, transparent); }
+.voice-quote { border-radius: 3px; transition: background .25s, color .25s; }
+.voice-quote.voice-cue-on { padding: 0 2px; font-weight: 600; }
+.voice-quote.voice-cue-on.p0 { color: var(--p1); background: color-mix(in srgb, var(--p1) 16%, transparent); }
+.voice-quote.voice-cue-on.p1 { color: var(--p2); background: color-mix(in srgb, var(--p2) 16%, transparent); }
+.voice-quote.voice-cue-on.p2 { color: var(--p3); background: color-mix(in srgb, var(--p3) 16%, transparent); }
+.voice-quote.voice-cue-on.p3 { color: var(--p4); background: color-mix(in srgb, var(--p4) 16%, transparent); }
+.voice-cue { position: fixed; z-index: 40; top: 64px; right: 24px; max-width: min(620px, calc(100vw - 32px)); display: flex; flex-wrap: wrap; align-items: center; gap: .6em; padding: .55em .9em; border: 1px solid currentColor; border-left-width: 4px; border-radius: 6px; background: var(--panel, #15121c); box-shadow: 0 6px 24px rgba(0,0,0,.45); font-size: 16px; letter-spacing: .03em; animation: voiceCueIn .25s ease-out; }
+@keyframes voiceCueIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (max-width: 760px) { .voice-cue { right: 16px; left: 16px; } }
+.voice-cue.p0 { color: var(--p1); } .voice-cue.p1 { color: var(--p2); } .voice-cue.p2 { color: var(--p3); } .voice-cue.p3 { color: var(--p4); }
+.voice-cue-who { font-weight: 700; text-transform: uppercase; }
+.voice-cue-line { font-style: italic; color: var(--ink, inherit); }
+.voice-cue .btn { margin-left: auto; }

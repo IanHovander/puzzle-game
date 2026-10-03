@@ -1,0 +1,16 @@
+{
+  "setting": "The narration of a comic-fantasy story game in the spirit of Terry Pratchett, read aloud to four friends at a table at night. Warm and wry when nothing serious is happening; plain when it is.",
+  "passages": [
+    { "id": "wry", "title": "Warm and wry", "text": "When the fire came back, a baby was asleep on the stones, in the middle of the flames. The fire had curled round the baby like a hand. The school, which knows what to do with a miracle, wrote it down. The Reader has missed supper. A biscuit turns up in the Reader's lap. Wren knows nothing about it, loudly." },
+    { "id": "stakes", "title": "The stakes", "text": "Tonight the Hearth is flickering. At midnight tomorrow the Houses decide who Wren belongs to. If they choose the prophecy, Wren walks into the Cold and does not come back. Wren has been told to wear something warm." },
+    { "id": "ending", "title": "The end of the night", "text": "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks. Whatever they write in the register, they will be writing second." }
+  ],
+  "takes": [
+    { "id": "fireside-gacrux", "voice": "Gacrux", "name": "Fireside", "profile": "An older British storyteller, warm and unhurried, reading by a fire to people they are fond of.", "style": "Warm and smiling. Long, comfortable beats before each turn. The jokes are fond, never sharp. When the story turns serious, drop the smile and slow right down." },
+    { "id": "drydon-sadaltager", "voice": "Sadaltager", "name": "Dry don", "profile": "A crisp, learned British narrator with a bone-dry wit, like a college don who finds the world faintly absurd.", "style": "Crisp and deadpan, little pitch movement. Every punchline quieter and flatter than the setup, as though stating the obvious. Stakes: plain and exact, no warmth added." },
+    { "id": "leaningin-algieba", "voice": "Algieba", "name": "Leaning in", "profile": "A smooth, intimate British narrator who tells the story as if sharing a secret with the table.", "style": "Hushed and conspiratorial. Lean into the setups, drop the turn almost to a murmur, like a raised eyebrow. Stakes: very quiet and very plain." },
+    { "id": "radioplay-charon", "voice": "Charon", "name": "Radio play", "profile": "A clear, lively British radio-drama narrator.", "style": "Brisker and more dynamic, bigger contrasts between light and dark, crisp comic timing. Stakes: slow and grave." },
+    { "id": "gravel-algenib", "voice": "Algenib", "name": "Old soldier", "profile": "A gravelly, kind old British voice, like a retired soldier telling stories to the young.", "style": "Slow, gravelly, amused. Jokes delivered with a grunt of a smile. Stakes: very plain and very low." },
+    { "id": "warm-sulafat", "voice": "Sulafat", "name": "Warm aunt", "profile": "A warm, wry British woman telling a story she loves, the favourite aunt who has seen everything.", "style": "Warm and amused, quick smile in the voice, a dry little beat before each turn. Stakes: gentle and plain." }
+  ]
+}

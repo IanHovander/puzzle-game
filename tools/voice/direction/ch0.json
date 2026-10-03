@@ -1,0 +1,257 @@
+{
+  "setting": "The Prologue of a co-op story game. Four friends sit at one screen at night and play the Reader, the Listener, the Seer and the Binder. You narrate the night before their friend Wren, a foundling who arrived on the stones of a magic fire fourteen years ago, may be handed to a prophecy and walked into the Cold. The players read their own characters' lines aloud between yours, so leave the ends of lines clean.",
+  "scenes": {
+    "ch0_start": "The cold open, over a slow animation of the fire. Wonder first: this is a bedtime story told by someone who loves it. The jokes here are small and fond.",
+    "ch0_stone": "The prophecy stone above the fire. A wry definition, then the omen, then the plainest stakes in the story. By the last line there should be no smile left in the voice.",
+    "ch0_dorm": "A tower bedroom at night. Four friends awake past curfew, frightened for Wren, who is not there. One small joke at the start, then quiet.",
+    "ch0_keys": "The four tap a knock on their bedframes because it is something to do. Fond, then a little sad.",
+    "ch0_practice": "Late at night, the knock game. Quiet.",
+    "ch0_wren": "The door bangs open and the energy lifts: Wren arrives with a plan. The narrator enjoys Wren.",
+    "ch0_dare": "Wren jokes about tomorrow, and the jokes thin out. The narrator notices everything and says it gently.",
+    "ch0_carve": "Carving names into an old lamp. Wonder when the brass flares. Then the friends stand very still.",
+    "ch0_lamp": "The lamp lights for the first time in four hundred years: the moment of greatest wonder in the Prologue, then warmth.",
+    "ch0_name": "The tenderest scene. Wren laughs instead of crying. Keep the narrator very simple here.",
+    "ch0_flow": "The end of the night, like the end of a bedtime story. Hushed. Then a last, quiet, dry triumph."
+  },
+  "lines": [
+    {
+      "match": "Four hundred years ago",
+      "note": "Open softly with wonder, like the first line of a story you have told many times. Small beat before 'and without leaving notes', which is the first, dry little joke. Then 'The fire is the Hearth.' plain and fond."
+    },
+    {
+      "match": "It has burned ever since",
+      "note": "Wonder in 'gold at the edges and blue at the heart'. Then plainer: 'It has gone out once.' A beat. The last sentence quieter, with a chill on 'found out what cold is'."
+    },
+    {
+      "match": "When the fire came back",
+      "note": "Hushed wonder through 'curled round the baby like a hand'. Then a beat, and the last sentence dry and fond: the school writing down a miracle is the joke, so say it flat, as if it were the most natural thing in the world."
+    },
+    {
+      "match": "Register of the Hearth",
+      "note": "A clerk reading an entry in a ledger: brisk, disinterested. 'Condition: warm, and pleased with itself' in the same flat clerk voice, which is why it is funny. Stop dead after 'Claimed by:', as if the line runs out."
+    },
+    {
+      "match": "The clerk left that last line blank",
+      "note": "Gentle. A beat before 'Nobody ever came.' Then say it plainly, quietly, and let it sit.",
+      "pace": "hush"
+    },
+    {
+      "match": "You were all born that year",
+      "note": "Two plain sentences with a beat between them. The second, 'Wren was found.', a little quieter, like turning a page."
+    },
+    {
+      "match": "Above the fire, a line is cut",
+      "note": "The most Pratchett line of the opening. A small beat after 'It is a prophecy:', then the definition with quiet, dry relish, as if you have read a great many prophecies and none of them helped."
+    },
+    {
+      "match": "That is the school's translation",
+      "note": "Matter of fact. 'The original is in letters no one alive can read' slightly significant, as if it might matter later. 'no Master will say where' dry."
+    },
+    {
+      "match": "Near Wren, people get",
+      "note": "'and remember an errand' is a dry, sad little observation of people being cowards kindly: flat, no wink. The second sentence plainer and heavier."
+    },
+    {
+      "match": "Tonight the Hearth is flickering",
+      "note": "The stakes. No smile at all. Slower, lower, each sentence its own beat. 'If they choose the prophecy, Wren walks into the Cold and does not come back.' completely plain. Then a pause, and 'Wren has been told to wear something warm.' said gently, almost kindly, which is what makes it terrible. Stop there.",
+      "pace": "stakes"
+    },
+    {
+      "match": "The tower room has four beds",
+      "note": "A small warm smile for the room. 'It cost one third-year both eyebrows.' thrown away, dry, quick."
+    },
+    {
+      "match": "The fifth blanket on the floor",
+      "note": "Tender, observant. 'So is the fifth name on the door, in pencil.' quietly. 'Officially, Wren sleeps at the Provost's.' dry, the word 'Officially' doing the work."
+    },
+    {
+      "match": "The Binder is rereading",
+      "note": "Plain. Then read the order of business in the flat, bored voice of a document, which makes 'who will decide its use' land on its own. No emphasis on 'its'."
+    },
+    {
+      "match": "Nobody has anything to add",
+      "note": "Quiet. The second sentence with the faintest dry smile, not a joke: just the room being honest."
+    },
+    {
+      "match": "Wren adopted you at seven",
+      "note": "Fond and wry: 'by announcement, and has never allowed an appeal' is a smiling aside. The knock described with affection. 'because it is something to do' plain and a little sad."
+    },
+    {
+      "match": "On nights like this the knock",
+      "note": "Gentle, a memory of happier nights."
+    },
+    {
+      "match": "Tonight nobody laughs",
+      "note": "Plain. A beat after the first sentence. Then the rest brisk and practical."
+    },
+    {
+      "match": "The door bangs open",
+      "note": "The energy lifts: a bang, a grin. The second sentence wry and fond: you enjoy Wren's logic.",
+      "pace": "brisk"
+    },
+    {
+      "match": "Words older than the school",
+      "note": "Warmly amused by the Reader: 'takes unreadable words personally' and 'before deciding to be' are fond little jokes. Keep them light."
+    },
+    {
+      "match": "says the Reader, very quietly",
+      "note": "Quietly, matching the Reader. Then a sense of possibility, almost hope, on 'what the stone really says'."
+    },
+    {
+      "match": "The Reader has missed supper",
+      "note": "Comic timing. 'Wren knows nothing about it, loudly.' deadpan, a beat before 'loudly'."
+    },
+    {
+      "match": "Wren's copy is folded small",
+      "note": "Quiet. This is the fear under the joke: plain, small, no comment.",
+      "pace": "hush"
+    },
+    {
+      "match": "This week Wren gave you",
+      "note": "Plain and careful. 'and called it tidying up' gently. Then slower, with the weight of the whole night: 'This is the first time any of you has heard Wren ask for anything.'"
+    },
+    {
+      "match": "The Listener checks Wren's hands",
+      "note": "Simple. 'Cold, as always.' quiet. The hum described with a hush: 'like someone waiting at a door' is wonder. 'Only the Listener hears it.' almost a whisper."
+    },
+    {
+      "match": "The Seer finds a cut",
+      "note": "Light and amused: the face, and Wren doing it back, is a fond little joke."
+    },
+    {
+      "match": "A hundred names are scratched",
+      "note": "Dry: 'people who were very sure about matches' is the joke, flat."
+    },
+    {
+      "match": "There is room for one more",
+      "note": "Quiet, plain, a little ominous."
+    },
+    {
+      "match": "All four of you look",
+      "note": "Very quiet. Let it hang.",
+      "pace": "hush"
+    },
+    {
+      "match": "The brass flares",
+      "note": "Wonder: a flash and gone. 'Far below, for one breath, the great fire answers.' hushed, awed."
+    },
+    {
+      "match": "For once, Wren has no next line",
+      "note": "Gentle, fond: the narrator has noticed something rare. Slow."
+    },
+    {
+      "match": "The lamp catches",
+      "note": "The peak of wonder. Hushed awe on the first sentence. 'all it ever wanted was to be read to' tender. A beat. 'Far below, the Hearth stops flickering.' quiet, hopeful. 'Nobody says what that might mean.' barely there.",
+      "pace": "hush"
+    },
+    {
+      "match": "says the Reader, who corrects everybody",
+      "note": "Warm. 'Wren does not argue.' plain and soft: it is the kindest thing in the scene."
+    },
+    {
+      "match": "Wren drags the fifth blanket",
+      "note": "Warm comedy: 'without joining in' dry. The second sentence plainer: it is also a clue, so let it be noticed."
+    },
+    {
+      "match": "For a while, nobody speaks",
+      "note": "Very soft. 'as if that were part of laughing' tender, slow.",
+      "pace": "hush"
+    },
+    {
+      "match": "Wren holds out both hands",
+      "note": "Simple. Each fragment its own beat: 'Still cold.' 'Held anyway.' Very gentle.",
+      "pace": "hush"
+    },
+    {
+      "match": "Wren talks until you are nearly asleep",
+      "note": "A bedtime hush. The knock counted slowly and evenly, 'one, two, three, four', then 'all together' softer. 'Nobody sees whether Wren sleeps.' almost a whisper.",
+      "pace": "hush"
+    },
+    {
+      "match": "At dawn the lamp burns out",
+      "note": "Plain, a small chill on the second sentence.",
+      "pace": "hush"
+    },
+    {
+      "match": "The penknife, the marble",
+      "note": "Warm. 'Somebody came for Wren in the end' with quiet weight. A beat. 'four somebodies, fourteen years late, in their socks' smiling, tender, the smallest laugh in the voice on 'socks'."
+    },
+    {
+      "match": "The school calls what you did tonight",
+      "note": "Matter of fact, faintly dry, like explaining a school rule."
+    },
+    {
+      "match": "Tomorrow the hall fills",
+      "note": "Low restraint, a little ominous on 'never said what they saw'. Then the last line of the Prologue, quietly triumphant, as if passing the table a secret: 'Whatever they write in the register, they will be writing second.'"
+    },
+    {
+      "match": "You're awake! Brilliant.",
+      "note": "Bursting in mid-scheme: fast, delighted, a performance of confidence. 'four idiots and a lamp' with relish. The idea about reading the lamp pitched like the best idea anyone has ever had.",
+      "pace": "brisk"
+    },
+    {
+      "match": "Me?",
+      "note": "Surprised innocence, overplayed on purpose."
+    },
+    {
+      "match": "I'm the main event",
+      "note": "Breezy, far too breezy."
+    },
+    {
+      "match": "I've been practicing standing still",
+      "note": "A joke Wren has rehearsed. Bright, a touch too fast."
+    },
+    {
+      "match": "Since Tuesday. It's not finished.",
+      "note": "Flip on 'Since Tuesday.' Then 'It's not finished.' slightly smaller: the mask slips for a second."
+    },
+    {
+      "match": "Everything I have, somebody gave me",
+      "note": "Starts like a list joke, but each item gets quieter. The last sentence, 'I want one good thing that's ours', almost a whisper, completely sincere."
+    },
+    {
+      "match": "Our names first",
+      "note": "Bright, a plan."
+    },
+    {
+      "match": "so the lamp knows whose it is",
+      "note": "Bright, a plan."
+    },
+    {
+      "match": "That's my name. I said ours.",
+      "note": "Small and shaken. Not angry: caught out by being loved."
+    },
+    {
+      "match": "Tie. Fine. So it knows me.",
+      "note": "Recovering with a joke: 'Tie.' a little unsteady, then gathering speed through the plan. 'Lucky I adopted exactly four.' warm, a grin coming back."
+    },
+    {
+      "match": "Look at it. That's ours.",
+      "note": "Joy, almost a laugh. Then the slip: catch on 'Mom'll', a tiny stumble, correct it fast to 'the Provost'll', and finish the joke."
+    },
+    {
+      "match": "You lot are terrible at secrets",
+      "note": "Laughing through tears."
+    },
+    {
+      "match": "I've known for years",
+      "note": "Laughing through tears, then sincere. 'Now you've gone and ruined it.' a fond grumble. 'Thank you.' small and true."
+    },
+    {
+      "match": "Right. I need something to say tomorrow",
+      "note": "Businesslike, to get back on safe ground. Quiet resolve on the last sentence."
+    },
+    {
+      "match": "Four, like the founders",
+      "note": "Pleased, a little grand."
+    },
+    {
+      "match": "Finally, something in that register",
+      "note": "Delighted."
+    },
+    {
+      "match": "A vigil's just people staying up",
+      "note": "The first sentence light. Then 'Stay up for me tomorrow.' suddenly plain and small."
+    }
+  ]
+}

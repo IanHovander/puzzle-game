@@ -1,0 +1,53 @@
+{
+  "Narrator": {
+    "voice": "Gacrux",
+    "name": "The Narrator",
+    "profile": "An older British storyteller, warm and unhurried, with a dry wit: someone reading a comic fantasy novel aloud by a fire to people they are fond of. Amused by the world and its institutions, never by the children in it. Has seen everything twice and still likes people. A light, well-worn voice with a smile somewhere behind it.",
+    "style": "Read in phrases, a little slower than conversation, as if to a table of friends who will laugh if you give them room. The wry line is usually the last short sentence of a paragraph: take a small beat before it, then say it quieter and flatter than the rest, as though it were obvious. Never lean on a joke, never laugh at your own line, never do a comic voice. When the story turns serious, drop the smile completely: plain, slower, a little lower, every word placed, no drama. Documents (a register, a notice, an order of business) are read the way a bored clerk would read them, which is what makes them chilling.",
+    "kokoro": {
+      "blend": {
+        "bm_george": 1
+      },
+      "speed": 0.92
+    }
+  },
+  "Wren": {
+    "voice": "Leda",
+    "name": "Wren",
+    "profile": "Wren, fourteen. Quick, bright, generous, always scheming, and frightened underneath it all. Talks fast to stay ahead of the fear and makes a joke the moment anything gets too real. The story never says whether Wren is a boy or a girl: the voice should be young and light and not read strongly as either. A light British accent.",
+    "style": "Natural and alive, never theatrical. Jokes are delivered as if Wren has been rehearsing them, which Wren has. When a line turns sincere, Wren gets smaller and quieter, not bigger. If a line has both, play the joke first and let the truth slip out at the end.",
+    "kokoro": {
+      "blend": {
+        "bf_lily": 0.6,
+        "bm_fable": 0.4
+      },
+      "speed": 1.04
+    }
+  },
+  "Provost": {
+    "voice": "Kore",
+    "name": "Provost Marrow",
+    "profile": "The Provost: the head of the school, a woman in late middle age who raised Wren and cannot say so. Clipped, tired, exact, kind underneath and determined that nobody will notice.",
+    "style": "Economical. Every word costs her something. Warmth only leaks out when she thinks nobody is listening.",
+    "kokoro": {
+      "blend": {
+        "bf_emma": 0.8,
+        "bm_george": 0.2
+      },
+      "speed": 0.88
+    }
+  },
+  "Other": {
+    "voice": "Charon",
+    "name": "A grown-up of the school",
+    "profile": "An adult of the old school: formal, certain, used to being obeyed.",
+    "style": "Measured and plain.",
+    "kokoro": {
+      "blend": {
+        "bm_lewis": 1
+      },
+      "speed": 0.9
+    }
+  },
+  "omen": "This is the prophecy itself, carved in stone. Leave the storyteller's smile behind for this one line: slow, low, ceremonial, each phrase its own weight, as if reading something older than the language. No irony at all."
+}

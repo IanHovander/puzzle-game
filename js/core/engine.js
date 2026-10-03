@@ -115,6 +115,7 @@
     dom.hint.classList.toggle('hidden', !scene.hints);
     dom.hint.classList.remove('attention');
 
+    if (window.VigilVoice) window.VigilVoice.stop();
     UI.clear(dom.text); UI.clear(dom.actions); UI.clear(dom.widget);
     dom.widget.classList.toggle('hidden', scene.type !== 'puzzle' && scene.type !== 'custom' && scene.type !== 'reaction' && scene.type !== 'token');
     dom.text.classList.toggle('narrow', !!(scene.type === 'puzzle' || scene.type === 'custom' || scene.type === 'reaction'));
@@ -410,6 +411,17 @@
     row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Words of the night', onclick: () => { m.close(); Game.showWords(); } }));
     row3.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Change keys', onclick: () => { m.close(); Game.changeKeys(); } }));
     box.appendChild(row3);
+    const V = window.VigilVoice;
+    if (V && V.available()) {
+      const vs = Store.state.voice || {};
+      const row4 = UI.el('div', { class: 'row' });
+      const nb = UI.el('button', { class: 'btn small' + (V.isOn() ? '' : ' ghost'), text: 'Narrator: ' + (V.isOn() ? 'on' : 'off'), onclick: () => { V.setOn(!V.isOn()); nb.textContent = 'Narrator: ' + (V.isOn() ? 'on' : 'off'); nb.classList.toggle('ghost', !V.isOn()); } });
+      const lb = UI.el('button', { class: 'btn small' + (vs.listen ? '' : ' ghost'), text: 'Listen for our lines: ' + (vs.listen ? 'on' : 'off'), onclick: async () => { await V.setListen(!(Store.state.voice || {}).listen); const on = !!(Store.state.voice || {}).listen; lb.textContent = 'Listen for our lines: ' + (on ? 'on' : 'off'); lb.classList.toggle('ghost', !on); } });
+      row4.appendChild(nb); row4.appendChild(lb);
+      row4.appendChild(UI.el('button', { class: 'btn small ghost', text: 'Test voices', onclick: () => V.test() }));
+      box.appendChild(row4);
+      box.appendChild(UI.el('p', { class: 'small', text: 'The narrator reads the story. When one of you speaks, your words light up in your colour: read them aloud, and the story goes on. With Listen on, the microphone only notices that someone has spoken; nothing is recorded or sent anywhere.' }));
+    }
     const m = UI.modal(box, { title: 'The Hearth' });
   };
   /* THE RECOVERY THIS GAME DOCUMENTS AND DID NOT HAVE. Every attunement writes its mark into the save
