@@ -196,7 +196,7 @@
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four.",
+          "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four of you. Later, so does Wren.",
           { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type in the word of attunement shown here.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
@@ -228,10 +228,11 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "The lamp catches: small and gold, a piece of the Hearth on the sill, warm all the way to the door. All those matches, and it only ever wanted to be read to.",
+          "The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to.",
           "Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire, so it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
-          "\"The stone says *walk*,\" says the Seer. \"The school's translation says *walk*,\" says the Reader. \"The Founders say *keep*.\" All four of you are looking at the same person again, and this time it is not a dare.",
+          "\"The stone says *walk*,\" says the Seer.",
+          "The Reader shakes their head. \"The school's translation says *walk*. The Founders' own lamp says *keep*.\" All four of you are looking at the same person again, and this time it is not a dare.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. If you all look at me like that, I'll have to stand still again." },
           "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in. Each of you has one thing about Wren you have never said out loud.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
@@ -242,7 +243,7 @@
         type: 'choice', art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust', choice: 'WREN_NAME_FOR_GROUP', prompt: 'Choose one together. The player named beside it says it to Wren.',
         text: [
           "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
-          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door. That one was new. Wren stands still for a good deal longer than eleven seconds, and nobody counts.",
+          "\"You lot are terrible at secrets,\" says Wren. \"Three of those I've known for years. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\" Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and nobody counts.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "Right. *Keep.* I can work with that. If I'm being kept, I want it in writing. For fourteen years that register has said \"Claimed by,\" and then nothing. Before the Houses fill it in, we will. So: claimed by *who*?" },
         ],
