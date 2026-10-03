@@ -142,7 +142,7 @@
         text: [
           "On nights nobody can sleep, the knock becomes a game on the bedframes, faster and faster, until somebody laughs.",
           "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder does. By the third time all four of you are saying it, and nobody laughs.",
-          { text: "Now the lights fall. Press as yours crosses the line.", cls: "whisper" },
+          { text: "Now the lights slide down your lanes. Press as yours crosses the line.", cls: "whisper" },
           { text: "A white light across all four lanes means all four press together.", cls: "whisper" },
         ],
         /* The knock itself, three times, each time faster: one each in seat order, then all four together. */
@@ -160,7 +160,7 @@
       ch0_wren: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
-          "The door bangs open. Wren never knocks on it. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
+          "The door bangs open. Wren has never once knocked. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Hiding me: no. Spring: try harder. The lamp: yes. What I need is four idiots and a lamp, and this room has always had both." },
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
           "Worn shapes run round the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the window. \"Nobody can read those.\" A little too quickly.",
@@ -183,7 +183,7 @@
       ch0_carve: {
         type: 'puzzle', puzzle: 'answer', art: 'ch0_lamp', mood: 'tower', fx: 'dust', puzzleId: 'ch0_carve',
         text: [
-          "\"Our names first,\" says Wren, \"so the lamp knows whose it is. I dare you.\"",
+          "\"It should know who's asking,\" says Wren. \"Our names first. I dare you.\"",
           "The Seer opens the penknife, which was Wren's until this week, looks at the lamp, and makes the face the Seer saves for terrible ideas. Wren makes it back.",
           "Generations of dares are carved in the brass: initials, mostly, and one rude word. There is room for one more name, and all four of you look at the same person.",
           { text: "Type the one name all four of you are looking at.", cls: "whisper" },
@@ -238,10 +238,10 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. Nobody breathes, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. *Ember* is their word for *keep*. That's how you bank a fire, so it keeps till morning. *The fire keeps.*\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire: bury the embers in ash, and it keeps till morning. *The fire keeps.*\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
-          "\"The stone still does,\" says the Seer.",
-          "\"The school's translation does,\" says the Binder. \"The Founders' own brass says *keep*. That's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
+          "\"The stone still says *walk*,\" says the Seer.",
+          "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. Nobody look at me like that." },
         ],
         next: 'ch0_tabs',
@@ -249,7 +249,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, who usually stands between Wren and any lamp, stays put. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, who always steps between Wren and any lamp, doesn't step. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
@@ -277,7 +277,7 @@
           { text: "Knock it on the table now, soft: one each, then all together.", cls: "whisper" },
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           "At dawn the lamp goes out, having kept till morning. Far below, the Hearth flickers again.",
-          `While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. The Reader is still holding the biscuit. Nobody mentions it. The Binder goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
+          `While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. The Reader still hasn't eaten the biscuit, and isn't going to. The Binder goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
           "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
         ],
         next: 'ch0_flow', button: "Morning",
