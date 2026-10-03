@@ -110,11 +110,12 @@
   // as near the fire as it is polite to get, both hands out to it; with soldiers, one either side, a little further off.
   function hearth(wren, soldiers) {
     let s = `<rect x="640" y="700" width="420" height="16" rx="3" fill="#1a1310"/><path d="M642,701 H1058" stroke="#ff9a3c" stroke-width="1.5" opacity=".3"/>`;
-    // the Register: a lectern, the book open at *Claimed by* (right of the fire, clear of the text box)
+    // the Register: a lectern, the book open at *Claimed by* (right of the fire, clear of the text box); closed on the
+    // lost path (soldiers), where the Provost closes the book on it
     s += `<g transform="translate(1030,700)"><rect x="-12" y="-4" width="24" height="4" rx="1" fill="#2a1e1a"/><rect x="-2.5" y="-46" width="5" height="44" fill="#2a1e1a"/>` +
       `<path d="M-26,-44 L0,-38 L26,-44 L24,-52 L0,-47 L-24,-52 Z" fill="#3a2420"/>` +
-      `<path d="M-23,-49 L0,-44 L0,-56 L-22,-60 Z" fill="#d9cdb0" opacity=".6"/><path d="M0,-44 L23,-49 L22,-60 L0,-56 Z" fill="#f4ecd8" opacity=".75"/>` +
-      `<path d="M-18,-53 L-5,-50 M-18,-49 L-8,-47 M5,-50 L17,-53" stroke="#3a2420" stroke-width="1" opacity=".6"/><path d="M0,-44 L0,-36" stroke="#8a2f2f" stroke-width="2"/></g>`;
+      (soldiers ? `<path d="M-24,-46 L24,-46 L22,-54 L-22,-54 Z" fill="#3a2420"/>` : `<path d="M-23,-49 L0,-44 L0,-56 L-22,-60 Z" fill="#d9cdb0" opacity=".6"/><path d="M0,-44 L23,-49 L22,-60 L0,-56 Z" fill="#f4ecd8" opacity=".75"/>` +
+      `<path d="M-18,-53 L-5,-50 M-18,-49 L-8,-47 M5,-50 L17,-53" stroke="#3a2420" stroke-width="1" opacity=".6"/>`) + `<path d="M0,-44 L0,-36" stroke="#8a2f2f" stroke-width="2"/></g>`;
     if (!wren) return s;
     const wx = soldiers ? 934 : 886;
     if (soldiers) s += soldier(864, 718, 1.35, -1, -1);
@@ -232,7 +233,7 @@
     // soldiers' shadows down the passage, and the Envoy in the light
     P.figures([{ x: 1180, s: 0.6, color: '#08070c' }, { x: 1300, s: 0.6, color: '#08070c' }], 470, '#08070c') +
     // his captain at his shoulder, studying your faces
-    P.figures([{ x: 912, s: 1.35 }], 482, '#24242e') +
+    P.figures([{ x: 912, s: 1.65 }], 482, '#24242e') +
     `<g transform="translate(980,480)"><ellipse cx="0" cy="-6" rx="30" ry="9" fill="#000" opacity=".4"/><path d="M-22,0 L-16,-160 L16,-160 L22,0 Z" fill="#3a3a46"/><circle cx="0" cy="-178" r="16" fill="#18181e"/><path d="M-16,-160 L-22,0" stroke="#ffb86a" stroke-width="2" opacity=".5"/><rect x="-6" y="-110" width="12" height="44" rx="2" fill="#c9a85a" opacity=".7"/></g>` +
     P.floorTiles(800, '#0a0810', 'rgba(255,255,255,0.03)') +
     P.fog(500, 400, '#1a1410', 0.4)
