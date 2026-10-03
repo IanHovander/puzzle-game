@@ -75,7 +75,7 @@
     P.sky('#0a0810', '#1a0f0a') +
     `<rect x="380" y="120" width="840" height="300" rx="6" fill="#1d1619" stroke="#3a2c2c" stroke-width="4"/>` +
     `<g transform="translate(470,250)" opacity=".9">${wornCuts(8, '#7a6a5a', 94, 1.9)}</g>` +
-    `<text x="800" y="380" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="22" font-family="Cinzel,serif" letter-spacing="6">THE ORDER'S READING</text>` +
+    `<text x="800" y="380" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="22" font-family="Cinzel,serif" letter-spacing="6">THE SCHOOL'S READING</text>` +
     fire(800, 900, 1.6, false) +
     `<rect x="0" y="520" width="${W}" height="${H - 520}" fill="url(#stonefog)"/><defs><linearGradient id="stonefog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff9a3c" stop-opacity="0"/><stop offset="1" stop-color="#ff9a3c" stop-opacity=".55"/></linearGradient></defs>`
   ));

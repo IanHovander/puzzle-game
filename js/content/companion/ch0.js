@@ -101,7 +101,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. I can read one. The other one, I can’t. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. The chalk one, somebody else wrote, carefully, in letters nobody here is taught. Somebody wanted you named properly, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
@@ -131,17 +131,17 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch**. On Founders’ brass, a notch is only a maker’s signature.',
+          'A **Founders’** sigil starts at the **scratch**: that is the mark in Law 1. On Founders’ brass, a notch is only a maker’s signature.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise**.',
+          'Each next word goes in the next slot **clockwise** (the Book says *sunwise*).',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
-        P.sight.push({ t: 'fine', text: 'You cannot see the cuts or read the words. Ask for both.' });
+        P.sight.push({ t: 'fine', text: 'You cannot see the cuts, read the words or hear which comes first. Ask for all three.' });
         P.wren.push({ t: 'h', text: 'No thread' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
-          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> an old thread, well knotted, from years of sitting together.</li>'
-          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> a new thread, still slipping.</li>'
+          + '<li>' + threadLine('whole') + ' <strong>Reader and Listener:</strong> red, old and well knotted. Some promise from years ago, still kept.</li>'
+          + '<li>' + threadLine('broken') + ' <strong>Seer and you:</strong> red, new, still slipping. A promise you are both still making.</li>'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing. No thread at all, to anyone.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
@@ -149,7 +149,7 @@
       }
 
       // First night only, like the tab guide: point each page at the Book once its fact has been said.
-      P.sight.push({ t: 'fine', text: 'Said your part? Then read through your **Book**. You will lean on it all night.' });
+      P.sight.push({ t: 'fine', text: 'Said your part? Then read through your **Book**. You will lean on it every night.' });
 
       return P;
     },
