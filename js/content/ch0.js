@@ -261,7 +261,7 @@
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           `At dawn the lamp goes out, having kept till morning, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. Somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
           "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. Tonight, at the bell, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
+          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. Tonight, before the bell, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,

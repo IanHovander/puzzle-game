@@ -57,10 +57,25 @@
   function masters() {
     const list = [];
     for (let i = 0; i < 4; i++) { const t = i / 3; list.push({ x: 300 + t * 200, s: 0.9 - t * 0.35 }); list.push({ x: 1300 - t * 200, s: 0.9 - t * 0.35 }); }
-    return P.figures(list.map(f => ({ x: f.x, s: f.s })), 700, '#0c0a12');
+    // a high-backed chair behind every Master, then the Masters, lit just enough to count
+    const chairs = list.map(f => `<g transform="translate(${f.x},700) scale(${f.s})"><rect x="-24" y="-128" width="48" height="128" rx="6" fill="#231a1e" stroke="#4a3628" stroke-width="2"/><rect x="-18" y="-120" width="36" height="6" rx="2" fill="#2a1e1a"/></g>`).join('');
+    return chairs + P.figures(list.map(f => ({ x: f.x, s: f.s })), 700, '#08070a');
+  }
+  // The ninth chair, the Chair: the tallest, in front of the Hearth, under the crown. Empty until ch1_vote,
+  // where the Provost sits in it for the first time anyone can remember, and Wren stands beside it.
+  function theChair(seated) {
+    let s = `<g transform="translate(800,770)"><ellipse cx="0" cy="-4" rx="52" ry="9" fill="#000" opacity=".4"/>` +
+      `<path d="M-30,0 L-30,-250 Q-30,-262 -20,-268 L0,-284 L20,-268 Q30,-262 30,-250 L30,0 Z" fill="#160f12" stroke="#5a4028" stroke-width="2.5"/>` +
+      `<path d="M-10,-276 L0,-296 L10,-276 Z" fill="#c9a85a" opacity=".8"/>` +
+      `<rect x="-42" y="-96" width="84" height="16" rx="4" fill="#22181a"/>`;
+    if (seated) s += `<path d="M-22,-80 L-16,-190 L16,-190 L22,-80 Z" fill="#0c0a12"/><circle cx="0" cy="-206" r="15" fill="#0c0a12"/><path d="M16,-190 L22,-80" stroke="#3a2a22" stroke-width="1.5"/>`;
+    s += `</g>`;
+    // Wren, small, standing still beside it, one hand on her sleeve
+    if (seated) s += `<g transform="translate(872,770)"><ellipse cx="0" cy="-4" rx="18" ry="6" fill="#000" opacity=".35"/><path d="M-12,0 L-9,-92 L9,-92 L12,0 Z" fill="#0c0a12"/><circle cx="0" cy="-104" r="12" fill="#0c0a12"/><path d="M-9,-80 L-46,-118" stroke="#0c0a12" stroke-width="7" stroke-linecap="round"/><path d="M9,-92 L12,0" stroke="#ff9a3c" stroke-width="1.5" opacity=".6"/></g>`;
+    return s;
   }
 
-  A.define('ch1_hall', () => P.wrap(
+  A.define('ch1_hall', (p) => P.wrap(
     P.sky('#07060c', '#1a120e') +
     `<rect x="0" y="0" width="${W}" height="560" fill="#0b0912"/>` +
     P.pillars(8, 720, 640, '#0a0810') +
@@ -77,6 +92,7 @@
     // long tables
     `<rect x="120" y="740" width="520" height="14" fill="#1c1510"/><rect x="960" y="740" width="520" height="14" fill="#1c1510"/>` +
     masters() +
+    theChair(!!(p && p.seated)) +
     P.torch(90, 420, 1.1) + P.torch(1510, 420, 1.1) +
     P.fog(560, 340, '#2a1a12', 0.35)
   ));

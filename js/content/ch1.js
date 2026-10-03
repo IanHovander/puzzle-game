@@ -170,10 +170,10 @@
       },
       /* ---------- the hour before the bell ---------- */
       ch1_vote: {
-        type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
+        type: 'puzzle', puzzle: 'seats', puzzleId: 'ch1_vote', art: 'ch1_hall', artParams: { seated: true }, mood: 'tense', fx: 'embers', flame: 0.8, par: [3, 4.5, 6],
         clearText: true, // the instructions have been read: the vote, told, gets the whole box
         text: [
-          'The Provost takes the ninth seat, the Chair, and sits in it for the first time anyone can remember. Wren stands still beside it, one hand on her sleeve. It is going to be a long hour.',
+          'The Provost takes the ninth seat, the Chair, and sits in it for the first time anyone can remember. Wren stands still beside it, one hand on the Provost\'s sleeve. It is going to be a long hour.',
           { text: 'Say what your phone shows, aloud. Use seat numbers, not names.', cls: 'whisper' },
           { text: 'Then choose ' + ASKS_WORD + ' Masters to ask, and call the vote. It is called once.', cls: 'whisper' },
         ],
