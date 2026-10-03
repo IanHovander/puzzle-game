@@ -50,7 +50,7 @@
     s += `<rect x="326" y="95" width="16" height="110" stroke-dasharray="3,3"/></g>`;
     s += `<text x="218" y="36" fill="#fff" font-size="14" ${F}>the Hearth</text>`;
     s += `<text x="342" y="68" text-anchor="end" fill="#a482e6" font-size="14" ${F}>the tapestry</text>`;
-    s += `<text x="342" y="86" text-anchor="end" fill="#a482e6" font-size="13" ${F}>painted over older paint</text>`;
+    s += `<text x="342" y="86" text-anchor="end" fill="#a482e6" font-size="13" ${F}>over older paint</text>`;
     seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="14" fill="none" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${F}>${p.n}</text>`; });
     [5, 8].forEach(n => { const p = seats[n - 1]; s += `<g transform="translate(${p.x.toFixed(1)},${(p.y + 22).toFixed(1)})"><circle r="5" fill="none" stroke="#a482e6" stroke-width="1.5"/></g>`; });
     const p5 = seats[4], p8 = seats[7], p6 = seats[5];

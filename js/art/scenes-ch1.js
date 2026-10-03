@@ -71,8 +71,8 @@
       `<path d="M${x + rim * 10 * s},${base - 70 * s} L${x + rim * 14 * s},${base}" stroke="#ff9a3c" stroke-width="1.5" opacity=".45"/>`;
   }
   // The tapestry, on the right wall behind Seats 1-2 (the Seer's map; drawn here on the left and mirrored in ch1_hall),
-  // painted over an older picture nobody will talk about: dim cloth, a later coat of paint in broad patches, a scrap of the older picture
-  // where it has flaked. aside (ch1_flow): its right edge drawn back on a dark doorway and the top of a stair,
+  // painted over an older picture, thinnest at the edges: dim cloth, a later coat of paint in broad patches, a scrap of the older picture
+  // where it has flaked. aside (ch1_flow): its far edge drawn back on a dark doorway and the top of a stair,
   // the Provost beside it, holding it.
   function tapestry(aside) {
     // a slight trapezoid: the near (left) edge longer
@@ -109,9 +109,9 @@
   // The hearthstone, the Register open on its stand beside the fire, and (wren) Wren sitting on the stone,
   // as near the fire as it is polite to get, both hands out to it; with soldiers, one either side, a little further off.
   function hearth(wren, soldiers) {
-    let s = `<rect x="640" y="700" width="320" height="16" rx="3" fill="#1a1310"/><path d="M642,701 H958" stroke="#ff9a3c" stroke-width="1.5" opacity=".3"/>`;
-    // the Register: a lectern, the book open at *Claimed by*
-    s += `<g transform="translate(666,700)"><rect x="-12" y="-4" width="24" height="4" rx="1" fill="#2a1e1a"/><rect x="-2.5" y="-46" width="5" height="44" fill="#2a1e1a"/>` +
+    let s = `<rect x="640" y="700" width="420" height="16" rx="3" fill="#1a1310"/><path d="M642,701 H1058" stroke="#ff9a3c" stroke-width="1.5" opacity=".3"/>`;
+    // the Register: a lectern, the book open at *Claimed by* (right of the fire, clear of the text box)
+    s += `<g transform="translate(1030,700)"><rect x="-12" y="-4" width="24" height="4" rx="1" fill="#2a1e1a"/><rect x="-2.5" y="-46" width="5" height="44" fill="#2a1e1a"/>` +
       `<path d="M-26,-44 L0,-38 L26,-44 L24,-52 L0,-47 L-24,-52 Z" fill="#3a2420"/>` +
       `<path d="M-23,-49 L0,-44 L0,-56 L-22,-60 Z" fill="#d9cdb0" opacity=".6"/><path d="M0,-44 L23,-49 L22,-60 L0,-56 Z" fill="#f4ecd8" opacity=".75"/>` +
       `<path d="M-18,-53 L-5,-50 M-18,-49 L-8,-47 M5,-50 L17,-53" stroke="#3a2420" stroke-width="1" opacity=".6"/><path d="M0,-44 L0,-36" stroke="#8a2f2f" stroke-width="2"/></g>`;

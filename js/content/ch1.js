@@ -310,9 +310,8 @@
           { speaker: 'Lord Vane', text: 'It lives. I promise you that, which is more than anyone else here will.' },
           'Nobody else tonight has used the word *lives*. Not even the stone.',
           { speaker: 'Lord Vane', text: 'Do it, and the Crown makes all four of you Masters. You can decide what I am afterwards. Ask your Seer what is under the paint.' },
-          'He is not supposed to know you have a Seer. He sends his captain out of earshot. Just him, and the four of you.',
         ],
-        prompt: 'What do you tell him?',
+        prompt: 'He is not supposed to know you have a Seer. He sends his captain out of earshot. What do you tell him?',
         options: [
           { id: 'refuse', text: 'Seer: "No. And the name is Wren."', sub: 'The truth. He will remember it.', next: 'ch1_after', set: { VANE_PRETEND: false, VANE_ACCEPT: false },
             after: ['Vane inclines his head, as if you had confirmed an appointment.', { speaker: 'Lord Vane', text: 'Then I will ask again later, when it costs more.' }] },
@@ -372,7 +371,7 @@
           /* In the table's reading order, as the whisper in ch1_after asks: Reader, Listener, Seer, Binder.
              The phone cannot know the price (no cast in ch1), so the Sorrel thread is said here, aloud. */
           const promise = s.flags.SORREL
-            ? ['The Binder has one more thing, and says it to the floor. "It took to Sorrel. In one breath."', { speaker: 'Wren', text: 'Sorrel got a thread. I got a *promise*. Somebody carve that on something.' }]
+            ? ['The Binder has one more thing, and says it to the floor. "A thread took to Sorrel tonight, in one breath." "Sorrel got a thread," says Wren. "I got a *promise*. Somebody carve that on something."']
             : [{ speaker: 'Wren', text: 'Not a rule. A *promise*. Somebody carve that on something.' }];
           return [
             'When the Reader gets to "We claimed you first," Wren has to look at the fire for a while.',

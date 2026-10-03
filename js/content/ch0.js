@@ -191,8 +191,7 @@
         onSolve: () => { try { Game.setArt('ch0_lamp', { carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "The Seer cuts it small, under the rude word. \"Good company,\" says the Seer. The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
-          { speaker: "Wren", text: "That's my name. I said *ours*." },
+          "The Seer cuts it small, under the rude word. \"Good company,\" says the Seer. The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers. \"That's my name,\" says Wren. \"I said *ours*.\"",
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
           "Nobody says a word about *Mom*. Wren is already talking.",
