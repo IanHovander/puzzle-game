@@ -117,7 +117,7 @@
         P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand again: *Item two: the foundling.* After it, a name, in the older alphabet, the letters of the chalk on your door. You can\u2019t read it. Yet.' });
         P.wren.push({ t: 'h', text: 'Item two' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYou heard it too. He was quoting. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYou heard it too. *Not coming back.* He said it like a line he\u2019d read off a wall. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
       }
 
       if (roleId === 'listener') {
