@@ -86,7 +86,7 @@
       ch0_keys: {
         type: 'custom', art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in. \"Somebody,\" says Wren, \"has to be the door.\" Tomorrow, the door stands before the Houses alone. Tonight, on the bedframes, you practice it anyway: the one thing the four of you can say all at once.",
+          "Wren adopted you at seven, by announcement, and has never allowed an appeal. That same week Wren invented a knock: one each, then all four together. It means *everybody's here*. Wren never joins in. \"Somebody,\" Wren likes to say, \"has to be the door.\" Tomorrow, the door stands before the Houses alone. Tonight, on the bedframes, you practice it anyway: the one thing the four of you can say all at once.",
           { text: "One keyboard, one key each. Press yours when it glows.", cls: "whisper" },
           { text: "Then all four at once.", cls: "whisper" },
         ],
@@ -195,7 +195,7 @@
         type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
           "Each of you was born with a Sighting: one way of seeing that is yours alone. The school would rather you didn't mention it. Wren has never once asked what you see when you look at Wren. Tonight the lamp needs all four.",
-          { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type in the code word shown here.', cls: 'whisper' },
+          { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type in the word of attunement shown here.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab keeps everything.', cls: 'small' },
         ],
         roles: 'Warden (keyboard): **anyone**. Voice (reads aloud): **the Reader**.', sightSeconds: 90,

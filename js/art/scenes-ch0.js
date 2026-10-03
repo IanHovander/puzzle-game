@@ -129,7 +129,9 @@
       // warm cast over the room while the lamp burns
       (lit ? `<defs><radialGradient id="dormwarm" cx="${(WIN.x / W).toFixed(3)}" cy="${((SILL - 90) / H).toFixed(3)}" r=".75"><stop offset="0" stop-color="#ffb860" stop-opacity=".22"/><stop offset=".45" stop-color="#ff9a3c" stop-opacity=".07"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><rect width="${W}" height="${H}" fill="url(#dormwarm)"/>` : '') +
       // one round window, stars inside it
-      `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="#070812"/>` + dormStars() +
+      // dawn: the window greys and warms from the bottom, and the stars go
+      (dawn ? `<defs><linearGradient id="dawnsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1a2c"/><stop offset=".7" stop-color="#3a2f3c"/><stop offset="1" stop-color="#8a5a40"/></linearGradient></defs><circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="url(#dawnsky)"/><g opacity=".15">${dormStars()}</g>`
+        : `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="#070812"/>` + dormStars()) +
       `<circle cx="${WIN.x}" cy="${WIN.y}" r="${WIN.r}" fill="none" stroke="#2a2438" stroke-width="12"/>` +
       `<path d="M${WIN.x},${WIN.y - WIN.r} L${WIN.x},${WIN.y + WIN.r} M${WIN.x - WIN.r},${WIN.y} L${WIN.x + WIN.r},${WIN.y}" stroke="#2a2438" stroke-width="5"/>` +
       dormDoor(dawn) +
