@@ -85,7 +85,7 @@
           "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
           "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
           "\"They vote on the stone,\" says the Binder. \"The school's translation of it. The Founders don't get a say.\"",
-          "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever got it to work.\"",
+          "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever got it to work. Maybe nobody ever asked it anything.\"",
         ],
         next: 'ch0_keys', button: "The knock",
       },
@@ -249,7 +249,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, for once, stays exactly where the Seer is. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, for once, doesn't move. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
