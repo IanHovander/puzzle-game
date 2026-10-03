@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away. Everyone looks straight past it. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been copying them into my margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been copying them into my margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
