@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. Somebody wanted you named, Wren, and won’t say so. I’ve been copying those letters into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. Somebody wrote you a name there long before we did, Wren, and has never owned up. I’ve been copying those letters into my margins for a year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -123,7 +123,7 @@
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear every heart in this tower. It’s how I know we’re all right. I’ve never once heard yours. So I just… keep checking on you. You may have noticed.”' });
+        P.wren.push({ t: 'letter', text: '“I can hear every heart in this tower. It’s how I know we’re all right. I’ve never once heard yours. So I just… check your hands instead. You may have noticed.”' });
       }
 
       if (roleId === 'seer') {
@@ -140,9 +140,9 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch**. Your Book’s Law 1 calls it the *mark*. On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
+          'A **Founders’** sigil starts at the **scratch** (your Book calls it the *mark*). On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise**. The Book says *sunwise*.',
+          'Each next word goes in the next slot **clockwise** (the Book says *sunwise*).',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });

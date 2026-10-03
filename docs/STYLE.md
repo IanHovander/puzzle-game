@@ -39,7 +39,7 @@ The user's words, across the pass:
 | role | who they are | how it sounds | where the story already shows it |
 |---|---|---|---|
 | Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("I can't read it. *Yet.*") | bluffs Wren's name in III; decodes it in IV; argues about the ring every winter in VIII |
-| Listener | the worrier; checks on everyone | warm, a little hesitant, trailing off ("So I just… keep checking on you.") | the kind lie "Yes. Loud." in III |
+| Listener | the worrier; checks on everyone | warm, a little hesitant, trailing off ("So I just… check your hands instead.") | the kind lie "Yes. Loud." in III |
 | Seer | dry, protective, keeps secrets | short, deadpan, one dry joke ("You thought I just liked lamps.") | tell-or-stay-silent in III; "very poetic", meant plainly |
 | Binder | earnest, stubborn, loyal; rule-bound | plain and formal; states intent ("I'm not stopping.") | "doesn't walk up to anyone" in I; oaths throughout; a thread finally drawn in VIII |
 

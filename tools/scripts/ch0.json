@@ -5,7 +5,7 @@
   {"wait": 500}, {"key": "Space"}, {"clickText": "The knock"}, {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_keys"},
   {"keys": "a"}, {"keys": "c"}, {"keys": "m"}, {"keys": "/"}, {"wait": 300}, {"keys": "acm/"}, {"wait": 1500},
   {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"shot": "ch0_practice"}, {"wait": 21000}, {"log": true}, {"clickText": "Continue"},
-  {"wait": 600}, {"key": "Space"}, {"clickText": "What about you, Wren?"}, {"wait": 600}, {"key": "Space"}, {"clickText": "One good thing"},
+  {"wait": 600}, {"key": "Space"}, {"clickText": "What about you, Wren?"}, {"wait": 600}, {"key": "Space"}, {"clickText": "A dare"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"type": ["#widget input.field", "wren"]}, {"clickText": "Carve"}, {"wait": 1500}, {"key": "Space"}, {"wait": 300}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch0_attune"}, {"expect": "KINDLE"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch0_lamp"},
