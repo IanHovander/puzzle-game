@@ -83,9 +83,9 @@
         text: [
           "\"We could hide Wren,\" says the Listener. \"Just till after the bell.\"",
           "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
-          "\"I've been trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
+          "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
           "\"They vote on the stone,\" says the Binder. \"The school's translation of it. The Founders don't get a say.\"",
-          "\"Unless we ask them,\" says the Listener, and four heads turn to the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever got it to work.\"",
+          "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever got it to work.\"",
         ],
         next: 'ch0_keys', button: "The knock",
       },
@@ -238,10 +238,10 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. Nobody breathes, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire: bury the embers in ash, and it keeps till morning. *The fire keeps.*\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
-          "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
+          "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the lamp's. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. Nobody look at me like that." },
         ],
         next: 'ch0_tabs',
@@ -261,7 +261,7 @@
           "\"You lot are terrible at secrets,\" says Wren. \"No heartbeat? Knew. Wrong-way shadow? Knew. No thread? Guessed. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\"",
           "Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and this time the Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
-          { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you've turned it round on me. If I'm being kept, I want it in writing. Fourteen years that register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
+          { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. Fourteen years that register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
         options: [
           { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
