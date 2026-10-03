@@ -50,7 +50,7 @@
     s += `<rect x="18" y="95" width="16" height="110" stroke-dasharray="3,3"/></g>`;
     s += `<text x="218" y="36" fill="#fff" font-size="14" ${F}>the Hearth</text>`;
     s += `<text x="18" y="68" fill="#a482e6" font-size="14" ${F}>the tapestry</text>`;
-    s += `<text x="18" y="86" fill="#a482e6" font-size="13" ${F}>an older painting behind it</text>`;
+    s += `<text x="18" y="86" fill="#a482e6" font-size="13" ${F}>painted over older paint</text>`;
     seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="14" fill="none" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${F}>${p.n}</text>`; });
     [5, 8].forEach(n => { const p = seats[n - 1]; s += `<g transform="translate(${p.x.toFixed(1)},${(p.y + 22).toFixed(1)})"><circle r="5" fill="none" stroke="#a482e6" stroke-width="1.5"/></g>`; });
     const p5 = seats[4], p8 = seats[7], p6 = seats[5];
@@ -88,6 +88,10 @@
     ? `<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="${THREAD[kind]}" stroke-width="2.5" stroke-linecap="round"/>`
     : '<path d="M4,8 L86,8" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="2" stroke-dasharray="3 7" stroke-linecap="round"/>'}</svg>`;
 
+  /* The Provost's heart: steady, then one beat twice the height of the rest. It jumped once; it did not race.
+     D.trace has no such shape (normal, fast, slow, flat), so it is drawn here, in the same stroke. */
+  const jumpTrace = `<svg viewBox="0 0 120 22" class="trace"><path d="M0,11 L14,11 L17,7 L20,15 L23,11 L50,11 L53,1 L57,21 L61,11 L88,11 L91,7 L94,15 L97,11 L120,11" stroke="#4fb3bf" stroke-width="1.5" fill="none"/></svg>`;
+
   const murmur = (n, text, steps, base) => ({
     /* The words go in `text` (printed under the button), not the strip: the murmur is the fact, and the page must read without sound. */
     t: 'audio', text: `**Seat ${n}:** *\u201c${text}\u201d*`, button: '♪ Cup your ear',
@@ -102,8 +106,8 @@
       P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
 
       if (roleId === 'reader') {
-        P.sight.push({ t: 'h', text: 'The roll, before the doors shut' });
-        P.sight.push({ t: 'p', text: 'Two Houses filed tonight, in writing, before the doors shut. You can read the roll from here.' });
+        P.sight.push({ t: 'h', text: 'The roll, before the Vigil opened' });
+        P.sight.push({ t: 'p', text: 'Two Houses filed tonight, in writing, before the Vigil opened. You can read the roll from here.' });
         P.sight.push({ t: 'table', head: ['filed', 'and it says'], rows: [
           [seatLabel(9), '<b>KEEP</b> \u2014 the Chair\u2019s own hand.'],
           [seatLabel(3), '<b>KEEP</b> \u2014 three words: <em>with the Chair.</em>'],
@@ -126,7 +130,7 @@
         P.sight.push({ t: 'p', text: '**Seats 1, 3 and 7 are still open** to being talked to. **Seat 4 has shut his ears.** An ask spent on him is spent. The other seats aren\u2019t muttering anything you can catch.' });
         P.sight.push({ t: 'fine', text: 'Seat 4 never says which seat his cousin sits in. Another phone at this table shows that.' });
         P.wren.push({ t: 'h', text: 'What I heard tonight' });
-        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(raced)</small>', 'fast'], ['The Hearth <small>(once)</small>', 'slow'], ['Wren <small>(nothing to catch)</small>', 'flat']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}</div>` });
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(jumped)</small>', jumpTrace], ['The Hearth <small>(once)</small>', D.trace('slow')], ['Wren <small>(nothing to catch)</small>', D.trace('flat')]].map(([n, svg]) => `<div class="hb"><span>${n}</span>${svg}</div>`).join('')}</div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cWhen he said \u2018not coming back,\u2019 the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us who\u2019d miss you\u2026 And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
       }
@@ -138,17 +142,18 @@
         P.sight.push({ t: 'list', items: [
           '**Seat 5**: Crown coin under the cushion.',
           '**Seat 8**: the same coin, in the sleeve.',
-          '**Seat 6**: a Crown soldier stands behind the chair, and his hand never leaves Seat 6\u2019s shoulder. Nobody gets near.',
+          '**Seat 6**: a Crown soldier, standing so still in the chair\u2019s shadow that you are the only one who has noticed him. He is there to keep you from reaching Seat 6.',
         ] });
         P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** Say those three numbers out loud.' });
-        P.wren.push({ t: 'h', text: 'The shadow, and the tapestry' });
+        P.sight.push({ t: 'fine', text: 'Behind the chairs hangs the school\u2019s big tapestry. Somebody painted it over. There\u2019s older paint underneath, a whole other picture. The Envoy keeps looking at it.' });
+        P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone saw you hold the Provost\u2019s sleeve. I hoped nobody would look at your shadow. Almost nobody did. Seat 7 did, and wrote something down. The Envoy was too busy staring at the big tapestry behind the chairs. There\u2019s an older painting on the wall behind it. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did, and wrote something down. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
       }
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Who is sworn to whom' });
-        P.sight.push({ t: 'p', text: 'Two red threads among the nine. Nobody else in the nine is sworn to anybody.' });
+        P.sight.push({ t: 'p', text: 'Two red threads among the nine. There are no others.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: threadMap });
         P.sight.push({ t: 'list', items: [
           '**Seat 2 is sworn to Seat 1.** Seat 2 votes as Seat 1 votes, unless somebody asks Seat 2 directly.',
@@ -163,7 +168,7 @@
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you, and I don\u2019t like it. Mine still won\u2019t take. When it does, it will be red, and it will hold. The Vigil has rules about who you belong to. This is not one of them. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you, and I don\u2019t like it. Mine still won\u2019t take. When it does, it will be red, and it will hold. The Vigil has rules about who you belong to. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;

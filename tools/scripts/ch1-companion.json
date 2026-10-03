@@ -10,9 +10,9 @@
   {"tab": "Wren"}, {"expect": "nothing to catch"},
 
   {"companion": true}, {"role": "Seer"}, {"unlock": ["THORN"]}, {"shot": "c1_seer_sight"},
-  {"expect": "Seat 5"}, {"expect": "Seat 8"}, {"expect": "Seat 6"}, {"expect": "Bought, bought, out of reach"},
+  {"expect": "Seat 5"}, {"expect": "Seat 8"}, {"expect": "Seat 6"}, {"expect": "Bought, bought, out of reach"}, {"expect": "older paint"},
   {"expectNot": "sworn to Seat 1"},
-  {"tab": "Wren"}, {"expect": "older paint"},
+  {"tab": "Wren"}, {"expect": "started on tomorrow"},
 
   {"companion": true}, {"role": "Binder"}, {"unlock": ["THORN"]}, {"shot": "c1_binder_sight"},
   {"expect": "Seat 2 is sworn to Seat 1"}, {"expect": "cousins"}, {"expect": "one ask can be worth two votes"},
