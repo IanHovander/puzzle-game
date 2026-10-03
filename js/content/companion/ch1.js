@@ -132,7 +132,7 @@
         P.wren.push({ t: 'h', text: 'What I heard tonight' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(jumped)</small>', jumpTrace], ['The Hearth <small>(once)</small>', D.trace('slow')], ['Wren <small>(nothing to catch)</small>', D.trace('flat')]].map(([n, svg]) => `<div class="hb"><span>${n}</span>${svg}</div>`).join('')}</div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cWhen the Envoy finished his sentence, the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us\u2026 And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen the Envoy finished his sentence, the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us, then. And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
       }
 
       if (roleId === 'seer') {

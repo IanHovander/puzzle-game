@@ -73,8 +73,8 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Stay in these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket. \"There's no rule against tomorrow. I've looked.\"",
-          "The tower room has four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" Twice this week, once under a blanket, the Binder has read the whole rulebook. \"There's no rule against tomorrow. I've looked.\"",
+          "The tower room has four beds and one round window. On the sill sits a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
         ],
         next: 'ch0_plan', button: "The plan",
       },
@@ -85,7 +85,7 @@
           "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody. Wren's the only thing that doesn't.\"",
           "\"I keep making plans for next spring,\" says the Seer. \"I can't get Wren into any of them.\" Far below, the Hearth gutters.",
           "\"They vote on the stone,\" says the Binder. \"Strictly, on the school's translation of it. The Founders don't get a say.\"",
-          "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever gotten it to work. Maybe nobody ever asked it anything.\"",
+          "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and it's never once lit. Maybe nobody ever asked it anything.\"",
         ],
         next: 'ch0_keys', button: "The knock",
       },
@@ -141,7 +141,7 @@
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
           "On nights nobody can sleep, the knock becomes a game on the bedframes, faster and faster, until somebody laughs.",
-          "Tonight nobody is going to laugh. The Seer just says, \"Again.\"",
+          "Tonight it never gets that far. The Seer just says, \"Again.\"",
           { text: "Now the lights slide down your lanes. Press as yours crosses the line.", cls: "whisper" },
           { text: "A white light across all four lanes means all four press together.", cls: "whisper" },
         ],
@@ -165,7 +165,7 @@
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
           "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the sill. \"Nobody can read those,\" says the Reader, a little too quickly. \"Not properly, anyway.\"",
           "\"The Founders never left notes,\" says Wren. \"One sentence in four hundred years, and it's about me. I'd like a second opinion.\"",
-          "\"What if it agrees with the first?\" says the Listener. Nobody answers that, for a while. Then the Binder: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
+          "\"What if it agrees with the first?\" says the Listener. That gets no answer, for a while. Then the Binder: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
         ],
         next: 'ch0_dare', button: "Item two",
       },
@@ -195,7 +195,7 @@
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
-          "Nobody says a word about *Mom*. \"One name, and it answered,\" says Wren, too quickly, the way you change a subject. \"Reader, you've been reading that collar since I walked in.\"",
+          "Nobody says a word about *Mom*. \"One name, and it answered,\" says Wren, and changes the subject. \"Reader, you've been reading that collar since I walked in.\"",
           "\"If those were words,\" says the Reader carefully, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, the hum starts up again. Only the Listener turns.",
         ],
         next: 'ch0_attune',
@@ -247,7 +247,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket up to the lamp, as close as a blanket can go without catching. That is how close Wren always tries to sit. The Seer, who usually gets between Wren and any lamp, for once stays put. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket up to the lamp, as close as a blanket can go without catching, which is where Wren always ends up. The Seer, for once, does not move. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
@@ -257,7 +257,7 @@
         text: [
           "For a while, the only sound is the lamp, humming for one of you. Then Wren laughs, and wipes both eyes, as if that were part of laughing.",
           "\"You lot are terrible at secrets,\" says Wren. \"No heartbeat? Knew. Wrong-way shadow? Knew. No thread? Guessed. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\"",
-          "Then Wren looks at the chalk on the door. That one is news. Wren stands very still, and this time the Binder does not count.",
+          "Then Wren looks at the chalk on the door. That one is news. Wren stands still, and this time the Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. For fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
@@ -283,7 +283,7 @@
       ch0_flow: {
         type: 'flow', art: 'ch0_dorm', artParams: { dawn: true }, mood: 'hearth', fx: 'dust',
         text: (s) => [
-          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. By the Vigil bell tonight, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
+          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. By the Vigil bell tonight, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw either. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,
