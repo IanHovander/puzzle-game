@@ -168,7 +168,7 @@
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you. Gold is the Crown\u2019s. On you, it means a claim. The Vigil has rules about who you belong to. I\u2019ve read all of them. None of them is red. My thread still won\u2019t take. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. Nothing ran back. The Envoy has a gold one on you. Gold is the Crown\u2019s claim. It took the first time he looked at you. Mine still won\u2019t take, seven years on. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;

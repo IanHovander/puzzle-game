@@ -236,7 +236,7 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and it's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and the fire's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
           "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
@@ -262,7 +262,7 @@
           { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. For fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
         options: [
-          { id: 'vigil', text: "Reader: \"The Night Watch, if that's the word.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
+          { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
           { id: 'own', text: "Listener: a name of our own (type it, then say it)", next: 'ch0_dawn', ask: { prompt: 'Claimed by who? Type the name.', set: 'GROUP_NAME', ok: 'That one' }, after: (s) => { const n = ((s.flags.GROUP_NAME || '').replace(/^["'“”‘’\s]+|["'“”‘’.!?,:;\s]+$/g, '') || 'the Four').replace(/^the\s+/i, 'the '); Store.set('GROUP_NAME', n); return [{ speaker: 'Wren', text: n.charAt(0).toUpperCase() + n.slice(1) + ". Nobody gave us that one. We made it, so it goes in ink." }]; } },
           { id: 'idiots', text: "Seer: \"The Idiots.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Idiots' }, after: [{ speaker: "Wren", text: "I did ask for four idiots. Warm, pleased with itself, claimed by idiots. That Register is finally accurate." }] },
           { id: 'four', text: "Binder: \"The Four. It's not taken. I checked.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Four' }, after: [{ speaker: "Wren", text: "Four, like the Founders. We'll leave better notes." }] },
