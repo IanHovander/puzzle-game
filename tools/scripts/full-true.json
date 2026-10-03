@@ -344,7 +344,7 @@
   {
    "clickText": "The fire"
   },
-  {"wait": 800}, {"key": "Space"}, {"expect": "Go and try"},
+  {"wait": 800}, {"key": "Space"}, {"expect": "Go and read"},
   {
    "clickText": "What they want"
   },

@@ -23,7 +23,7 @@
   function emblem(sym) {
     switch (sym) {
       case 'chevron': return `<path d="M9,27 L20,12 L31,27" ${st}/><path d="M13,31 L20,22 L27,31" ${st}/>`;
-      case 'crescent': return `<path d="M25,9 A11,11 0 1 0 25,31 A8.5,8.5 0 1 1 25,9 Z" fill="#f4ecd8"/>`;
+      case 'crescent': return `<path d="M25,9 A11,11 0 1 0 25,31 A13,13 0 0 1 25,9 Z" fill="#f4ecd8"/>`;
       case 'tower': return `<path d="M13,31 V14 H27 V31 Z M11,14 V9 H15 V14 M18,14 V9 H22 V14 M25,14 V9 H29 V14" ${st}/><path d="M18,31 V24 H22 V31" ${st}/>`;
       case 'tree': return `<path d="M20,7 L28,17 L24,17 L30,25 L25,25 L31,32 L9,32 L15,25 L10,25 L16,17 L12,17 Z" fill="#f4ecd8"/>`;
       case 'sun': return `<circle cx="20" cy="20" r="6" fill="#f4ecd8"/>${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<path d="M20,20 m${(Math.cos(a * Math.PI / 180) * 9).toFixed(1)},${(Math.sin(a * Math.PI / 180) * 9).toFixed(1)} l${(Math.cos(a * Math.PI / 180) * 5).toFixed(1)},${(Math.sin(a * Math.PI / 180) * 5).toFixed(1)}" ${st}/>`).join('')}`;
@@ -41,7 +41,7 @@
   const ring = (cx, cy, r) => HOUSES.map((h, i) => { const a = ((i + 0.5) / 9 * 360 - 90 + 20) * Math.PI / 180; return { n: h.n, x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r }; });
   const F = 'font-family="Cinzel,serif"';
 
-  /* ---------- Seer: three things under the Great Hall ---------- */
+  /* ---------- Seer: three things nobody else has seen ---------- */
   const underHall = (() => {
     const seats = ring(180, 185, 88);
     let s = `<svg viewBox="0 0 360 360"><rect width="360" height="360" fill="#000"/>`;
@@ -112,7 +112,7 @@
           [seatLabel(9), '<b>KEEP</b> \u2014 the Chair\u2019s own hand.'],
           [seatLabel(3), '<b>KEEP</b> \u2014 three words: <em>with the Chair.</em>'],
         ] });
-        P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** Say that out loud. You need five.' });
+        P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** When the Hearth asks, say that out loud. You need five.' });
         P.sight.push({ t: 'fine', text: 'Seat 3 is already yours, whatever anyone hears. An ask spent there buys a vote you have.' });
         P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand again: *Item two: the foundling.* After it, a name, in the older alphabet, the letters of the chalk on your door. You can\u2019t read it. Yet.' });
         P.wren.push({ t: 'h', text: 'Item two' });
@@ -136,16 +136,16 @@
       }
 
       if (roleId === 'seer') {
-        P.sight.push({ t: 'h', text: 'Three things behind the chairs' });
-        P.sight.push({ t: 'p', text: 'Nobody else has noticed them. Nothing anyone says tonight will change them.' });
+        P.sight.push({ t: 'h', text: 'Three things nobody else has seen' });
+        P.sight.push({ t: 'p', text: 'Nothing anyone says tonight will change them.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underHall });
         P.sight.push({ t: 'list', items: [
           '**Seat 5**: Crown coin under the cushion.',
           '**Seat 8**: the same coin, in the sleeve.',
-          '**Seat 6**: a Crown soldier, standing so still in the chair\u2019s shadow that you are the only one who has noticed him. He is there to keep you from reaching Seat 6.',
+          '**Seat 6**: a Crown soldier in the chair\u2019s own shadow, so still that only you have seen him. Anyone who walks toward Seat 6 tonight will find him already in the way.',
         ] });
-        P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** Say those three numbers out loud.' });
-        P.sight.push({ t: 'fine', text: 'Behind the chairs hangs the school\u2019s big tapestry. Somebody painted it over. There\u2019s older paint underneath, a whole other picture. The Envoy keeps looking at it.' });
+        P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** When the Hearth asks, say those three numbers out loud.' });
+        P.sight.push({ t: 'fine', text: 'Behind the chairs hangs the school\u2019s big tapestry, painted cloth, as old as the hall. Somebody has painted over it. There\u2019s older paint underneath, a whole other picture. The Envoy keeps looking at it.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did, and wrote something down. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });

@@ -20,7 +20,7 @@
   function emblem(sym) {
     switch (sym) {
       case 'chevron': return `<path d="M9,27 L20,12 L31,27" ${st}/><path d="M13,31 L20,22 L27,31" ${st}/>`;
-      case 'crescent': return `<path d="M25,9 A11,11 0 1 0 25,31 A8.5,8.5 0 1 1 25,9 Z" fill="#f4ecd8"/>`;
+      case 'crescent': return `<path d="M25,9 A11,11 0 1 0 25,31 A13,13 0 0 1 25,9 Z" fill="#f4ecd8"/>`;
       case 'tower': return `<path d="M13,31 V14 H27 V31 Z M11,14 V9 H15 V14 M18,14 V9 H22 V14 M25,14 V9 H29 V14" ${st}/><path d="M18,31 V24 H22 V31" ${st}/>`;
       case 'tree': return `<path d="M20,7 L28,17 L24,17 L30,25 L25,25 L31,32 L9,32 L15,25 L10,25 L16,17 L12,17 Z" fill="#f4ecd8"/>`;
       case 'sun': return `<circle cx="20" cy="20" r="6" fill="#f4ecd8"/>${[0, 45, 90, 135, 180, 225, 270, 315].map(a => `<path d="M20,20 m${(Math.cos(a * Math.PI / 180) * 9).toFixed(1)},${(Math.sin(a * Math.PI / 180) * 9).toFixed(1)} l${(Math.cos(a * Math.PI / 180) * 5).toFixed(1)},${(Math.sin(a * Math.PI / 180) * 5).toFixed(1)}" ${st}/>`).join('')}`;
@@ -86,7 +86,8 @@
     // carry Chapter VI's STONE in full at scale(0.8), and it is the art behind six ch1 scenes, ch1_vote
     // among them. See the note above A.wornCuts in js/art/scenes-ch0.js for what that cost Chapter VI.
     `<g transform="translate(670,275)" opacity=".55">${A.wornCuts(8, '#7a6a5a', 37, 0.8, 4409)}</g>` +
-    A.fire(800, 700, 0.62, false) +
+    // low: the fire has coughed and gone small (ch1_errand, ch1_prices, ch1_after, ch1_flow)
+    A.fire(800, 700, p && p.low ? 0.4 : 0.62, false) +
     bannerRow(false) +
     P.floorTiles(720, '#0b0910', 'rgba(255,255,255,0.04)') +
     // long tables
