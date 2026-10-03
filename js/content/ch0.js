@@ -73,11 +73,11 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Keep these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the Vigil's order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use. There's no rule against tomorrow. I've looked.\"",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use. There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp nobody has ever lit. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
           "\"We could hide Wren,\" says the Listener.",
           "\"Where?\" says the Reader. \"Every room here belongs to somebody.\"",
-          "\"Then we find one thing that's ours,\" says the Listener. \"By the bell.\"",
+          "\"Then we find one thing that's ours,\" says the Listener. \"That lamp.\"",
           "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
         ],
         next: 'ch0_keys', button: "The knock",
@@ -135,7 +135,7 @@
         text: [
           "On nights nobody can sleep, the knock becomes a game on the bedframes, faster and faster, until somebody laughs.",
           "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder does. By the third time all four of you are saying it, and nobody laughs.",
-          { text: "Press as your light crosses the line.", cls: "whisper" },
+          { text: "Now the lights fall. Press as yours crosses the line.", cls: "whisper" },
           { text: "A white light across all four lanes means all four press together.", cls: "whisper" },
         ],
         /* The knock itself, three times, each time faster: one each in seat order, then all four together. */
@@ -154,7 +154,7 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust', sfx: 'open',
         text: [
           "The door bangs open. Wren never knocks on it. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
-          { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. And the bit about hiding me: no. And the bit about spring: try harder. What I need is four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
+          { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Hiding me: no. Spring: try harder. The lamp: yes. What I need is four idiots and a lamp, and this room has always had both. Everybody's tried that lamp with matches. Nobody's ever tried *reading* it." },
           "Worn shapes run round the lamp's collar. The Reader, who takes unreadable words personally, is already at the window. \"Founders' work. Same shapes as the stone.\"",
           "\"The Founders never left notes,\" says Wren. \"Four hundred years, and the only sentence they left about anyone is about me. I'd like to hear them say something else. Tonight, before the Houses get their turn.\"",
           "The Binder gets off the bed. \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
@@ -164,7 +164,7 @@
       ch0_dare: {
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
-          "\"Me?\" says Wren. \"I'm the main event. Item two.\" Wren's copy of the order of business is folded very small. \"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down, in pencil.",
+          "\"Item two,\" says Wren. \"The main event.\" Wren's copy of the order of business is folded very small. \"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down, in pencil.",
           { speaker: "Wren", text: "Everything I have, somebody gave me. The name's a bird. Nobody will say who picked it. The bed's on loan. My birthday's the night they found me. Before they decide what I'm for, I want one thing nobody gave me. Something I get to keep." },
           "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up.",
           "The Listener checks Wren's hands. Cold. Always cold. Then the lamp hums: two notes, like someone waiting at a door. Only the Listener hears it.",
@@ -228,11 +228,11 @@
         clearWidget: true, clearText: true,
         solvedText: [
           "The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. Nobody breathes, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire, so it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire, so it keeps till morning. *The fire keeps.*\"",
           "\"The stone says *walk*,\" says the Seer.",
-          "The Reader shakes their head. \"The school's translation says *walk*. The Founders' own lamp says *keep*.\" All four of you are looking at the same person again, and this time it is not a dare.",
+          "The Reader shakes their head. \"The school's translation says *walk*. The Founders' own lamp says *keep*.\" \"Then that's what we tell the Houses,\" says the Binder. All four of you are looking at the same person again.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. Nobody look at me like that." },
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in. Wren always sits that close to fires. The Seer, for once, stays put. Each of you has noticed something about Wren, and kept it. Tonight you give it back.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in. Wren always sits that close to fires. The Seer, for once, does not step in front of the lamp. Each of you has noticed something about Wren, and kept it. Tonight you give it back.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name',
@@ -261,7 +261,7 @@
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           `At dawn the lamp goes out, having kept till morning, and the Hearth flickers again. While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. Somebody goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
           "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
-          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. By tonight's bell, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
+          "A name in chalk. No heartbeat. A wrong-way shadow. No thread. By the Vigil bell tonight, the hall will fill with Masters who were born seeing, like you. They have watched Wren for fourteen years and never said what they saw. Whatever the Houses write after \"Claimed by,\" they will be writing second.",
         ],
         flowTitle: 'Prologue — the paths you walked',
         stats: (s) => `Wren calls you **${s.flags.GROUP_NAME || 'the Four'}**. Hints so far: **${s.flags.hintsTotal || 0}**.`,
