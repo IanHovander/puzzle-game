@@ -229,7 +229,7 @@
           "The lamp catches: small and gold, a piece of the Hearth on the sill, warm all the way to the door. All those matches, and it only ever wanted to be read to.",
           "Far below, the Hearth stops flickering. \"That's *ours*,\" whispers Wren.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. That's how you bank a fire, so it keeps till morning.\" Then, slower: \"*The fire keeps.*\"",
-          "\"The stone says *walk*,\" says the Seer. \"The stone,\" says the Reader, \"is a translation.\" All four of you are looking at the same person again, and this time it is not a dare.",
+          "\"The stone says *walk*,\" says the Seer. \"The *translation* says walk,\" says the Reader. All four of you are looking at the same person again, and this time it is not a dare.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. If you all look at me like that, I'll have to stand still again." },
           "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in. Each of you has one thing about Wren you have never said out loud.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
