@@ -122,7 +122,7 @@ wearing a costume. Instead:
 | | who | how they sound | the habit that is their care |
 |---|---|---|---|
 | Wren | found on the Hearth's stones fourteen years ago; bright, scheming, generous, never knocks; frightened of tomorrow and hiding it | playful, quick, warm, deflects with jokes; calls the Provost "Mom" by accident | sits nearest the warm thing; gives the Reader biscuits; "four idiots" |
-| Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("*Yet.* Don't laugh.") | takes unreadable words personally; forgets to eat |
+| Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("I can't read it. *Yet.*") | takes unreadable words personally; forgets to eat |
 | Listener | the worrier | warm, a little hesitant, trailing off | checks whether Wren's hands are cold; counts; can never hear Wren's heart |
 | Seer | dry, protective, keeps secrets | short, deadpan, one dry joke | "the face"; stands between Wren and the light so nobody sees the shadow |
 | Binder | earnest, stubborn, loyal, rule-bound | plain and formal; states intent | counts the rules being broken, then does it anyway; keeps tying a thread to Wren |

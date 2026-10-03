@@ -38,7 +38,7 @@ The user's words, across the pass:
 
 | role | who they are | how it sounds | where the story already shows it |
 |---|---|---|---|
-| Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("*Yet.* … Don't laugh.") | bluffs Wren's name in III; decodes it in IV; argues about the ring every winter in VIII |
+| Reader | studious, a bit proud, a bit shy; hates not knowing | precise; admits effort ("I can't read it. *Yet.*") | bluffs Wren's name in III; decodes it in IV; argues about the ring every winter in VIII |
 | Listener | the worrier; checks on everyone | warm, a little hesitant, trailing off ("So I just… keep checking on you.") | the kind lie "Yes. Loud." in III |
 | Seer | dry, protective, keeps secrets | short, deadpan, one dry joke ("You thought I just liked lamps.") | tell-or-stay-silent in III; "very poetic", meant plainly |
 | Binder | earnest, stubborn, loyal; rule-bound | plain and formal; states intent ("I'm not stopping.") | "doesn't walk up to anyone" in I; oaths throughout; a thread finally drawn in VIII |
@@ -174,7 +174,7 @@ ch0/ch1 define every term at the moment of first use, in plain words, and never 
 
 > 'A sigil is words in slots. This ring has four slots.'
 > 'The school has a word for what each of you just did. A Sighting. One way of seeing, one to a person, and nobody chooses which one they get.'
-> 'You cannot walk into weather. The Cold is a place, and nobody will tell you where.'
+> 'You cannot walk into weather. The Cold is a place, the Masters say, and then they change the subject.'
 > '…goes into the next slot **sunwise** — clockwise, the way the numbers count up.'
 
 They also **substitute plain English for system vocabulary and pay the real word off later**. ch0's lamp puzzle needs Law 1, Law 10 and two glyph names. It says instead:
