@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away. Everyone looks straight past it. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been teaching myself in the margins for a year. Don’t laugh.”' });
+        P.wren.push({ t: 'letter', text: '“Your name’s on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away. Everyone looks straight past it. I see it clean: a name, right where yours goes, in letters older than the lamp’s. Nobody here is taught them. It’s yours. I’d bet supper on it. Somebody wanted you named, Wren, and won’t say so. I can’t read it. *Yet.* I’ve been copying them into my margins for a year. Don’t laugh.”' });
       }
 
       if (roleId === 'listener') {
@@ -118,7 +118,7 @@
         P.sight.push({ t: 'p', text: 'Nobody else can hear it. Two notes, over and over.' });
         P.sight.push({ t: 'audio', label: 'The lamp, two notes', strip: CA.strip([3]), play: (A) => CA.playSteps(A, [3]), text: 'The second note is **three steps above** the first.' });
         P.sight.push({ t: 'html', html: ladder3() });
-        P.sight.push({ t: 'p', text: 'Two notes, two words. When the two words are said aloud, find both on the ladder in your **Book**. The order that climbs three is right.' });
+        P.sight.push({ t: 'p', text: 'Two notes, two words. When someone says the two words, find both on the ladder in your **Book**. Whichever order climbs three steps is right.' });
         P.sight.push({ t: 'fine', text: 'You hear the climb, never the words. Someone else has those.' });
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
@@ -128,7 +128,7 @@
 
       if (roleId === 'seer') {
         P.sight.push({ t: 'h', text: 'Under the polish' });
-        P.sight.push({ t: 'p', text: 'Under the polish are **two** old cuts. A long **scratch** by slot **3**. A small **notch** by slot **1**.' });
+        P.sight.push({ t: 'p', text: 'Polish hides most things. Not from you. Under the shine are **two** old cuts: a long **scratch** by slot **3**, and a small **notch** by slot **1**.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: underFoot });
         P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
