@@ -248,7 +248,7 @@
         next: 'ch1_errand', button: 'The fire',
       },
       /* Won path only. The errand comes before the prices, so Sorrel and Oriel are answering it, and the
-         stake is said once, aloud, in the Provost's voice (ch1_lost carries it on the other path). */
+         stake is said once, aloud, in the Provost's voice (on a lost vote ch1_lost gives the errand and ch1_after says the stake). */
       ch1_errand: {
         art: 'ch1_hall', mood: 'tense', fx: 'embers', flame: 0.7,
         text: [

@@ -81,10 +81,10 @@
   ));
 
   /* ---------- the tower room ----------
-     "Four beds, one round window and, on the sill, a brass lamp nobody has ever lit. On the floor, a
+     "Four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a
      fifth blanket: Wren's. On the door, a fifth name, in pencil." The window is round, the door has
-     its pencil, the blanket is folded on the floor; once the lamp is lit (the naming scene,
-     artParams {lit:true}) the room is warm and the blanket has been dragged up under the sill.
+     its pencil, the blanket is folded on the floor; once the lamp is lit (ch0_tabs, ch0_name and
+     ch0_dawn, artParams {lit:true}; ch0_flow uses {dawn:true}) the room is warm and the blanket has been dragged up under the sill.
      The pencil name is a scrawl of plain strokes: no letters, no glyphs. */
   // a lit lamp's halo: gold at the heart, orange at the edge, fading to nothing (never blue)
   const halo = (id) => `<defs><radialGradient id="${id}"><stop offset="0" stop-color="#fff0c0" stop-opacity=".6"/><stop offset=".16" stop-color="#ffe08a" stop-opacity=".38"/><stop offset=".4" stop-color="#ffd27a" stop-opacity=".2"/><stop offset=".7" stop-color="#ffa850" stop-opacity=".08"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs>`;
