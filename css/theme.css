@@ -122,8 +122,12 @@ input.field.wrong { border-color: var(--blood); animation: shake .4s; }
    a flow scene's own text is one or two short lines. This belongs beside the other #panel rules in
    css/hearth.css; it sits here with the rest of the flowchart because it exists only for the chart,
    and it carries `body` so it outranks the rule loaded after this file. */
-body #panel:has(.flow-panel) { grid-template-columns: minmax(180px, 210px) 1fr; }
-body #panel:has(.flow-panel) #text { font-size: 18px; }
+/* The story text on a flow screen is read in full, at full width, before the chart is built (the chart
+   only appears on the keypress after it). Once the chart is up, the text has done its job: squeezing
+   it into a 210px column beside the chart left a six-paragraph ending scrolling 1350px. So the chart
+   takes the whole width and the text steps aside. */
+body #panel:has(.flow-panel) { grid-template-columns: minmax(0, 1fr); }
+body #panel:has(.flow-panel) #text { display: none; }
 /* A `1fr` grid track has an automatic minimum of its content's min-content width, and the chart no
    longer shrinks to fit -- so without this the whole #panel grew to 1405px at a 1280px viewport and
    the right-hand third of the flow panel was simply off the screen, unreachable, because nothing above

@@ -125,6 +125,27 @@ function scenesOf(chIds) {
       for (const c of (f.cut || [])) bad.push(`${id}: flow node label "${c}" does not fit its box and is cut short`);
       charts.push(`${id}: ${f.w}px chart at ${f.font}px${f.side ? `, scrolls ${f.side}px sideways` : ''}${f.panelOver ? `, ${f.panelOver}px below the fold` : (f.side ? '' : ', fits')}`);
     }
+    /* The flow screen: the story text sits beside the chart, and must not scroll there either. */
+    if (sc.type === 'flow') {
+      const fs = await page.evaluate(() => { const el = document.getElementById('text'); return el ? Math.max(0, el.scrollHeight - el.clientHeight) : 0; });
+      if (fs > 1) bad.push(`${id}: story text scrolls ${fs}px beside the flow panel`);
+    }
+    /* The text a puzzle adds once it is solved joins the box the puzzle's own text is in (or, with
+       clearWidget, takes the whole box). It was never measured, and on more than one puzzle it ran off
+       the box. Render it the way the engine does and measure it like any other text. */
+    const sol = await page.evaluate(async (sid) => {
+      const G = window.Game, UI = window.VigilUI, el = document.getElementById('text');
+      const s = G && G.scenes && G.scenes[sid]; if (!s || !s.solvedText || !UI || !el) return null;
+      let paras; try { paras = typeof s.solvedText === 'function' ? s.solvedText(window.VigilStore.state, {}) : s.solvedText; } catch (e) { return null; }
+      if (!Array.isArray(paras) || !paras.length) return null;
+      if (s.clearWidget) { const w = document.getElementById('widget'); if (w) { w.innerHTML = ''; w.classList.add('hidden'); } el.classList.remove('narrow'); }
+      await UI.typewrite(el, paras, { instant: true, voice: false });
+      return Object.assign({}, UI.lastFit, { scroll: el.scrollHeight > el.clientHeight + 1 });
+    }, id);
+    if (sol) {
+      if (sol.over > 0 || sol.scroll) bad.push(`${id} (solved): text ${sol.over}px over at ${sol.size}px${sol.scroll ? ' (scrolls)' : ''}`);
+      else if (sol.size && sol.size < sol.base) shrunk.push(`${id} (solved): ${sol.base}px -> ${sol.size}px`);
+    }
     if (!r) continue;
     if (r.over > 0 || r.scroll) bad.push(`${id}: text still ${r.over}px over at ${r.size}px${r.scroll ? ' (scrolls)' : ''}`);
     else if (r.size && r.size < r.base) shrunk.push(`${id}: ${r.base}px -> ${r.size}px`);
