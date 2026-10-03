@@ -117,7 +117,7 @@
         P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand again: *Item two: the foundling.* After it, a name, in the older alphabet, the letters of the chalk on your door. You can\u2019t read it. Yet.' });
         P.wren.push({ t: 'h', text: 'Item two' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cHe said \u2018not coming back\u2019 like he was quoting. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYou\u2019re right. He was quoting. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
       }
 
       if (roleId === 'listener') {
@@ -132,7 +132,7 @@
         P.wren.push({ t: 'h', text: 'What I heard tonight' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(jumped)</small>', jumpTrace], ['The Hearth <small>(once)</small>', D.trace('slow')], ['Wren <small>(nothing to catch)</small>', D.trace('flat')]].map(([n, svg]) => `<div class="hb"><span>${n}</span>${svg}</div>`).join('')}</div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cWhen he said \u2018not coming back,\u2019 the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us who\u2019d miss you\u2026 And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen the Envoy finished his sentence, the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us\u2026 And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
       }
 
       if (roleId === 'seer') {
@@ -164,11 +164,11 @@
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
           + '<li>' + threadLine('none') + ' <strong>Wren:</strong> nothing of Wren\u2019s own, to anyone. Still.</li>'
-          + '<li>' + threadLine('gray') + ' <strong>The Provost to Wren:</strong> gray, for one second, at \u201cnot coming back.\u201d</li>'
+          + '<li>' + threadLine('gray') + ' <strong>The Provost to Wren:</strong> gray, for one second, while the Envoy spoke.</li>'
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you, and I don\u2019t like it. Mine still won\u2019t take. When it does, it will be red, and it will hold. The Vigil has rules about who you belong to. That is not a rule. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you. Gold is a claim. The Crown\u2019s. The Vigil has rules about who you belong to. My thread still won\u2019t take. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;
