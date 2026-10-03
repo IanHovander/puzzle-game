@@ -70,8 +70,8 @@
       `<line x1="${sx}" y1="${base}" x2="${sx}" y2="${top}" stroke="#3a3540" stroke-width="3"/><path d="M${sx - 3},${top} L${sx},${top - 12} L${sx + 3},${top} Z" fill="#6a6470"/>` +
       `<path d="M${x + rim * 10 * s},${base - 70 * s} L${x + rim * 14 * s},${base}" stroke="#ff9a3c" stroke-width="1.5" opacity=".45"/>`;
   }
-  // The tapestry, on the left wall behind Seats 7-8 (the Seer's map), painted over so long ago that nobody
-  // remembers the first picture: dim cloth, a later coat of paint in broad patches, a scrap of the older picture
+  // The tapestry, on the right wall behind Seats 1-2 (the Seer's map; drawn here on the left and mirrored in ch1_hall),
+  // painted over an older picture nobody will talk about: dim cloth, a later coat of paint in broad patches, a scrap of the older picture
   // where it has flaked. aside (ch1_flow): its right edge drawn back on a dark doorway and the top of a stair,
   // the Provost beside it, holding it.
   function tapestry(aside) {
@@ -116,7 +116,7 @@
       `<path d="M-23,-49 L0,-44 L0,-56 L-22,-60 Z" fill="#d9cdb0" opacity=".6"/><path d="M0,-44 L23,-49 L22,-60 L0,-56 Z" fill="#f4ecd8" opacity=".75"/>` +
       `<path d="M-18,-53 L-5,-50 M-18,-49 L-8,-47 M5,-50 L17,-53" stroke="#3a2420" stroke-width="1" opacity=".6"/><path d="M0,-44 L0,-36" stroke="#8a2f2f" stroke-width="2"/></g>`;
     if (!wren) return s;
-    const wx = soldiers ? 920 : 886;
+    const wx = soldiers ? 934 : 886;
     if (soldiers) s += soldier(864, 718, 1.35, -1, -1);
     s += `<g transform="translate(${wx},701)"><ellipse cx="-8" cy="1" rx="24" ry="4" fill="#000" opacity=".35"/>` +
       `<path d="M-30,-18 L-4,-20 L-4,-2 L-30,-4 Z" fill="#0c0a12"/><path d="M-32,-16 L-24,-16 L-22,13 L-31,13 Z" fill="#0c0a12"/>` +
@@ -169,14 +169,15 @@
     // low: the fire has coughed and gone small, and spread low on the hearth, so its tongues still show either
     // side of the empty Chair (at 0.4 and full width the Chair's back and arms hid nearly all of it)
     (p.low ? `<g transform="translate(800,0) scale(1.3,1) translate(-800,0)">${A.fire(800, 700, 0.45, false)}</g>` : A.fire(800, 700, 0.62, false)) +
-    tapestry(!!p.aside) + // its fold shading is bannerRow's #bannerShade
+    // drawn on the left and mirrored onto the right wall, clear of the text box (which covers the left of the art)
+    `<g transform="translate(1600,0) scale(-1,1)">${tapestry(!!p.aside)}</g>` + // its fold shading is bannerRow's #bannerShade
     bannerRow(false) +
     P.floorTiles(720, '#0b0910', 'rgba(255,255,255,0.04)') +
     hearth(!!p.wren && !p.seated, !!p.soldiers) +
     // long tables
     `<rect x="120" y="740" width="520" height="14" fill="#1c1510"/><rect x="960" y="740" width="520" height="14" fill="#1c1510"/>` +
     masters() +
-    (p.aside ? provostAside() : '') +
+    (p.aside ? `<g transform="translate(1600,0) scale(-1,1)">${provostAside()}</g>` : '') +
     theChair(!!p.seated, !!p.soldiers) +
     P.torch(90, 420, 1.1) + P.torch(1510, 420, 1.1) +
     P.fog(560, 340, '#2a1a12', 0.35)

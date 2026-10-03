@@ -47,10 +47,10 @@
     let s = `<svg viewBox="0 0 360 360"><rect width="360" height="360" fill="#000"/>`;
     s += `<g stroke="#fff" fill="none" stroke-width="1.2"><rect x="10" y="10" width="340" height="340"/>`;
     s += `<path d="M150,10 L150,42 A30,30 0 0 0 210,42 L210,10"/>`;
-    s += `<rect x="18" y="95" width="16" height="110" stroke-dasharray="3,3"/></g>`;
+    s += `<rect x="326" y="95" width="16" height="110" stroke-dasharray="3,3"/></g>`;
     s += `<text x="218" y="36" fill="#fff" font-size="14" ${F}>the Hearth</text>`;
-    s += `<text x="18" y="68" fill="#a482e6" font-size="14" ${F}>the tapestry</text>`;
-    s += `<text x="18" y="86" fill="#a482e6" font-size="13" ${F}>painted over older paint</text>`;
+    s += `<text x="342" y="68" text-anchor="end" fill="#a482e6" font-size="14" ${F}>the tapestry</text>`;
+    s += `<text x="342" y="86" text-anchor="end" fill="#a482e6" font-size="13" ${F}>painted over older paint</text>`;
     seats.forEach(p => { s += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="14" fill="none" stroke="#fff" stroke-width="1.2"/><text x="${p.x.toFixed(1)}" y="${(p.y + 5).toFixed(1)}" text-anchor="middle" fill="#fff" font-size="14" ${F}>${p.n}</text>`; });
     [5, 8].forEach(n => { const p = seats[n - 1]; s += `<g transform="translate(${p.x.toFixed(1)},${(p.y + 22).toFixed(1)})"><circle r="5" fill="none" stroke="#a482e6" stroke-width="1.5"/></g>`; });
     const p5 = seats[4], p8 = seats[7], p6 = seats[5];
@@ -153,7 +153,7 @@
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Who is sworn to whom' });
-        P.sight.push({ t: 'p', text: 'Two red threads among the nine. There are no others.' });
+        P.sight.push({ t: 'p', text: 'Two red threads among the nine. No other oaths.' });
         P.sight.push({ t: 'svg', cls: 'underlayer', svg: threadMap });
         P.sight.push({ t: 'list', items: [
           '**Seat 2 is sworn to Seat 1.** Seat 2 votes as Seat 1 votes, unless somebody asks Seat 2 directly.',
@@ -168,7 +168,7 @@
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you. Gold is the Crown\u2019s color, and it means a claim. The Vigil has rules about who you belong to. I\u2019ve read all of them. None of them is red. My thread still won\u2019t take. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. I\u2019ve only ever seen it at funerals. Nothing ran back. The Envoy has a gold one on you. Gold is the Crown\u2019s. On you, it means a claim. The Vigil has rules about who you belong to. I\u2019ve read all of them. None of them is red. My thread still won\u2019t take. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;

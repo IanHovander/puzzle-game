@@ -236,7 +236,7 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the great hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
+          "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the Great Hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In the Founders' shapes, that's one word. It's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
@@ -276,8 +276,7 @@
           { text: "Knock it on the table now, soft: one each, Reader first, then all together.", cls: "whisper" },
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
           "At dawn the lamp goes out, the way a banked fire does. Far below, the Hearth flickers again.",
-          `While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. The Reader still hasn't eaten the biscuit. It is being kept.`,
-          `The Binder goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
+          `While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. The Reader still hasn't eaten the biscuit. It is being kept. The Binder goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
           "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",
         ],
         next: 'ch0_flow', button: "Morning",
