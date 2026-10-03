@@ -241,10 +241,10 @@
         art: 'ch1_hall', artParams: { seated: true }, mood: 'court', fx: 'embers', flame: 0.85, sfx: 'success',
         text: (s) => [
           'Wren lets go of the Provost\'s sleeve, one finger at a time. The Binder stops counting.',
-          '"The school keeps its own," says the Provost. Down by Seat 7, the Reader mouths the word along with the Provost: *keeps.* "Lord Vane, the school thanks the Crown for its concern."',
+          '"The school keeps its own," says the Provost. Down by Seat 7, the Reader is mouthing it too: *keeps.* "Lord Vane, the school thanks the Crown for its concern."',
           'Lord Vane rolls up the writ, like a letter he means to send again.',
           `The Register's clerk dips his pen. Wren gets there first. On the empty line, after *Claimed by*, Wren writes *${group(s)}*, in the worst handwriting the Register has ever held. The clerk looks at the Provost. The Provost looks at the ceiling. The clerk, writing second, writes nothing.`,
-          { speaker: 'Wren', text: 'You asked them! The Binder walked up to Seat 1. The Binder doesn\'t walk up to *anyone*. The Reader read Founders\' shapes to a Master, out loud. Listener, breathe. I\'m staying.' },
+          { speaker: 'Wren', text: 'You asked them! The Binder walked up to Seat 1. The Binder doesn\'t walk up to *anyone*. The Reader read Founders\' shapes to a Master, out loud. The Seer found every bought chair. Listener, breathe. I\'m staying.' },
           '"Staying," Wren says again, quieter, to hear how it sounds. The Provost reaches for Wren\'s collar, remembers nine Houses, and fixes her own.',
         ],
         next: 'ch1_errand', button: 'The fire',
@@ -255,9 +255,9 @@
         art: 'ch1_hall', artParams: { low: true }, mood: 'tense', fx: 'embers', flame: 0.7,
         text: [
           'Wren finds you across the hall. This time the wave is the right size. Then the fire coughs, and goes small. Wren flinches.',
-          'Wren\'s hand goes flat to the place a heartbeat should be, and comes away. Wren laughs, a moment too late. The Provost does not. She has come down off the dais, and stops beside you, facing the fire.',
+          'Wren\'s hand goes flat to the place a heartbeat should be, and comes away. Wren laughs, a moment too late. The Provost does not. She has come down off the dais to stand beside you, facing the fire.',
           { speaker: 'Provost Marrow', text: 'It flickered at dawn. Not like that. If this fire goes cold, nobody votes on Wren again. The stone does.' },
-          '"Ash over ember," the Reader whispers. "Yes," says the Provost. "That ember. The Founders banked one spare fire under this school. We call it the Cold Ember. It can light this one again, and it has never once let a Master lift it off its plinth. I have tried every winter for fourteen years." She looks the four of you over. "Last night, Wren tells me, four children lit a lamp nobody could light, by reading to it. Go and read."',
+          '"Ash over ember," the Reader whispers. "Yes," says the Provost. "That ember. A real one. The Founders banked one spare fire under this school: the Cold Ember. It can light this one again, and it has never let a Master lift it off its plinth. I have tried every winter for fourteen years." She looks the four of you over. "Last night, Wren tells me, four children lit a lamp nobody could light, by reading to it. Go and read."',
           '"Is there a rule against it?" asks the Binder. "There will be by morning," says the Provost. "Go tonight."',
           'She goes. Three steps on, she stops. "I came for Wren this morning, and saw your door. …Ink. Good."',
         ],
@@ -283,7 +283,6 @@
         text: [
           'The Provost is barely out of earshot when two Masters reach you. Masters hear a great deal from out of earshot. Seat 1 is Master Sorrel. Seat 7 is Master Oriel. They voted for you, and would like that noticed. In the Houses, a vote is a loan.',
           { speaker: 'Master Sorrel', text: 'Whatever she sends you down for comes up to all nine of us. Not to her. She sat in her chair tonight. Nine chairs, four hundred years. I will not watch them become one.' },
-          'Sorrel has kept well clear of the Provost\'s shadow all night. The Seer notices, says nothing, and stands a little closer to the Binder.',
           { speaker: 'Master Oriel', text: 'I have copied that stone since before you were born. Tonight one of you told me what the Founders\' shapes say. Whatever else is under this school, I want to hear about it. All of it.' },
         ],
         prompt: 'Whose price do you honor?',
@@ -296,7 +295,7 @@
             after: ['Master Oriel opens the black notebook, writes the date on a clean page, and says nothing else. She has had forty years of practice.', 'Beside the Reader, the Seer goes very still. *All of it* means the shadow, too.'] },
           { id: 'neither', text: 'Listener: "Neither… we answer to the Provost."', sub: 'Two Masters, owed and unpaid.', next: 'ch1_offer',
             set: { NEITHER: true, SORREL: false, ORIEL: false }, note: 'You refused both prices.',
-            after: ['Two mouths go thin. Oriel opens her black notebook and writes down four names. Sorrel does not need a notebook.', 'A few steps off, her back still turned, the Provost fixes a collar that is not there.'] },
+            after: ['Two mouths go thin. Oriel opens her black notebook and writes down four names. Sorrel does not need a notebook.', 'A few steps off, back still turned, the Provost fixes a collar that is not there.'] },
         ],
       },
       /* ---------- the Envoy's offer (60 s) ---------- */
@@ -311,7 +310,7 @@
             : 'Bring the child to me before midnight. It waved at you in front of nine Houses. It will come if you ask.' },
           'It is true. That is the worst thing he has said all night.',
           { speaker: 'Lord Vane', text: 'It lives. I promise you that, which is more than anyone else here will.' },
-          'Nobody else tonight has promised Wren will live. Not even the stone. "His heart didn\'t skip," the Listener whispers. "He means that part." Vane sends his captain off down the passage.',
+          'Nobody else tonight has promised Wren will live. Not even the stone. "His heart didn\'t skip," the Listener whispers. "He means that part." Vane sends his captain back to the doors. Your faces go with him.',
           { speaker: 'Lord Vane', text: 'Do it, and the Crown makes all four of you Masters. You can decide what I am afterwards. Ask your Seer what is under the paint.' },
         ],
         prompt: 'He is not supposed to know you have a Seer. What do you tell him?',
@@ -339,7 +338,7 @@
             : s.flags.VANE_OFFER_timedout ? 'Nobody answered the Envoy at all. He took the silence for a no, and folded it away with the writ, for later.'
             : 'The Seer is sitting on both hands. Saying no to the Crown took one breath. Having said it is taking longer.';
           if (!s.flags.VOTE_LOST) {
-            const price = s.flags.SORREL ? 'Sorrel\'s writ is in the Binder\'s pocket. The new red thread still runs from the Binder\'s hand to Seat 1, and it pulls.'
+            const price = s.flags.SORREL ? 'Sorrel\'s writ is in the Binder\'s pocket. The new red thread still runs from the Binder\'s hand to Sorrel\'s, and it pulls.'
               : s.flags.ORIEL ? 'Across the hall, Master Oriel has her black notebook open again, and is looking at the floor between Wren and the fire.'
               : 'Across the hall, Sorrel and Oriel sit side by side, owed, and making sure you can see it.';
             return [

@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name about the length of yours, in letters older than the ones on the lamp. Nobody here is taught them. Somebody put it there long before we did, Wren, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name about the length of yours, in letters older than the ones on the lamp. Nobody here is taught them. Somebody put it there before we did, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -140,9 +140,9 @@
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch**, which your Book calls the *mark*. On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
+          'A **Founders’** sigil starts at the **scratch** (your Book says *mark*). On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise**, which your Book calls *sunwise*.',
+          'Each next word goes in the next slot **clockwise** (your Book says *sunwise*).',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
