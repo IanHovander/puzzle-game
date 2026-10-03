@@ -73,7 +73,7 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Stay in these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has been hunting all week for a way out. \"There's no rule against tomorrow. I've looked.\"",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket. \"There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
         ],
         next: 'ch0_plan', button: "The plan",
@@ -141,7 +141,7 @@
         type: 'puzzle', puzzle: 'reaction', art: 'ch0_dorm', mood: 'tower', fx: 'dust', puzzleId: 'ch0_practice', replayable: true,
         text: [
           "On nights nobody can sleep, the knock becomes a game on the bedframes, faster and faster, until somebody laughs.",
-          "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder does. By the third time all four of you are saying it, and nobody laughs.",
+          "Tonight, when it stops, the Seer says, \"Again.\" Then the Binder says it. By the third time all four of you are saying it, and nobody laughs.",
           { text: "Now the lights slide down your lanes. Press as yours crosses the line.", cls: "whisper" },
           { text: "A white light across all four lanes means all four press together.", cls: "whisper" },
         ],
@@ -163,7 +163,7 @@
           "The door bangs open. Wren has never once knocked. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Hiding me: no. Spring: try harder. The lamp: yes. What I need is four idiots and a lamp, and this room has always had both." },
           "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
-          "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the window. \"Nobody can read those,\" says the Reader, a little too quickly.",
+          "Worn shapes run around the lamp's collar, like the ones on the stone. The Reader, who takes unreadable words personally, is already at the sill. \"Nobody can read those,\" says the Reader, a little too quickly.",
           "\"The Founders never left notes,\" says Wren. \"One sentence in four hundred years, and it's about me. I'd like a second opinion.\"",
           "\"What if it agrees with the first?\" says the Listener. Nobody answers that, for a while. Then the Binder: \"There are rules about Founders' brass. Pages of them. None against reading it. I checked.\"",
         ],
@@ -195,7 +195,7 @@
           { speaker: "Wren", text: "That's my name. I said *ours*." },
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
-          "Nobody says a word about the *Mom*. Wren changes the subject before anybody can.",
+          "Nobody says a word about *Mom*. Wren makes sure of it.",
           { speaker: "Wren", text: "One name, and it answered. Imagine a whole sentence. Reader, you've been reading that collar since I walked in." },
           "\"If those were words,\" says the Reader carefully, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, the hum starts up again. Only the Listener turns.",
         ],
@@ -236,8 +236,8 @@
         onSolve: (s) => { Store.note('You lit the dormitory lamp the old way.'); try { Game.setArt('ch0_lamp', { lit: true, carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Far below, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
-          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. Together, in the Founders' shapes, that's one word. It's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"The word is *keep*.\"",
+          "It took all four of you, the way the knock does. The lamp catches: small and gold, a piece of the Hearth on the sill. All those matches, and it only ever wanted to be read to. Down in the great hall, the Hearth stops flickering. All four of you hold your breath, in case it notices.",
+          "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In the Founders' shapes, that's one word. It's how you bank a fire: bury the embers in ash, and it keeps till morning.\" Then, slower: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
           "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
@@ -248,7 +248,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without joining in, which is how close Wren always sits. The Seer, for once, doesn't move. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without catching, which is how close Wren always sits. The Seer, for once, doesn't move. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
@@ -260,7 +260,7 @@
           "\"You lot are terrible at secrets,\" says Wren. \"No heartbeat? Knew. Wrong-way shadow? Knew. No thread? Guessed. You never said, and I never made you, and it was the best thing nobody ever said to me. Now you've gone and ruined it. Thank you.\"",
           "Then Wren looks at the chalk on the door. That one is news. Wren stands still for a good deal longer than eleven seconds, and this time the Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, even this close to the lamp. Held anyway.",
-          { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. Fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
+          { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. All right. Then I want it in writing. For fourteen years that Register has said \"Claimed by,\" and then nothing. The Houses fill it in tomorrow. We fill it in tonight. So. Claimed by *who*?" },
         ],
         options: [
           { id: 'vigil', text: "Reader: \"The Night Watch.\"", next: 'ch0_dawn', set: { GROUP_NAME: 'the Night Watch' }, after: [{ speaker: "Wren", text: "A watch is people who stay up for someone. Stay up for me tomorrow. I'll be the one standing very still." }] },
@@ -275,7 +275,7 @@
           "After that, Wren talks about everything except tomorrow, until you are nearly asleep. Then, soft on the floorboards, you knock.",
           { text: "Knock it on the table now, soft: one each, Reader first, then all together.", cls: "whisper" },
           "This time the door is in the room with you, pretending to be asleep. *Everybody's here.*",
-          "At dawn the lamp goes out, having kept till morning. Far below, the Hearth flickers again.",
+          "At dawn the lamp goes out, the way a banked fire does. Far below, the Hearth flickers again.",
           `While Wren's eyes are shut, the penknife, the lucky marble and the good pillow go back on the fifth blanket. The Reader still hasn't eaten the biscuit. It is being kept.`,
           `The Binder goes over the pencil name on the door in ink, and writes beside it: *Claimed by ${s.flags.GROUP_NAME || 'the Four'}.*`,
           "Somebody came for Wren in the end: four somebodies, fourteen years late, in their socks.",

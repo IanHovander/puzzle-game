@@ -145,7 +145,7 @@
           '**Seat 6**: a Crown soldier in the chair\u2019s own shadow, so still that only you have seen him. Anyone who walks toward Seat 6 tonight will find him already in the way.',
         ] });
         P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** When the Hearth asks, say those three numbers out loud.' });
-        P.sight.push({ t: 'fine', text: 'Behind the chairs hangs the school\u2019s big tapestry, painted cloth, as old as the hall. Somebody has painted over it. There\u2019s older paint underneath, a whole other picture. The Envoy keeps looking at it.' });
+        P.sight.push({ t: 'fine', text: 'Behind the chairs hangs the school\u2019s big tapestry, painted cloth, as old as the hall. Somebody has painted over it. There\u2019s older paint underneath, a whole other picture. Where the new paint is thinnest, you can make out a hand, then a sleeve. The Envoy keeps looking at exactly the place you are looking.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
         P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did, and wrote something down. I still can\u2019t picture next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
