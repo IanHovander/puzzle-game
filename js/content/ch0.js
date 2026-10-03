@@ -73,7 +73,7 @@
         title: 'Past curfew',
         text: [
           { text: "Sit left to right: the Reader, the Listener, the Seer, the Binder. Stay in these seats all night.", cls: "whisper" },
-          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket. \"There's no rule against tomorrow. I've looked.\"",
+          "\"*Item two,*\" the Binder reads from the order of business, again. \"*The foundling, to stand before the Houses, who will decide its use.*\" A pause, in case it has changed. \"*Its* use.\" The Binder has read the rulebook twice this week, once under a blanket, looking for the rule that stops item two. \"There's no rule against tomorrow. I've looked.\"",
           "The tower room has four beds, one round window and, on the sill, a brass lamp as old as the Hearth. On the floor, a fifth blanket: Wren's. On the door, a fifth name, in pencil, which rubs off. Officially, Wren sleeps at Provost Marrow's. The blanket says otherwise.",
         ],
         next: 'ch0_plan', button: "The plan",
@@ -82,7 +82,7 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           "\"Could we hide Wren?\" says the Listener. \"Just till after the bell?\"",
-          "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody.\"",
+          "\"I'm not saying no,\" says the Reader. \"But every room here belongs to somebody. Wren's the only thing here that doesn't.\"",
           "\"I keep trying to picture next spring,\" says the Seer. \"I can't get Wren into it.\" Far below, the Hearth gutters.",
           "\"They vote on the stone,\" says the Binder. \"Strictly, on the school's translation of it. The Founders don't get a say.\"",
           "\"Unless we ask them,\" says the Listener, and everyone looks at the sill. \"That lamp. Founders' brass. Four hundred years of matches, and nobody's ever gotten it to work. Maybe nobody ever asked it anything.\"",
@@ -191,11 +191,11 @@
         onSolve: () => { try { Game.setArt('ch0_lamp', { carved: true }); } catch (e) {} },
         clearWidget: true, clearText: true,
         solvedText: [
-          "The Seer cuts it small, under the rude word. \"Good company,\" says the Seer. The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers. \"That's my name,\" says Wren. \"I said *ours*.\"",
+          "The Seer cuts it small, under the rude word. \"Good company,\" says the Seer. The brass flares Hearth-gold, once, and goes out. Far below, for one breath, the great fire answers.",
+          { speaker: "Wren", text: "That's my name. I said *ours*." },
           "\"It is ours,\" says the Reader. For once, Wren has no next line, and stands quite still. \"Eleven,\" says the Binder, who has been counting.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. And my name's on Founders' brass now. Mom'll — the Provost'll — kill me." },
-          "Nobody says a word about *Mom*. Wren is already talking.",
-          { speaker: "Wren", text: "One name, and it answered. Imagine a whole sentence. Reader, you've been reading that collar since I walked in." },
+          "Nobody says a word about *Mom*. \"One name, and it answered,\" says Wren, already talking. \"Reader, you've been reading that collar since I walked in.\"",
           "\"If those were words,\" says the Reader carefully, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, the hum starts up again. Only the Listener turns.",
         ],
         next: 'ch0_attune',
@@ -239,7 +239,7 @@
           "The Reader, caught reading Founders' shapes in front of witnesses, gives up pretending. \"Ash over ember. In that order, it's one word. It's how you bank a fire: bury the embers in ash, and the fire's still there in the morning.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
           "\"The stone still says *walk*,\" says the Seer.",
-          "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders'. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
+          "\"*Walk* is the school's word,\" says the Binder. \"*Keep* is the Founders' word. That's the second opinion, and that's what we tell the Houses.\" The Binder writes it down, in ink. All four of you are looking at the same person again.",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. Nobody look at me like that." },
         ],
         next: 'ch0_tabs',
@@ -247,7 +247,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without catching, which is how close Wren always sits. The Seer, for once, doesn't move. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
+          "Wren drags the fifth blanket right up to the lamp, as close as a blanket can go without catching, which is how close Wren always sits. The Seer, who usually gets between Wren and any lamp, for once stays put. All week Wren has been giving things away. Tonight each of you gives something back: the thing you noticed, and never said.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",

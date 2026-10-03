@@ -226,7 +226,7 @@
           const won = (r && 'ok' in r) ? !!r.ok : !s.flags.VOTE_LOST;
           if (won) return [
             'The Binder walks the length of the hall to Seat 1, still counting, and asks, to her face. Seat 1 nods once. "Since you asked me to my face." Seat 2, who has not voted alone in thirty years, nods a breath later.',
-            'The Reader tells Seat 7 what you came to tell the Houses. "Ash over ember. The word is *keep*. *Walk* is the school\'s word. *Keep* is the Founders\'." Seat 7 looks past the Reader at the stone for a long time. Forty years, and nobody ever brought her a second opinion. "Very well. Tonight — keep." She writes that down. Then, more slowly, she writes down the Reader.',
+            'The Reader tells Seat 7 what you came to tell the Houses. "Ash over ember. The word is *keep*. *Walk* is the school\'s word. *Keep* is the Founders\' word." Seat 7 looks past the Reader at the stone for a long time. Forty years, and nobody ever brought her a second opinion. "Very well. Tonight — keep." She writes that down. Then, more slowly, she writes down the Reader.',
             (s.flags.CH1_BELL ? 'Then the vote.' : 'Then the bell. Then the vote.') + ' The Chair: one. Seat 3: two. Seats 1 and 2: three, four. Seat 7 shuts a black notebook and raises her hand. Five of nine. Wren stays.',
           ];
           const sel = (r && r.selected) || [];
