@@ -149,7 +149,7 @@
       /* ================= BINDER — which of the two rules is the older ================= */
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'Three ways to count, and which one binds' });
-        P.sight.push({ t: 'p', text: 'Law 13 and Law 9 in your **Book** say opposite things. Law 9 is from 212, the year this room was rebuilt.' });
+        P.sight.push({ t: 'p', text: 'Law 13 and Law 9 in your **Book** say opposite things. Law 9 is from 212, the year this room was rebuilt. The Convocation struck Law 0 that same year.' });
         P.sight.push({ t: 'html', html: twoBands() });
         P.sight.push({ t: 'p', text: 'Law 3 settles it. **The older Law binds**: a plinth faces the hole it was cut for, not the dial it stands over.' });
         P.sight.push({ t: 'p', text: 'One to four in the order it hums is what the school taught you. **That is a drill, not a Law**, and it is younger than both.' });

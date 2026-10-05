@@ -113,10 +113,10 @@
   /* What the door gives back. Each line names the clause that stopped it. Free lines cost nothing. */
   const DOOR = {
     none: 'No turns yet. A count is four, one word to each dial, and it is called once.',
-    short: 'The door hears what you have given it, and lets it go. A count is four, one word to each dial.',
-    twice: 'Two of those turns are the same dial. One word to a dial, and there are four dials.',
-    floor: 'Every word went to the dial its own plinth stands over. That is the newer rule. The lintel was cut before this floor was laid.',
-    drill: 'One, two, three, four, the way the school drills it. The school has drilled it since the floor was laid, and a drill is not a Law.',
+    short: 'The door hears what you gave it, and lets it go. A count is four, one word to each dial.',
+    twice: 'Two of those turns are the same dial. One word to each, and there are four.',
+    floor: 'Every word went to the dial its own plinth stands over. The lintel was cut before this floor was laid.',
+    drill: 'One, two, three, four, the way the school drills it. A drill is not a Law.',
     order: 'The right words on the right dials, and the door heard them in an order it has never hummed.',
     dialmap: 'The four right words, and at least one of them on a dial no plinth was ever cut to face.',
     one: 'One of those words is cut into no plinth in this room.',
@@ -182,9 +182,9 @@
           { speaker: 'Provost Marrow', text: 'Take the Seer\'s eyes with you. That vault was rebuilt once, and the rebuilding was not honest.' },
         ].concat(s.flags.VOTE_LOST ? [
           'By the fire, Wren sits between two soldiers and mouths something at you. It is probably rude.',
-          'When the soldiers look away, Wren points at the stair and mouths something else. This time it is not rude.',
+          'When the soldiers look away, Wren points at the stair and holds the look a moment too long.',
         ] : [
-          'Wren is already on the top step. The Provost looks at Wren, which is all she has ever needed to do, and Wren climbs back up.',
+          'Wren is already on the top step. The Provost looks at Wren, which is all she has ever needed to do.',
           { speaker: 'Wren', text: 'I\'ll stay put. Look at me staying put. You bring it up, the fire stays lit, and nobody walks anywhere.' },
           'Wren says the last part quickly, the way you carry something hot.',
         ]).concat([
@@ -196,9 +196,9 @@
         art: 'ch2_stair', mood: 'wonder', fx: 'dust', sfx: 'step', flame: 0.8,
         text: [
           'The stair goes down further than a school has any right to. Torches, then fewer torches.',
-          'Then a light that is not torchlight at all. A cold blue, breathing, somewhere below.',
-          'Nobody says it out loud. All four of you are doing the same sum: Ember up, fire lit, nobody walks. It is a very short sum. You do it all the way down.',
-          'Halfway down, the Listener turns to check on Wren, out of habit. The step behind is empty. The Listener could have sworn.',
+          'Then a light that is not torchlight. A cold blue, breathing, somewhere below.',
+          'None of you says the sum out loud. Ember up, fire lit, nobody walks. You do it again on every landing.',
+          'Halfway down, the Listener turns to check on Wren, out of habit. The step behind is empty. It did not sound empty.',
         ],
         next: 'ch2_antechamber', button: 'The bottom',
       },
@@ -206,18 +206,18 @@
         art: 'ch2_antechamber', mood: 'wonder', fx: 'dust', sfx: 'open',
         title: 'The bottom of the stair',
         text: [
-          'Four hooded Founders stand in a row, one on each plinth, carved by somebody who could not do faces.',
-          'Each plinth has one shape cut into it, worn nearly smooth. The Reader leans in close and looks personally offended.',
-          'Before each statue, a bronze dial in the floor. Plinths and dials are numbered one to four. Every statue looks straight down at its dial.',
-          'Beyond them is a door with no handle and no lock, which is the most locked a door can be.',
-          { text: 'This floor is newer than the room. Only one of you can see how much newer.', cls: 'whisper' },
+          'Four hooded Founders stand in a row, carved by a mason who could not do faces. Each plinth carries one worn shape. The Reader kneels to the first and looks personally offended.',
+          'Before each statue, a dial in the floor. Somebody screwed blank bronze over the Founders\' names.',
+          'Plinths and dials are numbered one to four instead, and every statue looks straight down at its own. The rebuilders put that in writing and called it a Law.',
+          'Beyond them, a door with no handle and no lock, which is the most locked a door can be.',
+          { text: 'This floor is newer than the room. Only one of you can see by how much.', cls: 'whisper' },
         ],
         next: 'ch2_attune', button: 'Attune',
       },
       ch2_attune: {
         type: 'code', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust',
         text: [
-          'Cut into the lintel above the door: a word, and a small mark beside it.',
+          'Cut into the lintel: a word and a mark. The Founders left two sentences in four hundred years. This one is about doors.',
           { text: 'Open the Companion. Take your seat. Type both.', cls: 'whisper' },
           { text: 'Read your page. Say nothing yet.', cls: 'whisper' },
         ],
@@ -248,7 +248,7 @@
         }),
         hints: [
           'Each of you holds one piece. Say yours out loud.',
-          'Three ways to count this door, and the room can see all three. Which one the door was cut to obey is a question of dates, and only one of you can date them.',
+          'Three ways to count this door, and the room can see all three. Which one it was cut to obey is a question of dates, and only one of you can date them.',
           /* Generated, never written out twice: ch4's oath is what a hand-copied last rung costs on a
              puzzle that commits once. tools/check-hints.js puts this string back through check(). */
           'Dial ' + ANSWER.map(a => a.dial + ' to ' + a.glyph).join('. Then dial ') + '. Then press *Try the door*.',
@@ -262,7 +262,8 @@
           const j = judge((r && r.turns) || []);
           if (j.ok) { receipt(true, 'The door opens.'); return [
             'The door does not open so much as remember that it was never really shut. Cold blue light comes up the steps to meet you.',
-            { text: 'THORN, KNOT, VEIL, EMBER. *A gate. Together. Hidden. Kept.* That is all it ever said.', cls: 'small' },
+            { text: 'THORN, KNOT, VEIL, EMBER. *A gate. Together. Hidden. Kept.*', cls: 'small' },
+            'The Reader says *Kept* twice.',
           ]; }
           const why = j.onFloor ? DOOR.floor : j.onDrill ? DOOR.drill : (j.onHoles && !j.ordered) ? DOOR.order
             : j.strange === 1 ? DOOR.one : j.strange > 1 ? DOOR.some
@@ -271,17 +272,19 @@
           return [
             why,
             'It counts to four and stops. Stone does not argue. That is most of what makes it stone.',
-            'The Seer finds the way the rebuilders used: a gap behind the row, and a crawl on your hands and knees.',
+            'The rebuilders left themselves a gap behind the row. You go in on your hands and knees.',
             '"They didn\'t trust their door either," says the Seer, and goes first.',
           ];
         },
+        clearText: true,
         next: 'ch2_opened', button: 'Into the vault',
       },
       ch2_opened: {
         type: 'choice', art: 'ch2_vault', mood: 'wonder', fx: 'motes', choice: 'CH2_VAULT', sfx: 'reveal',
         text: [
-          'The vault is round and low, and older than the school on top of it.',
-          'On a plinth in the middle stands a glass case. Inside, a blue flame breathes. It burns nothing and gives off no heat.',
+          'The vault is older than the school on top of it.',
+          'In the middle, under glass, a blue flame breathes and gives no heat.',
+          'It keeps time with something a long way above. Only the Listener knows what.',
           'The Cold Ember. Upstairs, the fire is waiting. So is Wren.',
         ],
         prompt: 'The Ember is two steps away.',
@@ -295,10 +298,11 @@
         type: 'custom', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust', sfx: 'reveal',
         enter: () => { if (!Store.chose('CH2_NICHE', 'mere')) { Store.choose('CH2_NICHE', 'mere'); Store.note('You found the niche behind the first plinth.'); } },
         text: [
-          'Behind the first plinth, at knee height, is a hollow the rebuilders missed.',
-          'Inside: a strip of stone with three shapes cut into it, and a sheet folded small.',
-          'The sheet is in the same letters as Wren\'s name on the dormitory door. None of you can read them.',
-          'The name worn off the front of the plinth is cut again on its back, where only the wall can read it. Mere.',
+          'Behind the first plinth, knee high, a hollow the rebuilders missed.',
+          'Inside, a strip of stone with three shapes, and a sheet folded small.',
+          'The sheet is in the chalk letters under Wren\'s name on the dormitory door.',
+          'The Reader has been losing to that chalk all week. "I can\'t read it. *Yet.*"',
+          'On the back of this one, where only the wall can read it, the name is cut again. Mere.',
         ],
         run: (box, api) => new Promise((resolve) => {
           const wrap = UI.el('div', { class: 'pz ch2-niche' });
@@ -333,17 +337,20 @@
       ch2_ember: {
         art: 'ch2_vault', artParams: { empty: true }, mood: 'wonder', fx: 'motes', sfx: 'magic',
         text: (s) => [
-          'The case lifts off its plinth with no ward and no click. Four hundred years of guarding, and it simply lets you.',
-          'The hands that carry it go numb to the wrist, so you take turns.',
-          'Inside the glass, the flame leans toward whoever holds it, as if it is looking for someone in particular.',
-          s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it.' : 'Nobody says anything. The vault is very quiet.',
+          'The case lifts off with no ward and no click. Nobody ever thought to lock it.',
+          'Four old threads end at the case. The Binder watches them go slack.',
+          'The hands carrying it go numb to the wrist, so you take turns. The flame leans toward whoever holds it.',
+          '"Next time, gloves," says the Seer. The Listener does not laugh. Wren\'s hands are always like this.',
+          s.flags.LETTER ? 'The Reader keeps one hand on the sleeve with the rubbing in it.' : 'The vault is very quiet without it.',
         ],
         next: 'ch2_road', button: 'The archway',
       },
       ch2_road: {
         art: 'ch2_vault', artParams: { empty: true, arch: true }, mood: 'dread', fx: 'motes', flame: 0.75,
         text: [
-          'Behind the empty plinth, an archway is bricked shut with newer stone. Nobody bricks up a door that nobody ever went through.',
+          'Behind the empty plinth, an archway bricked shut with newer stone. Low down, one brick carries a date.',
+          { text: '*Closed and made good. 212.*', cls: 'small' },
+          'Made good. The school paid for that word.',
           'Wren will want every word of this, twice, with the boring parts left in.',
         ],
         next: 'ch2_stairfall', button: 'Up',
@@ -352,13 +359,14 @@
       ch2_stairfall: {
         type: 'choice', art: 'ch2_stair', artParams: { broken: true }, mood: 'tense', fx: 'ash', sfx: 'boom', choice: 'CH2_STAIR', flame: 0.75,
         text: (s) => [
-          'Halfway up, the stair gives. A dozen steps drop into the blue dark. You are on the upper side. The case, somehow, is not.',
+          'Halfway up, the stair gives. A dozen steps drop into the blue dark. You are on the upper side. The case is not.',
           s.flags.VOTE_LOST
             ? 'Across the gap, hugging the case and grinning, is a child who was under guard twenty minutes ago.'
             : 'Across the gap, hugging the case and grinning, is a child who promised to stay put.',
           { speaker: 'Wren', text: s.flags.VOTE_LOST
             ? 'You *left* without me. The soldiers are fine, Listener, before you ask. Also you dropped this. Also the stairs are going. Also —'
             : 'You *left* without me. Yes, Binder, I promised. Also you dropped this. Also the stairs are going. Also —' },
+          'The cold light is behind Wren. Only the Seer sees the shadow reach for the case.',
           'The step under Wren tilts. Wren has one arm for the case and one for you.',
         ],
         prompt: 'One reach. What do you catch?',
@@ -388,8 +396,7 @@
         text: (s) => {
           const wren = Store.chose('CH2_STAIR', 'wren');
           const out = [{ speaker: 'Wren', text: 'Fine. Next time I\'ll walk *with* you. I didn\'t follow the box. I followed you. The box was just shiny.' }];
-          out.push('Wren holds out ' + (wren ? 'a wrist' : 'the good wrist') + ' to the Binder, for the thread only the Binder can see.');
-          out.push('Then the tapestry is pulled aside. The Provost stands in it, as if she had not moved since she sent you. '
+          out.push('The tapestry is pulled aside. The Provost stands in the doorway, as if she had not moved since she sent you. '
             + (s.flags.SORREL
               ? 'Behind her are two of the Convocation\'s guards and a writ, which is how the Convocation says please. You promised them the Ember. They have come for it.'
               : s.flags.ORIEL
@@ -403,6 +410,8 @@
           const guard = s.flags.VOTE_LOST ? 'Down the corridor, Vane\'s captain waits for what the vote gave him. The Provost puts herself between him and Wren.' : '';
           if (!wren) out.push('She has never finished that sentence in fourteen years, and she does not finish it now.' + (guard ? ' ' + guard : ''));
           else if (guard) out.push(guard);
+          /* The tender beat goes last, so no joke stands next to it (docs/VOICE.md rule 5). */
+          out.push('Wren holds out ' + (wren ? 'a wrist' : 'the good wrist') + ' to the Binder, for the thread, and hums. The Listener heard it tonight, under the glass.');
           return out;
         },
         next: 'ch2_flow', button: 'The night moves on',
@@ -411,8 +420,8 @@
         type: 'flow', art: 'ch2_stair', mood: 'hearth', fx: 'dust',
         text: (s) => [
           Store.chose('CH2_DOOR', 'crawled') ? 'The door counted once, and you were not what it counted.' : 'The door counted once, and it counted you.',
-          s.flags.EMBER_LOST ? 'The Provost does not have the Ember. She says it would not have mattered, and does not say how she knows.' : 'The Provost held the Ember to the Hearth for a long minute. The fire would not take it. Now it is on her desk, and she is carefully not looking at it.',
-          'Far above, the Hearth flickers, and this time everyone sees it.',
+          s.flags.EMBER_LOST ? 'The Provost does not have the Ember. She says it would not have mattered, and does not say how she knows.' : 'The Provost held the Ember to the Hearth. The fire would not take it. It is on her desk now, under a cloth.',
+          'Far above, the Hearth flickers, and this time everyone sees it. It is not midnight yet.',
           { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
         ],
         flowTitle: 'Chapter II — the paths you walked',
