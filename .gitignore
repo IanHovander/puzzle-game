@@ -4,3 +4,4 @@ node_modules/
 dist/*-hosted.html
 tmp/
 tools/voice/.cache/
+.claude/
