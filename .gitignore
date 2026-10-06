@@ -5,3 +5,4 @@ dist/*-hosted.html
 tmp/
 tools/voice/.cache/
 .claude/
+preview/
