@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. The pencil one is ours. Below it there’s chalk, rubbed nearly away, and I see it clean: a name about the length of yours, in letters older than the ones on the lamp. Nobody here is taught them. Somebody put it there before we did, and never owned up. I’ve been copying it into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“There’s a name under ours on the door, in chalk: about the length of yours, in letters nobody here is taught. I’ve copied it into my margins for a year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -123,7 +123,7 @@
         P.wren.push({ t: 'h', text: 'How quiet' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${['Reader', 'Listener', 'Seer', 'Binder'].map(n => `<div class="hb"><span>${n}</span>${D.trace('normal')}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I can hear hearts. I can’t sleep when it’s quiet. In here I fall asleep to four of them, all going. I’ve never once heard yours. So I check your hands instead. You always let me.”' });
+        P.wren.push({ t: 'letter', text: '“I can hear hearts. I can’t sleep when it’s quiet. In here I fall asleep to four of them, all going. I’ve never once heard yours. So I check your hands. You always let me.”' });
       }
 
       if (roleId === 'seer') {
@@ -134,7 +134,7 @@
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way, Wren. Toward the lamp, like it’s trying to get home. I’ve stood between you and every lamp in this school for years, so nobody else sees. Tonight I didn’t move. You thought I just liked lamps.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way, Wren — like it’s trying to get home. I’ve stood between you and every lamp for years, so nobody sees. Tonight I didn’t move. You thought I just liked lamps.”' });
       }
 
       if (roleId === 'binder') {
