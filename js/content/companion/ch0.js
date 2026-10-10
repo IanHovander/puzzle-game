@@ -110,7 +110,7 @@
         P.sight.push({ t: 'fine', text: 'A circle has no beginning. The brass cannot tell you which word comes first.' });
         P.wren.push({ t: 'h', text: 'The name on the door' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“There’s a name under ours on the door, in chalk: about the length of yours, in letters nobody here is taught. I’ve copied it into my margins for a year. I can’t read it. *Yet.*”' });
+        P.wren.push({ t: 'letter', text: '“Your name might be on our door twice. Under the pencil, there’s chalk, in letters older than the ones on the lamp. I’ve copied it into my margins all year. I can’t read it. *Yet.*”' });
       }
 
       if (roleId === 'listener') {
@@ -134,15 +134,15 @@
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underDorm });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way, Wren — like it’s trying to get home. I’ve stood between you and every lamp for years, so nobody sees. Tonight I didn’t move. You thought I just liked lamps.”' });
+        P.wren.push({ t: 'letter', text: '“Your shadow falls the wrong way. Toward the lamp, like it’s trying to get home. I’ve stood between you and every lamp, so nobody sees. Tonight I didn’t move. You thought I just liked lamps.”' });
       }
 
       if (roleId === 'binder') {
         P.sight.push({ t: 'h', text: 'How a sigil is written' });
         P.sight.push({ t: 'list', items: [
-          'A **Founders’** sigil starts at the **scratch** (your Book says *mark*). On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
+          'A **Founders’** sigil starts at the **scratch**. Your Book calls it the *mark*. On Founders’ brass, a notch is only the maker’s signature. Ignore it.',
           'The **first** word goes **in** the scratched slot.',
-          'Each next word goes in the next slot **clockwise** (your Book says *sunwise*).',
+          'Each next word goes in the next slot **clockwise**. Your Book calls it *sunwise*.',
           'One word per slot. **Any slot left over stays empty.**',
         ] });
         P.sight.push({ t: 'html', html: lawRing() });
