@@ -92,7 +92,7 @@ not come undone."
 - Never change: flag names or values, scene ids, option ids, `set:`/`next:` logic, puzzle answers/configs/checks,
   tier-3 (last) hints, attunement words and casts, Book content, glyph names. Prose may be cut; a flag write may not.
 - Scene ≤ 150 words and ≤ 6 paragraphs on its worst branch. Puzzle brief ≤ 65 words, ≤ 6 paragraphs, each ≤ 18 words.
-  Chapter ≤ 1,600 words (`node tools/prose-count.js chN`).
+  Chapter ≤ 1,925 words, the R1.5 drafting limit (`node tools/prose-count.js chN`); its 2,125 acceptance ceiling is not room.
 - `node tools/check-content.js` clean (it enforces speaker-label, semicolon and other rules).
 - `node tools/scan-fit.js chN --w 1280 --h 720`: overflowing none, at most 2 shrunk. `--w 1152 --h 648`: at most one
   overflow, under 5 px.
