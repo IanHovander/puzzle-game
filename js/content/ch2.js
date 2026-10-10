@@ -217,7 +217,7 @@
       ch2_attune: {
         type: 'code', art: 'ch2_antechamber', mood: 'wonder', fx: 'dust',
         text: [
-          'Cut into the lintel: a word and a mark. The Founders left two sentences in four hundred years. This one is about doors.',
+          'Cut into the lintel: a word and a mark. The Founders wrote very little down. This one is about doors.',
           { text: 'Open the Companion. Take your seat. Type both.', cls: 'whisper' },
           { text: 'Read your page. Say nothing yet.', cls: 'whisper' },
         ],
@@ -301,7 +301,7 @@
           'Behind the first plinth, knee high, a hollow the rebuilders missed.',
           'Inside, a strip of stone with three shapes, and a sheet folded small.',
           'The sheet is in the chalk letters under Wren\'s name on the dormitory door.',
-          'The Reader has been losing to that chalk all week. "I can\'t read it. *Yet.*"',
+          'The Reader has been losing to that chalk all year. "I can\'t read it. *Yet.*"',
           'On the back of this one, where only the wall can read it, the name is cut again. Mere.',
         ],
         run: (box, api) => new Promise((resolve) => {
@@ -337,7 +337,7 @@
       ch2_ember: {
         art: 'ch2_vault', artParams: { empty: true }, mood: 'wonder', fx: 'motes', sfx: 'magic',
         text: (s) => [
-          'The case lifts off with no ward and no click. Nobody ever thought to lock it.',
+          'The case lifts off with no ward and no click. It never once let the Provost.',
           'Four old threads end at the case. The Binder watches them go slack.',
           'The hands carrying it go numb to the wrist, so you take turns. The flame leans toward whoever holds it.',
           '"Next time, gloves," says the Seer. The Listener does not laugh. Wren\'s hands are always like this.',

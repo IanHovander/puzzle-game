@@ -49,9 +49,9 @@
         text: [
           { text: "Four hundred years ago, four people closed a wound in the world. They did it with fire, and without leaving notes. Their fire is the Hearth.", cls: "center" },
           { text: "It has burned gold ever since. It went out once, fourteen years ago, and the school found out what cold is.", cls: "center" },
-          { text: "When the fire came back, a baby lay asleep on the stones. The flames curled around it like a hand.", cls: "center" },
+          { text: "When the fire came back, a baby lay asleep on the stones. The flames curled around the baby like a hand.", cls: "center" },
           { text: "*Register of the Hearth. Found: one infant. Condition: warm, and pleased with itself. Claimed by:*", cls: "center" },
-          { text: "The clerk left the line blank. Nobody ever came for it.", cls: "center" },
+          { text: "The clerk left the line blank. Nobody ever came.", cls: "center" },
           { text: "You were all born that year. Wren was found.", cls: "center" },
         ],
         next: 'ch0_stone', button: "Look up",
@@ -161,6 +161,7 @@
         text: [
           "The door bangs open. Wren does not knock. Wren never has. A biscuit lands in the Reader's lap, because the Reader has missed supper again. Wren, loudly, knows nothing about it.",
           { speaker: "Wren", text: "You're awake. Good. I heard all that through the door. The knock, too. Nobody's hiding me. I need four idiots and a lamp, and this room has both." },
+          "\"Five idiots,\" says the Seer. \"You never count yourself.\"",
           "The Reader takes unreadable words personally, and is already at the sill. Worn shapes circle the lamp's collar, like the ones on the stone. Four hundred years of matches, never once lit.",
           "\"One sentence in all that time,\" says Wren, \"and it's about me. I'd like a second opinion.\"",
         ],
@@ -170,8 +171,8 @@
         art: 'ch0_dorm', mood: 'tower', fx: 'dust',
         text: [
           "\"Item two,\" says Wren. \"That's me. I'm an item.\" Wren's copy of the order of business is folded very small.",
-          "\"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down.",
-          { speaker: "Wren", text: "Everything I have, somebody gave me. Before they decide what I'm for, I want one thing I get to keep." },
+          "\"I've been practicing standing still. My record is eleven seconds.\" The Binder writes it down, in pencil.",
+          { speaker: "Wren", text: "Everything I have, somebody gave me. The name's a bird. Nobody will say who picked it. Before they decide what I'm for, I want one thing I get to keep." },
           "This week Wren gave you a penknife, a lucky marble and the good pillow, and called it tidying up.",
           "The Listener checks Wren's hands. Cold, as always.",
         ],
@@ -194,14 +195,14 @@
           "\"It is ours,\" says the Reader. Wren has no next line, and stands still. \"Eleven,\" says the Binder.",
           { speaker: "Wren", text: "Tied my record. Don't write that down. My name's on Founders' brass. Mom'll — the Provost'll — kill me." },
           "Nobody says a word about *Mom*.",
-          "\"If those were words,\" says the Reader, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, something begins to hum.",
+          "\"If those were words,\" says the Reader, \"and I'm not saying they are, there'd be two. I can't tell which goes first.\" In the brass, something begins to hum. Only the Listener turns.",
         ],
         next: 'ch0_attune',
       },
       ch0_attune: {
         type: 'code', art: 'ch0_lamp', artParams: { carved: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Each of you sees one thing nobody else can.",
+          "Each of you sees one thing nobody else can. The school would rather you didn't mention it.",
           { text: 'This big screen is the Hearth. Open the Companion on your phone, pick your seat, and type the word shown.', cls: 'whisper' },
           { text: 'Your phone\'s **Book** tab has every word, rule and shape.', cls: 'small' },
         ],
@@ -237,7 +238,7 @@
           "Far below, the Hearth stops flickering.",
           "The Reader stops pretending. \"Ash over ember is one word. It's how you bank a fire: embers under ash.\" Then, with no ifs at all: \"The word is *keep*.\"",
           "\"It didn't say *walk*,\" says the Listener, and has to sit down.",
-          "\"*Walk* is the school's word. *Keep* is the Founders',\" says the Binder. \"That's our second opinion.\"",
+          "\"*Walk* is the school's word. *Keep* is the Founders' word,\" says the Binder. \"That's our second opinion.\"",
           { speaker: "Wren", text: "Keeps what? Oh. Don't. Nobody look at me like that." },
         ],
         next: 'ch0_tabs',
@@ -245,7 +246,7 @@
       ch0_tabs: {
         art: 'ch0_dorm', artParams: { lit: true }, mood: 'tower', fx: 'dust',
         text: [
-          "Wren drags the fifth blanket up to the lamp, as close as it can go without catching. The Seer, for once, does not move.",
+          "Wren drags the fifth blanket up to the lamp, as close as a blanket can go without catching. The Seer, for once, does not move.",
           { text: "Open your Wren tab. Read your line to Wren, out loud, in seat order.", cls: "whisper" },
         ],
         next: 'ch0_name', button: "Read to Wren",
@@ -255,7 +256,7 @@
         text: [
           "Wren laughs and wipes both eyes, as if that were part of laughing.",
           "\"You lot are terrible at secrets,\" says Wren. \"You never said, and I never made you. Best thing nobody ever said to me. Thank you.\"",
-          "Then Wren looks at the chalk on the door. That one is news.",
+          "Then Wren looks at the chalk on the door. That one is news. Wren stands still. The Binder does not count.",
           "Wren holds out both hands, because the Listener always checks. Still cold, this close to the lamp. Held anyway.",
           { speaker: "Wren", text: "*Keep.* I asked for one thing I get to keep, and you lot went and kept me. The Houses fill in that Register tomorrow. We do it tonight. Claimed by *who*?" },
         ],
