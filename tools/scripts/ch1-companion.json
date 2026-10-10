@@ -1,6 +1,6 @@
 { "start": "ch1_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["thorn"]}, {"shot": "c1_reader_sight"},
-  {"expect": "Two Houses filed tonight"}, {"expect": "with the Chair"}, {"expect": "So you begin with two"}, {"expect": "an ask spent there buys a vote you have"},
+  {"expect": "Two Houses filed tonight"}, {"expect": "with the Chair"}, {"expect": "So you begin with two"}, {"expect": "You need five"},
   {"expectNot": "sworn to Seat 1"}, {"expectNot": "under the cushion"},
   {"tab": "Wren"}, {"shot": "c1_reader_wren"}, {"expect": "We claimed you first"}, {"tab": "Speak"}, {"expect": "Nothing to speak yet"},
 

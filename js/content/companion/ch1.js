@@ -107,17 +107,16 @@
 
       if (roleId === 'reader') {
         P.sight.push({ t: 'h', text: 'The roll, before the Vigil opened' });
-        P.sight.push({ t: 'p', text: 'Two Houses filed tonight, in writing, before the Vigil opened. You can read the roll from here.' });
+        P.sight.push({ t: 'p', text: 'Two Houses filed tonight, in writing, before the Vigil opened.' });
         P.sight.push({ t: 'table', head: ['filed', 'and it says'], rows: [
           [seatLabel(9), '<b>KEEP</b> \u2014 the Chair\u2019s own hand.'],
           [seatLabel(3), '<b>KEEP</b> \u2014 three words: <em>with the Chair.</em>'],
         ] });
-        P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** When the Hearth asks, say that out loud. You need five.' });
-        P.sight.push({ t: 'fine', text: 'Seat 3 is already yours, whatever anyone hears. An ask spent there buys a vote you have.' });
-        P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand again: *Item two: the foundling.* After it, a name, in the older alphabet, the letters of the chalk on your door. You can\u2019t read it. Yet.' });
-        P.wren.push({ t: 'h', text: 'Item two' });
+        P.sight.push({ t: 'p', text: 'The other seven filed nothing. **So you begin with two.** You need five. Say both seat numbers out loud.' });
+        P.sight.push({ t: 'fine', text: 'Lower down, in the Chair\u2019s hand: *Item two, the foundling.* Beside it, a name in the same old letters as the chalk on your door. You can\u2019t read it. Yet.' });
+        P.wren.push({ t: 'h', text: 'Every wall' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYou heard it too. *Not coming back.* He said it like a line he\u2019d read off a wall. It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere I haven\u2019t, I\u2019ll read every wall in this school before he takes you. Their roll has you down as item two. We claimed you first.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201c*Not coming back.* It isn\u2019t written anywhere I\u2019ve read. If it\u2019s written somewhere else, I\u2019ll read every wall in this school before he takes you. We claimed you first.\u201d' });
       }
 
       if (roleId === 'listener') {
@@ -127,12 +126,12 @@
         P.sight.push(murmur(3, 'Ask me where I stand. Go on. Somebody ask me.', [2, -1], 50));
         P.sight.push(murmur(4, 'I vote as my cousin votes. I hear nobody else. I have stopped listening, to be safe.', [1, 1, -3], 48));
         P.sight.push(murmur(7, 'Forty years of staring at that stone, and nobody has asked me what it says. I have not decided anything.', [-2, 2, 1], 54));
-        P.sight.push({ t: 'p', text: '**Seats 1, 3 and 7 are still open** to being talked to. **Seat 4 has shut his ears.** An ask spent on him is spent. The other seats aren\u2019t muttering anything you can catch.' });
-        P.sight.push({ t: 'fine', text: 'Seat 4 never says which seat his cousin sits in. Another phone at this table shows that.' });
+        P.sight.push({ t: 'p', text: '**Seats 1, 3 and 7 are still open** to being talked to. **Seat 4 has shut his ears.**' });
+        P.sight.push({ t: 'fine', text: 'Seat 4 never says which seat his cousin sits in. Another phone shows that.' });
         P.wren.push({ t: 'h', text: 'What I heard tonight' });
         P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost <small>(jumped)</small>', jumpTrace], ['The Hearth <small>(once)</small>', D.trace('slow')], ['Wren <small>(nothing to catch)</small>', D.trace('flat')]].map(([n, svg]) => `<div class="hb"><span>${n}</span>${svg}</div>`).join('')}</div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cWhen the Envoy finished his sentence, the Provost\u2019s heart jumped. She was looking at you. So it isn\u2019t only us, then. And the fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019m going to keep checking.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cWhen the Envoy said *not coming back*, the Provost\u2019s heart jumped. She was looking at you. The fire beat once, like a heart. You flinched. I noticed. I still can\u2019t hear yours. I\u2019ll keep checking.\u201d' });
       }
 
       if (roleId === 'seer') {
@@ -142,13 +141,13 @@
         P.sight.push({ t: 'list', items: [
           '**Seat 5**: Crown coin under the cushion.',
           '**Seat 8**: the same coin, in the sleeve.',
-          '**Seat 6**: a Crown soldier in the chair\u2019s own shadow, so still that only you have seen him. Anyone who walks toward Seat 6 tonight will find him already in the way.',
+          '**Seat 6**: a Crown soldier, in the chair\u2019s own shadow. Only you have seen him. Nobody will get near Seat 6 tonight.',
         ] });
-        P.sight.push({ t: 'p', text: 'Bought, bought, out of reach. **An ask spent on 5, 6 or 8 is spent.** When the Hearth asks, say those three numbers out loud.' });
-        P.sight.push({ t: 'fine', text: 'The tapestry behind the chairs has been painted over, and there\u2019s older paint underneath, a whole other picture. Where the new paint is thinnest, you can make out a hand, then a sleeve. The Envoy keeps looking at exactly the place you are looking.' });
+        P.sight.push({ t: 'p', text: '**Bought, bought, out of reach.** Say those three numbers out loud.' });
+        P.sight.push({ t: 'fine', text: 'The tapestry behind the chairs is painted over older paint. Where the new paint is thinnest, you can make out a hand, then a sleeve. The Envoy keeps looking at the same place.' });
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran the wrong way all night, across the dais to the fire. Everyone was watching your hand on the Provost\u2019s sleeve, so almost nobody saw it. Seat 7 did. She stopped writing to watch it. I still can\u2019t get you into next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cYour shadow ran across the dais, to the fire. Nobody saw but me and a Master with a black notebook. I can\u2019t get you into next spring. I\u2019ve started on tomorrow. You\u2019re in it.\u201d' });
       }
 
       if (roleId === 'binder') {
@@ -159,7 +158,7 @@
           '**Seat 2 is sworn to Seat 1.** Seat 2 votes as Seat 1 votes, unless somebody asks Seat 2 directly.',
           '**Seat 4 is sworn to Seat 6.** They are cousins.',
         ] });
-        P.sight.push({ t: 'p', text: 'So **one ask can be worth two votes.** Ask the Master someone is sworn to, and the sworn one votes the same way.' });
+        P.sight.push({ t: 'p', text: 'So **one ask can be worth two votes.**' });
         P.sight.push({ t: 'fine', text: 'The rest is on other phones. Ask.' });
         P.wren.push({ t: 'h', text: 'No thread found' });
         P.wren.push({ t: 'html', html: '<ul class="blk-list">'
@@ -168,7 +167,7 @@
           + '<li>' + threadLine('gold') + ' <strong>The Envoy to Wren:</strong> gold, all night, to the dais.</li>'
           + '</ul>' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, a thread ran from the Provost to you. Gray, which is grief. Nothing ran back. The Envoy has a gold one on you. Gold is the Crown\u2019s. On you, it\u2019s a claim. It took the first time he looked at you. Mine still won\u2019t take, seven years on. When it does, it will be red, and it will hold. That is not a rule. It is a promise.\u201d' });
+        P.wren.push({ t: 'letter', text: '\u201cFor one second tonight, the Provost\u2019s thread reached you. Gray. The Envoy\u2019s gold one took at once. Mine still won\u2019t. When it does, it\u2019ll be red. It\u2019ll hold. That is not a rule. It is a promise.\u201d' });
       }
 
       return P;
