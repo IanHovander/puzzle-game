@@ -24,7 +24,7 @@
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_road"}, {"clickText": "Up"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch2_stairfall"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"expect": "the dark takes it"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"expect": "Then we do without it"}, {"expect": "You promised no Master anything"}, {"shot": "ch2_top"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow"}, {"expect": "took the rubbing"}, {"expect": "at the bottom of the stair"}, {"expect": "counted the door open"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "took the rubbing"}, {"expect": "at the bottom of the stair"}, {"expect": "counted the door open"},
   {"eval": "({LETTER: VigilStore.state.flags.LETTER, EMBER_LOST: VigilStore.state.flags.EMBER_LOST, WREN_HURT: VigilStore.state.flags.WREN_HURT, door: VigilStore.state.choices.CH2_DOOR, strip: VigilStore.state.choices.CH2_STRIP, niche: VigilStore.state.choices.CH2_NICHE, stair: VigilStore.state.choices.CH2_STAIR, hints: VigilStore.state.flags.hintsTotal || 0})"},
   {"clickText": "The Whispering Gallery"}, {"wait": 800}, {"log": true}
 ] }

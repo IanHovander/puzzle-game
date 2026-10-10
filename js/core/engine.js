@@ -296,8 +296,19 @@
     api.button(scene.button || 'Speak the words', submit, 'primary');
   }
 
+  /* The chapter-end screen is read in two beats. The story text comes first, at full width, and stays
+     up until the table asks for the chart: css/theme.css hides #text once .flow-panel exists, so a chart
+     built the moment the typewriter finished took the ending away mid-sentence, before anyone had read
+     it aloud. A flow scene with no text of its own goes straight to the chart. */
   function runFlow(scene, api, ch) {
     const flow = scene.flow || ch.flow;
+    if (flow && dom.text.textContent.trim()) {
+      const gate = api.button('Show the chart', () => { gate.remove(); buildFlow(scene, api, ch, flow); }, 'primary flow-gate');
+      return;
+    }
+    buildFlow(scene, api, ch, flow);
+  }
+  function buildFlow(scene, api, ch, flow) {
     if (flow) {
       const done = new Set(Store.state.visited);
       // allow nodes to declare a predicate

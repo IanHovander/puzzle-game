@@ -282,7 +282,7 @@
   {
    "shot": "ch8_flow"
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "expect": "The night ended in the Fourfold Walk"
   },
   {

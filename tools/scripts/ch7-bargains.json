@@ -16,5 +16,5 @@
   {"wait": 900}, {"key": "Space"}, {"wait": 400}, {"clickText": "Continue"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "barg_done"}, {"expect": "majority of hands"},
   {"eval": "({ending: VigilStore.state.flags.ENDING, kept: ['reader','listener','seer','binder'].map(r=>VigilStore.state.flags['BARGAIN_'+r]), sigil: !!(VigilStore.state.solved||{}).ch7_sigil})"},
-  {"clickText": "What comes of it"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "Nobody walked"}, {"clickText": "The night, whole"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Envoy"}
+  {"clickText": "What comes of it"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "Nobody walked"}, {"clickText": "The night, whole"}, {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Envoy"}
 ] }

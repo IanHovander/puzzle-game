@@ -19,6 +19,6 @@
   {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"clickText": "The Binding"},
   {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"expectNot": "no light"}, {"keys": "acm/"}, {"wait": 7000}, {"keys": "acm/"}, {"wait": 2400}, {"key": "Space"}, {"wait": 500}, {"clickText": "What the fire decides"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "alt_ending"}, {"expect": "Walked into the Cold: Wren"}, {"expect": "I knew"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Sealing"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Sealing"},
   {"eval": "({ending: VigilStore.state.flags.ENDING, ally: VigilStore.state.flags.VANE_ALLY, stood: VigilStore.state.flags.VANE_STOOD_DOWN, barg: VigilStore.state.flags.BARGAIN_reader, cast: VigilStore.state.flags.CAST_CROWN})"}
 ] }

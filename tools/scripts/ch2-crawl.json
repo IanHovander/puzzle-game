@@ -23,7 +23,7 @@
   {"wait": 800}, {"key": "Space"}, {"clickText": "Up"},
   {"wait": 800}, {"key": "Space"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow_crawl"},
-  {"expect": "you were not what it counted"}, {"expect": "the way the rebuilders did"}, {"expect": "went unlooked-at"},
+  {"wait": 2500}, {"expect": "you were not what it counted"}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow_crawl"},
+  {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the way the rebuilders did"}, {"expect": "went unlooked-at"},
   {"eval": "({door: VigilStore.state.choices.CH2_DOOR, niche: VigilStore.state.choices.CH2_NICHE || null, LETTER: VigilStore.state.flags.LETTER || false})"}
 ] }

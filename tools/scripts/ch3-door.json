@@ -3,7 +3,7 @@
   {"click": ".btn.choice >> nth=1"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "already knows"}, {"expect": "however you chose"}, {"shot": "ch3_stand_word"},
   {"clickText": "The Tower stair"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "you spent the Envoy"}, {"shot": "ch3_flow_word"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "you spent the Envoy"}, {"shot": "ch3_flow_word"},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.SURRENDERED||null]})()"},
   {"clickText": "The Oath"}, {"wait": 1000}, {"log": true}
 ] }

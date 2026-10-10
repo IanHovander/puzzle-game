@@ -5,6 +5,6 @@
   {"expect": "Master Oriel"}, {"expect": "everything you found below"}, {"expect": "Then we do without it"},
   {"expectNot": "Convocation"},
   {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "at the bottom of the stair"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "at the bottom of the stair"},
   {"eval": "({ORIEL: VigilStore.state.flags.ORIEL, stair: VigilStore.state.choices.CH2_STAIR, EMBER_LOST: VigilStore.state.flags.EMBER_LOST})"}
 ] }

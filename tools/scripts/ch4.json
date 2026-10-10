@@ -31,7 +31,7 @@
   {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"]]}, {"clickText": "Close the sigil"}, {"wait": 600}, {"expect": "an oath without a lock is a wish"}, {"wait": 1200},
   {"slots": [[2, "THORN"], [3, "ASH"], [4, "WELL"], [1, "KNOT"]]}, {"shot": "ch4_oath_placed"}, {"clickText": "Close the sigil"}, {"wait": 1200}, {"shot": "ch4_oath_fourhands"}, {"keys": "acm/"}, {"wait": 2200},
   {"key": "Space"}, {"wait": 600}, {"expect": "KNOT"}, {"expect": "does not come undone"}, {"shot": "ch4_sworn"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch4_flow"}, {"expect": "swore under KNOT"}, {"expect": "all four"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch4_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "swore under KNOT"}, {"expect": "all four"},
   {"assert": "VigilStore.state.flags.OATH === 1 && VigilStore.state.flags.OATH_KNOT === true && VigilStore.state.flags.REFUSED_OATH === false && VigilStore.state.flags.LAW0 === true && VigilStore.state.flags.LETTER_READ === true && VigilStore.state.flags.ORIEL_NOTE === true && ['JOURNAL','MEMORY','TAPESTRY','GREY'].every(k => VigilStore.state.flags[k] === true)"},
   {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, LETTER_READ: VigilStore.state.flags.LETTER_READ, ORIEL_NOTE: VigilStore.state.flags.ORIEL_NOTE, secrets: ['JOURNAL','MEMORY','TAPESTRY','GREY'].map(k => VigilStore.state.flags[k])})"},
   {"clickText": "The Long Stair"}, {"wait": 1500}, {"log": true}

@@ -16,7 +16,7 @@
   {"keys": "acm/"}, {"wait": 1800}, {"key": "Space"}, {"wait": 500}, {"clickText": "The Binding"},
   {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"keys": "acm/"}, {"wait": 7000}, {"keys": "acm/"}, {"wait": 2400}, {"key": "Space"}, {"wait": 500}, {"clickText": "What the fire decides"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "half_ending"}, {"expect": "Walked into the Cold: Reader and Listener"}, {"expect": "Stayed: Seer and Binder"}, {"expect": "Half a walk"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Half-Walk"}, {"expect": "Reader almost took it"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Half-Walk"}, {"expect": "Reader almost took it"},
   {"assert": "VigilStore.state.flags.ENDING === 1 && VigilStore.state.flags.BARGAIN_reader === 'broken'"},
   {"eval": "({ending: VigilStore.state.flags.ENDING, walk: ['reader','listener','seer','binder'].map(r=>VigilStore.state.flags['WALK_'+r])})"}
 ] }

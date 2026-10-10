@@ -38,7 +38,7 @@
   {"assert": "window.VigilStore.state.flags.WALK_UNLOCKED === true && window.VigilStore.state.flags.LAW0 === true"},
   {"assert": "(window.VigilStore.state.flags.BELLS_CRACKED | 0) === 0 && !window.VigilStore.state.flags.STONE_MISREAD"}, {"clickText": "What it means"},
   {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"}, {"expect": "The road four people walk together"}, {"expect": "I didn't mean this"}, {"expectNot": "road that cost one"}, {"shot": "ch6_open"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch6_flow"}, {"expect": "The four bells came through whole"}, {"expectNot": "wrong reading"}, {"expect": "four answers Wren already had"}, {"log": true},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch6_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "The four bells came through whole"}, {"expectNot": "wrong reading"}, {"expect": "four answers Wren already had"}, {"log": true},
   {"assert": "window.VigilStore.state.flags.CLUES === 4"}, {"assert": "window.VigilStore.state.flags.TRUTHS === 4"},
   {"assert": "!window.VigilStore.state.flags.STONE_TOLD"},
   {"eval": "({ WALK: window.VigilStore.state.flags.WALK_UNLOCKED, LAW0: window.VigilStore.state.flags.LAW0, CRACKED: window.VigilStore.state.flags.BELLS_CRACKED, CLUES: window.VigilStore.state.flags.CLUES, TRUTHS: window.VigilStore.state.flags.TRUTHS, R1: window.VigilStore.state.flags.BELLS_R1_HITS + '/' + window.VigilStore.state.flags.BELLS_R1_TOTAL, R1PASS: window.VigilStore.state.flags.BELLS_R1_PASS, R3: window.VigilStore.state.flags.BELLS_R3_HITS + '/' + window.VigilStore.state.flags.BELLS_R3_TOTAL, R3PASS: window.VigilStore.state.flags.BELLS_R3_PASS })"},

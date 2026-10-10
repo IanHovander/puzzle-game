@@ -8,7 +8,7 @@
   {"assert": "VigilStore.state.flags.ENDING === 4 && VigilStore.state.flags.DECISION === 'VANE'"},
   {"clickText": "What the Crown does"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "vane_ending"}, {"expect": "Nobody walked"}, {"expect": "garrison by spring"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Envoy's Bargain"}, {"expect": "The Binding was never called"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Envoy's Bargain"}, {"expect": "The Binding was never called"},
   {"assert": "!VigilStore.state.solved || !VigilStore.state.solved.ch7_sigil"},
   {"eval": "({ending: VigilStore.state.flags.ENDING, decision: VigilStore.state.flags.DECISION})"}
 ] }

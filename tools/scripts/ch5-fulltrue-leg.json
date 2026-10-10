@@ -320,7 +320,7 @@
   {
    "shot": "t_ch5_flow"
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "expect": "Seer holds the stair"
   },
   {

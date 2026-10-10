@@ -8,6 +8,6 @@
   {"assert": "VigilStore.state.flags.EMBER_LOST === true"},
   {"clickText": "The night moves on"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"shot": "ch2_flow_sorrel"},
-  {"expect": "the Ember went to the Convocation"}, {"expect": "Wren's arm is broken"},
+  {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Ember went to the Convocation"}, {"expect": "Wren's arm is broken"},
   {"eval": "({EMBER_LOST: VigilStore.state.flags.EMBER_LOST, WREN_HURT: VigilStore.state.flags.WREN_HURT, stair: VigilStore.state.choices.CH2_STAIR})"}
 ] }

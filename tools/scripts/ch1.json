@@ -19,7 +19,7 @@
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_prices"}, {"expect": "Sorrel"}, {"expect": "Oriel"}, {"click": ".btn.choice >> nth=1"}, {"wait": 800}, {"key": "Space"}, {"expect": "forty years of practice"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_offer"}, {"expect": "Ask your Seer"}, {"click": ".btn.choice >> nth=0"}, {"wait": 800}, {"key": "Space"}, {"expect": "when it costs more"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_after"}, {"expect": "Binder, write that down"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow"}, {"expect": "5–4 to keep"}, {"expect": "Oriel's"}, {"expect": "refused"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "5–4 to keep"}, {"expect": "Oriel's"}, {"expect": "refused"},
   {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, SORREL: VigilStore.state.flags.SORREL, ORIEL: VigilStore.state.flags.ORIEL, NEITHER: VigilStore.state.flags.NEITHER, VANE_PRETEND: VigilStore.state.flags.VANE_PRETEND, VANE_ACCEPT: VigilStore.state.flags.VANE_ACCEPT, WREN_TRUST: VigilStore.state.flags.WREN_TRUST, APPROACHED: VigilStore.state.flags.CH1_APPROACHED})"},
   {"clickText": "The Ember Vault"}, {"wait": 1200}, {"log": true}
 ] }

@@ -53,6 +53,6 @@
   {"clickText": "What it means"}, {"wait": 800}, {"key": "Space"}, {"expect": "THE FOURFOLD WALK IS OPEN"},
   {"expect": "And I read it, not you"}, {"shot": "s_open_told"},
   {"clickText": "The night moves on"}, {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "s_flow_told"},
-  {"expect": "the stone was read to you after four wrong readings"},
+  {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the stone was read to you after four wrong readings"},
   {"expect": "The stone, read to you"}
 ] }

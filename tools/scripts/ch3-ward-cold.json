@@ -15,6 +15,6 @@
   {"wait": 800}, {"key": "Space"}, {"wait": 600}, {"expect": "ring would not wake"}, {"expect": "will not hang tonight"}, {"shot": "ch3_surrender_cold"},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.SURRENDERED,f.WARD_COLD]})()"},
   {"clickText": "The empty stair"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "you handed Wren over"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "you handed Wren over"},
   {"clickText": "The Oath"}, {"wait": 1200}, {"log": true}
 ] }

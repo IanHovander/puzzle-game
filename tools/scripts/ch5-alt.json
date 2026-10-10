@@ -385,7 +385,7 @@
   {
    "shot": "alt_flow"
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "expect": "one bell cracked"
   },
   {

@@ -8,6 +8,6 @@
   {"assert": "VigilStore.state.flags.WITH_HELP === true && VigilStore.state.flags.BINDING_LANDED === true && (VigilStore.state.flags.BINDING_FAILS|0) >= 3"},
   {"clickText": "What the fire decides"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "Walked into the Cold: the Provost"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "help_flow"}, {"expect": "counted for you"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "help_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "counted for you"},
   {"eval": "({help: VigilStore.state.flags.WITH_HELP, fails: VigilStore.state.flags.BINDING_FAILS, ending: VigilStore.state.flags.ENDING})"}
 ] }

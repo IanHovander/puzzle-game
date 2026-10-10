@@ -65,6 +65,12 @@ function scenesOf(chIds) {
     });
     // Everything past the typewriter is built on the keypress: the widget, and the flow panel.
     await page.keyboard.press('Space');
+    /* A chapter-end screen shows its story text first and builds the chart when the table asks for it
+       (engine.js runFlow), so the chart has to be asked for before it can be measured. */
+    if (sc.type === 'flow') {
+      const gate = await page.waitForSelector('#actions .flow-gate', { timeout: 4000 }).catch(() => null);
+      if (gate) await gate.click();
+    }
     /* Only wait for a widget on a scene that builds one. The old probe waited its full 6000ms on every
        prose scene -- roughly 90 of 131 -- which is where a quarter of an hour of scan time went. */
     const wid = BUILDS_WIDGET.has(sc.type) ? await page.evaluate(() => new Promise(res => {

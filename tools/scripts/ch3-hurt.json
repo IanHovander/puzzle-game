@@ -12,7 +12,7 @@
   {"clickText": "Speak the words"}, {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"clickText": "Turn around"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "bringing him the child"}, {"shot": "ch3_door_bluff"}, {"click": ".btn.choice >> nth=1"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"expect": "lied to a man with a"}, {"clickText": "The Tower stair"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "you bluffed the captain"}, {"shot": "ch3_flow_bluff"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "you bluffed the captain"}, {"shot": "ch3_flow_bluff"},
   {"eval": "(function(){var f=window.VigilStore.state.flags;return [f.DOOR,f.TRUTHS,f.WREN_TRUST,f.WHISPER_reader,f.CH3_TURNS]})()"},
   {"clickText": "The Oath"}, {"wait": 1000}, {"log": true}
 ] }

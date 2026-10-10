@@ -10,7 +10,7 @@
   {"wait": 400}, {"expect": "1 found"}, {"clickText": "Stop searching"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "back early"}, {"expect": "to my face"}, {"shot": "ch4alt_swear"}, {"click": ".btn.choice >> nth=1"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "no part of this"}, {"expect": "they said no"}, {"expectNot": "wax stays gray"}, {"shot": "ch4alt_refused"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "refused to swear"}, {"expect": "you found one"}, {"shot": "ch4alt_flow"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "refused to swear"}, {"expect": "you found one"}, {"shot": "ch4alt_flow"},
   {"assert": "VigilStore.state.flags.OATH === 0 && VigilStore.state.flags.OATH_KNOT === false && VigilStore.state.flags.REFUSED_OATH === true && VigilStore.state.flags.GREY === true && VigilStore.state.flags.MARROW_LETTER === undefined && VigilStore.state.flags.LAW0 === false"},
   {"eval": "({OATH: VigilStore.state.flags.OATH, OATH_KNOT: VigilStore.state.flags.OATH_KNOT, REFUSED_OATH: VigilStore.state.flags.REFUSED_OATH, LAW0: VigilStore.state.flags.LAW0, GREY: VigilStore.state.flags.GREY, MARROW_LETTER: VigilStore.state.flags.MARROW_LETTER})"}
 ] }

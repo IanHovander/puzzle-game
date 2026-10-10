@@ -7,6 +7,6 @@
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_lost"}, {"expect": "I will fetch Wren home myself"}, {"expect": "worst handwriting the Register has ever held"}, {"clickText": "Later"},
   {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_offer_lost"}, {"expect": "under guard tonight, as a courtesy to Ilsabet"}, {"click": ".btn.choice >> nth=2"}, {"wait": 800}, {"key": "Space"}, {"expect": "My captain knows your faces now"}, {"clickText": "Continue"},
   {"wait": 800}, {"key": "Space"}, {"shot": "ch1_after_lost"}, {"expect": "warm room"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow_lost"}, {"expect": "voted to send"}, {"expect": "accepted"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 300}, {"shot": "ch1_flow_lost"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "voted to send"}, {"expect": "accepted"},
   {"eval": "({VOTE_LOST: VigilStore.state.flags.VOTE_LOST, NEITHER: VigilStore.state.flags.NEITHER, SORREL: VigilStore.state.flags.SORREL, ORIEL: VigilStore.state.flags.ORIEL, VANE_ACCEPT: VigilStore.state.flags.VANE_ACCEPT, VANE_PRETEND: VigilStore.state.flags.VANE_PRETEND, WREN_TRUST: VigilStore.state.flags.WREN_TRUST, APPROACHED: VigilStore.state.flags.CH1_APPROACHED})"}
 ] }

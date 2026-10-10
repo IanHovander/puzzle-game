@@ -21,7 +21,7 @@
   {"wait": 900}, {"key": "Space"}, {"wait": 600}, {"shot": "ch7_fourhands"}, {"expect": "WRITE IT"}, {"expect": "Law 0"}, {"assert": "(() => { const b = document.querySelector('.fourhands > .btn.small.ghost'); if (!b) return false; const cs = getComputedStyle(b); return cs.opacity === '0' && cs.pointerEvents === 'none'; })()"},
   {"keys": "acm/"}, {"wait": 2600}, {"key": "Space"}, {"wait": 500}, {"shot": "ch7_white"}, {"expect": "White"}, {"clickText": "After"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "ch7_ending"}, {"expect": "Walked into the Cold: Reader, Listener, Seer and Binder"}, {"expect": "there is a heartbeat"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "ch7_flow"}, {"expect": "the Fourfold Walk"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "ch7_flow"}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Fourfold Walk"},
   {"expect": "The ring closed first time"},
   {"expectNot": "The Envoy's Bargain"}, {"expectNot": "The Keeper's Walk"}, {"expectNot": "Wren given up"}, {"expectNot": "The wall shown"},
   {"assert": "Array.from(document.querySelectorAll('.fc-node')).filter(n => n.textContent.indexOf('?') >= 0).length >= 6"},

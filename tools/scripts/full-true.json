@@ -233,7 +233,7 @@
   {
    "key": "Space"
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "clickText": "The Vigil"
   },
   {
@@ -423,7 +423,7 @@
   {
    "wait": 300
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch1_flow"
   },
   {
@@ -643,7 +643,7 @@
   {
    "wait": 400
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch2_flow"
   },
   {
@@ -908,7 +908,7 @@
   {
    "wait": 400
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch3_flow"
   },
   {
@@ -1255,7 +1255,7 @@
   {
    "wait": 400
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch4_flow"
   },
   {
@@ -1586,7 +1586,7 @@
   {
    "wait": 300
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch5_flow"
   },
   {
@@ -1922,7 +1922,7 @@
   {
    "wait": 300
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch6_flow"
   },
   {
@@ -2357,7 +2357,7 @@
   {
    "wait": 400
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "shot": "t_ch7_flow"
   },
   {
@@ -2600,7 +2600,7 @@
   {
    "wait": 300
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "expect": "Epilogue \u2014 the paths you walked"
   },
   {

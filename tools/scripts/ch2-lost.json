@@ -18,6 +18,6 @@
   {"assert": "VigilStore.state.flags.CH2_STAIR_timedout === true"},
   {"clickText": "Continue"},
   {"wait": 900}, {"key": "Space"}, {"shot": "ch2_top_lost"}, {"expect": "Vane's captain"}, {"expect": "You promised no Master anything"}, {"clickText": "The night moves on"},
-  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"expect": "went unlooked-at"}, {"expect": "Wren is unhurt"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 400}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "went unlooked-at"}, {"expect": "Wren is unhurt"},
   {"eval": "({stair: VigilStore.state.choices.CH2_STAIR, timedout: VigilStore.state.flags.CH2_STAIR_timedout, EMBER_LOST: VigilStore.state.flags.EMBER_LOST, niche: VigilStore.state.choices.CH2_NICHE || null})"}
 ] }

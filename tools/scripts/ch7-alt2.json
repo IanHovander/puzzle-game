@@ -22,7 +22,7 @@
   {"_": "and it is a RECORD, not a budget: the slip does not spend one of the three attempts, so the round is still live and the run below still lands the Binding"},
   {"keys": "cm/"}, {"wait": 9000}, {"keys": "cm/"}, {"wait": 2400}, {"key": "Space"}, {"wait": 500}, {"shot": "alt2_binding_done"}, {"clickText": "What the fire decides"},
   {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"shot": "alt2_ending"}, {"expect": "Walked into the Cold: the Provost"}, {"clickText": "The night, whole"},
-  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"expect": "the Keeper's Walk"}, {"expect": "kept the Envoy"},
+  {"wait": 900}, {"key": "Space"}, {"wait": 500}, {"clickText": "Show the chart"}, {"wait": 500}, {"expect": "the Keeper's Walk"}, {"expect": "kept the Envoy"},
   {"assert": "VigilStore.state.flags.BARGAIN_reader === 'kept' && VigilStore.state.flags.BARGAIN_seer === 'broken'"},
   {"assert": "(VigilStore.state.flags.BINDING_FAILS|0) === 1 && VigilStore.state.flags.BINDING_LANDED === true"},
   {"eval": "({ending: VigilStore.state.flags.ENDING, fails: VigilStore.state.flags.BINDING_FAILS, spare: VigilStore.state.flags.MIDNIGHT_SPARE, k: VigilStore.state.flags.BARGAIN_reader, s: VigilStore.state.flags.BARGAIN_seer})"}

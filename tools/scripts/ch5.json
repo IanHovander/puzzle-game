@@ -524,7 +524,7 @@
   {
    "shot": "ch5_flow"
   },
-  {
+  {"clickText": "Show the chart"}, {"wait": 500}, {
    "expect": "holds the stair with a thread"
   },
   {
