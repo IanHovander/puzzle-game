@@ -23,12 +23,26 @@
     body[data-chapter="ch3"] .grid-pz .grid-board svg { max-height: min(34vh, 320px); }
     body[data-chapter="ch3"] .grid-controls .btn { padding: 7px 4px; font-size: 13px; }
     body[data-chapter="ch3"] .ring-pz .wheel { width: min(34vh, 320px); height: min(34vh, 320px); }
+    /* The slot numbers are what the Seer's page names ("a small notch under slot 4"): legible at any size (ch0 does the same). */
+    body[data-chapter="ch3"] .ring-pz .wheel .slot text.lbl { font-size: 28px; fill: var(--ink); }
     /* The rule card and the status line are prose, not a machine label. */
     body[data-chapter="ch3"] .pz-note { white-space: normal; font-family: var(--serif); font-size: 15px; line-height: 1.45; }
     body[data-chapter="ch3"] .pz-status { font-family: var(--serif); font-size: 15px; letter-spacing: 0; text-transform: none; line-height: 1.4; }
     @media (max-height: 760px) {
       body[data-chapter="ch3"] .grid-pz .grid-board svg { max-height: min(29vh, 260px); }
       body[data-chapter="ch3"] .ring-pz .wheel { width: min(28vh, 280px); height: min(28vh, 280px); }
+    }
+    /* R1.2 (1152 x 648): the wheel and the palette stacked, and Close the sigil sat 165px below the fold.
+       A smaller wheel and short name tiles put them side by side. */
+    @media (max-height: 680px) {
+      body[data-chapter="ch3"] .ring-pz .wheel { width: min(24vh, 156px); height: min(24vh, 156px); }
+      body[data-chapter="ch3"] .ring-pz .wheel-wrap { gap: 10px; }
+      body[data-chapter="ch3"] .ring-pz .palette { min-width: 200px; flex-basis: 200px; }
+      body[data-chapter="ch3"] .ring-pz .palette-grid { gap: 5px; margin-top: 4px; }
+      body[data-chapter="ch3"] .ring-pz .glyph.name-only { width: 72px; height: 30px; }
+      body[data-chapter="ch3"] .ring-pz .glyph.name-only .gname { font-size: 12px; }
+      body[data-chapter="ch3"] .ring-pz .palette-grid .glyph.empty { width: 72px; height: 30px; }
+      body[data-chapter="ch3"] .ring-pz .wheel .slot text.lbl { font-size: 32px; }
     }
   ` }));
   /* A hurt-arm door turn that was spotted or rang the bell is cut short on purpose (see doorOpened); keep the console clean. */
@@ -87,7 +101,7 @@
                      wall, and canceling costs nothing. What the Seer holds is the mapping and the ends.)
        no Binder   — the porter is the Binder's alone now. The Seer's under-layer draws the rooms, the
                      passages and the two seams, and no longer draws the lodge or its sight-lines, so
-                     nothing else on the table says the north corridor is watched. With the cry unknown
+                     nothing else on the table says the south corridor is watched. With the cry unknown
                      a table believes 824 schedules are safe and 412 are (hurt: 68 believed, 34 real).
                      Exactly half, and the wrong half is a sighting. A COSTED COIN FLIP.
        no Reader   — eight words per seam, and the nth wrong word at a seam costs n turns. Surviving
@@ -185,14 +199,21 @@
     /* Every number on this card is the number in force, not the number it started at: after a bell the
        budget is eleven and a sighting is dearer, and a card that still said twelve would be a promise the
        widget does not keep (R10.4 — a reader holding only the card must be able to compute any position). */
-    note: 'The Provost, at the bell-rope: *' + cap(num(turnBudget())) + ' turns. A turn is one room, or a wait. A patrol that ends a turn in Wren\'s room, or one doorway from it, has seen Wren. Wren runs all the way back to the gallery, and '
+    /* "one doorway" read as a seam too, and grid.js's seenBy uses open edges only: a patrol never sees
+       through a seam, open or shut, and rung 3 parks Wren behind one with the lantern on the far side.
+       "At the bells", not "at the bell-rope": ch3_flow's "There was never a rope" is the captain's rope,
+       and a card that put one in her hands contradicted it (r0 audit A2). The door cost is n turns for the
+       nth wrong word at that door (seamWrong), said as a count, with one name for the thing: a hidden door. */
+    note: 'The Provost, at the bells: *' + cap(num(turnBudget())) + ' turns. A turn is one room, or a wait. A patrol that ends a turn in Wren\'s room, or one open passage from it, has seen Wren. Wren runs all the way back to the gallery, and '
       + (sightCost() === 1 ? 'a turn goes with it. ' : num(sightCost()) + ' turns go with it. ')
-      + (s.flags.WREN_HURT ? 'A hidden door costs a turn: a wrong word, or a one-handed shove. ' : 'A wrong word at a hidden door costs a turn. ')
-      + 'One turn more for every guess that seam already remembers.*',
+      + 'Nobody sees through a hidden door. '
+      + (s.flags.WREN_HURT ? 'One-handed, Wren needs a turn to shove one open. ' : '')
+      + 'The first wrong word at a door costs a turn, the second two, the third three.*',
     cols: 5, rows: 5, cells: CELLS, edges: EDGES,
     doors: {
-      'A3|B3': mkDoor('A3|B3', WORDS['A3|B3'], 'A seam in the west wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
-      'B3|C3': mkDoor('B3|C3', WORDS['B3|C3'], 'A seam in the laundry\'s back wall, and one shape cut over it. Speak the word. A wrong word costs a turn.', 'Not that word. The seam stays a seam.'),
+      /* The cost is on the rule card, and it is n turns for the nth wrong word, not "a turn". */
+      'A3|B3': mkDoor('A3|B3', WORDS['A3|B3'], 'A seam in the west wall, and one shape cut over it. Speak the word.', 'Not that word. The seam stays a seam.'),
+      'B3|C3': mkDoor('B3|C3', WORDS['B3|C3'], 'A seam in the laundry\'s back wall, and one shape cut over it. Speak the word.', 'Not that word. The seam stays a seam.'),
     },
     start: 'A1', goal: 'E5', safe: ['A1'],   // the gallery, and nothing else: see the budget above
     revealPatrols: false,
@@ -211,7 +232,7 @@
       const nth = ['a fourth', 'a fifth', 'a sixth'][Math.min(n, 2)] || 'another';
       return `The third bell, and Wren is not at the door. Far above, the Provost rings ${nth}. Both rounds begin again from the top — ${num(Math.max(11, 11 - n))} turns in them now, and being seen costs ${num(2 + n)} of them.`;
     },
-    successText: 'The Tower door. Wren flattens against it, grinning, out of breath.',
+    successText: 'The Tower door, at last.',
     /* Cumulative: a restart does not wipe the count. The turn matters more than the count — without it,
        being thrown back to the gallery on turn 4 still leaves exactly the eight turns the direct line needs,
        so "push east, and when you are thrown back walk the same road again" won with no phones at all.
@@ -222,9 +243,11 @@
       // Keep grid.js's own line about who saw Wren and where: the deferred turn would otherwise wipe it.
       setTimeout(() => {
         const st = document.querySelector('#widget .grid-pz .pz-status');
-        const seenLine = st ? st.textContent.trim() : '';
-        const tail = cost === 1 ? 'The rounds did not wait for it.' : `The rounds did not wait, and ${num(cost)} turns went with it.`;
-        for (let i = 0; i < cost; i++) { const r = spendTurn((seenLine ? seenLine + ' ' : '') + 'Back in the gallery, breathing hard. ' + tail); if (!r || r.ended) break; }
+        // The board's own exclamation mark is the only one in the chapter: keep the line, drop the shout.
+        const seenLine = st ? st.textContent.trim().replace(/!/g, '.') : '';
+        // grid.js's own line already says Wren scrambled back to the gallery: say only what it cost.
+        const tail = cost === 1 ? 'The rounds did not wait.' : `The rounds did not wait, and ${num(cost)} turns went with them.`;
+        for (let i = 0; i < cost; i++) { const r = spendTurn((seenLine ? seenLine + ' ' : '') + 'Wren is breathing hard. ' + tail); if (!r || r.ended) break; }
       }, 0);
     },
     /* Every bell charges. WREN_SCARED is ch4's flag and means "the third bell rang with Wren still out",
@@ -240,13 +263,13 @@
   /* ============================================================================================
      THE THRESHOLD.  Four slots, three words, one slot left empty.
 
-        ARCH   = ['ASH','THORN','KNOT']   Reader — Flame, Spike and Hook, all standing up
+        ARCH   = ['ASH','THORN','KNOT']   Reader — Flame, Spike and Hook, upright, set down in no order
         CLIMB  = [1, 1]                   Listener — each note one rung above the last
         CUTS   = { scratch: 1, notch: 4 } Seer — two cuts under the ring, no arrow and no rule
-        LAW    = begin in the scratched slot, then one slot clockwise, wrapping; the rest stays empty (Binder)
+        LAW    = a Vigil ward: begin in the NOTCHED slot, then one slot back, widdershins (Binder)
 
      Enumerated: 4 slots, 8 glyph names, no repeats, empties allowed = 3,393 submittable states.
-     Exactly one passes: ASH in 4, THORN in 1, KNOT in 2, slot 3 empty.
+     Exactly one passes: ASH in 4, THORN in 3, KNOT in 2, slot 1 empty (RING, derived below).
      Drop a page and the states still consistent with the other three are — re-enumerated; the figure of
      336 for the Reader that stood here before was simply wrong:
         no Reader   5 — the Ladder is seven rungs, so a climb of one-then-one fits five triples:
@@ -255,7 +278,7 @@
                         two rungs, and seven minus the span is at most five. This one is already at that
                         ceiling, so the Reader cannot be made harder to drop by choosing other words.
         no Listener 6 — the six orderings of the three words across slots 4, 1 and 2.
-        no Seer     4 — one clockwise run of the three words per starting slot.
+        no Seer     4 — begin at either of two cuts, run either way: the Binder's rule needs the cut's slot.
         no Binder   4 — begin at the scratch or at the notch, clockwise or widdershins. BOTH bits are
                         the Binder's, and it took two goes to make that true. This row was FALSE twice.
                         First it was 1: the Binder's page here was word for word the Binder's PROLOGUE
@@ -269,21 +292,8 @@
                         A Vigil ward is sealed behind its keeper and runs widdershins. That is on the
                         Binder's page and nowhere else, ring.js's SUNWISE arrow is off, and the Hearth
                         draws no cuts. Now the field is four and the Prologue answers neither bit.
-                        THIS ROW WAS FALSE UNTIL THE INTEGRATE PASS, and it was false in a way no
-                        reader of this chapter could see. The Binder's page here used to be, word for
-                        word, the Binder's PROLOGUE page: begin at the scratch, a notch is only a
-                        signature, run clockwise. The dormitory lamp is worked on the shared screen
-                        and its answer -- {3:ASH, 4:EMBER}, scratch at 3 -- resolves both of those
-                        bits in front of everybody, with the Binder required to say the rule aloud to
-                        solve it. So by Chapter III the rule is table knowledge (ADVERSARIAL 11), the
-                        Binder-less field was ONE board, and p was 1.000 rather than 0.250: the seat
-                        was free. Enumerated against the shipped wardCheck in
-                        scratchpad/prologue/binder.js.
-                        The fix keeps the accepted board to the letter and moves the RULE: the two
-                        cuts swapped slots and this ward begins at the NOTCH, because it is a Vigil
-                        ward and not a Founders' sigil. The row is 4 again, and better than 4 was:
-                        the board a table lays from the Prologue's rule is now a full lawful WRONG
-                        one, so the missing seat costs a try rather than nothing.
+                        The board a table lays from the Prologue's rule (scratch, clockwise) is a full
+                        lawful WRONG one, so the missing seat costs a try rather than nothing.
      No single drop leaves one. But four to six wrong sigils is nothing to a table that may submit for
      ever, so three tries is the price: three cold rings and the captain takes Wren (ch3_surrender, which
      has its own written branch; onSolve writes DOOR and SURRENDERED the moment the ring goes cold, so a
@@ -308,8 +318,8 @@
      p(3 tries) from 0.750 to 1.000 in both, and the 25% it deleted is the captain taking Wren.
      And no wrong line names a slot, a cut, a direction or the shape of the hum: the Hearth is
      the one screen all four can see, and four of the five keyed lines used to read out somebody's page.
-     The mark sits at slot 4 so the count wraps: "it begins at slot 1", which the widget's own numbering
-     suggests, is a wrong answer with its own line rather than the right one.
+     The mark sits at slot 4 and the run goes 4, 3, 2, so it never wraps, and "it begins at slot 1", which
+     the widget's own numbering suggests, is a wrong board with the same line as every other wrong board.
      ============================================================================================ */
   const ARCH = ['ASH', 'THORN', 'KNOT'];
   /* The two cuts. They are the SEER's page and nothing on the Hearth draws them (the ring ships
@@ -318,7 +328,7 @@
      They SWAPPED in the Integrate pass. See the note on the Binder's page in companion/ch3.js: the
      scratch-is-the-mark rule was spent by the Prologue's dormitory lamp, in front of the whole room,
      so this ward's Binder-less field was 1 and not 4. The mark here is the NOTCH, which is what the
-     Binder now holds; the accepted board (RING below) did not move.
+     Binder now holds. The accepted board moved once more when the run turned widdershins (RING below).
      The scratch sits on slot 1 -- the slot a guessing table starts at, and the slot ch0's lamp and
      ch7's sigil both put their decoy cut on, for the same reason. It cannot be slot 2: that is
      ch4's oath pair (OATH_SCRATCH 2, OATH_NOTCH 4) and tools/scripts/ch4-oath-check.js fails on the
@@ -326,9 +336,8 @@
   const CUTS = { scratch: 1, notch: 4 };   // Seer: what is cut. Binder: which of them binds.
   /* WHICH WAY IT RUNS is the Binder's second bit, and it had to become one. Moving the mark to the
      notch fixed only half of what the Prologue spends: the dormitory lamp is worked on the shared
-     screen and its answer settles BOTH the start AND the direction, and companion/ch0.js:134 teaches
-     'sunwise -- clockwise, the way the numbers count up' aloud, to the whole room, in the Binder's own
-     mouth. So with the start moved the Binder-less field was 2 boards, not 4, and three tries walked
+     screen and its answer settles BOTH the start AND the direction, and the Binder's Prologue page
+     teaches the clockwise run, which the Binder says aloud to the whole room to solve the lamp. So with the start moved the Binder-less field was 2 boards, not 4, and three tries walked
      it with certainty: p 1.000 against a recorded 0.750.
      A Vigil ward is sealed by its keeper behind them, so it runs WIDDERSHINS -- back against the
      count. That is on the Binder's page and nowhere else; ring.js would draw a SUNWISE arrow at the
@@ -375,7 +384,7 @@
     const placed = [1, 2, 3, 4].filter(i => m[i]);
     if (!placed.length) return UNDER.none;
     if (placed.length < 3) return UNDER.few;
-    if (placed.length > 3) return 'Three shapes, three words. A fourth is a different sigil, and the iron can tell.';
+    if (placed.length > 3) return 'Three shapes, three words. A fourth makes a different ward, and the iron can tell.';
     if (placed.map(i => m[i]).slice().sort().join() !== ARCH.slice().sort().join()) return 'Those are not the three words cut over this door.';
     const missing = [1, 2, 3, 4].find(i => !m[i]);          // three of four slots are always a run
     /* There used to be a keyed line here for the board a table lays from the Prologue's rule -- 'begun at
@@ -383,16 +392,17 @@
        on the screen all four share, which is the whole of ADVERSARIAL 2. A wrong run now gets one line
        whichever way it is wrong, so the Hearth cannot tell a Binder-less table which half to change. */
     if ([1, 2, 3, 4].every(i => (m[i] || null) === (RING[i] || null))) return true;   // derived: see RING
-    return 'The iron does not answer. Something under the soot disagrees with the sigil you have made.';
+    return 'The iron does not answer. Something under the soot disagrees with what you have made.';
   }
 
   /* One scene for the three ways of talking past the captain: the branch swaps three sentences.
      Each option still writes its own DOOR value in ch3_door — ch4 branches on all five. */
   const STAND = {
+    /* ch1: the captain stood in the side passage through the whole offer, and heard the Reader's answer. */
     BLUFF: {
-      said: 'It is the Envoy\'s own offer, word for word. The captain heard his master make it, and cannot know how you answered.',
+      said: 'It is the Envoy\'s own offer, word for word. The captain heard the Reader say yes to it.',
       captain: 'Then the Envoy will see you at his door. With the child.',
-      wren: 'You lied to a man with a *rope*. With a straight face. I have never been prouder.',
+      wren: 'You lied to a man with a *rope*. With a straight face. Last time you were *terrible*.',
     },
     WORD: {
       said: 'You do not have to raise your voices. The captain already knows.',
@@ -400,9 +410,15 @@
       wren: 'Why is he letting us go? What did you say to him? …Fine. Don\'t tell me.',
     },
     WRIT: {
-      said: 'Master Sorrel\'s writ, the one she gave you for the Ember. He reads it twice by lantern-light.',
+      /* ch2: the Binder's red thread to Sorrel "pulls tight" when her guards come for the Ember. The writ
+         is a second loan on the same thread. The captain reads it closely ("every line, then the seal"): ch4's
+         queued fix for "nobody read it closely" should say so in those words rather than "twice". */
+      said: 'The Binder holds out Master Sorrel\'s writ, one-handed. The captain reads every line, then the seal. The Binder\'s red thread to Sorrel pulls tighter.',
       captain: 'The Envoy holds the Crown\'s writ. This one is the Convocation\'s. I was not sent to start a war on a stair.',
-      wren: '*Sorrel* saved me? I called her a goat once. To her face.',
+      /* Sorrel's two votes kept Wren at the Vigil, the same night (ch1). On the unhurt branch her Ember was
+         never paid (ch2), and on both the writ is a second loan on that thread: the cost is the silence. */
+      wren: 'Sorrel. Twice in one night. I called her a goat once. To her face. …What does she get?',
+      after: 'The Binder does not answer. The thread does not loosen.',
     },
   };
 
@@ -417,7 +433,7 @@
         { id: 'ch3_whispers', label: 'The laundry', col: 2, row: 2, secret: true, when: (s) => !!s.flags.LINEN },
         { id: 'ch3_thanks', label: 'Even the ones who lied', col: 3, row: 2 },
         { id: 'ch3_door', label: 'The Tower door', col: 4, row: 2, kind: 'choice' },
-        { id: 'ch3_fight', label: 'The ward flares', col: 5, row: 0, secret: true },
+        { id: 'ch3_fight', label: 'Waking the ward', col: 5, row: 0, secret: true },
         { id: 'ch3_bluff', label: 'A bluff', col: 5, row: 1, secret: true, when: (s) => s.flags.DOOR === 'BLUFF' },
         { id: 'ch3_word', label: 'Vane\'s word', col: 5, row: 2, secret: true, when: (s) => s.flags.DOOR === 'WORD' },
         { id: 'ch3_writ', label: 'Sorrel\'s writ', col: 5, row: 3, secret: true, when: (s) => s.flags.DOOR === 'WRIT' },
@@ -434,28 +450,41 @@
         art: 'ch3_gallery', mood: 'tense', fx: 'dust', sfx: 'boom',
         title: 'The long gallery',
         text: (s) => [
+          /* ch2 ends a lost vote with the Provost between the captain and Wren: nobody took Wren, so nobody
+             took Wren back. "The child" is Vane's word, never the narrator's (ch1.js:155). */
+          /* "a soldier on every stair" plants the Tower stair the chapter ends on. */
           s.flags.VOTE_LOST
-            ? 'The nine voted Wren away. The Provost went and took the child back before midnight.'
-            : 'The nine voted to keep Wren. Lord Vane bowed to the vote, and then put soldiers through the school.',
-          'They search room by room, with lanterns. In the long gallery the portraits have begun to mutter. The Listener catches three words: *four went down.*',
+            ? 'The nine voted Wren away. The Provost has not handed Wren over, so Lord Vane has put a soldier on every stair.'
+            : 'The nine voted to keep Wren. Lord Vane bowed to the vote. Then he put a soldier on every stair.',
+          /* "four came back" is the source of the Listener's ch5 letter (companion/ch5.js:317) and of ch6.js:845. */
+          'The portraits in this gallery mutter. Only the Listener can make out the words: *four went down.* Then, fainter: *four came back.*',
+          /* ch2's last line is the Hearth flickering and Wren flinching with it. It carries on here, and ch3_flow
+             closes the chapter on the same gutter with Wren holding on instead. "A third" frame: the portraits
+             here are of the dead. */
           (s.flags.WREN_HURT
-            ? 'Wren waits between two frames, one arm strapped up in what is left of the Binder\'s cloak.'
-            : 'Wren waits between two frames, grinning.')
-            + ' The Provost straightens Wren\'s collar without looking. Wren lets her.',
-          { speaker: 'Provost Marrow', text: 'There is a ward on the door of the Bell Tower, older than the school. Vane\'s men cannot pass it. Get Wren there before the third bell. I ring the bells, and twelve turns is all I can buy you.' },
+            ? 'Wren waits between two frames, one arm strapped up in a strip of the Binder\'s cloak.'
+            : 'Wren waits between two frames, as if posing for a third.')
+            + ' Far below, the Hearth gutters, and Wren flinches. The Provost straightens Wren\'s collar without looking. Wren lets her.',
+          /* The ward is asleep until the four wake it (ch3_door), and it is a Vigil ward, not Founders' work:
+             "older than the school" is gone (companion/ch3.js, the Binder's page; companion/ch4.js:275). She
+             rings the bells from the Tower, which is what makes the captain's rope a lie (ch3_flow). */
+          { speaker: 'Provost Marrow', text: 'There is a ward on the door of the Bell Tower. Wake it, and Vane\'s men cannot pass. Get Wren there before the third bell. I ring the bells, and I will ring them slowly.' },
+          /* The hum is the Listener's Wren-tab line ("humming the Ember's tune"), read at ch3_thanks. */
           s.flags.WREN_HURT
-            ? 'The Seer points out, flatly, that nobody sneaks anywhere in a sling.'
-            : 'The Seer points out, flatly, that Wren\'s idea of sneaking is humming.',
-          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'Sneaking is mostly legs. I\'ve still got both of those.' : 'I hum *quietly*. And fourteen years I\'ve been sneaking round this school. Tonight it\'s *allowed*.' },
+            ? '"Nobody sneaks anywhere in a sling," says the Seer, flatly.'
+            : '"You\'re humming," says the Seer, flatly.',
+          { speaker: 'Wren', text: s.flags.WREN_HURT ? 'Sneaking is mostly legs. I\'ve still got both of those.' : '*Quietly.* Seven years of sneaking out after the bells. Tonight she\'s ringing them for me.' },
         ],
-        next: 'ch3_attune', button: 'Under the paint',
+        next: 'ch3_attune', button: 'Under the varnish',
       },
       ch3_attune: {
         type: 'code', art: 'ch3_gallery', mood: 'tense', fx: 'dust',
+        /* "Up to the bells" is where she goes and what she does there: the captain's rope (ch3_door) is a lie a
+           table can catch, and ch3_flow's bell is her. The code line sits last, so "the word, then the letters" has both. */
         text: [
-          'She touches the oldest frame. Under the varnish are a word and three letters.',
-          'The Reader is already bent over the plaque beside it. Wren slips a biscuit into the Reader\'s pocket.',
-          { text: 'Open the Companion. Take your seat. Type both.', cls: 'whisper' },
+          'The Reader is already bent over the oldest portrait\'s plaque. Wren slips a biscuit into the Reader\'s pocket.',
+          'On her way up to the bells, the Provost touches the frame. The varnish lifts: one word, and three letters.',
+          { text: 'Open the Companion. Take your seat. Type the word, then the letters.', cls: 'whisper' },
           { text: 'Read your page. Say nothing yet.', cls: 'whisper' },
         ],
         roles: 'Warden (keyboard): **the Listener**. Voice (reads aloud): **the Binder**.', sightSeconds: 90,
@@ -465,16 +494,19 @@
       ch3_grid: {
         type: 'puzzle', puzzle: 'grid', art: 'ch3_corridors', mood: 'dread', fx: 'dust',
         puzzleId: 'ch3_grid', par: [3, 5, 7], clearWidget: true,
-        enter: (s) => { if (s.flags.CH3_SPOTTED == null) Store.set('CH3_SPOTTED', 0); },   // cumulative: a re-entry is not a clean sheet (ch1.js:92 is the pattern)
+        enter: (s) => { if (s.flags.CH3_SPOTTED == null) Store.set('CH3_SPOTTED', 0); },   // cumulative: a re-entry is not a clean sheet (the WREN_TRUST init in ch1's enter is the pattern)
         text: [
-          'A1 to E5, in the dark, past two patrols.',
-          { speaker: 'Wren', text: 'Listener, you drive. Say "now" and I go. Say "wait" and I\'ll try. I\'m bad at waiting.' },
-          { text: 'Say your one thing out loud before Wren moves.', cls: 'whisper' },
+          /* The hand the Binder's Wren-tab line, ch3_door and ch3_flow all rely on, taken on screen. */
+          'The Binder takes Wren\'s hand. Cold, as always. To the Tower door, in the dark, past two patrols.',
+          { speaker: 'Wren', text: 'Listener, you call it. Say "now" and I go. Say "wait" and I\'ll try. I\'m bad at waiting.' },
+          { text: 'Each page holds one thing. Say yours out loud before Wren moves.', cls: 'whisper' },
         ],
         config: gridConfig,
         hints: [
           'Each of you holds one piece. Say yours out loud.',
-          'A room is not safe or unsafe. It is safe on some beats and not on others, and the beats come round again. So the question is when to move, not which way — and no two of you can answer that between you. Ask for all four things before Wren moves.',
+          /* "when to move, not which way" was false: 412 of the 824 timing-correct schedules die on the route
+             (the porter's rooms), which is the Binder's whole page. */
+          'Most rooms are safe on some beats and not on others, and the beats come around again. So the question is when to move as well as which way — and no two of you can answer that between you. Ask for all four things before Wren moves.',
           (s) => s.flags.WREN_HURT
             ? 'A2, then A3. Speak the west word on turn 3, and the bad arm spends it, so Wren is in the laundry on turn 4. Wait once. The back seam spends turn 6. Then C3, D3, E3, E4, and the door on turn 11.'
             : 'A2, then A3, and speak the west word into the laundry on turn 3. Wait through turns 4, 5 and 6. The back seam on turn 7, then D3, E3, E4, and the door on turn 11.',
@@ -485,21 +517,25 @@
           Store.note(`Wren reached the Tower door on turn ${r && r.turns}${seen ? ', seen ' + seen + ' time' + (seen === 1 ? '' : 's') : ', never seen'}.`);
         },
         solvedText: (s, r) => [
-          `Turn ${r.turns}. The Tower door, iron-bound, and Wren flat against it, laughing without any sound.`,
+          r && r.turns ? { text: `Turn ${r.turns}.`, cls: 'small' } : null,
+          'The Tower door, iron-bound, and Wren flat against it, laughing without any sound.',
           s.flags.WREN_SCARED
             ? { speaker: 'Wren', text: 'She rang a *fourth* bell. She\'s never rung four. I\'m fine, Listener. My knees just haven\'t heard yet.' }
-            : { speaker: 'Wren', text: 'Listener. You are *terrifying*. "Boots, left, wait, now." Like a very small general.' },
-        ],
-        next: 'ch3_whispers', button: 'The laundry, before',
+            : { speaker: 'Wren', text: 'Listener. You are *terrifying*. "Wait. Wait. Now." Like a very small general.' },
+        ].filter(Boolean),
+        next: 'ch3_whispers', button: 'The laundry',
       },
       /* ---------- the whispers ---------- */
       ch3_whispers: {
         type: 'token', art: 'ch3_laundry', mood: 'sorrow', fx: 'dust',
         enter: () => { Store.set('LINEN', true); },
         text: [
-          'Back in the laundry, while you waited, the woman at the copper did not look up.',
-          'Wren sat on the warm lid of the copper, heels drumming. Then the drumming stopped.',
-          { speaker: 'Wren', text: 'Everyone in this school knows something about me except me. So. One question each. Don\'t look at each other. And don\'t just be nice.' },
+          /* "Earlier": the turns spent waiting in B3 (most safe routes pass through it), told after the run. Bess is on the Binder's
+             corridor page, read aloud before Wren moved, and on the Listener's Wren tab. */
+          'Earlier, in the laundry, Bess at the stove did not look up. She did not look up very carefully.',
+          'Wren sat on the warm lid of the boiler, heels drumming. Then the drumming stopped.',
+          /* The four told Wren the heart, the shadow and the thread in ch0 ("Knew. Knew. Guessed."). */
+          { speaker: 'Wren', text: 'The whole school knows something about me and won\'t say it. You four did. So. One question each. Don\'t look at each other. And don\'t just be nice.' },
           { text: 'Every phone: **Pages**, and the word LINEN. Answer alone, then type back the sealed word your phone gives you.', cls: 'whisper' },
         ],
         prompt: 'Four sealed words, one from each phone.',
@@ -514,23 +550,36 @@
         onTokens: (values, s) => {
           const truth = L.whisperTruth;
           let truths = 0;
+          /* +1 for answering at all, once: the Menu's "Replay scene" re-runs this, and every other cost in
+             this file is guarded against exactly that. TRUTHS is unset until the first answer. */
+          const first = s.flags.TRUTHS == null;
           values.forEach((v, i) => { const r = L.roles[i].id; s.flags['WHISPER_' + r] = v; if (v === truth[r]) truths++; });
           s.flags.TRUTHS = truths;
-          s.flags.WREN_TRUST = (s.flags.WREN_TRUST || 0) + 1;
+          if (first) s.flags.WREN_TRUST = (s.flags.WREN_TRUST || 0) + 1;
           Store.note('Wren asked each of you a question in the dark. Each of you answered.');
         },
-        button: 'Speak the words',
+        button: 'Seal the words',
         next: 'ch3_thanks',
       },
       ch3_thanks: {
-        art: 'ch3_towerdoor', mood: 'sorrow', fx: 'dust',
-        text: [
-          'Received. Received. Received. Received.',
-          'Wren looks at the four of you, one after another, and for once has no joke ready.',
-          { speaker: 'Wren', text: 'Thank you. All of you. Even the ones who lied.' },
-          'Nobody asks which ones that means.',
-          { text: 'Open your **Wren** tab. Read your line to Wren, out loud, in seat order.', cls: 'whisper' },
-        ],
+        /* The soldiers arrive in the next scene, so the art leaves them out here. */
+        art: 'ch3_towerdoor', artParams: { soldiers: false }, mood: 'sorrow', fx: 'dust',
+        /* Four "Received"s, one each, then Wren's "All of you": Wren's knock from the Prologue, one each and
+           then all together, and this time the last beat comes. */
+        text: (s) => {
+          /* "Even the ones who lied" is true on any night with a bluff, a lie or a kindness in it (ch8 labels
+             them). On a night with none, Wren says it anyway and watches: a test, not a verdict, and it gives
+             no seat's answer away. A night without all four answers (a chapter-select jump) reads as usual. */
+          const f = s.flags, answered = ['reader', 'listener', 'seer', 'binder'].every(r => f['WHISPER_' + r]);
+          const none = answered && !(f.WHISPER_reader === 'TELL' || f.WHISPER_listener === 'LOUD' || f.WHISPER_binder === 'YES');
+          return [
+            'Received. Received. Received. Received. One each, like Wren\'s knock.',
+            'Back at the Tower door, Wren looks at you one at a time. For once, the joke does not come. The last beat does.',
+            { speaker: 'Wren', text: 'Thank you. All of you. Even the ones who lied.' },
+            'Nobody asks which ones that means.' + (none ? ' Wren watches to see who looks away.' : ''),
+            { text: 'Open your **Wren** tab. Read your line to Wren, out loud, Reader first.', cls: 'whisper' },
+          ];
+        },
         next: 'ch3_door', button: 'Turn around',
       },
       /* ---------- the Tower door ---------- */
@@ -539,18 +588,35 @@
         /* Silence defaults to the door, never to handing Wren over: every other timed choice in this game
            defaults to the passive option, and surrender is the harshest outcome in the chapter. */
         timer: 75, timerText: '*Seventy-five heartbeats. He is counting them.*', timeout: 'fight',
-        text: (s) => [
-          { speaker: 'Wren', text: 'Reader, you copied my letters onto your cuff. Seer, you stood on my shadow in the dark. Listener, you held your breath every time I held mine. And the Binder still won\'t let go of my hand. You lot are going to make me cry on a —' },
-          'Lantern-light fills the stair behind you. Vane\'s captain, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
-          { speaker: 'The captain', text: 'Hand over the child, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the child alive, he says. Which is more than she does. I am not a cruel man. I am a punctual one.' },
-          s.flags.VANE_ACCEPT ? 'He looks at you a beat longer than he looks at Wren.' : 'Behind the Binder, Wren has gone very still.',
-        ],
-        prompt: 'The Tower door is warded. Choose, together.',
+        text: (s) => {
+          /* ch1: the Seer refused the Envoy with "No. And the name is Wren." Vane: "Then I will ask again later,
+             when it costs more." This is later, and it costs the Provost. */
+          /* Read the way ch1's own stats line reads it (ch1.js, ch1_after): not accepted, not pretended, not
+             timed out. A refusal by choice record alone missed every route that carries only the flags. */
+          const refused = !s.flags.VANE_ACCEPT && !s.flags.VANE_PRETEND && !s.flags.VANE_OFFER_timedout;
+          return [
+            /* Wren answers two of the four lines just read (docs/VOICE.md, no roll calls): the Listener's
+               "Breathe now" and the Binder's "I am not letting go". */
+            { speaker: 'Wren', text: 'I\'m breathing, Listener. Look. Binder, you can let go now. …No? Fine. You lot are going to make me cry on a —' },
+            'Lantern-light fills the stair behind you. Vane\'s captain, the one who learned your faces, and six soldiers, in no hurry. The Binder steps in front of Wren, still holding on.',
+            /* The rope is a lie: the Provost is up in the Tower, ringing the bells (ch3_flow says so). The last
+               barb keeps the poison of the old line, that Marrow means Wren to walk (ch4's oath pays it). */
+            { speaker: 'The captain', text: (refused ? 'The Envoy asks again, and it costs more now. ' : '') + 'Hand over the child, or the Provost hangs. The Envoy has her in the Great Hall with a rope over the beam. He wants the child alive. Ask your Provost what *she* wants. I am not a cruel man. I am a punctual one.' },
+            /* The bells going quiet is what makes the threat worth weighing, and it is what ch3_flow's one slow
+               bell answers. Wren's hand goes to the collar she straightened in the gallery (ch3_start). */
+            (s.flags.VANE_ACCEPT ? 'He looks at the Listener a beat longer than he looks at Wren. '
+              : refused ? '"The name is Wren," says the Seer. ' : '')
+              + 'Far above, the bells have gone quiet. Wren touches the collar.',
+          ];
+        },
+        prompt: 'The ward is asleep. The captain is not. Choose, together.',
+        /* Each deal is spent by the seat that made it: the Reader lied to Vane (ch1, "Badly"), the Listener
+           said yes, the Binder holds Sorrel's writ. The Seer, who goes first (ch1), calls the ward. */
         options: [
-          { id: 'fight', text: 'Binder: "We wake the ward."', sub: 'Three shapes are cut over it. It takes four hands.', next: 'ch3_fight' },
-          { id: 'bluff', text: 'Seer: "Lord Vane\'s orders. We are bringing him the child."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
-          { id: 'word', text: 'Reader: "The Envoy has our word. Stand aside."', sub: 'You accepted. His captain knows it.', cls: 'bright', if: (s) => !!s.flags.VANE_ACCEPT, next: 'ch3_stand', set: { DOOR: 'WORD' }, note: 'The captain let Wren pass on Vane\'s word.' },
-          { id: 'writ', text: 'Listener: "It\'s the Convocation\'s seal. Read it, captain. Please."', sub: 'Sorrel gave you her writ.', cls: 'bright', if: (s) => !!s.flags.SORREL, next: 'ch3_stand', set: { DOOR: 'WRIT' }, note: 'Sorrel\'s writ turned the captain back.' },
+          { id: 'fight', text: 'Seer: "We wake the ward."', sub: 'Three shapes are cut over it. It takes four hands.', next: 'ch3_fight' },
+          { id: 'bluff', text: 'Reader: "Lord Vane\'s orders. We are bringing him the child."', sub: 'You told the Envoy you would.', cls: 'bright', if: (s) => !!s.flags.VANE_PRETEND, next: 'ch3_stand', set: { DOOR: 'BLUFF' }, note: 'You bluffed the captain with the Envoy\'s own offer.' },
+          { id: 'word', text: 'Listener: "The Envoy has my word. Stand aside."', sub: 'You said yes. His captain knows it.', cls: 'bright', if: (s) => !!s.flags.VANE_ACCEPT, next: 'ch3_stand', set: { DOOR: 'WORD' }, note: 'The captain let Wren pass on Vane\'s word.' },
+          { id: 'writ', text: 'Binder: "This is the Convocation\'s seal. Read it, captain. Please."', sub: 'Sorrel gave you her writ.', cls: 'bright', if: (s) => !!s.flags.SORREL, next: 'ch3_stand', set: { DOOR: 'WRIT' }, note: 'Sorrel\'s writ turned the captain back.' },
           { id: 'surrender', text: 'Give Wren to the captain.', sub: 'The Provost lives.', cls: 'dark', next: 'ch3_surrender', set: { DOOR: 'SURRENDERED', SURRENDERED: true, WREN_TRUST: (s) => (s.flags.WREN_TRUST || 0) - 2 }, note: 'You handed Wren to the captain at the Tower door.' },
         ],
       },
@@ -559,27 +625,30 @@
         type: 'puzzle', puzzle: 'ring', art: 'ch3_towerdoor', mood: 'tense', fx: 'dust',
         puzzleId: 'ch3_fight', par: [2, 3.5, 5], clearWidget: true,
         text: (s) => [
-          s.flags.TOWER_DOOR_timedout
-            ? 'Nobody answers. Wren turns to the door instead: three shapes cut into the arch, four sooty slots.'
-            : 'Three shapes cut into the arch. Below them, four sooty slots.',
+          /* "A ring" here, because the rule card says "Nothing on this ring" and the Binder counts around one. */
+          s.flags.TOWER_DOOR_timedout && 'Nobody answers. Wren turns to the door instead.',
+          'Three shapes are cut into the arch. Below them, four sooty slots make a ring.',
           { speaker: 'Wren', text: s.flags.WREN_HURT ? 'Four hands. Don\'t count mine. I\'ve only got the one.' : 'Four hands. Don\'t count mine. They\'re shaking.' },
           { text: 'Every phone: **Pages**, and the word WARD.', cls: 'whisper' },
-        ],
+        ].filter(Boolean),
         config: (s) => {
           const cfg = {
           title: 'THE THRESHOLD OF THE BELL TOWER',
-          note: 'Wren, flat against the door: *Four slots in the soot, and a sigil to put in them. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And he will not stand there for more than three tries'
+          /* "Ward", not "sigil": the Binder's page keeps that word for the Founders' rings, and this is not one. */
+          note: 'Wren, flat against the door: *Four slots in the soot. Three words go in and one slot stays empty. Nothing on this ring says which slot it begins in. That was left to the Binders. And the captain will not wait past three tries'
             + ((s.flags.WARD_TRIES | 0) ? ' — and he has counted ' + num(s.flags.WARD_TRIES | 0) + '.*' : '.*'),
           slots: 4, glyphs: glyphPalette(), allowEmpty: true, showArrow: false, marks: [],
           check: (m) => wardCheck(m, cfg), maxTries: wardBudget(s),
-          fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward',
+          fourHands: true, fourHandsText: 'FOUR HANDS — all four keys within a heartbeat, to wake the ward', submitText: 'Wake the ward',
           wrongText: 'The soot stays soot. Frost creeps into the slots and the ring forgets.',
           };
           return cfg;
         },
         hints: [
           'Each of you holds one piece. Say yours out loud.',
-          'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So the only question is where the run begins, and that answer comes in two halves, on two phones.',
+          /* "the only question is where the run begins" left out the direction, the Binder's second bit, and
+             a table that trusted it ran the Prologue's way round and laid a wrong board. */
+          'A ring is a loop: it has no first slot, and the empty one is not a fifth thing to choose — it is whatever the three words do not reach. So what is left is where the run begins and which way it runs. Those answers are on two phones.',
           /* Derived, never typed out: a rung that restates the answer by hand is what broke ch4's oath
              (ADVERSARIAL 18). tools/check-hints.js runs this text through wardCheck on every build. */
           ARCH.map((w, i) => w + ' in slot ' + Object.keys(RING).find(k => RING[k] === w)).join(', ')
@@ -591,19 +660,26 @@
            surrender scene by engine.js:84, which calls a function `next` without the result and so reads
            'ch3_flow'. That path used to leave DOOR unset, and ch4 and ch5 both branch on it. */
         onSolve: (s, r) => {
-          if (r && r.failed) { Store.set('WARD_COLD', true); Store.set('DOOR', 'SURRENDERED'); Store.set('SURRENDERED', true); Store.note('Three cold sigils at the Tower door, and the captain stopped waiting.'); return; }
-          Store.set('DOOR', 'FIGHT'); Store.note('You woke the threshold ward on the Tower door.');
+          /* The art is set when a scene is entered, so the door would only catch (or go cold) one scene late. */
+          if (r && r.failed) { Store.set('WARD_COLD', true); Store.set('DOOR', 'SURRENDERED'); Store.set('SURRENDERED', true); Store.note('Three cold sigils at the Tower door, and the captain stopped waiting.'); try { Game.setArt('ch3_towerdoor', { ward: 'cold' }); } catch (e) {} return; }
+          Store.set('DOOR', 'FIGHT'); Store.note('You woke the threshold ward on the Tower door.'); try { Game.setArt('ch3_towerdoor', { ward: 'ash' }); } catch (e) {}
         },
         solvedText: (s, r) => (r && r.failed) ? [
-          'The third sigil goes into the soot, and the soot stays soot.',
+          'The third try goes into the soot, and the soot stays soot.',
           { speaker: 'The captain', text: 'Enough. I gave you longer than I was told to.' },
-          s.flags.WREN_HURT ? 'A gauntlet closes on Wren\'s good shoulder, almost gently.' : 'A gauntlet closes on Wren\'s shoulder, almost gently.',
+          /* Not "closes on": ch3_surrender has Wren go down the stair "without being touched". */
+          'A gauntlet reaches for Wren. Wren steps forward before it lands.',
         ] : [
           'The ward wakes. Not light. *Heat*, a wall of it, and every lantern on the stair goes out together.',
-          { speaker: 'The captain', text: 'Founders\' work. So. Not tonight, then.' },
-          'He backs his men down the stair without turning round. Wren stays pressed to the hot iron long after the rest of you step back.',
-          { speaker: 'Wren', text: 'That was the best thing I have ever seen.' },
-          { text: 'ASH, THORN, KNOT. *Fire, go through, four as one.* That is all it ever said.', cls: 'small' },
+          /* Not "Founders' work": the Binder's page says this is a Vigil ward and not a Founders' ring. */
+          { speaker: 'The captain', text: 'Old work. So. Not tonight, then.' },
+          'He backs his men down the stair without turning around.',
+          /* The ward's words, said aloud rather than in small type, set against ch0's "That is the school's
+             translation." The table makes the one step. Saying "Not one born of four" is ch6's (ch6.js:834). */
+          '"Ash. Thorn. Knot," the Reader reads. "*Fire, go through, four as one.*" Nobody says the school\'s translation out loud.',
+          /* Wren's hands are always cold (ch0). The door is warm, not Wren: ch8 keeps that payoff. */
+          'Wren stays pressed to the hot iron long after the rest of you step back.',
+          { speaker: 'Wren', text: 'It\'s warm. All the way through. Is that what you lot feel like?' },
         ],
         next: (s, r) => (r && r.failed) ? 'ch3_surrender' : 'ch3_flow', button: 'The stair',
       },
@@ -612,42 +688,61 @@
         art: 'ch3_towerdoor', mood: 'court', fx: 'dust',
         text: (s) => {
           const k = STAND[s.flags.DOOR] || STAND.BLUFF;
+          /* The ward stays asleep on these three roads (ch4 and ch5 read only FIGHT as woken), but the arch is
+             still read: the chapter's one line of the Founders' words is not kept behind one door. */
           return [
             k.said,
             { speaker: 'The captain', text: k.captain },
             { speaker: 'Wren', text: k.wren },
+            k.after,
             'The lanterns go back down the stair. He is, as he said, a punctual man. He will be punctual later.',
-          ];
+            'By the last of the lantern-light, the Reader reads the arch out loud. *Fire, go through, four as one.* Wren makes the Reader say it again, slower.',
+          ].filter(Boolean);
         },
         next: 'ch3_flow', button: 'The Tower stair',
       },
       ch3_surrender: {
-        art: 'ch3_towerdoor', mood: 'sorrow', fx: 'ash',
+        art: 'ch3_towerdoor', artParams: (s) => ({ ward: s.flags.WARD_COLD ? 'cold' : null }), mood: 'sorrow', fx: 'ash',
         enter: () => { Store.set('DOOR', 'SURRENDERED'); Store.set('SURRENDERED', true); },
         text: (s) => [
           s.flags.WARD_COLD
             ? 'Nobody says it out loud. The ring would not wake, and the captain took that for an answer.'
             : 'One of you says it, and the others do not say otherwise, which is the same thing.',
-          { speaker: 'Wren', text: 'Right. Yes. She would do the same. Tell the Provost I said the corridors were *easy*.' },
+          { speaker: 'Wren', text: 'Right. Yes. She\'d do the same for me. Tell Mom — tell the Provost I said the corridors were *easy*.' },
           'Wren goes down the stair between two soldiers without being touched, and looks back once, at nobody in particular.',
-          { text: 'The rope comes off the beam before the third bell. The Provost will not hang tonight.', cls: 'whisper' },
+          /* Narration, not an instruction. True either way: ch3_flow says why. */
+          'The Provost will not hang tonight.',
         ],
         next: 'ch3_flow', button: 'The empty stair',
       },
       /* ---------- the flowchart ---------- */
       ch3_flow: {
-        type: 'flow', art: 'ch3_towerdoor', artParams: (s) => ({ ward: s.flags.DOOR === 'FIGHT' ? 'ash' : null }), mood: 'hearth', fx: 'dust',
+        /* The captain and his men have gone down the stair on every path, and on the surrender path Wren with them. */
+        type: 'flow', art: 'ch3_towerdoor', mood: 'hearth', fx: 'dust',
+        artParams: (s) => ({ ward: s.flags.DOOR === 'FIGHT' ? 'ash' : (s.flags.WARD_COLD ? 'cold' : null), soldiers: false, wren: s.flags.DOOR !== 'SURRENDERED' }),
+        /* The night's answer, as a sound. The Provost rings the bells from the Tower (the rule card, the
+           fourth bell, "I will ring them slowly"), and they went quiet while the captain talked (ch3_door), so
+           one slow bell above the stair is her, and the captain's rope was a lie. She comes DOWN after Wren:
+           ch4.js:337 "The Provost went down and took the child back". The last line answers ch3_start's
+           flinch at the same gutter, instead of repeating ch2's closer. */
         text: (s) => [
+          /* The table chose the door over her neck, as far as it knew. One beat of that before the bell. */
+          s.flags.DOOR !== 'SURRENDERED' && 'Nobody says the Provost\'s name.',
+          'Above you, at the top of the Tower stair, a bell rings, slowly. Only one person in this school rings the bells.',
+          'There was never a rope.',
           s.flags.DOOR === 'SURRENDERED'
-            ? 'The third bell has rung, and the Provost is coming up the stair, alive and furious. The rope came off the beam an hour ago.'
-            : 'The Tower stair, and the third bell already rung. Above you is the Provost\'s study, and the Provost in it. The rope came off the beam an hour ago.',
+            ? 'The Provost is coming down the stair after Wren, alive and furious. Far below, the Hearth gutters. Nobody is holding Wren\'s hand.'
+            : 'Far below, the Hearth gutters. This time Wren does not flinch, and holds on to the Binder instead.',
+          /* "Punctual" is the captain's word, and midnight is Vane's (ch1: "before midnight"). On the surrender
+             path the empty hand is the hook. */
+          s.flags.DOOR !== 'SURRENDERED' && 'Down the stair, a punctual man is waiting for midnight.',
           { text: 'The chart shows the paths you took, and the ones you didn\'t.', cls: 'small' },
-        ],
+        ].filter(Boolean),
         flowTitle: 'Chapter III — the paths you walked',
         stats: (s) => {
           const seen = s.flags.CH3_SPOTTED | 0, bells = s.flags.CH3_BELLS | 0;
           const run = s.flags.CH3_TURNS
-            ? `Wren reached the Tower on turn ${s.flags.CH3_TURNS}, ${seen ? 'seen ' + seen + ' time' + (seen === 1 ? '' : 's') : 'never seen'}${bells ? ', after ' + bells + ' more bell' + (bells === 1 ? '' : 's') : ''}.`
+            ? `Wren reached the Tower on turn ${s.flags.CH3_TURNS}, ${seen ? (seen === 1 ? 'seen once' : 'seen ' + seen + ' times') : 'never seen'}${bells ? ', after ' + bells + ' more bell' + (bells === 1 ? '' : 's') : ''}.`
             : 'Wren never reached the Tower door.';
           const door = ({ FIGHT: 'you woke the ward', BLUFF: 'you bluffed the captain', WORD: 'you spent the Envoy\'s word', WRIT: 'you spent Sorrel\'s writ', SURRENDERED: 'you handed Wren over' })[s.flags.DOOR] || 'nothing was decided';
           return `${run} Wren asked four questions in the laundry and four sealed answers came back. At the door, ${door}. Hints so far: ${s.flags.hintsTotal || 0}.`;

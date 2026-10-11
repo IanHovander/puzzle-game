@@ -5,7 +5,7 @@
    and the cuts are, the Binder has who is bought — the porter, and the four rooms his gold pays for, which
    are drawn on nobody's map — and which room nobody searches.
    At the Tower: the Reader has what the three shapes say, the Listener which of them sounds first, the Seer
-   what is cut under the ring, the Binder where a sigil begins. */
+   what is cut under the ring, the Binder where this ward begins and which way it runs. */
 (function () {
   'use strict';
   const G = window.VigilGlyphs, L = window.VigilLore, CA = window.CompanionAudio, D = window.CompanionDraw, UI = window.VigilUI;
@@ -26,7 +26,8 @@
   /* ---------- Listener: the two rounds, drawn ----------
      One beat axis, two lanes, stop numbers and nothing else — no room letters anywhere, because the Listener
      hears a count, never a place. The accent is the sentry's six-beat stand at its stop 4: that flat run is
-     the whole insight, and the two tables it replaces buried it. Drawn as a loop so no beat reads as a start. */
+     the whole insight, and the two tables it replaces buried it. Beats are numbered from 1, because beat 1 is
+     turn 1 on the Hearth, and the return arrow says the round starts again after 12. */
   const rounds = () => {
     /* Laid out for a phone: no width style, so it takes the full column (~320px) at about one unit to the pixel,
        and every stop is 15 units apart so the axis numbers never touch. */
@@ -34,7 +35,7 @@
     const yA = (s) => 140 - (s - 1) * 15, yB = (s) => 194 + (4 - s) * 16;
     const line = (r, y, col, w) => `<polyline points="${r.map((s, i) => x(i + 1) + ',' + y(s)).join(' ')}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linejoin="round"/>`;
     let s = `<svg viewBox="0 0 320 290">`;
-    s += `<text x="160" y="14" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="12" ${F}>twelve beats, then round again</text>`;
+    s += `<text x="160" y="14" text-anchor="middle" fill="rgba(255,255,255,.7)" font-size="12" ${F}>twelve beats, then around again</text>`;
     s += `<text x="2" y="38" fill="#4fb3bf" font-size="13" ${F}>the lantern</text>`;
     s += line(ROUND_A, yA, 'rgba(79,179,191,.5)', 1.8);
     s += ROUND_A.map((st, i) => `<circle cx="${x(i + 1)}" cy="${yA(st)}" r="3.2" fill="rgba(79,179,191,.8)"/>`).join('');
@@ -92,11 +93,11 @@
     const g = xy('E5'); s += `<circle cx="${g.x + 28}" cy="${g.y + 32}" r="19" fill="none" stroke="#fff" stroke-dasharray="3 2"/><text x="${g.x + 28}" text-anchor="middle" fill="#fff" font-size="9.4" ${F}><tspan y="${g.y + 30}">tower</tspan> <tspan x="${g.x + 28}" y="${g.y + 41}">door</tspan></text>`;
     const ly = 5 * S + pad + 20;
     s += `<g ${F} font-size="10"><line x1="${pad + 2}" y1="${ly - 4}" x2="${pad + 20}" y2="${ly - 4}" stroke="#a482e6" stroke-width="3" stroke-dasharray="4 3"/><text x="${pad + 26}" y="${ly}" fill="#a482e6">a seam, and a shape cut over it</text></g>`;
-    if (hurt) s += `<text x="${pad + 2}" y="${ly + 18}" fill="#fff" font-size="10" ${F} opacity=".85">Wren cannot run tonight</text>`;
+    if (hurt) s += `<text x="${pad + 2}" y="${ly + 18}" fill="#fff" font-size="10" ${F} opacity=".85">Wren’s arm is strapped tonight</text>`;
     return s + `</svg>`;
   }
 
-  /* ---------- Seer: the Gallery, shadows as they fall (Wren's falls toward the lamp) ---------- */
+  /* ---------- Seer: the Gallery, shadows as they fall (Wren's points down, toward the Hall) ---------- */
   const underGallery = `<svg viewBox="0 0 360 240">
     <rect width="360" height="240" fill="#000"/>
     <g stroke="#fff" fill="none" stroke-width="1.2">
@@ -108,13 +109,16 @@
     <g fill="#fff" opacity=".9"><circle cx="90" cy="110" r="6"/><circle cx="130" cy="96" r="6"/><circle cx="150" cy="128" r="6"/><circle cx="190" cy="106" r="6"/><circle cx="250" cy="112" r="5"/></g>
     <g stroke="#a482e6" stroke-width="3" opacity=".9" stroke-linecap="round" fill="none"><path d="M250,118 L250,146"/><path d="M243,139 L250,147 L257,139"/></g>
     <text x="262" y="146" fill="#a482e6" font-size="13" font-family="Cinzel,serif">to the Hall</text>
-    <g fill="#fff" font-size="13" font-family="Cinzel,serif" text-anchor="middle"><text x="84" y="132">Reader</text><text x="130" y="85">Listener</text><text x="150" y="146">Seer</text><text x="194" y="126">Binder</text><text x="250" y="134" fill="#a482e6">Wren</text></g>
+    <g fill="#fff" font-size="13" font-family="Cinzel,serif" text-anchor="middle"><text x="84" y="132">Reader</text><text x="130" y="85">Listener</text><text x="150" y="146">Seer</text><text x="194" y="126">Binder</text><text x="236" y="134" fill="#a482e6" text-anchor="end">Wren</text></g>
     <text x="180" y="230" text-anchor="middle" fill="#fff" font-size="12.5" font-family="Cinzel,serif" opacity=".75">lanterns out — one shadow left, cast by nothing</text>
   </svg>`;
 
   /* ---------- Seer: under the Tower door ----------
      Four slots, numbered as the Hearth numbers them, and TWO cuts. No arrow, no direction, no rule:
-     the Seer reports cuts, not meanings. (ch0's underFoot, one notch harder.) */
+     the Seer reports cuts, not meanings. (ch0's underFoot, one notch harder.)
+     The violet accent sits on the scratch and slot 1 ON PURPOSE. The scratch is the cut that looks like it
+     matters, and the Prologue taught the whole room that it does. It is the decoy here, and only the
+     Binder's page says so: the Seer sees what was cut, never which cut binds. */
   const underRing = `<svg viewBox="0 0 360 250">
     <rect width="360" height="250" fill="#000"/>
     <g transform="translate(180,126)">
@@ -130,19 +134,22 @@
   </svg>`;
 
   /* ---------- Reader: the arch, drawn as a band ----------
-     A band has no first stone and no last, so the picture cannot imply an order — and the three shapes are
-     set down in the reverse of the answer, so reading them round from the left fails. (ch0's collar.) */
+     A band has no first stone and no last, so the picture cannot imply an order. THORN, the middle word of
+     the answer, sits at an END here and in the table below, so neither reading round the arc (THORN ASH
+     KNOT, KNOT ASH THORN) nor down or up the table (THORN KNOT ASH, ASH KNOT THORN) is the order. With the
+     Spike in the middle both arc readings were the answer or its reverse, and a Listener-less table got in
+     by its second try. The order is the Listener's. (ch0's collar.) */
   const archBand = () => `<svg viewBox="0 -8 300 180">
     <circle cx="150" cy="84" r="60" fill="none" stroke="rgba(212,169,78,.3)" stroke-width="11"/>
-    <g transform="translate(90,84) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Hook', false)}</g>
-    <g transform="translate(150,24) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Spike', false)}</g>
-    <g transform="translate(210,84) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Flame', false)}</g>
+    <g transform="translate(90,84) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Spike', false)}</g>
+    <g transform="translate(150,24) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Flame', false)}</g>
+    <g transform="translate(210,84) scale(1.1)" style="color:#f2d27a">${G.shapeInner('Hook', false)}</g>
     <text x="150" y="166" text-anchor="middle" fill="rgba(233,226,210,.65)" font-size="11.5" font-family="Cinzel,serif">the arch runs right over · no first, no last</text>
   </svg>`;
 
   /* ---------- Binder: a thread, drawn by what it is ----------
-     red an oath, gold the Crown's coin, none no thread at all. No rooms and no numbers: the Binder holds
-     whether, never where. */
+     red an oath, gold the Crown's coin, none no thread at all. The threads say who is bought; the four
+     rooms his gold buys are the Binder's too, and are written on the page, not drawn on the thread. */
   const thread = (kind) => `<svg viewBox="0 0 90 16" style="width:74px;height:14px;vertical-align:middle">${
     kind === 'oath' ? '<path d="M4,8 C24,2 34,14 52,8 S74,4 86,8" fill="none" stroke="#d96b4a" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="9" r="3.2" fill="#d96b4a"/>'
     : kind === 'coin' ? '<path d="M4,8 C24,3 60,13 78,8" fill="none" stroke="#c8a24a" stroke-width="2" stroke-dasharray="5 3" stroke-linecap="round"/><circle cx="83" cy="8" r="4" fill="#c8a24a"/>'
@@ -175,18 +182,21 @@
           P.sight.push({ t: 'fine', text: 'Which end the scratch is on is not yours to see.' });
         } else {
           P.sight.push({ t: 'h', text: 'The arch over the Tower door' });
-          P.sight.push({ t: 'p', text: 'Three shapes are cut into the arch, all of them standing up. The Hearth shows them worn away. On your page they are clean.' });
+          P.sight.push({ t: 'p', text: 'Three shapes are cut into the arch. Everyone else sees them worn nearly away. On your page they are clean.' });
           P.sight.push({ t: 'html', html: archBand() });
           P.sight.push({ t: 'table', head: ['cut into the arch', 'it says'], rows: [
-            [G.shapeSvg('Hook', false, { size: 40, color: '#f2d27a' }), '<b>KNOT</b>'],
             [G.shapeSvg('Spike', false, { size: 40, color: '#f2d27a' }), '<b>THORN</b>'],
+            [G.shapeSvg('Hook', false, { size: 40, color: '#f2d27a' }), '<b>KNOT</b>'],
             [G.shapeSvg('Flame', false, { size: 40, color: '#f2d27a' }), '<b>ASH</b>'],
           ] });
           P.sight.push({ t: 'fine', text: 'An arch has no first stone. This page cannot tell you which word comes first. Say all three, out loud.' });
         }
         P.wren.push({ t: 'h', text: 'The plaques' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“The oldest plaques use your letters. The ones from our door. I copied them onto my cuff on the way past. I will crack them. I refuse to lose to a door.”' });
+        /* ch2: "The chalk on our door is in a hand I've seen before. I'm working out whose." This is the next step,
+           and the promise ch4 keeps ("I read your name tonight, letter by letter", companion/ch4.js). It answers
+           Wren's laundry question in public without saying which answer the Reader gave in private. */
+        P.wren.push({ t: 'letter', text: '“The oldest plaques are in the chalk’s letters, the same as under your name on our door. I copied them onto my cuff. Before the ink washes out, I’ll read you your name. Properly.”' });
       }
 
       /* ================= LISTENER ================= */
@@ -197,20 +207,25 @@
           P.sight.push({ t: 'audio', label: 'Boots, in the dark', strip: '<div class="fine">quick and soft, then slow and iron-shod</div>', play: boots,
             text: 'The lantern goes out along its corridor and comes back. The sentry stands a long while at one end, walks away, and comes back.' });
           P.sight.push({ t: 'html', html: rounds() });
-          P.sight.push({ t: 'fine', text: '**Lose the count and Wren walks into somebody.** A sighting sends Wren back, and the count keeps running.' });
+          P.sight.push({ t: 'fine', text: '**Lose the count and Wren walks into somebody.** Being seen sends Wren back, and the count keeps running.' });
           P.sight.push({ t: 'fine', text: 'You hear how far along a round they are. Never which room that is.' });
         } else {
           P.sight.push({ t: 'h', text: 'The ward hums' });
-          P.sight.push({ t: 'p', text: 'Three notes under the soot, over and over. Nobody else in this stairwell can hear them.' });
+          P.sight.push({ t: 'p', text: 'Three notes under the soot, over and over. Nobody else on this stair can hear them.' });
           P.sight.push({ t: 'audio', label: 'The threshold, humming', strip: CA.strip([1, 1]), play: (A) => CA.playSteps(A, [1, 1]),
             text: 'The second note is **one rung above** the first. The third is one rung above that.' });
-          P.sight.push({ t: 'p', text: 'Three notes, three words. Look their rungs up on the Ladder in your **Book**. Only one order climbs one, then one.' });
-          P.sight.push({ t: 'fine', text: 'You never hear a word’s name. Say the climb out loud.' });
+          P.sight.push({ t: 'p', text: 'The Reader has the words. Find each word’s rung on the Ladder, in your **Book** tab.' });
+          P.sight.push({ t: 'fine', text: 'Only one order climbs a rung at a time. Say it out loud.' });
         }
         P.wren.push({ t: 'h', text: 'How quiet' });
-        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['The captain', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
+        /* Bess, not the captain: this tab is read at ch3_thanks, a scene before the captain reaches the stair. */
+        P.wren.push({ t: 'html', html: `<div class="heartbeats">${[['The Provost', 'normal'], ['Bess', 'normal'], ['The porter', 'fast']].map(([n, k]) => `<div class="hb"><span>${n}</span>${D.trace(k)}</div>`).join('')}<div class="hb"><span>Wren</span>${D.trace('flat')}</div></div>` });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“I counted every boot between the gallery and here. You hummed the whole way, in time with the Ember’s slow beat. Every time you held your breath, I held mine. Breathe now. You… first.”' });
+        /* ch2: Wren, "Next time I'll walk with you", and Wren leaves the vault humming the Ember's tune on every
+           branch, so the tune is Wren's whether the Ember was lost or refused (companion/ch4.js:245 "Your tune").
+           The Listener has never heard Wren's heart (ch0). "I'm good at waiting" answers ch3_grid's "I'm bad at
+           waiting", and ch3_door's "I'm breathing, Listener" answers "Breathe now". */
+        P.wren.push({ t: 'letter', text: '“You walked with us this time, humming the Ember’s tune. It’s the nearest I’ve come to hearing your heart. When you held your breath, I held mine. Breathe now. I’m good at waiting.”' });
       }
 
       /* ================= SEER ================= */
@@ -226,30 +241,35 @@
           P.sight.push({ t: 'h', text: 'Under the Tower door' });
           P.sight.push({ t: 'p', text: 'Four slots below the arch, black with soot. Two things are cut under them, and both were cut long before the soot.' });
           P.sight.push({ t: 'svg', cls: 'underlayer', svg: underRing });
-          P.sight.push({ t: 'p', text: '**A small notch under slot 4. A long, deliberate scratch under slot 1.** The numbers are the ones the Hearth shows.' });
+          P.sight.push({ t: 'p', text: '**A small notch under slot 4. A long, deliberate scratch under slot 1.**' });
           P.sight.push({ t: 'fine', text: 'Say what is cut, and where.' });
         }
         P.wren.push({ t: 'h', text: 'The shadow' });
         P.wren.push({ t: 'svg', cls: 'underlayer', svg: underGallery });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“In the dark, your shadow was the only one left. It pointed at the Hall. I stood on it until the lanterns came back. You thought I was just slow on corners. I am never slow.”' });
+        /* Wren has known about the shadow since the Prologue ("Knew"), and the Seer has stood in the way since
+           ch0, so this explains tonight's corners rather than revealing anything. It does not say WHERE the
+           shadow points: that is the Seer's sealed laundry answer, and this line is read aloud. */
+        P.wren.push({ t: 'letter', text: '“Every time a lantern turned away, yours was the only shadow left, pointing the wrong way. So I stood on it. That’s why I was slow on corners. I am never slow.”' });
       }
 
       /* ================= BINDER ================= */
       if (roleId === 'binder') {
         if (!ward) {
           P.sight.push({ t: 'h', text: 'Who is bought down here' });
-          P.sight.push({ t: 'p', text: accepted ? 'Three people are awake between the Gallery and the Tower. Two of them are paid. So, since the Hall, are you.' : 'Three people are awake between the Gallery and the Tower. Two of them are paid.' });
+          /* Four people under the list: Bess, the porter, and the two patrols. Three are paid. The ch1 offer
+             was made in a side passage at the Vigil, not in the Hall (ch1.js:311). */
+          P.sight.push({ t: 'p', text: accepted ? 'Four people are awake between the Gallery and the Tower. Three of them are paid. So, since the Vigil, are you.' : 'Four people are awake between the Gallery and the Tower. Three of them are paid.' });
           P.sight.push({ t: 'html', html: '<ul class="blk-list">'
             + '<li>' + thread('oath') + ' <strong>Bess, in the laundry.</strong> Sworn to the Provost, thirty years. Nobody searches that room.</li>'
-            + '<li>' + thread('coin') + ' <strong>The porter, in his lodge off the north corridor.</strong> New Crown gold, straight to the Envoy. He is paid to shout.</li>'
+            + '<li>' + thread('coin') + ' <strong>The porter, in his lodge off the south corridor.</strong> New Crown gold, straight to the Envoy. He is paid to shout.</li>'
             + '<li>' + thread('coin') + ' <strong>Both patrols.</strong> The captain’s men, and nothing more than that.</li>'
             + '</ul>' });
-          P.sight.push({ t: 'p', text: '**His gold buys four rooms: B5, C5, D5 and C4.** Wren in one of them and he shouts. The sentry leaves its round and stands at the foot of the Tower stair, that turn and three after it.' });
+          P.sight.push({ t: 'p', text: '**His gold buys four rooms: B5, C5, D5 and C4.** Wren in one of them and he shouts. The sentry leaves its round and stands beside the Tower door, that turn and three after it.' });
           P.sight.push({ t: 'fine', text: 'Say it before anybody moves.' });
           P.sight.push({ t: 'fine', text: 'You cannot see a seam, a shape, or a beat. Ask for all three.' });
         } else {
-          P.sight.push({ t: 'h', text: 'Where a sigil begins' });
+          P.sight.push({ t: 'h', text: 'Where a ward begins' });
           P.sight.push({ t: 'p', text: 'You are the only one on this stair who was ever taught this.' });
           /* THE PROLOGUE SPENT THE OLD VERSION OF THIS PAGE. Until this pass these three lines were,
              word for word, the Binder's Chapter 0 page -- begin at the scratch, a notch is only a
@@ -260,25 +280,28 @@
              (scratchpad/prologue/binder.js): a Binder-less table applying what the lamp taught them
              faced a field of ONE and won it every time -- p = 1.000, where the chapter's own comment
              recorded four boards and p = 0.250. The seat was free.
-             So the ward stops being a Founders' sigil. The accepted board does not move a single
-             word -- ASH 4, THORN 1, KNOT 2, slot 3 empty, exactly as before, so every playthrough
-             script and full-true.json still hold -- but the two cuts have swapped slots and the mark
-             is the notch. A table that confidently applies the Prologue's rule now lays a full,
+             So the ward stops being a Founders' sigil, and the two cuts swapped slots so the mark is
+             the notch. A table that confidently applies the Prologue's rule now lays a full,
              lawful-looking, WRONG board, which is the same shape ch0's own lamp, ch4's oath and ch7's
-             sigil all use: the guess a table makes without the missing seat has a cut under it. */
+             sigil all use: the guess a table makes without the missing seat has a cut under it.
+             Then the run turned WIDDERSHINS (see WIDDERSHINS in ch3.js), so the board did move after
+             all: slot 1 empty, KNOT 2, THORN 3, ASH 4, derived there from CUTS and the direction.
+             That run never wraps, so the wrap sentence that stood here ("comes back to slot 1") is
+             gone: it was the Prologue's CLOCKWISE wrap, and it talked a Binder toward the old board. */
           P.sight.push({ t: 'list', items: [
             'The dormitory lamp was Founders\u2019 brass, and a Founders\u2019 sigil begins at the **scratch**. **This is not one.**',
-            'This is a Vigil ward. The keeper\u2019s mark **binds**, so it begins at the **notch**. Down here the scratch is only wear.',
-            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so each next word goes in the slot before — **widdershins, back against the count.**',
-            'When the count runs off the end it comes back to slot 1. **Any slot the words do not reach stays empty.**',
+            'This is a Vigil ward, the school\u2019s own work. The notch is its keeper\u2019s mark, and a keeper\u2019s mark **binds**. So it begins at the **notch**. The scratch is only a maker\u2019s mark.',
+            'The **first** word goes **in** the notched slot. A keeper seals a ward behind them, so each next word goes one slot back: **widdershins, against the count.**',
+            '**Any slot the words do not reach stays empty.**',
           ] });
-          P.sight.push({ t: 'fine', text: 'A spare shape is not decoration. It is a different sign, and the iron can tell.' });
-          P.sight.push({ t: 'fine', text: 'Say which cut binds **before** anybody places a word. The lamp taught everyone else the scratch.' });
-          P.sight.push({ t: 'fine', text: 'You cannot see the cuts and you cannot read the shapes. Ask for both.' });
+          P.sight.push({ t: 'fine', text: 'The lamp taught all four of you to start at the scratch. Before anybody places a word, tell them: not tonight.' });
+          P.sight.push({ t: 'fine', text: 'You cannot see the cuts, read the shapes or hear the order. Ask for all three.' });
         }
-        P.wren.push({ t: 'h', text: 'Round a knot' });
+        P.wren.push({ t: 'h', text: 'Around a knot' });
         P.wren.push({ t: 'fine', text: 'Say it to Wren, out loud:' });
-        P.wren.push({ t: 'letter', text: '“Our four threads all bend round you, the way thread goes round a knot. I held your ' + (hurt ? 'good hand' : 'hand') + ' from the gallery to this door. I am not letting go. That isn’t a rule. I checked.”' });
+        /* "Never got warm" (ch0: "Cold, as always") is what the hot iron answers on the ward path. The knot is the
+           plant for ch6's true answer, "The knot itself": no thread reaches Wren, so the four go around. */
+        P.wren.push({ t: 'letter', text: '“None of our threads can reach you, so all four go around you. Binders call that a knot. Your hand never got warm. I am not letting go. That isn’t a rule. I checked.”' });
       }
 
       /* ================= SPEAK (gated by LINEN) ================= */
@@ -286,21 +309,24 @@
         P.speak.push({ t: 'fine', text: 'Nothing to speak yet. The Hearth will tell you when.' });
       } else {
         const Q = {
-          reader: { prompt: (hurt ? 'Wren, the arm re-strapped in a clean sheet, does not look at you while asking.' : 'Wren, over the kettle, so the others cannot hear.') + ' *"Reader. Quick one. Easy, for a genius. What does my name mean in the old tongue? Properly. Not the Provost\'s version."*',
+          reader: { prompt: (hurt ? 'Wren, the arm re-strapped in a clean sheet, does not look at you while asking.' : 'Wren, over the boiler, so the others cannot hear.') + ' *"Reader. Quick one. Easy, for a genius. What does my name mean in the older alphabet? Properly. Not just \'a bird\'."*',
             opts: [['TELL', 'Tell Wren: **"A small brave bird."** ~~(a bluff — it is not in any alphabet you know)~~'], ['DONTKNOW', '**"I don\'t know. Yet."** ~~(the truth)~~']],
             after: { TELL: 'Wren grins, delighted, and says it twice under the breath. *A small brave bird.* You made that up. It sounded true, which is not the same thing.', DONTKNOW: 'Wren nods, not disappointed. *"Yet. Good. Tell me when."*' } },
-          listener: { prompt: (hurt ? 'Wren, on a tub with the bad arm held close, asks it to the arm rather than to you.' : 'Wren, pretending to fold a sheet, so it looks like nothing.') + ' *"Listener, you\'re checking on me again. So check properly. You hear everyone\'s heart. Can you hear mine?"*',
+          listener: { prompt: (hurt ? 'Wren, on the boiler\'s lid with the bad arm held close, asks it to the arm rather than to you.' : 'Wren, pretending to fold a sheet, so it looks like nothing.') + ' *"Listener, you\'re checking on me again. You hear everyone\'s heart. You told me once you\'d never heard mine. So check properly. Can you hear mine now?"*',
             opts: [['LOUD', '**"Yes. Loud."** ~~(a lie)~~'], ['NO', '**"No. I… no."** ~~(the truth)~~']],
-            after: { LOUD: 'Wren looks pleased, then looks at you a moment too long, then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The kettle covers whatever comes next.' } },
-          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Seer. You\'ve been doing the face since the stair. More than usual, and usual is a lot. What do you see?"*' : 'Wren, close, in the steam. *"Seer. You\'re doing the face. The one you only ever do at me. What do you see?"*',
-            opts: [['TELL', 'Tell Wren about **the shadow**: it falls toward the fire. Every fire. ~~(the truth)~~'], ['NOTHING', '**Say nothing.** Look at the wall.']],
-            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Toward. Huh."* Then, later: *"That\'s very poetic, Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
-          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"Binder. Honestly. Am I really the one? Because the one should be able to get down a stair."*' : 'Wren, quietly, with a laundry basket between you as if it were a table. *"Binder. You know all the rules, so you\'d know. Honestly. Do you think I\'m really the one?"*',
+            after: { LOUD: 'Wren looks pleased, then looks at you a moment too long, then goes back to the sheet. You have never heard it. You said loud.', NO: 'Wren does not flinch. *"Right. Okay. Thank you for not — right."* The boiler\'s hiss covers whatever comes next.' } },
+          /* Wren knows the shadow falls the wrong way (ch0: "Knew"), so the question asks for the rest, and the
+             truth is news: every fire, and tonight the Hall. ch4 and ch6 narrow it to the Hearth (FIXLATER). */
+          seer: { prompt: hurt ? 'Wren, hurt and trying not to show it, asks without warning. *"Seer. You\'ve been doing the face since the stair. More than usual, and usual is a lot. I know about the shadow. What do you see that I don\'t?"*' : 'Wren, close, in the steam. *"Seer. You\'re doing the face. More than usual, and usual is a lot. I know about the shadow. What do you see that I don\'t?"*',
+            opts: [['TELL', 'Tell Wren: **"It isn\'t only lamps. It\'s every fire. Tonight it\'s reaching for the Hall."** ~~(the truth)~~'], ['NOTHING', '**Say nothing.** Look at the wall.']],
+            after: { TELL: 'Wren listens to the whole thing and does not laugh. *"Every fire. Huh."* Then, later: *"That\'s very poetic, Seer."* You did not mean it poetically.', NOTHING: 'You look at the wall. Wren looks at you looking at it, and lets you.' } },
+          binder: { prompt: hurt ? 'Wren, white around the mouth, keeping the voice light. *"Binder. Honestly. Am I really the one? Because the one should be able to get down a stair."*' : 'Wren, quietly, folding the same pillowcase for the third time. *"Binder. You know all the rules, so you\'d know. Honestly. Do you think I\'m really the one? I always thought the one would be taller."*',
             opts: [['YES', '**"Yes."**'], ['DONTKNOW', '**"I don\'t know. I won\'t pretend I do."** ~~(the truth)~~']],
             after: { YES: 'Wren nods like someone receiving an expected verdict. *"Right. Yes. Good to have it from a Binder."* You said yes because it was kind. You are not sure it was kind.', DONTKNOW: 'Wren is quiet a moment. *"Nobody\'s ever said that to me. Everyone always knows."* And then, almost too low to hear: *"Thanks."*' } },
         }[roleId];
         P.speak.push({ t: 'h', text: 'In the laundry, in a whisper' });
-        P.speak.push({ t: 'fine', text: '*' + L.houseRule + '*' });
+        /* Not L.houseRule ("Say what you see"): the laundry is the one page where the answer is never said aloud. */
+        P.speak.push({ t: 'fine', text: '*Read it to yourself. Answer in silence. Never show your phone.*' });
         P.speak.push({ t: 'choice', id: 'whisper', prompt: Q.prompt, options: Q.opts.map(([id, text]) => ({ id, text })), after: (optId) => Q.after[optId] });
         P.speak.push({ t: 'fine', text: 'Nobody at the table will know what you answered. Wren will.' });
       }

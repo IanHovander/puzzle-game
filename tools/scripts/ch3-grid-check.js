@@ -266,7 +266,7 @@ for (const [scene, pats] of Object.entries(forbidden)) {
   assert(f === 4 && w === 1, `Binder-less field: ${f} boards, ${w} winner (recorded: 4 and 1 — see the field table in ch3.js)`);
 
   /* the Binder's page must not simply restate the Prologue's, which is what it did */
-  const binderRule = compSrc.slice(compSrc.indexOf('Where a sigil begins'), compSrc.indexOf('A spare shape is not decoration'));
+  const binderRule = compSrc.slice(compSrc.indexOf('Where a ward begins'), compSrc.indexOf('The lamp taught all four of you'));
   assert(/begins at the \*\*notch\*\*/i.test(binderRule) && /\*\*This is not one\.\*\*/.test(binderRule),
     "the Binder's ward page states the exception rather than repeating the Prologue's rule");
 }

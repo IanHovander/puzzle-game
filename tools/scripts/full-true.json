@@ -668,7 +668,7 @@
    "expect": "a ward on the door"
   },
   {
-   "clickText": "Under the paint"
+   "clickText": "Under the varnish"
   },
   {
    "wait": 800
@@ -779,7 +779,7 @@
    "expect": "very small general"
   },
   {
-   "clickText": "The laundry, before"
+   "clickText": "The laundry"
   },
   {
    "wait": 800
@@ -815,7 +815,7 @@
    ]
   },
   {
-   "clickText": "Speak the words"
+   "clickText": "Seal the words"
   },
   {
    "wait": 800
@@ -876,7 +876,7 @@
    ]
   },
   {
-   "clickText": "Close the sigil"
+   "clickText": "Wake the ward"
   },
   {
    "wait": 1200

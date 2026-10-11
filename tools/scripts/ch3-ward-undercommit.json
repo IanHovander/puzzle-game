@@ -44,7 +44,7 @@
    "_": "an empty ring"
   },
   {
-   "clickText": "Close the sigil"
+   "clickText": "Wake the ward"
   },
   {
    "wait": 700
@@ -67,7 +67,7 @@
    ]
   },
   {
-   "clickText": "Close the sigil"
+   "clickText": "Wake the ward"
   },
   {
    "wait": 700
@@ -90,7 +90,7 @@
    ]
   },
   {
-   "clickText": "Close the sigil"
+   "clickText": "Wake the ward"
   },
   {
    "wait": 700
@@ -124,7 +124,7 @@
    ]
   },
   {
-   "clickText": "Close the sigil"
+   "clickText": "Wake the ward"
   },
   {
    "wait": 900

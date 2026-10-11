@@ -1,5 +1,5 @@
 { "start": "ch3_grid", "steps": [
-  {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"expect": "One turn more for every guess that seam already remembers"},
+  {"wait": 800}, {"key": "Space"}, {"wait": 500}, {"expect": "the second two, the third three"},
   {"clickText": "South"}, {"clickText": "South"}, {"expect": "Turn 2 of 12"},
   {"dialog": "THORN"}, {"clickText": "East"}, {"wait": 600}, {"expect": "A turn goes with it"}, {"expect": "Turn 3 of 12"},
   {"dialog": "EMBER"}, {"clickText": "East"}, {"wait": 700}, {"expect": "Two turns go with it"}, {"expect": "Turn 5 of 12"}, {"shot": "ch3_seam_second"},

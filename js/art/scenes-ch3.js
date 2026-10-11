@@ -27,7 +27,8 @@
     return s;
   }
 
-  /* The Gallery: a long hall of muttering portraits, a single lamp far off, five small figures. */
+  /* The Gallery: a long hall of muttering portraits, a single lamp far off, the four, Wren, and the Provost
+     beside Wren (ch3_start has her straighten Wren's collar; ch3_attune has her touch the oldest frame). */
   A.define('ch3_gallery', () => P.wrap(
     P.sky('#0a0810', '#15101a') +
     // far wall with a lamp
@@ -40,6 +41,7 @@
     P.floorTiles(560, '#0d0a12', 'rgba(212,169,78,0.06)') +
     `<path d="M600,560 L1000,560 L1400,${H} L200,${H} Z" fill="#a03a10" opacity=".08"/>` +
     P.figures([{ x: 640, s: 1.0 }, { x: 720, s: 1.05 }, { x: 900, s: 1.05 }, { x: 980, s: 1.0 }], 760, '#0a0810') +
+    P.figures([{ x: 765, s: 1.1, color: '#0c0910' }], 760, '#0c0910') +
     P.figures([{ x: 810, s: 0.8 }], 745, '#120d16') +
     `<ellipse cx="810" cy="748" rx="14" ry="5" fill="#000" opacity=".4"/>` +
     P.fog(420, 380, '#1a1220', 0.35)
@@ -67,7 +69,8 @@
     P.fog(500, 300, '#151020', 0.4)
   ));
 
-  /* The Laundry: drying racks, hanging sheets, a stove's glow, Bess's silhouette. */
+  /* The Laundry: drying racks, hanging sheets, a stove's glow, Bess's silhouette. The copper stands by the
+     stove and Wren sits on its warm lid (ch3_whispers), nearest the warm thing, beside Bess. */
   A.define('ch3_laundry', () => P.wrap(
     P.sky('#0d0a10', '#1c1410') +
     // rafters and racks
@@ -78,17 +81,23 @@
     `<rect x="1180" y="480" width="220" height="260" rx="8" fill="#1a1410"/>` +
     `<rect x="1230" y="560" width="120" height="90" rx="4" fill="#ff8a3c" opacity=".55"><animate attributeName="opacity" values=".55;.35;.6;.4;.55" dur="1.7s" repeatCount="indefinite"/></rect>` +
     `<circle cx="1290" cy="600" r="260" fill="#ff9a3c" opacity=".09"><animate attributeName="opacity" values=".09;.13;.08;.11;.09" dur="2.3s" repeatCount="indefinite"/></circle>` +
-    // copper and tubs
-    `<ellipse cx="420" cy="700" rx="110" ry="30" fill="#221a14"/><rect x="310" y="620" width="220" height="80" fill="#2a2018"/>` +
+    // a tub on the cold side, and the copper by the stove
+    `<ellipse cx="380" cy="720" rx="90" ry="24" fill="#1d1612"/><rect x="290" y="660" width="180" height="60" fill="#221a14"/>` +
+    `<rect x="920" y="630" width="170" height="90" rx="6" fill="#3a2618"/><ellipse cx="1005" cy="630" rx="85" ry="16" fill="#4a3020"/>` +
+    `<ellipse cx="1005" cy="630" rx="85" ry="16" fill="#ff9a3c" opacity=".08"><animate attributeName="opacity" values=".08;.12;.07;.1;.08" dur="2.3s" repeatCount="indefinite"/></ellipse>` +
     P.floorTiles(720, '#100c10', 'rgba(255,200,150,0.04)') +
-    // Bess, broad, at the stove; four; Wren small on a tub
-    P.figures([{ x: 1120, s: 1.15, color: '#0e0b0e' }], 770, '#0e0b0e') +
-    P.figures([{ x: 560, s: 1.0 }, { x: 640, s: 1.0 }, { x: 760, s: 1.0 }, { x: 840, s: 1.0 }], 790, '#0b0910') +
-    P.figures([{ x: 420, s: 0.75, color: '#150f14' }], 700, '#150f14') +
+    // Bess, broad, at the stove; the four; Wren small on the copper's lid
+    P.figures([{ x: 1140, s: 1.15, color: '#0e0b0e' }], 770, '#0e0b0e') +
+    P.figures([{ x: 520, s: 1.0 }, { x: 600, s: 1.0 }, { x: 700, s: 1.0 }, { x: 780, s: 1.0 }], 790, '#0b0910') +
+    P.figures([{ x: 1005, s: 0.75, color: '#150f14' }], 634, '#150f14') +
     P.fog(380, 400, '#2a1e18', 0.35)
   ));
 
-  /* The Tower door: a great iron-bound door with three worn carvings on the arch over it; soldiers' silhouettes; the ward's glow (p.ward: 'ash' | 'cold' | none). */
+  /* The Tower door: a great iron-bound door with three worn carvings on the arch over it; the captain and six
+     soldiers (p.soldiers === false leaves them out: ch3_thanks is before they come, ch3_flow after they go);
+     the four, with Wren behind them (p.wren === false leaves Wren out: ch3_flow after the surrender); the
+     ward's glow (p.ward: 'ash' | 'cold' | none). */
+  const SOLDIERS = [1170, 1235, 1300, 1365, 1430, 1495].map((x, i) => ({ x, s: 1.05 - i * 0.035, color: '#0e0b12' }));
   A.define('ch3_towerdoor', (p) => {
     const glow = p && p.ward === 'cold' ? '#4fb3bf' : (p && p.ward ? '#ff9a3c' : null);
     return P.wrap(
@@ -112,15 +121,16 @@
           `</g>`).join('') +
       `</g>` +
       // torches either side
-      P.torch(560, 380, 1.1) + P.torch(1040, 380, 1.1) +
+      (p && p.ward === 'ash' ? '' : P.torch(560, 380, 1.1) + P.torch(1040, 380, 1.1)) +
       P.floorTiles(760, '#0b090f', 'rgba(255,255,255,0.03)') +
-      // soldiers: a line of silhouettes with spears, and a captain forward
-      `${[0, 1, 2, 3, 4].map(i => `<g transform="translate(${1180 + i * 80},${820 - i * 10})"><line x1="22" y1="-150" x2="22" y2="0" stroke="#0e0b12" stroke-width="5"/></g>`).join('')}` +
-      P.figures([{ x: 1180, s: 1.05, color: '#0e0b12' }, { x: 1260, s: 1.0, color: '#0e0b12' }, { x: 1340, s: 0.95, color: '#0e0b12' }, { x: 1420, s: 0.9, color: '#0e0b12' }], 820, '#0e0b12') +
-      P.figures([{ x: 1040, s: 1.15, color: '#0c0a10' }], 830, '#0c0a10') +
-      // the four and Wren on the near side
+      // soldiers: six silhouettes, each with a spear, and a captain forward
+      (p && p.soldiers === false ? '' :
+        `${SOLDIERS.map(f => `<g transform="translate(${f.x},820)"><line x1="${(20 * f.s).toFixed(1)}" y1="${(-150 * f.s).toFixed(0)}" x2="${(20 * f.s).toFixed(1)}" y2="0" stroke="#0e0b12" stroke-width="5"/></g>`).join('')}` +
+        P.figures(SOLDIERS, 820, '#0e0b12') +
+        P.figures([{ x: 1040, s: 1.15, color: '#0c0a10' }], 830, '#0c0a10')) +
+      // the four on the near side, the Binder nearest the stair, and Wren behind them
       P.figures([{ x: 300, s: 1.0 }, { x: 380, s: 1.0 }, { x: 460, s: 1.0 }, { x: 540, s: 1.0 }], 840, '#0a0810') +
-      P.figures([{ x: 640, s: 0.8, color: '#130f16' }], 830, '#130f16') +
+      (p && p.wren === false ? '' : P.figures([{ x: 230, s: 0.8, color: '#130f16' }], 830, '#130f16')) +
       P.fog(520, 380, '#1a1420', 0.4)
     );
   });
