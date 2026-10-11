@@ -1,6 +1,6 @@
 { "start": "ch2_start", "steps": [
   {"companion": true}, {"role": "Reader", "name": "Ana"}, {"unlock": ["knot", "ac4"]}, {"shot": "c2_reader_sight"},
-  {"expect": "What is cut into the plinths"}, {"expect": "THORN, VEIL, EMBER, KNOT"}, {"expect": "The door counts once"}, {"expect": "went through"},
+  {"expect": "What is cut into the plinths"}, {"expect": "THORN, VEIL, EMBER, KNOT"}, {"expect": "The door counts once"}, {"expect": "find its mark"}, {"expectNot": "went through"},
   {"expectNot": "Halvard"}, {"expectNot": "dial 2"},
   {"tab": "Book"}, {"expectNot": "plinth 1"}, {"expectNot": "Halvard"},
   {"tab": "Wren"}, {"shot": "c2_reader_wren"}, {"expect": "working out whose"},

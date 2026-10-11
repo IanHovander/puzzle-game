@@ -110,7 +110,7 @@
        drop the Listener          360          — no phrase, no path
      The three keyed replies below are receipts, not clues: a pull ends the puzzle, so they are only
      ever read once the board is already lost. That is where ch1 keeps REASONS.
-     The phrase is deliberately not the Book's worked example (up one, up three, down two) and the four
+     The phrase is deliberately not the Book's worked example (up six, down two) and the four
      words are deliberately not the set that example names, nor the Founders' plinth set: both are
      printed permanently in the shared Book, and either would hand a Listener-less table the four books. */
   const SPINES = ['EMBER', 'WELL', 'ASH', 'KNOT', 'CROWN', 'VEIL'];  // Reader — place 1..6, as the stamps stand

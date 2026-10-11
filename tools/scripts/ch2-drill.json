@@ -2,7 +2,7 @@
   "start": "ch2_attune", "steps": [
   {"wait": 800}, {"key": "Space"}, {"expect": "KNOT"}, {"clickText": "All phones are ready"},
   {"wait": 800}, {"key": "Space"}, {"wait": 400},
-  {"expect": "one to four"}, {"expect": "older than this floor"},
+  {"expect": "one to four"}, {"expect": "Only one of them binds"},
   {"click": ".dialseq .dial-face >> nth=0"}, {"click": ".palette-grid .glyph:has-text(\"THORN\")"},
   {"click": ".dialseq .dial-face >> nth=1"}, {"click": ".palette-grid .glyph:has-text(\"KNOT\")"},
   {"click": ".dialseq .dial-face >> nth=2"}, {"click": ".palette-grid .glyph:has-text(\"VEIL\")"},

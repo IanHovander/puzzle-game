@@ -110,9 +110,8 @@
       blocks.push({ t: 'html', html: `<div class="ladder">${G.LADDER.map((nm, i) => ({ nm, i })).reverse().map(({ nm, i }) =>
         `<div class="rung">${G.svg(nm, { size: 30, color: '#4fb3bf' })}<b>${nm}</b><span class="what">step ${i}</span></div>`).join('')}<div class="rung rest">${G.svg('COLD', { size: 30, color: '#4fb3bf' })}<b>COLD</b><span class="what">a rest — no step</span></div></div>` });
       blocks.push({ t: 'html', html: keyRows([
-        ['THORN (1) → KNOT (2)', '<em>up one</em>'],
-        ['KNOT (2) → VEIL (5)', '<em>up three</em>'],
-        ['VEIL (5) → EMBER (3)', '<em>down two</em>'],
+        ['ASH (0) → CROWN (6)', '<em>up six</em>'],
+        ['CROWN (6) → WELL (4)', '<em>down two</em>'],
       ], 'wide') });
       blocks.push({ t: 'fine', text: 'A rest is a pause, not a new start: the step after it is counted from the last glyph that sounded.' });
       blocks.push({ t: 'h', text: 'Row-player' });

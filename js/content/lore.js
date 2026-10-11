@@ -56,7 +56,7 @@
   L.laws = [
     { n: 0,  era: 'F', year: 0,   struck: true, text: 'COLD is written by four hands.', note: 'struck by the Convocation, 212. See Law 6.', learned: 'ch0' },
     { n: 1,  era: 'F', year: 0,   text: 'A sigil is read sunwise from the mark.', learned: 'ch0' },
-    { n: 2,  era: 'F', year: 0,   text: 'The door hears one count. One word to each dial, in the order the line climbs, and then it is called.', learned: 'ch2' },
+    { n: 2,  era: 'F', year: 0,   text: 'The door hears one count. One word to each dial, in the order the door hums, and then it is called.', learned: 'ch2' },
     { n: 3,  era: 'F', year: 0,   text: 'Where two Laws disagree, the older binds.', learned: 'ch2' },
     { n: 13, era: 'F', year: 0,   text: 'A Founder faces the hole their plinth was cut for.', learned: 'ch2' },
     { n: 9,  era: 'O', year: 212, text: 'A Founder faces the dial before them.', learned: 'ch2' },

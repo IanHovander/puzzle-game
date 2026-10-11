@@ -39,8 +39,12 @@
   }
   A.ch2 = { statue, dial, ember };
 
-  /* ---------- the stair down ---------- */
+  /* ---------- the stair down ----------
+     `down`: looking down the stair, so the cold light is at the far end and there is no warm wedge of the
+     Hall above (ch2_start, ch2_descent, ch2_stairfall). `unlit`: before the descent finds the blue light,
+     none (ch2_start). `broken`: from the fall on (ch2_stairfall, ch2_top, ch2_flow). */
   A.define('ch2_stair', (p) => {
+    const down = p && p.down, unlit = p && p.unlit;
     let steps = '';
     for (let i = 0; i < 14; i++) {
       const t = i / 13, y = 300 + Math.pow(t, 1.35) * 560, w = 220 + t * 1500, x = 800 - w / 2;
@@ -51,12 +55,14 @@
     return P.wrap(
       P.sky('#050409', '#0d0a12') +
       `<path d="M520,0 L1080,0 L1600,900 L0,900 Z" fill="#0b0910"/>` +
-      `<path d="M640,0 L960,0 L800,300 Z" fill="#2a1a12" opacity=".35"/>` +
+      (down ? '' : `<path d="M640,0 L960,0 L800,300 Z" fill="#2a1a12" opacity=".35"/>`) +
       steps +
       (p && p.broken ? `<path d="M690,700 L910,700 L980,900 L620,900 Z" fill="#050409"/><path d="M700,690 l30,-20 l20,30 l-40,10 Z" fill="#1a151f"/><path d="M880,700 l40,-14 l10,24 l-40,6 Z" fill="#1a151f"/>` : '') +
       `<g transform="translate(800,300)"><path d="M-120,0 L120,0 L60,-160 L-60,-160 Z" fill="#0a0810" opacity=".9"/></g>` +
       P.torch(430, 330, 1.2) + P.torch(1170, 330, 1.2) +
-      `<ellipse cx="800" cy="900" rx="500" ry="140" fill="${COLD}" opacity=".16"><animate attributeName="opacity" values=".16;.22;.14;.2;.16" dur="4s" repeatCount="indefinite"/></ellipse>` +
+      (unlit ? ''
+        : down ? `<defs><radialGradient id="ch2below"><stop offset="0" stop-color="${COLD}" stop-opacity=".5"/><stop offset="1" stop-color="${COLD}" stop-opacity="0"/></radialGradient></defs><ellipse cx="800" cy="290" rx="300" ry="110" fill="url(#ch2below)"><animate attributeName="opacity" values=".8;1;.7;.95;.8" dur="4s" repeatCount="indefinite"/></ellipse>`
+        : `<ellipse cx="800" cy="900" rx="500" ry="140" fill="${COLD}" opacity=".16"><animate attributeName="opacity" values=".16;.22;.14;.2;.16" dur="4s" repeatCount="indefinite"/></ellipse>`) +
       P.fog(560, 340, '#0f2a30', 0.5)
     );
   });
@@ -73,14 +79,17 @@
       `<path d="M0,520 A800,420 0 0 1 1600,520" fill="#100c15"/>` +
       P.pillars(5, 560, 520, '#0a0810') +
       P.floorTiles(560, '#0e0b13', 'rgba(255,255,255,0.045)') +
-      xs.map((x, i) => statue(x, 490, 0.95, i < 2 ? 1 : -1, names[i])).join('') +
-      `<rect x="120" y="556" width="1360" height="6" fill="#221a20"/>` +
-      xs.map((x, i) => dial(x, 690, String(i + 1))).join('') +
+      /* The door stands beyond the row, so it is drawn first and the statues stand in front of it. */
       `<g transform="translate(800,300)"><rect x="-260" y="-90" width="520" height="180" rx="8" fill="#15101a" stroke="#2c2330" stroke-width="4"/>` +
       `<path d="M-260,-90 A260,260 0 0 1 260,-90" fill="#15101a" stroke="#2c2330" stroke-width="4"/>` +
       `<line x1="0" y1="-300" x2="0" y2="90" stroke="#2c2330" stroke-width="5"/>` +
       `<circle cx="0" cy="-30" r="64" fill="none" stroke="rgba(212,169,78,0.35)" stroke-width="3"/><circle cx="0" cy="-30" r="50" fill="none" stroke="rgba(212,169,78,0.2)" stroke-width="1.5"/>` +
       `${[0, 1, 2, 3, 4, 5, 6, 7].map(i => { const a = i / 8 * Math.PI * 2 - Math.PI / 2; return `<line x1="${(Math.cos(a) * 50).toFixed(1)}" y1="${(-30 + Math.sin(a) * 50).toFixed(1)}" x2="${(Math.cos(a) * 64).toFixed(1)}" y2="${(-30 + Math.sin(a) * 64).toFixed(1)}" stroke="rgba(212,169,78,0.4)" stroke-width="3" stroke-linecap="round"/>`; }).join('')}</g>` +
+      xs.map((x, i) => statue(x, 490, 0.95, i < 2 ? 1 : -1, names[i])).join('') +
+      /* blank bronze where each Founder's name should be (ch2_antechamber's text) */
+      xs.map(x => `<rect x="${x - 40}" y="503" width="80" height="11" rx="2" fill="#5c4828" stroke="#8a7040" stroke-width="1.5" opacity=".85"/>`).join('') +
+      `<rect x="120" y="556" width="1360" height="6" fill="#221a20"/>` +
+      xs.map((x, i) => dial(x, 690, String(i + 1))).join('') +
       P.torch(150, 400, 1.1) + P.torch(1450, 400, 1.1) +
       P.fog(480, 260, '#1a1420', 0.4)
     );
@@ -96,13 +105,15 @@
       `<path d="M120,900 L120,520 A680,420 0 0 1 1480,520 L1480,900 Z" fill="#0f0e18"/>` +
       // the bricked archway at the back
       `<path d="M660,480 L660,300 A140,140 0 0 1 940,300 L940,480 Z" fill="#241c22" stroke="#2c2330" stroke-width="6"/>` +
-      `<clipPath id="ch2arch"><path d="M672,480 L672,300 A128,128 0 0 1 928,300 L928,480 Z"/></clipPath><g clip-path="url(#ch2arch)">${bricks}</g>` +
-      `<text x="800" y="512" text-anchor="middle" fill="rgba(233,226,210,0.35)" font-size="16" font-family="Cinzel,serif" letter-spacing="5">212</text>` +
+      `<clipPath id="ch2arch"><path d="M672,480 L672,300 A128,128 0 0 1 928,300 L928,480 Z"/></clipPath><g clip-path="url(#ch2arch)">${bricks}` +
+      /* the dated brick, low down: drawn only in ch2_road, which is where the text finds it */
+      (p && p.arch ? `<text x="800" y="472" text-anchor="middle" fill="rgba(233,226,210,0.45)" font-size="16" font-family="Cinzel,serif" letter-spacing="4">212</text>` : '') + `</g>` +
       (p && p.arch ? `<path d="M660,480 L660,300 A140,140 0 0 1 940,300 L940,480 Z" fill="none" stroke="${COLD}" stroke-width="3" opacity=".35"/>` : '') +
       P.floorTiles(560, '#0b0a12', 'rgba(255,255,255,0.05)') +
       // plinth with the Ember
       `<g transform="translate(800,600)"><path d="M-90,60 L-70,-40 L70,-40 L90,60 Z" fill="#17131c" stroke="#2a2330" stroke-width="3"/><rect x="-80" y="-52" width="160" height="14" fill="#221a20"/></g>` +
-      (p && p.empty ? '' : ember(800, 550, 1.4)) +
+      /* empty: the Ember is in your hands, so its light comes from the near edge of the frame */
+      (p && p.empty ? `<defs><radialGradient id="ch2held"><stop offset="0" stop-color="${COLD}" stop-opacity=".35"/><stop offset="1" stop-color="${COLD}" stop-opacity="0"/></radialGradient></defs><ellipse cx="800" cy="900" rx="520" ry="300" fill="url(#ch2held)"><animate attributeName="opacity" values=".85;1;.75;.95;.85" dur="3.2s" repeatCount="indefinite"/></ellipse>` : ember(800, 550, 1.4)) +
       `<g transform="translate(800,600)"><rect x="-80" y="-52" width="160" height="14" fill="#221a20"/></g>` +
       P.torch(230, 470, 1) + P.torch(1370, 470, 1) +
       P.fog(500, 300, '#0f2a30', 0.35)
