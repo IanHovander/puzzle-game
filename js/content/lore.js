@@ -61,7 +61,7 @@
     { n: 13, era: 'F', year: 0,   text: 'A Founder faces the hole their plinth was cut for.', learned: 'ch2' },
     { n: 9,  era: 'O', year: 212, text: 'A Founder faces the dial before them.', learned: 'ch2' },
     { n: 10, era: 'F', year: 0,   text: 'A turned line reverses and inverts; a lone turned glyph only inverts; every glyph keeps its place on the stone.', learned: 'ch4' },
-    { n: 4,  era: 'O', year: 340, text: 'An oath\'s last glyph is its lock. KNOT cannot be unbound. EMBER can be remembered and reconsidered. The one you swear to cannot tell the difference.', learned: 'ch4' },
+    { n: 4,  era: 'O', year: 340, text: 'An oath\'s last glyph is its lock. KNOT cannot be unbound. EMBER can be remembered and reconsidered.', learned: 'ch4' },
     { n: 5,  era: 'F', year: 0,   text: 'A turned inscription is placed widdershins from its mark.', learned: 'ch5' },
     { n: 11, era: 'O', year: 212, text: 'Every inscription is placed sunwise from the mark.', learned: 'ch5' },
     { n: 6,  era: 'O', year: 212, text: 'COLD is never written; where an inscription shows it, leave the slot empty.', learned: 'ch5' },

@@ -52,7 +52,7 @@
          The fourth carries the cold glyph. Those two figures are the whole of the Seer's corner in
          ch4_secrets -- the count is not asked for, because the Hearth printed it in Chapter II. */
       s += i === 1
-        ? `<path d="M-10,-72 L-34,-52" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`
+        ? `<path d="M-10,-72 L-30,-88" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`
         : `<path d="M10,-72 L34,-52" stroke="${ink}" stroke-width="8" stroke-linecap="round"/>`;
       if (i === 3) s += `<g transform="translate(46,-56) scale(1.4)" style="color:${cold}">${G().shapeInner('Flame', true)}</g>`;
       s += `</g>`;
@@ -82,7 +82,9 @@
     s += `<rect x="0" y="100" width="${W}" height="620" fill="#1a1410"/>`;
     s += `<rect x="0" y="100" width="${W}" height="620" fill="url(#ch4wall)"/><defs><linearGradient id="ch4wall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".5"/><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".45"/></linearGradient></defs>`;
     // bookcases
-    s += bookcase(40, 120, 380, 580, 4, 17);
+    // the third shelf stands empty and dark once it has been opened (p.opened, from ch4_secrets on)
+    s += bookcase(40, 120, 380, 580, 4, 17, p.opened ? { skip: 2 } : undefined);
+    if (p.opened) s += `<rect x="50" y="${(120 + 2 * 145 + 4).toFixed(0)}" width="360" height="133" fill="#06050a" opacity=".85"/>`;
     // tapestry
     s += `<rect x="470" y="140" width="560" height="400" fill="#3a2a1a"/>`;
     s += p.scraped ? foundersWalking(486, 156, 528, 368, { caption: false }) : orderPaint(486, 156, 528, 368);
@@ -106,7 +108,7 @@
     return P.wrap(s);
   });
 
-  /* ---------- the false shelf (close-up of the bookcase; shelf 3 holds eight great books) ---------- */
+  /* ---------- the false shelf (close-up of the bookcase; shelf 3 holds six great books) ---------- */
   A.define('ch4_shelf', (p) => {
     p = p || {};
     let s = P.sky('#0c0a10', '#150f0c');
@@ -115,21 +117,44 @@
     const r = A.rng(23); const cols = ['#3a2a22', '#2e2a3a', '#4a2f22', '#2a3a30', '#3d2e2e', '#33302a'];
     [1, 2, 4].forEach(i => { const sy = 60 + i * 180; s += `<rect x="120" y="${sy - 10}" width="1360" height="10" fill="#2c211a"/>`; let bx = 140; while (bx < 1450) { const bw = 16 + Math.floor(r() * 26), bh = 90 + r() * 60; s += `<rect x="${bx}" y="${(sy - 10 - bh).toFixed(0)}" width="${bw}" height="${bh.toFixed(0)}" fill="${cols[Math.floor(r() * cols.length)]}"/>`; bx += bw + 2 + Math.floor(r() * 5); } });
     const sy = 60 + 3 * 180; s += `<rect x="120" y="${sy - 10}" width="1360" height="10" fill="#2c211a"/>`;
-    if (p.open) s += `<rect x="150" y="${sy - 170}" width="1300" height="160" fill="#06050a"/><rect x="150" y="${sy - 170}" width="1300" height="160" fill="url(#ch4cab)"/><defs><radialGradient id="ch4cab" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#ffd27a" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>`;
     /* Six great books. Every stamp is rubbed past reading here and clean only on the Reader's page:
-       the Hearth may show the wear, never the word. The four lifted when the shelf is open are the
-       answer's places, 2, 5, 4 and 1 (indices 1, 4, 3, 0). */
+       the Hearth may show the wear, never the word. On a solve the four pulled are the answer's places,
+       2, 5, 4 and 1 (indices 1, 4, 3, 0), and the board swings out on its left hinge. On a kick nothing
+       was pulled: the board stays put with a boot-hole through the middle of it. ch4_shelf's onSolve
+       passes { open, kicked }. */
     const bcol = ['#4a2f22', '#2e2a3a', '#3a3222', '#2a3a30', '#3d2e2e', '#33302a'];
     const pulled = [1, 4, 3, 0];
-    for (let i = 0; i < 6; i++) {
-      const bx = 210 + i * 190, bw = 140, bh = 150;
-      const y0 = sy - 10 - bh + (p.open && pulled.indexOf(i) >= 0 ? -14 : 0);
-      s += `<rect x="${bx}" y="${y0}" width="${bw}" height="${bh}" rx="4" fill="${bcol[i]}" stroke="rgba(212,169,78,0.25)" stroke-width="2"/>`;
-      s += `<rect x="${bx + 10}" y="${y0 + 14}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/><rect x="${bx + 10}" y="${y0 + bh - 18}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/>`;
-      s += `<g transform="translate(${bx + bw / 2},${y0 + bh / 2})" fill="none" stroke="#8a7040" opacity=".55">`
-         + `<ellipse rx="30" ry="30" stroke-width="2.5" stroke-dasharray="4 7"/>`
-         + `<path d="M-13,8 L-4,-9 M3,-8 L11,6" stroke-width="3" stroke-linecap="round"/></g>`;
-      s += `<text x="${bx + bw / 2}" y="${y0 + bh + 26}" text-anchor="middle" fill="rgba(233,226,210,0.4)" font-size="16" font-family="Cinzel,serif">${i + 1}</text>`;
+    const books = (lift, numbers) => {
+      let b = '';
+      for (let i = 0; i < 6; i++) {
+        const bx = 210 + i * 190, bw = 140, bh = 150;
+        const y0 = sy - 10 - bh + (lift && pulled.indexOf(i) >= 0 ? -14 : 0);
+        b += `<rect x="${bx}" y="${y0}" width="${bw}" height="${bh}" rx="4" fill="${bcol[i]}" stroke="rgba(212,169,78,0.25)" stroke-width="2"/>`;
+        b += `<rect x="${bx + 10}" y="${y0 + 14}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/><rect x="${bx + 10}" y="${y0 + bh - 18}" width="${bw - 20}" height="4" fill="rgba(212,169,78,0.35)"/>`;
+        b += `<g transform="translate(${bx + bw / 2},${y0 + bh / 2})" fill="none" stroke="#8a7040" opacity=".55">`
+           + `<ellipse rx="30" ry="30" stroke-width="2.5" stroke-dasharray="4 7"/>`
+           + `<path d="M-12,-4 h9 M3,5 h9" stroke-width="3" stroke-linecap="round"/></g>`;
+        if (numbers) b += `<text x="${bx + bw / 2}" y="${y0 + bh + 26}" text-anchor="middle" fill="rgba(233,226,210,0.4)" font-size="16" font-family="Cinzel,serif">${i + 1}</text>`;
+      }
+      return b;
+    };
+    // the cupboard behind the board, and the scroll sealed in red wax
+    const sealedScroll = (cx, cy) => `<g transform="translate(${cx},${cy})"><rect x="-150" y="-30" width="300" height="60" rx="10" fill="#d9cba8"/><rect x="-162" y="-36" width="18" height="72" rx="8" fill="#b8a880"/><rect x="144" y="-36" width="18" height="72" rx="8" fill="#b8a880"/><circle cx="96" cy="8" r="22" fill="#8a2a2a"/><circle cx="96" cy="8" r="22" fill="none" stroke="#5a1a1a" stroke-width="3"/></g>`;
+    const cupboardGlow = `<defs><radialGradient id="ch4cab" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#ffd27a" stop-opacity=".25"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>`;
+    if (p.open && !p.kicked) {
+      s += `<rect x="150" y="${sy - 170}" width="1300" height="160" fill="#06050a"/><rect x="150" y="${sy - 170}" width="1300" height="160" fill="url(#ch4cab)"/>${cupboardGlow}`;
+      s += sealedScroll(900, sy - 88);
+      // the board, swung out toward the room on its left hinge: the six books seen nearly edge-on
+      s += `<g transform="translate(150,0) scale(0.24,1.04) translate(-150,-12)">${books(true, false)}</g>`;
+    } else {
+      s += books(false, true);
+      if (p.open && p.kicked) {
+        const hole = 'M640,452 L700,474 L732,444 L798,470 L858,446 L902,482 L962,462 L934,530 L972,578 L892,560 L842,592 L780,566 L722,590 L690,546 L628,562 L662,506 Z';
+        s += `<path d="${hole}" fill="#06050a"/><clipPath id="ch4kick"><path d="${hole}"/></clipPath>${cupboardGlow}`;
+        s += `<g clip-path="url(#ch4kick)"><rect x="600" y="430" width="400" height="170" fill="url(#ch4cab)"/>${sealedScroll(800, 520)}</g>`;
+        s += `<path d="${hole}" fill="none" stroke="#5a4230" stroke-width="5" stroke-linejoin="bevel"/>`;
+        s += `<g stroke="#5a4230" stroke-width="4" stroke-linecap="round"><path d="M640,452 L612,436"/><path d="M962,462 L996,450"/><path d="M842,592 L850,616"/><path d="M628,562 L600,574"/><path d="M732,444 L726,420"/></g>`;
+      }
     }
     s += `<rect x="0" y="780" width="${W}" height="120" fill="#0d0b0c"/>`;
     s += P.fog(560, 340, '#1a120c', 0.35);
@@ -163,19 +188,23 @@
     /* The heading is a rubbed cartouche, not a title: the scroll is allowed to show that something was
        named at the top of it, and not to name it. Painting a title here put two proper nouns on a
        puzzle surface and stamped a word the chapter no longer says. */
-    s += `<g transform="translate(0,-118)" fill="none" stroke="#8a7a5a" opacity=".75">`
+    s += `<g transform="translate(0,-152)" fill="none" stroke="#8a7a5a" opacity=".75">`
       + `<rect x="-210" y="-30" width="420" height="60" rx="14" stroke-width="2.5"/>`
       + [0, 1, 2, 3, 4].map(i => `<path d="M${-168 + i * 76},6 h44" stroke-width="9" stroke-linecap="round" opacity="${(0.30 + (i % 2) * 0.12).toFixed(2)}"/>`).join('')
       + [0, 1, 2, 3].map(i => `<path d="M${-140 + i * 80},-14 h56" stroke-width="7" stroke-linecap="round" opacity="${(0.22 + (i % 2) * 0.10).toFixed(2)}"/>`).join('')
       + `</g>`;
-    // four faint slots in a ring, the inscription above
+    // four faint slots in a ring, the inscription round it
     s += `<circle cx="0" cy="50" r="90" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`;
     for (let i = 0; i < 4; i++) { const a = (i / 4 * 360 - 90) * Math.PI / 180; s += `<circle cx="${(Math.cos(a) * 90).toFixed(1)}" cy="${(50 + Math.sin(a) * 90).toFixed(1)}" r="20" fill="none" stroke="#8a7a5a" stroke-width="2" opacity=".7"/>`; }
-    /* Three worn places and one empty. What was cut there is on the Reader's page; the scroll shows
-       only that something was cut, which is what "worn nearly smooth" has to look like. */
-    s += `<g transform="translate(-300,40)" fill="none" stroke="#8a7a5a" opacity=".6">`
-      + [0, 1, 2].map(i => `<g transform="translate(${i * 60},0)"><ellipse rx="24" ry="24" stroke-width="2" stroke-dasharray="3 6"/><path d="M-9,7 L-2,-8 M4,-6 L9,4" stroke-width="2.5" stroke-linecap="round"/></g>`).join('')
-      + `<rect x="150" y="-26" width="52" height="52" rx="6" stroke-dasharray="6 5"/></g>`;
+    /* Three worn places round the ring. What was cut there is on the Reader's page; the scroll shows
+       only that something was cut, which is what "worn nearly smooth" has to look like. They sit a
+       an even band, twelve worn places a twelfth of a turn apart, so no slot sits nearer a word than
+       another (the Reader's figure places three words, and three marks used to line up with it). A gap at the
+       top used to read as "the lock goes in slot 1", which is the Seer's and the Binder's to work out
+       (r0 art audit, MUST 1 and 4). The cartouche sits high enough to clear the top mark. */
+    s += `<g fill="none" stroke="#8a7a5a" opacity=".6">`
+      + [15, 45, 75, 105, 135, 165, 195, 225, 255, 285, 315, 345].map(d => { const a = d * Math.PI / 180, x = (Math.cos(a) * 140).toFixed(1), y = (50 + Math.sin(a) * 140).toFixed(1); return `<g transform="translate(${x},${y})"><ellipse rx="24" ry="24" stroke-width="2" stroke-dasharray="3 6"/><path d="M-9,7 L-2,-8 M4,-6 L9,4" stroke-width="2.5" stroke-linecap="round"/></g>`; }).join('')
+      + `</g>`;
     // the Chair's seal — CROWN in red wax
     s += `<g transform="translate(300,80)"><circle r="54" fill="#8a2a2a"/><circle r="54" fill="none" stroke="#5a1a1a" stroke-width="4"/><g transform="scale(1.8)" style="color:#f0c8a0" opacity=".9">${G().shapeInner('Crown', false)}</g></g>`;
     s += `</g>`;

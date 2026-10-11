@@ -1038,7 +1038,7 @@
    "wait": 1400
   },
   {
-   "expect": "in your Book from here on"
+   "expect": "in your Book once you reach the stair"
   },
   {
    "clickText": "Back to the room"
@@ -1188,7 +1188,7 @@
    "wait": 400
   },
   {
-   "expect": "So. The Seer."
+   "expect": "I look at it every day"
   },
   {
    "click": ".btn.choice >> nth=0"
@@ -1244,7 +1244,7 @@
    "expect": "does not come undone"
   },
   {
-   "clickText": "The night moves on"
+   "clickText": "Toward midnight"
   },
   {
    "wait": 800
